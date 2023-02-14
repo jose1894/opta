@@ -13,7 +13,9 @@ import NavBarItemPlain from "@/components/NavBarItemPlain.vue";
 import AsideMenu from "@/components/AsideMenu.vue";
 import FooterBar from "@/components/FooterBar.vue";
 
-useMainStore().setUser({
+const mainStore = useMainStore();
+
+mainStore.setUser({
   name: "John Doe",
   email: "john@example.com",
   avatar:
@@ -34,13 +36,18 @@ router.beforeEach(() => {
   isAsideLgActive.value = false;
 });
 
-const menuClick = (event, item) => {
+const menuClick = async (event, item) => {
   if (item.isToggleLightDark) {
     styleStore.setDarkMode();
   }
 
   if (item.isLogout) {
     //
+    await mainStore.logout(mainStore.user)
+            .then(response => {
+              router.push({ path: '/login' })
+              console.log(response)
+            })
   }
 };
 </script>

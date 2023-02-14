@@ -10,6 +10,8 @@ import BaseButton from '@/components/BaseButton.vue'
 import FormValidationErrors from '@/components/FormValidationErrors.vue'
 import NotificationBarInCard from '@/components/NotificationBarInCard.vue'
 import BaseLevel from '@/components/BaseLevel.vue'
+// import  from '@/stores/user'
+
 
 const props = defineProps({
   status: {
@@ -66,11 +68,10 @@ const submit = () => {
             :disabled="form.processing"
           />
           <Link
-            :href="route('logout')"
             method="post"
             as="button"
           >
-            Logout
+            Logoutgggg
           </Link>
         </BaseLevel>
       </CardBox>

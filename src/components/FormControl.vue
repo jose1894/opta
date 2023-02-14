@@ -2,8 +2,12 @@
 import { computed, ref, onMounted, onBeforeUnmount } from "vue";
 import { useMainStore } from "@/stores/main";
 import FormControlIcon from "@/components/FormControlIcon.vue";
-
+import { Field } from "vee-validate";
 const props = defineProps({
+  class: {
+    type: String,
+    default: null
+  },
   name: {
     type: String,
     default: null,
@@ -68,6 +72,8 @@ const inputElClass = computed(() => {
     base.push("pl-10");
   }
 
+  base.push(props.class)
+
   return base;
 });
 
@@ -122,7 +128,7 @@ if (props.ctrlKFocus) {
 </script>
 
 <template>
-  <div class="relative">
+  <div >
     <select
       v-if="computedType === 'select'"
       :id="id"
