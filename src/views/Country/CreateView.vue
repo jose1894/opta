@@ -12,7 +12,6 @@ import FormControl from '@/components/FormControl.vue';
 import BaseDivider from '@/components/BaseDivider.vue';
 import BaseButtons from '@/components/BaseButtons.vue';
 import countriesService from '@/services/countries.service'
-import { Form, Field, ErrorMessage } from "vee-validate";
 const { t } = useI18n();
 
 const selectOptions = [
@@ -70,7 +69,7 @@ const formStatusSubmit = () => {
           <FormField label="Grouped with icons">
             <FormControl 
               :name="'codigo'"
-              :value="form.codigo" 
+              :modelValue="form.codigo" 
               :icon="mdiMail"
               />
             <!-- <FormControl :value="form.nombre" type="email" :icon="mdiMail" /> -->
