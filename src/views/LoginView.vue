@@ -10,16 +10,20 @@ import FormControl from "@/components/FormControl.vue";
 import BaseButton from "@/components/BaseButton.vue";
 import BaseButtons from "@/components/BaseButtons.vue";
 import LayoutGuest from "@/layouts/LayoutGuest.vue";
+import { useMainStore } from "../stores/main";
 
-const form = reactive({
-  login: "john.doe",
-  pass: "highly-secure-password-fYjUw-",
+const mainStore = useMainStore();
+
+const user = reactive({
+  email: "jose1894@gmail.com",
+  password: "#Stars123",
   remember: true,
 });
 
 const router = useRouter();
 
-const submit = () => {
+const submit = async () => {
+  await mainStore.signIn(user);
   router.push("/dashboard");
 };
 </script>
@@ -30,7 +34,7 @@ const submit = () => {
       <CardBox :class="cardClass" is-form @submit.prevent="submit">
         <FormField label="Login" help="Please enter your login">
           <FormControl
-            v-model="form.login"
+            v-model="user.email"
             :icon="mdiAccount"
             name="login"
             autocomplete="username"
@@ -39,7 +43,7 @@ const submit = () => {
 
         <FormField label="Password" help="Please enter your password">
           <FormControl
-            v-model="form.pass"
+            v-model="user.password"
             :icon="mdiAsterisk"
             type="password"
             name="password"
@@ -48,7 +52,7 @@ const submit = () => {
         </FormField>
 
         <FormCheckRadio
-          v-model="form.remember"
+          v-model="user.remember"
           name="remember"
           label="Remember"
           :input-value="true"

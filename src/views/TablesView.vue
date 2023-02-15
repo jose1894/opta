@@ -37,7 +37,7 @@ import CardBoxComponentEmpty from "@/components/CardBoxComponentEmpty.vue";
         <TableSampleClients checkable />
       </CardBox>
 
-      <SectionTitleLineWithButton :icon="mdiTableOff" title="Empty variation" />
+      <SectionTitleLineWithButton :icon="mdiTableOff" title="Vacio" />
 
       <NotificationBar color="danger" :icon="mdiTableOff">
         <b>Empty table.</b> When there's nothing to show

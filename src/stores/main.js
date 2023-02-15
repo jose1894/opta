@@ -1,5 +1,10 @@
 import { defineStore } from "pinia";
 import axios from "axios";
+import AuthService from '../services/auth.service'
+const user = JSON.parse(localStorage.getItem('user'))
+const initialState = user ? { isLoggedIn: true , ...user } : {  isLoggedIn: false, user: null }
+console.log(initialState)
+
 
 export const useMainStore = defineStore("main", {
   state: () => ({
@@ -7,6 +12,7 @@ export const useMainStore = defineStore("main", {
     userName: null,
     userEmail: null,
     userAvatar: null,
+    user : initialState,
 
     /* Field focus with ctrl+k (to register only once) */
     isFieldFocusRegistered: false,
@@ -14,6 +20,8 @@ export const useMainStore = defineStore("main", {
     /* Sample data (commonly used) */
     clients: [],
     history: [],
+    countries: [],
+    data: [],
   }),
   actions: {
     setUser(payload) {
@@ -40,5 +48,31 @@ export const useMainStore = defineStore("main", {
           alert(error.message);
         });
     },
+    async signIn(user) {
+      const self = this
+      return new Promise((resolve, reject) => {
+        AuthService.login(user)
+          .then(user => {
+            self.userName = user.userName;
+            self.userEmail = user.userEmail;
+
+            self.user = {...user, isLoggedIn : true}
+            resolve(user)
+          })
+          .catch((error) => {
+            reject(error.response)
+          })
+      })
+    },
+    async logout(user) {
+      const self = this
+      await new Promise((resolve, reject) => {
+        AuthService.logout(user)
+          .then(response => {
+            resolve(response)
+          })
+      })
+    }
   },
+
 });
