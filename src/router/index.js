@@ -13,6 +13,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const mainStore = useMainStore();
+  console.log('router')
   if (to.name !== 'Login' && to.name !== 'Register' && to.meta.requiresAuth && !mainStore.user.isLoggedIn) {
       next({ name: 'Login' })
       return

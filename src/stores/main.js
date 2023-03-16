@@ -53,9 +53,9 @@ export const useMainStore = defineStore("main", {
       return new Promise((resolve, reject) => {
         AuthService.login(user)
           .then(user => {
-            self.userName = user.userName;
-            self.userEmail = user.userEmail;
-
+            debugger
+            self.userName = user.userData.username;
+            self.userEmail = user.userData.email;
             self.user = {...user, isLoggedIn : true}
             resolve(user)
           })
@@ -66,9 +66,13 @@ export const useMainStore = defineStore("main", {
     },
     async logout(user) {
       const self = this
+      console.log('logout')
       await new Promise((resolve, reject) => {
         AuthService.logout(user)
           .then(response => {
+            self.userName = null;
+            self.userEmail = null;;
+            self.user = {isLoggedIn:false}
             resolve(response)
           })
       })

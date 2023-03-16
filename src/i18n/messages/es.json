@@ -1,0 +1,67 @@
+{
+  "message":  {
+      "sign_in_to_your_account" : "¡Ingresa a tu cuenta!",
+      "sign_up": "¡Regístrate!",
+      "your_email": "Tu correo",
+      "password": "Contraseña",
+      "remember_me": "¡Recuérdame!",
+      "forgot_password": "¿Olvidaste password?",
+      "dont_have_an_account_yet": "¿No tienes cuenta aún?",
+      "already_have_an_account": "¿Ya tienes cuenta?",
+      "your_username": "Tu usuario",
+      "your_firstname": "Tu nombre",
+      "your_lastname": "Tu apellido",
+      "confirm_password": "Confirma contraseña",
+      "sign_up_success": "¡Registro exitoso!",
+      "sign_in_success" : "Ingreso exitoso",
+      "setup": "Configuración",
+      "empty_table": "Tabla vacía",
+      "submit" : "Enviar",
+      "reset" : "Reiniciar",
+      "profile":{
+          "profile": "Perfil",
+          "personal_information": "Información personal",
+          "personal_information_message" : "Use una dirección permanente donde puedas recibir correo.",
+          "username" : "Username",
+          "first_name" : "Nombre",
+          "last_name" : "Apellido",
+          "email" : "Email",
+          "country": "País",
+          "address" : "Dirección",
+          "state" : "Estado / provincia",
+          "city" : "Ciudad",
+          "postal_code": "ZIP / Código postal"
+      },
+      "country": {
+          "country" : "País",
+          "countries" : "Paises",
+          "statuses": {
+              "deleted" : "Borrado",
+              "active": "Activo",
+              "inactive": "Inactivo"
+          },
+          "create": "Crear país",
+          "update": "Actualizar país",
+          "code": "Código",
+          "name": "Nombre",
+          "status": "Status",   
+          "created":{
+            "success": "¡El país fue creado exitosamente!",
+            "error": "¡El país no pudo ser creado!"
+          },
+          "updated":{
+            "success": "¡El país fue actualizado exitosamente!",
+            "error": "¡El país no pudo ser actualizado!"
+          } 
+      },
+      "Home": "Inicio",   
+      "Countries" : "Paises",
+      "Setup" : "Configuración",
+      "Dashboard" : "Dashboard"
+  },
+  "validations": {
+        "required": "El campo {property} es requerido.",
+        "minLength": "El campo {property} tiene un valor de '{model}', pero debe tener una longitud minima de {min}.",
+        "maxLength": "El campo {property} tiene un valor de '{model}', pero debe tener una longitud maxima de {max}."
+    }
+}

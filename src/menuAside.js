@@ -11,6 +11,7 @@ import {
   mdiResponsive,
   mdiPalette,
   mdiReact,
+  mdiCog,
 } from "@mdi/js";
 
 export default [
@@ -68,6 +69,16 @@ export default [
       },
       {
         label: "Item Two",
+      },
+    ],
+  },
+  {
+    label: "SetUp",
+    icon: mdiCog,
+    menu: [
+      {
+        label: "Countries",
+        to: "/setup/countries",
       },
     ],
   },

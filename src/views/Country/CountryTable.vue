@@ -1,7 +1,8 @@
 <script setup>
 import { computed, ref, defineEmits } from "vue";
+import { useRouter } from "vue-router";
 import { useMainStore } from "@/stores/main";
-import { mdiEye, mdiTrashCan } from "@mdi/js";
+import { mdiEye, mdiFileEdit, mdiTrashCan } from "@mdi/js";
 import CardBoxModal from "@/components/CardBoxModal.vue";
 import TableCheckboxCell from "@/components/TableCheckboxCell.vue";
 import BaseLevel from "@/components/BaseLevel.vue";
@@ -13,6 +14,8 @@ import CountryFlag from 'vue-country-flag-next'
 defineProps({
   checkable: Boolean,
 });
+
+const router = useRouter();
 
 const mainStore = useMainStore();
 
@@ -87,10 +90,20 @@ const checked = (isChecked, country) => {
   }
 };
 
-const emit = defineEmits(['changePage'])
+const emit = defineEmits(['changePage', 'confirm'])
+
+const confirmAction = () => {
+  console.log('confirm')
+  emit('confirm')
+}
 
 const changePage = (page) => {
   emit('changePage', page)
+}
+
+const edit = (id) => {
+  console.log('editar')
+  router.push({name: 'CountriesUpdate', params: {id}})
 }
 </script>
 
@@ -130,7 +143,7 @@ const changePage = (page) => {
       </tr>
     </thead>
     <tbody>
-      <tr v-for="(country, index) in itemsPaginated" :key="country.id">
+      <tr v-for="(country, index) in itemsPaginated" :key="country._id">
         <TableCheckboxCell
           v-if="checkable"
           @checked="checked($event, country)"
@@ -149,10 +162,11 @@ const changePage = (page) => {
           <BaseButtons type="justify-start lg:justify-end" no-wrap>
             <BaseButton
               color="info"
-              :icon="mdiEye"
+              :icon="mdiFileEdit"
               small
-              @click="isModalActive = true"
+              @click="edit(country._id)"
             />
+
             <BaseButton
               color="danger"
               :icon="mdiTrashCan"
