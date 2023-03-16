@@ -35,6 +35,7 @@ const state = ref({
   nombre: "",
   estado: selectOptions[0],
 });
+debugger
 
 const action = (state) =>{
   const {_id, codigo, nombre, estado } = state.value;
