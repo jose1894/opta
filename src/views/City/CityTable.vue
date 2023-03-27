@@ -8,7 +8,6 @@ import TableCheckboxCell from "@/components/TableCheckboxCell.vue";
 import BaseLevel from "@/components/BaseLevel.vue";
 import BaseButtons from "@/components/BaseButtons.vue";
 import BaseButton from "@/components/BaseButton.vue";
-import UserAvatar from "@/components/UserAvatar.vue";
 import CountryFlag from 'vue-country-flag-next'
 
 defineProps({
@@ -19,26 +18,24 @@ const router = useRouter();
 
 const mainStore = useMainStore();
 
-const items = computed(() => mainStore.countries.paises);
-const total = computed(() => mainStore.countries.total)
+const items = computed(() => mainStore.cities.ciudades);
+const total = computed(() => mainStore.cities.total)
 
 const isModalActive = ref(false);
 
 const isModalDangerActive = ref(false);
 
-const perPage = computed(() => mainStore.countries.perPage);
+const perPage = computed(() => mainStore.cities.perPage);
 
-const currentPage = computed(() => mainStore.countries.page);
+const currentPage = computed(() => mainStore.cities.page);
 
 const checkedRows = ref([]);
 
 const itemsPaginated = computed(() =>
-  // items.value.slice(
-  //   perPage.value * (currentPage.value - 1),
-  //   perPage.value * currentPage.value
-  // )
   items.value
 );
+
+console.log(mainStore?.cities, '>>>>>>>>>>>>>|||||||')
 
 const listStatusOption = (status = '') => {
   const statuses = {0: 'inactive',1: 'active',2: 'deleted'};
@@ -80,13 +77,13 @@ const remove = (arr, cb) => {
   return newArr;
 };
 
-const checked = (isChecked, country) => {
+const checked = (isChecked, city) => {
   if (isChecked) {
-    checkedRows.value.push(country);
+    checkedRows.value.push(city);
   } else {
     checkedRows.value = remove(
       checkedRows.value,
-      (row) => row.id === country.id
+      (row) => row.id === city.id
     );
   }
 };
@@ -104,7 +101,7 @@ const changePage = (page) => {
 
 const edit = (id) => {
   console.log('editar')
-  router.push({name: 'CountriesUpdate', params: {id}})
+  router.push({name: 'CitiesUpdate', params: {id}})
 }
 </script>
 
@@ -137,27 +134,30 @@ const edit = (id) => {
   <table>
     <thead>
       <tr>
-        <th @click="sort('codigo')">{{ $t('message.country.code') }}</th>
-        <th @click="sort('nambre')">{{ $t('message.country.name') }}</th>
-        <th @click="sort('estado')">{{ $t('message.country.status') }}</th>
+        <th @click="sort('codigo')">{{ $t('message.city.code') }}</th>        
+        <th @click="sort('nambre')">{{ $t('message.city.name') }}</th>
+        <th @click="sort('nambre')">{{ $t('message.city.state') }}</th>
+        <th @click="sort('estado')">{{ $t('message.city.status') }}</th>
         <th />
       </tr>
     </thead>
     <tbody>
-      <tr v-for="(country, index) in itemsPaginated" :key="country._id">
+      <tr v-for="(city, index) in itemsPaginated" :key="city._id">
         <TableCheckboxCell
           v-if="checkable"
-          @checked="checked($event, country)"
+          @checked="checked($event, state)"
         />
-        <td :data-label="$t('message.country.code')">
-          <country-flag :country='country.codigo' size='normal'/>&nbsp;
-          {{ country.codigo }} 
+        <td :data-label="$t('message.city.code')">
+          {{ city.codigo }} 
         </td>
-        <td :data-label="$t('message.country.name')">
-          {{ country.nombre }}
+        <td :data-label="$t('message.city.state')">
+          {{ city.state.nombre }}
         </td>
-        <td :data-label="$t('message.country.status')">
-          {{ $t(`message.country.statuses.${listStatusOption(country.estado)}`) }}
+        <td :data-label="$t('message.city.name')">
+          {{ city.nombre }}
+        </td>
+        <td :data-label="$t('message.city.status')">
+          {{ $t(`message.city.statuses.${listStatusOption(city.estado)}`) }}
         </td>        
         <td class="before:hidden lg:w-1 whitespace-nowrap">
           <BaseButtons type="justify-start lg:justify-end" no-wrap>
@@ -165,7 +165,7 @@ const edit = (id) => {
               color="info"
               :icon="mdiFileEdit"
               small
-              @click="edit(country._id)"
+              @click="edit(city._id)"
             />
 
             <BaseButton

@@ -31,6 +31,11 @@ const onChangePage = (page) => {
   getCountries({page})
 }
 
+const onSortPage = (sortBy,sortDesc) => {
+  console.log(sortBy,sortDesc)
+  getCountries({sortBy,sortDesc});
+}
+
 </script>
 <template>
   <LayoutAuthenticated>
@@ -55,7 +60,7 @@ const onChangePage = (page) => {
       </NotificationBar>
 
       <CardBox  v-if="mainStore?.countries?.paises?.length" class="mb-6" has-table>
-        <CountryTable @changePage="onChangePage"/>
+        <CountryTable @changePage="onChangePage" @sort="onSortPage"/>
       </CardBox>
 
       <CardBox v-else>

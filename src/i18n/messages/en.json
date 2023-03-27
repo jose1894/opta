@@ -54,6 +54,29 @@
             "error": "Country couldn't be updated!"
           }
       },
+      "state": {
+        "states": "States",
+        "state": "State",
+        "statuses": {
+          "deleted": "Deleted",
+          "active": "Active",
+          "inactive": "Inactive"
+        },
+        "create": "Create state",
+        "update": "Update state",
+        "code": "Code",
+        "name": "Name",
+        "status": "Status",
+        "country": "Country",
+        "created":{
+          "success": "Stste created successfully!",
+          "error": "State couldn't be created!"
+        },
+        "updated":{
+          "success": "State updated successfully!",
+          "error": "State couldn't be updated!"
+        }
+      },
       "Home": "Home",
       "Countries" : "Countries",
       "Dashboard" : "Dashbooard"      

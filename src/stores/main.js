@@ -21,6 +21,8 @@ export const useMainStore = defineStore("main", {
     clients: [],
     history: [],
     countries: [],
+    states:[],
+    cities:[],
     data: [],
   }),
   actions: {

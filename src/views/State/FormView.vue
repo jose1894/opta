@@ -5,10 +5,11 @@ import BaseButton from '@/components/BaseButton.vue';
 import CardBox from '@/components/CardBox.vue';
 import FormField from '@/components/FormField.vue';
 import FormControl from '@/components/FormControl.vue';
-import { mdiBallotOutline, mdiAccount, mdiMail, mdiGithub, mdiCodeBraces, mdiRenameBox, mdiListStatus } from "@mdi/js";
+import { mdiCodeBraces, mdiRenameBox, mdiListStatus } from "@mdi/js";
 import { required, maxLength } from '@/utils/i18n-validators';
 import useValidate from '@vuelidate/core';
 import countriesService from '@/services/countries.service';
+import statesService from '@/services/states.services';
 import { useToast } from 'vue-toastification';
 import { useRoute, useRouter } from 'vue-router';
 
@@ -20,38 +21,46 @@ const router = useRouter();
 const props = defineProps({
   path : '',
   saveLabel : '',
-  country: {}
+  state: {}
 })
 
-const selectOptions = [
-  { id: 1, label: t('message.country.statuses.active') },
-  { id: 0, label: t('message.country.statuses.inactive') },
-  { id: 2, label: t('message.country.statuses.deleted') },
+let selectOptions = [
+  { id: 1, label: t('message.state.statuses.active') },
+  { id: 0, label: t('message.state.statuses.inactive') },
+  { id: 2, label: t('message.state.statuses.deleted') },
 ];
+
+let countriesList = ref([])
 
 const state = ref({
   _id: '',
   codigo: "00",
   nombre: "",
   estado: selectOptions[0],
+  pais: countriesList.value,
 });
-debugger
 
 const action = (state) =>{
-  const {_id, codigo, nombre, estado } = state.value;
-  const data = {_id, codigo, nombre, estado: estado.id}
+  const {_id, codigo, nombre, estado, pais } = state.value;
+  const data = {_id, codigo, nombre, estado: estado.id, pais: pais.id}
   if (props.path === 'create'){
-    return countriesService.create(data)
+    return statesService.create(data)
   } 
 
-  return countriesService.update(data);
+  return statesService.update(data);
 }
 
 onMounted(async () => {
+  let listPaises = await countriesService.index();
+  const optionCountry = listPaises?.paises || [];
+  countriesList.value = optionCountry.map((country) => ({id: country._id, label: country.nombre}));
   if (props.path === 'update'){
-    const res = await countriesService.read(route.params);
+    const res = await statesService.read(route.params);
+    const country = res.data?.pais || [];
+    const countrySelected = optionCountry.filter((item) => item._id == country._id)[0];
     state.value = res.data
     state.value.estado = selectOptions.filter(status => status.id === res.data.estado)[0]
+    state.value.pais = {id: countrySelected._id, label: countrySelected.nombre} 
   }
 })
 
@@ -63,20 +72,21 @@ const rules = computed(() => ({
 
 const v$ = useValidate(rules, state);
 
-const successMessage = props.path === 'create' ? t("message.country.created.success") : t("message.country.updated.success")
+const successMessage = props.path === 'create' ? t("message.state.created.success") : t("message.state.updated.success")
 
 const submit = async () => {
     const result = await v$.value.$validate();
+    console.log(result)
 
     if(result) {
       action(state)
       .then(() => {
         toast.success(successMessage);
-        router.push('/setup/countries');
+        router.push('/setup/states');
       })
       .catch(err => {
         if (err.response.data?.msg){
-          toast.error(`${t("message.country.created.error")} ${err.response.data.msg}`)
+          toast.error(`${t("message.state.created.error")} ${err.response.data.msg}`)
           return
         }
 
@@ -97,15 +107,18 @@ const submit = async () => {
 </script>
 <template>
   <CardBox isForm @submit.prevent="submit">
-    <div class="grid md:grid-cols-3 gap-4">
-      <FormField :label="$t('message.country.code')" :help="v$?.codigo?.$errors[0]?.$message">
+    <div class="grid md:grid-cols-4 gap-4">
+      <FormField :label="$t('message.state.code')" :help="v$?.codigo?.$errors[0]?.$message">
         <FormControl :name="'codigo'" v-model="state.codigo" :icon="mdiCodeBraces" />            
       </FormField>
-      <FormField :label="$t('message.country.name')" :help="v$?.nombre?.$errors[0]?.$message">
+      <FormField :label="$t('message.state.name')" :help="v$?.nombre?.$errors[0]?.$message">
         <FormControl v-model="state.nombre" :icon="mdiRenameBox" />
       </FormField>
-      <FormField :label="$t('message.country.status')" :help="v$?.estado?.$errors[0]?.$message">
+      <FormField :label="$t('message.state.status')" :help="v$?.estado?.$errors[0]?.$message">
         <FormControl v-model="state.estado" :icon="mdiListStatus" :options="selectOptions" />
+      </FormField>
+      <FormField :label="$t('message.state.country')" :help="v$?.estado?.$errors[0]?.$message">
+        <FormControl v-model="state.pais" :icon="mdiListStatus" :options="countriesList" />
       </FormField>
     </div>
     <template #footer>

@@ -8,7 +8,6 @@ import TableCheckboxCell from "@/components/TableCheckboxCell.vue";
 import BaseLevel from "@/components/BaseLevel.vue";
 import BaseButtons from "@/components/BaseButtons.vue";
 import BaseButton from "@/components/BaseButton.vue";
-import UserAvatar from "@/components/UserAvatar.vue";
 import CountryFlag from 'vue-country-flag-next'
 
 defineProps({
@@ -19,26 +18,24 @@ const router = useRouter();
 
 const mainStore = useMainStore();
 
-const items = computed(() => mainStore.countries.paises);
-const total = computed(() => mainStore.countries.total)
+const items = computed(() => mainStore.states.estados);
+const total = computed(() => mainStore.states.total)
 
 const isModalActive = ref(false);
 
 const isModalDangerActive = ref(false);
 
-const perPage = computed(() => mainStore.countries.perPage);
+const perPage = computed(() => mainStore.states.perPage);
 
-const currentPage = computed(() => mainStore.countries.page);
+const currentPage = computed(() => mainStore.states.page);
 
 const checkedRows = ref([]);
 
 const itemsPaginated = computed(() =>
-  // items.value.slice(
-  //   perPage.value * (currentPage.value - 1),
-  //   perPage.value * currentPage.value
-  // )
   items.value
 );
+
+console.log(mainStore?.states, '>>>>>>>>>>>>>|||||||')
 
 const listStatusOption = (status = '') => {
   const statuses = {0: 'inactive',1: 'active',2: 'deleted'};
@@ -80,13 +77,13 @@ const remove = (arr, cb) => {
   return newArr;
 };
 
-const checked = (isChecked, country) => {
+const checked = (isChecked, state) => {
   if (isChecked) {
-    checkedRows.value.push(country);
+    checkedRows.value.push(state);
   } else {
     checkedRows.value = remove(
       checkedRows.value,
-      (row) => row.id === country.id
+      (row) => row.id === state.id
     );
   }
 };
@@ -104,7 +101,7 @@ const changePage = (page) => {
 
 const edit = (id) => {
   console.log('editar')
-  router.push({name: 'CountriesUpdate', params: {id}})
+  router.push({name: 'StatesUpdate', params: {id}})
 }
 </script>
 
@@ -137,27 +134,31 @@ const edit = (id) => {
   <table>
     <thead>
       <tr>
-        <th @click="sort('codigo')">{{ $t('message.country.code') }}</th>
-        <th @click="sort('nambre')">{{ $t('message.country.name') }}</th>
-        <th @click="sort('estado')">{{ $t('message.country.status') }}</th>
+        <th @click="sort('codigo')">{{ $t('message.state.code') }}</th>        
+        <th @click="sort('nambre')">{{ $t('message.state.name') }}</th>
+        <th @click="sort('codigo')">{{ $t('message.state.country') }}</th>
+        <th @click="sort('estado')">{{ $t('message.state.status') }}</th>
         <th />
       </tr>
     </thead>
     <tbody>
-      <tr v-for="(country, index) in itemsPaginated" :key="country._id">
+      <tr v-for="(state, index) in itemsPaginated" :key="state._id">
         <TableCheckboxCell
           v-if="checkable"
-          @checked="checked($event, country)"
+          @checked="checked($event, state)"
         />
-        <td :data-label="$t('message.country.code')">
-          <country-flag :country='country.codigo' size='normal'/>&nbsp;
-          {{ country.codigo }} 
+        <td :data-label="$t('message.state.code')">
+          {{ state.codigo }} 
+        </td>       
+        <td :data-label="$t('message.state.name')">
+          {{ state.nombre }}
         </td>
-        <td :data-label="$t('message.country.name')">
-          {{ country.nombre }}
+        <td :data-label="$t('message.state.country')">
+          <country-flag :state='state.pais.codigo' size='normal'/>&nbsp;
+          {{ state.pais.nombre }} 
         </td>
-        <td :data-label="$t('message.country.status')">
-          {{ $t(`message.country.statuses.${listStatusOption(country.estado)}`) }}
+        <td :data-label="$t('message.state.status')">
+          {{ $t(`message.state.statuses.${listStatusOption(state.estado)}`) }}
         </td>        
         <td class="before:hidden lg:w-1 whitespace-nowrap">
           <BaseButtons type="justify-start lg:justify-end" no-wrap>
@@ -165,7 +166,7 @@ const edit = (id) => {
               color="info"
               :icon="mdiFileEdit"
               small
-              @click="edit(country._id)"
+              @click="edit(state._id)"
             />
 
             <BaseButton

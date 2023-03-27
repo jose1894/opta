@@ -1,6 +1,6 @@
 import Service from './index.js'
 import authHeader from './auth.header.js'
-const resource = 'api/paises/'
+const resource = 'api/ciudades/'
 
 export default {
     index(data) {
@@ -10,41 +10,35 @@ export default {
                 .catch((err) => reject(err))
         })
     },
-    create(pais) {
+    create(ciudad) {
         return new Promise((resolve, reject) => {
-            Service.post(resource, pais, { headers: authHeader() })
+            Service.post(resource, ciudad, { headers: authHeader() })
                 .then((response) => resolve(response))
                 .catch(err => reject(err))
         })
     },
-    read(pais) {
+    read(ciudad) {
         return new Promise((resolve, reject) => {
-            Service.get(`${resource}/${pais.id}`, { headers: authHeader() })
+            Service.get(`${resource}/${ciudad.id}`, { headers: authHeader() })
             .then(response => { 
                 resolve(response)})
             .catch(err => reject(err))
         })
     },
 
-    update(pais) {
+    update(ciudad) {
         return new Promise((resolve, reject) => {
-            Service.put(`${resource}/${pais._id}`, pais, { headers: authHeader() })
+            Service.put(`${resource}/${ciudad._id}`, ciudad, { headers: authHeader() })
                 .then((response) => resolve(response.data))
                 .catch((err) => reject(err))
         })
     },
 
-    delete(pais) {
+    delete(ciudad) {
         return new Promise((resolve, reject) => {
-            Service.delete(`${resource}/${pais.id}`, {}, { headers: authHeader() })
+            Service.delete(`${resource}/${ciudad.id}`, {}, { headers: authHeader() })
                 .then((response) => resolve(response.data))
                 .catch((err) => reject(err))
         })
     },
-
-    countryActivate() {
-        return new Promise((resolve, reject) => {
-            Service.paisesActivosGet()
-        })
-    }
 }

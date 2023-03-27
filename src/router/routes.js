@@ -1,6 +1,8 @@
 import Style from "@/views/StyleView.vue";
 import Home from "@/views/HomeView.vue";
-import CountriesRoutes from './CountriesRoutes.js'
+import CountriesRoutes from './CountriesRoutes.js';
+import StatesRoutes from './StatesRoutes.js';
+import CitiesRoutes from "./CitiesRoutes.js";
 
 
 export default [
@@ -78,5 +80,7 @@ export default [
     name: "error",
     component: () => import("@/views/ErrorView.vue"),
   },
-  ...CountriesRoutes
+  ...CountriesRoutes,
+  ...StatesRoutes,
+  ...CitiesRoutes
 ];

@@ -15,7 +15,7 @@ import {
 } from "@mdi/js";
 
 export default [
-  {
+  /*{
     to: "/dashboard",
     icon: mdiMonitor,
     label: "Dashboard",
@@ -71,7 +71,7 @@ export default [
         label: "Item Two",
       },
     ],
-  },
+  },*/
   {
     label: "SetUp",
     icon: mdiCog,
@@ -79,6 +79,14 @@ export default [
       {
         label: "Countries",
         to: "/setup/countries",
+      },
+      {
+        label: "States",
+        to: "/setup/states",
+      },
+      {
+        label: "Cities",
+        to: "/setup/cities",
       },
     ],
   },

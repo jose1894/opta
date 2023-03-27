@@ -1,0 +1,129 @@
+<script setup>
+import { reactive, computed, defineProps, onMounted, ref } from 'vue';
+import { useI18n } from "vue-i18n";
+import BaseButton from '@/components/BaseButton.vue';
+import CardBox from '@/components/CardBox.vue';
+import FormField from '@/components/FormField.vue';
+import FormControl from '@/components/FormControl.vue';
+import { mdiCodeBraces, mdiRenameBox, mdiListStatus } from "@mdi/js";
+import { required, maxLength } from '@/utils/i18n-validators';
+import useValidate from '@vuelidate/core';
+import statesService from '@/services/states.services';
+import citiesService from '@/services/cities.service';
+import { useToast } from 'vue-toastification';
+import { useRoute, useRouter } from 'vue-router';
+
+const { t } = useI18n();
+const toast = useToast();
+const route = useRoute();
+const router = useRouter();
+
+const props = defineProps({
+  path : '',
+  saveLabel : '',
+  state: {}
+})
+
+let selectOptions = [
+  { id: 1, label: t('message.city.statuses.active') },
+  { id: 0, label: t('message.city.statuses.inactive') },
+  { id: 2, label: t('message.city.statuses.deleted') },
+];
+
+let citiesList = ref([])
+
+const city = ref({
+  _id: '',
+  codigo: "00",
+  nombre: "",
+  estado: selectOptions[0],
+  state: citiesList.value,
+});
+
+const action = (city) =>{
+  const {_id, codigo, nombre, estado, state } = city.value;
+  const data = {_id, codigo, nombre, estado: estado.id, state: state.id}
+  if (props.path === 'create'){
+    return citiesService.create(data)
+  } 
+
+  return citiesService.update(data);
+}
+
+onMounted(async () => {  
+  let listCities = await statesService.index();
+  const optionCity = listCities?.estados || [];
+  citiesList.value = optionCity.map((city) => ({id: city._id, label: city.nombre}));
+  console.log(listCities)
+    if (props.path === 'update'){    
+      const res = await citiesService.read(route.params);
+      const estados = res.data?.state || [];
+      const stateSelected = optionCity.filter((item) => item._id == estados._id)[0];
+      city.value = res.data
+      city.value.estado = selectOptions.filter(status => status.id === res.data.estado)[0]
+      city.value.state = {id: stateSelected._id, label: stateSelected.nombre}
+    }
+})
+
+const rules = computed(() => ({
+            codigo: { required, maxLength: maxLength(3) },
+            nombre: { required,  },
+            estado: { required },
+          }));
+
+const v$ = useValidate(rules, city);
+
+const successMessage = props.path === 'create' ? t("message.city.created.success") : t("message.city.updated.success")
+
+const submit = async () => {
+    const result = await v$.value.$validate();
+    console.log(result)
+
+    if(result) {
+      action(city)
+      .then(() => {
+        toast.success(successMessage);
+        router.push('/setup/cities');
+      })
+      .catch(err => {
+        if (err.response.data?.msg){
+          toast.error(`${t("message.city.created.error")} ${err.response.data.msg}`)
+          return
+        }
+
+        if  (err.response.data?.errors){
+          const errors = err.response.data.errors;
+          let errorStr = '';
+          debugger
+          for(let attr of errors){
+          }
+        }
+      })
+    }else{
+      console.log('error')
+    }
+
+};
+
+</script>
+<template>
+  <CardBox isForm @submit.prevent="submit">
+    <div class="grid md:grid-cols-4 gap-4">
+      <FormField :label="$t('message.city.code')" :help="v$?.codigo?.$errors[0]?.$message">
+        <FormControl :name="'codigo'" v-model="city.codigo" :icon="mdiCodeBraces" />            
+      </FormField>
+      <FormField :label="$t('message.city.name')" :help="v$?.nombre?.$errors[0]?.$message">
+        <FormControl v-model="city.nombre" :icon="mdiRenameBox" />
+      </FormField>
+      <FormField :label="$t('message.city.state')" :help="v$?.state?.$errors[0]?.$message">
+        <FormControl v-model="city.state" :icon="mdiListStatus" :options="citiesList" />
+      </FormField>
+      <FormField :label="$t('message.city.status')" :help="v$?.estado?.$errors[0]?.$message">
+        <FormControl v-model="city.estado" :icon="mdiListStatus" :options="selectOptions" />
+      </FormField>      
+    </div>
+    <template #footer>
+      <BaseButton :label="$t(`message.${props.saveLabel}`)" type="submit" color="info" />
+    </template>
+  </CardBox>
+</template>

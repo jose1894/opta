@@ -54,6 +54,51 @@
             "error": "¡El país no pudo ser actualizado!"
           } 
       },
+      "state": {
+        "states": "Estados",
+        "statuses": {
+          "deleted": "Eliminado",
+          "active": "Activo",
+          "inactive": "Inactivo"
+        },
+          "create": "Crear estado",
+          "update": "Modificar estado",
+          "code": "Código",
+          "name": "Nombre",
+          "status": "Status", 
+          "country": "País",  
+          "created":{
+            "success": "¡El estado fue creado exitosamente!",
+            "error": "¡El estado no pudo ser creado!"
+          },
+          "updated":{
+            "success": "¡El estado fue actualizado exitosamente!",
+            "error": "¡El estado no pudo ser actualizado!"
+          } 
+      },
+      "city": {
+        "cities": "Ciudades",
+        "state": "Estado",
+        "statuses": {
+          "deleted": "Eliminado",
+          "active": "Activo",
+          "inactive": "Inactivo"
+        },
+          "create": "Crear ciudad",
+          "update": "Modificar ciudad",
+          "code": "Código",
+          "name": "Nombre",
+          "status": "Status", 
+          "country": "País",  
+          "created":{
+            "success": "¡la ciudad fue creada exitosamente!",
+            "error": "¡la ciudad no pudo ser creada!"
+          },
+          "updated":{
+            "success": "¡la ciudad fue actualizada exitosamente!",
+            "error": "¡la ciudad no pudo ser actualizada!"
+          } 
+      },
       "Home": "Inicio",   
       "Countries" : "Paises",
       "Setup" : "Configuración",
