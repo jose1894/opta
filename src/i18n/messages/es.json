@@ -99,6 +99,45 @@
             "error": "¡la ciudad no pudo ser actualizada!"
           } 
       },
+      "ally": {
+        "allies": "Aliados",
+        "ally": "Aliado",
+        "id": "ID Fiscal",
+        "statuses": {
+          "deleted": "Eliminado",
+          "active": "Activo",
+          "inactive": "Inactivo"
+        },
+          "create": "Crear aliado",
+          "update": "Modificar aliado",
+          "code": "Código",
+          "name": "Nombre",
+          "status": "Status", 
+          "country": "País", 
+          "state": "Estado",
+          "city": "Ciudad",
+          "address": "Dirección",
+          "paginaWeb": "Página web",
+          "lastName": "Apellido",
+          "idFiscal": "Número físcal", 
+          "cargo": "cargo",
+          "officePhone": "Teléfono de oficina",
+          "movilPhone": "Teléfono de móvil",
+          "email": "Correo eléctronico",
+          "codeClient": "Código de cliente",
+          "date": "Fecha",
+          "contacts": "Contactos",
+          "referred": "Referido",
+          "activeLicenses": "Nro. de licencias activas",
+          "created":{
+            "success": "¡El aliado fue creado exitosamente!",
+            "error": "¡El aliado no pudo ser creado!"
+          },
+          "updated":{
+            "success": "¡El aliado fue actualizado exitosamente!",
+            "error": "¡El aliado no pudo ser actualizado!"
+          } 
+      },
       "Home": "Inicio",   
       "Countries" : "Paises",
       "Setup" : "Configuración",

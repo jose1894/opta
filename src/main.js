@@ -11,12 +11,13 @@ import i18n from "@/i18n";
 import "./css/main.css";
 // Import the CSS or use your own!
 import "vue-toastification/dist/index.css";
+import VueTailwindDatepicker from 'vue-tailwind-datepicker'
 
 /* Init Pinia */
 const pinia = createPinia();
 
 /* Create Vue app */
-createApp(App).use(router).use(pinia).use(i18n).use(Toast).mount("#app");
+createApp(App).use(router).use(pinia).use(i18n).use(Toast).use(VueTailwindDatepicker).mount("#app");
 
 /* Init Pinia stores */
 const mainStore = useMainStore(pinia);

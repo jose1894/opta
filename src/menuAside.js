@@ -73,6 +73,21 @@ export default [
     ],
   },*/
   {
+    to: "/forms",
+    label: "Forms",
+    icon: mdiSquareEditOutline,
+  },
+  {
+    to: "/profile",
+    label: "Profile",
+    icon: mdiAccountCircle,
+  },
+  {
+    to: "/login",
+    label: "Login",
+    icon: mdiLock,
+  },
+  {
     label: "SetUp",
     icon: mdiCog,
     menu: [
@@ -87,6 +102,10 @@ export default [
       {
         label: "Cities",
         to: "/setup/cities",
+      },
+      {
+        label: "Allies",
+        to: "/setup/allies",
       },
     ],
   },

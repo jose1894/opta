@@ -1,9 +1,14 @@
 /* eslint-env node */
 
 const plugin = require("tailwindcss/plugin");
+const colors = require("tailwindcss/colors")
 
 module.exports = {
-  content: ["./index.html", "./src/**/*.{vue,js,ts,jsx,tsx}"],
+  content: [
+    "./index.html", 
+    "./src/**/*.{vue,js,ts,jsx,tsx}",
+    "./node_modules/vue-tailwind-datepicker/**/*.js"
+  ],
   darkMode: "class", // or 'media' or 'class'
   theme: {
     asideScrollbars: {
@@ -11,6 +16,10 @@ module.exports = {
       gray: "gray",
     },
     extend: {
+      colors: {
+        "vtd-primary": colors.sky, // Light mode Datepicker color
+        "vtd-secondary": colors.gray, // Dark mode Datepicker color
+      },
       zIndex: {
         "-1": "-1",
       },

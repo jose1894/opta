@@ -54,7 +54,6 @@ onMounted(async () => {
   let listCities = await statesService.index();
   const optionCity = listCities?.estados || [];
   citiesList.value = optionCity.map((city) => ({id: city._id, label: city.nombre}));
-  console.log(listCities)
     if (props.path === 'update'){    
       const res = await citiesService.read(route.params);
       const estados = res.data?.state || [];

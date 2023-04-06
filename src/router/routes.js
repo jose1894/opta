@@ -3,6 +3,7 @@ import Home from "@/views/HomeView.vue";
 import CountriesRoutes from './CountriesRoutes.js';
 import StatesRoutes from './StatesRoutes.js';
 import CitiesRoutes from "./CitiesRoutes.js";
+import Allies from "./Allies.js";
 
 
 export default [
@@ -82,5 +83,6 @@ export default [
   },
   ...CountriesRoutes,
   ...StatesRoutes,
-  ...CitiesRoutes
+  ...CitiesRoutes,
+  ...Allies
 ];
