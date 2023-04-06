@@ -39,6 +39,19 @@ const mainStore = useMainStore();
 const clientBarItems = computed(() => mainStore.clients.slice(0, 4));
 
 const transactionBarItems = computed(() => mainStore.history);
+
+const tab = ref(1)
+
+const activeTabOne = () => {
+      tab.value = 1;
+    }
+const activeTabTwo = () => {
+      tab.value = 2;
+    }
+const activeTabThree = () => {
+      tab.value = 3;
+    }
+
 </script>
 
 <template>
@@ -139,6 +152,51 @@ const transactionBarItems = computed(() => mainStore.history);
       <CardBox has-table>
         <TableSampleClients />
       </CardBox>
+
+      <div>
+        <div class="container mx-auto">
+          <ul class="flex justify-center space-x-2 text-white">
+            <li>
+              <button
+                @click="activeTabOne"
+                class="inline-block px-4 py-2 bg-purple-500"
+              >
+                Tab 1
+              </button>
+            </li>
+            <li>
+              <button
+                @click="activeTabTwo"
+                class="inline-block px-4 py-2 bg-purple-500"
+              >
+                Tab 2
+              </button>
+            </li>
+            <li>
+              <button
+                @click="activeTabThree"
+                class="inline-block px-4 py-2 bg-purple-500"
+              >
+                Tab 3
+              </button>
+            </li>
+          </ul>
+          <div class="p-3 mt-6 bg-white border">
+            <div v-show="tab === 1">
+              Tab 1 Content show Lorem ipsum dolor sit amet consectetur adipisicing
+              elit.
+            </div>
+            <div v-show="tab === 2">
+              Tab 2 Content show Lorem ipsum dolor sit amet consectetur, adipisicing
+              elit.
+            </div>
+            <div v-show="tab === 3">
+              Tab 3 Content show Lorem ipsum dolor sit amet consectetur adipisicing
+              elit. Amet,
+            </div>
+          </div>
+        </div>
+      </div>
     </SectionMain>
   </LayoutAuthenticated>
 </template>
