@@ -16,13 +16,13 @@ export default [
     name: "AlliesCreate",
     component: () => import("@/views/Allies/CreateView.vue"),
   },
-  /*{
+  {
     meta: {
-      title: "Cities - update ", requiresAuth: true,
+      title: "Ally - update ", requiresAuth: true,
     },
     path: `${url}/update/:id`,
-    name: "CitiesUpdate",
-    component: () => import("@/views/City/UpdateView.vue"),
-  },*/
+    name: "AlliesUpdate",
+    component: () => import("@/views/Allies/UpdateView.vue"),
+  },
 
 ]

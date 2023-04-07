@@ -87,17 +87,58 @@ onMounted(async () => {
     let listPaises = await countriesService.index();
     const optionCountry = listPaises?.paises || [];
     countriesList.value = optionCountry.map((country) => ({ id: country._id, label: country.nombre }));
-    let stateListBd = await statesService.index();
-    const optionState = stateListBd?.estados || [];
-    statesList.value = optionState.map((state) => ({ id: state._id, label: state.nombre }));
-    let listCity = await citiesService.index();
-    const optionCity = listCity?.ciudades || [];
-    citiesList.value = optionCity.map((country) => ({ id: country._id, label: country.nombre }));
-
+    if (props.path === 'update') {
+        const res = await alliesService.read(route.params);
+        ally.value = res.data
+        ally.value.pais = _asignarOpcionesAlSelect(res.data?.pais)
+        selectedPais(ally.value.pais, res.data)  
+        //ally.value.ciudad = _asignarOpcionesAlSelect(res.data?.ciudad)
+    }
 });
+
+const _asignarOpcionesAlSelect = (data) => { return { id: data._id, label: data.nombre } };
 
 const remove = (i) => ally.value.referidos.splice(i, 1);
 const addItem = () => ally.value.referidos = [...ally.value.referidos, refereridoModel];
+
+const selectedPais = (data, response = {} ) => {
+    const { id } = data;
+    citiesList.value = [];
+    statesList.value = [];
+    estadosByPais(id).then((data) => {
+        const optionState = data?.estados || [];
+        statesList.value = optionState.map((state) => ({ id: state._id, label: state.nombre }));
+        if (props.path === 'update'){
+            ally.value.state = _asignarOpcionesAlSelect(response?.state)
+            selectedCiudad(ally.value.state, response?.ciudad)
+        }
+    }).catch(err => {
+        console.log(err)
+     })
+
+};
+
+const estadosByPais = async (id) => {
+    return await statesService.estadosByPais(id)
+}
+
+const selectedCiudad = (data, ciudadResponse = {}) => {
+    const { id } = data;
+    ciudadesByEstados(id).then((data) => {
+        const optionCity = data?.ciudades || [];
+        citiesList.value = optionCity.map((city) => ({ id: city._id, label: city.nombre }));
+        if (props.path === 'update'){
+            ally.value.ciudad = _asignarOpcionesAlSelect(ciudadResponse)
+        }
+    }).catch(err => {
+        console.log(err)
+     })
+
+};
+
+const ciudadesByEstados = async (id) => {
+    return await citiesService.ciudadesByEstados(id)
+}
 
 const action = (ally) => {
     const { _id,
@@ -140,11 +181,11 @@ const action = (ally) => {
     return alliesService.update(data);
 }
 
+const successMessage = props.path === 'create' ? t("message.ally.created.success") : t("message.ally.updated.success")
+const errorMessage = props.path === 'create' ? t("message.ally.created.error") : t("message.ally.updated.error")
 
 const submit = async () => {
     const result = await v$.value.$validate();
-    console.log(result)
-
     if (result) {
         action(ally)
             .then(() => {
@@ -153,7 +194,7 @@ const submit = async () => {
             })
             .catch(err => {
                 if (err.response?.data?.msg) {
-                    toast.error(`${t("message.ally.created.error")} ${err.response.data.msg}`)
+                    toast.error(`${errorMessage} ${err.response.data.msg}`)
                     return
                 }
 
@@ -189,10 +230,12 @@ const submit = async () => {
                                     <FormControl v-model="ally.iDFiscal" :icon="mdiRenameBox" />
                                 </FormField>
                                 <FormField :label="$t('message.ally.country')">
-                                    <FormControl v-model="ally.pais" :icon="mdiListStatus" :options="countriesList" />
+                                    <FormControl v-model="ally.pais" :icon="mdiListStatus" :options="countriesList"
+                                        @onSelectChange="selectedPais" />
                                 </FormField>
                                 <FormField :label="$t('message.ally.state')">
-                                    <FormControl v-model="ally.state" :icon="mdiListStatus" :options="statesList" />
+                                    <FormControl v-model="ally.state" :icon="mdiListStatus" :options="statesList" 
+                                        @onSelectChange="selectedCiudad"/>
                                 </FormField>
                                 <FormField :label="$t('message.ally.city')">
                                     <FormControl v-model="ally.ciudad" :icon="mdiListStatus" :options="citiesList" />
@@ -236,59 +279,59 @@ const submit = async () => {
                         </div>
                         <div v-show="tab === 2">
                             <!-- <div v-for="(field, i) in ally.referidos" :key="i">
-                                        <div class="btn-add-remove">
-                                            <h2 class="h2-tittle">Referido nro. {{ i + 1 }}</h2>
-                                            <button type="button" class="btn-add-referidos" @click="addItem(i)">
-                                                +
-                                            </button>
-                                            <button type="button" class="btn-remove-referidos" v-show="i > 0" @click="remove(i)">
-                                                -
-                                            </button>
-                                        </div>
+                                                <div class="btn-add-remove">
+                                                    <h2 class="h2-tittle">Referido nro. {{ i + 1 }}</h2>
+                                                    <button type="button" class="btn-add-referidos" @click="addItem(i)">
+                                                        +
+                                                    </button>
+                                                    <button type="button" class="btn-remove-referidos" v-show="i > 0" @click="remove(i)">
+                                                        -
+                                                    </button>
+                                                </div>
 
-                                        <div class="grid md:grid-cols-2 gap-2">
-                                            <FormField :label="$t('message.ally.codeClient')"
-                                                :help="v$?.cliente?.$errors[0]?.$message">
-                                                <FormControl :id="`cliente_${i}`" v-model="ally.referidos[i].cliente"
-                                                    :icon="mdiRenameBox" />
-                                            </FormField>                                   
-                                            <FormField :label="$t('message.ally.name')">
-                                                <FormControl v-model="ally.referidos[i].referido" :icon="mdiRenameBox" />
-                                            </FormField>
-                                        </div>
-                                        <div class="grid md:grid-cols-2 gap-2">
-                                            <FormField :label="$t('message.ally.date')">
-                                                <vue-tailwind-datepicker class="h-12 border-gray-700" as-single v-model="ally.referidos[i].fecha" />
-                                            </FormField>
-                                            <FormField :label="$t('message.ally.idFiscal')">
-                                                <FormControl :id="`idFiscalReferido_${i}`"
-                                                    v-model="ally.referidos[i].idFiscalReferido" :icon="mdiRenameBox" />
-                                            </FormField>
-                                        </div>
-                                        <div class="grid md:grid-cols-1 gap-1">
-                                            <FormField :label="$t('message.ally.address')">
-                                                <FormControl :id="`direccionReferido_${i}`"
-                                                    v-model="ally.referidos[i].direccionReferido" :icon="mdiRenameBox" />
-                                            </FormField>
-                                        </div>
-                                        <div class="grid md:grid-cols-2 gap-2">
-                                            <FormField :label="$t('message.ally.contacts')">
-                                                <FormControl :id="`contactos_${i}`" v-model="ally.referidos[i].contactos"
-                                                    :icon="mdiRenameBox" />
-                                            </FormField>
-                                            <FormField :label="$t('message.ally.activeLicenses')">
-                                                <FormControl :id="`licenciasActivas_${i}`"
-                                                    v-model="ally.referidos[i].licenciasActivas" :icon="mdiRenameBox" />
-                                            </FormField>
-                                        </div>
-                                    </div> -->
+                                                <div class="grid md:grid-cols-2 gap-2">
+                                                    <FormField :label="$t('message.ally.codeClient')"
+                                                        :help="v$?.cliente?.$errors[0]?.$message">
+                                                        <FormControl :id="`cliente_${i}`" v-model="ally.referidos[i].cliente"
+                                                            :icon="mdiRenameBox" />
+                                                    </FormField>                                   
+                                                    <FormField :label="$t('message.ally.name')">
+                                                        <FormControl v-model="ally.referidos[i].referido" :icon="mdiRenameBox" />
+                                                    </FormField>
+                                                </div>
+                                                <div class="grid md:grid-cols-2 gap-2">
+                                                    <FormField :label="$t('message.ally.date')">
+                                                        <vue-tailwind-datepicker class="h-12 border-gray-700" as-single v-model="ally.referidos[i].fecha" />
+                                                    </FormField>
+                                                    <FormField :label="$t('message.ally.idFiscal')">
+                                                        <FormControl :id="`idFiscalReferido_${i}`"
+                                                            v-model="ally.referidos[i].idFiscalReferido" :icon="mdiRenameBox" />
+                                                    </FormField>
+                                                </div>
+                                                <div class="grid md:grid-cols-1 gap-1">
+                                                    <FormField :label="$t('message.ally.address')">
+                                                        <FormControl :id="`direccionReferido_${i}`"
+                                                            v-model="ally.referidos[i].direccionReferido" :icon="mdiRenameBox" />
+                                                    </FormField>
+                                                </div>
+                                                <div class="grid md:grid-cols-2 gap-2">
+                                                    <FormField :label="$t('message.ally.contacts')">
+                                                        <FormControl :id="`contactos_${i}`" v-model="ally.referidos[i].contactos"
+                                                            :icon="mdiRenameBox" />
+                                                    </FormField>
+                                                    <FormField :label="$t('message.ally.activeLicenses')">
+                                                        <FormControl :id="`licenciasActivas_${i}`"
+                                                            v-model="ally.referidos[i].licenciasActivas" :icon="mdiRenameBox" />
+                                                    </FormField>
+                                                </div>
+                                            </div> -->
                         </div>
                     </div>
                 </TabsComponent>
             </div>
         </div>
         <template #footer>
-            <BaseButton :label="$t(`message.${props.saveLabel}`)" type="submit" color="info" />
+            <BaseButton v-show="tab === 1" :label="$t(`message.${props.saveLabel}`)" type="submit" color="info" />
         </template>
     </CardBox>
 </template>

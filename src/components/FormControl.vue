@@ -46,7 +46,7 @@ const props = defineProps({
   ctrlKFocus: Boolean,
 });
 
-const emit = defineEmits(["update:modelValue", "setRef"]);
+const emit = defineEmits(["update:modelValue", "setRef", "onSelectChange"]);
 
 const computedValue = computed({
   get: () => props.modelValue,
@@ -85,8 +85,14 @@ const textareaEl = ref(null);
 
 const inputEl = ref(null);
 
+const onSelectChange = (event) => {
+  console.log(event.target.value, selectEl.value, ":::::", computedValue.value);  
+  emit("onSelectChange",computedValue.value);
+};
+
 onMounted(() => {
   if (selectEl.value) {
+    console.log(selectEl.value, ":::::")
     emit("setRef", selectEl.value);
   } else if (textareaEl.value) {
     emit("setRef", textareaEl.value);
@@ -123,43 +129,20 @@ if (props.ctrlKFocus) {
 
 <template>
   <div class="relative">
-    <select
-      v-if="computedType === 'select'"
-      :id="id"
-      v-model="computedValue"
-      :name="name"
-      :class="inputElClass"
-    >
-      <option
-        v-for="option in options"
-        :key="option.id ?? option"
-        :value="option"
-      >
+    <select 
+      v-if="computedType === 'select'" 
+      :id="id" v-model="computedValue" 
+      :name="name" :class="inputElClass"
+      @change="onSelectChange($event)">
+      <option v-for="option in options" :key="option.id ?? option" :value="option">
         {{ option.label ?? option }}
       </option>
     </select>
-    <textarea
-      v-else-if="computedType === 'textarea'"
-      :id="id"
-      v-model="computedValue"
-      :class="inputElClass"
-      :name="name"
-      :placeholder="placeholder"
-      :required="required"
-    />
-    <input
-      v-else
-      :id="id"
-      ref="inputEl"
-      v-model="computedValue"
-      :name="name"
-      :inputmode="inputmode"
-      :autocomplete="autocomplete"
-      :required="required"
-      :placeholder="placeholder"
-      :type="computedType"
-      :class="inputElClass"
-    />
+    <textarea v-else-if="computedType === 'textarea'" :id="id" v-model="computedValue" :class="inputElClass" :name="name"
+      :placeholder="placeholder" :required="required" />
+    <input v-else :id="id" ref="inputEl" v-model="computedValue" :name="name" :inputmode="inputmode"
+      :autocomplete="autocomplete" :required="required" :placeholder="placeholder" :type="computedType"
+      :class="inputElClass" />
     <FormControlIcon v-if="icon" :icon="icon" :h="controlIconH" />
   </div>
 </template>

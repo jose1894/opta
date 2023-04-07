@@ -10,6 +10,7 @@ import { required, maxLength } from '@/utils/i18n-validators';
 import useValidate from '@vuelidate/core';
 import statesService from '@/services/states.services';
 import citiesService from '@/services/cities.service';
+import countriesService from '@/services/countries.service';
 import { useToast } from 'vue-toastification';
 import { useRoute, useRouter } from 'vue-router';
 
@@ -30,19 +31,21 @@ let selectOptions = [
   { id: 2, label: t('message.city.statuses.deleted') },
 ];
 
-let citiesList = ref([])
+let statesList = ref([])
+let countriesList = ref([])
 
 const city = ref({
   _id: '',
   codigo: "00",
   nombre: "",
   estado: selectOptions[0],
-  state: citiesList.value,
+  pais: countriesList.value,
+  state: statesList.value,
 });
 
 const action = (city) =>{
-  const {_id, codigo, nombre, estado, state } = city.value;
-  const data = {_id, codigo, nombre, estado: estado.id, state: state.id}
+  const {_id, codigo, nombre, estado, pais, state } = city.value;
+  const data = {_id, codigo, nombre, estado: estado.id, pais: pais.id, state: state.id}
   if (props.path === 'create'){
     return citiesService.create(data)
   } 
@@ -50,19 +53,22 @@ const action = (city) =>{
   return citiesService.update(data);
 }
 
-onMounted(async () => {  
-  let listCities = await statesService.index();
-  const optionCity = listCities?.estados || [];
-  citiesList.value = optionCity.map((city) => ({id: city._id, label: city.nombre}));
+onMounted(async () => { 
+  let listPaises = await countriesService.index();
+  const optionCountry = listPaises?.paises || [];
+  console.log(optionCountry)
+  countriesList.value = optionCountry.map((country) => ({id: country._id, label: country.nombre})); 
     if (props.path === 'update'){    
       const res = await citiesService.read(route.params);
       const estados = res.data?.state || [];
-      const stateSelected = optionCity.filter((item) => item._id == estados._id)[0];
       city.value = res.data
       city.value.estado = selectOptions.filter(status => status.id === res.data.estado)[0]
-      city.value.state = {id: stateSelected._id, label: stateSelected.nombre}
+      city.value.pais = _asignarOpcionesAlSelect(res.data?.pais)
+      selectedPais(city.value.pais, res.data?.state)      
     }
 })
+
+const _asignarOpcionesAlSelect = (data) => { return { id: data._id, label: data.nombre } };
 
 const rules = computed(() => ({
             codigo: { required, maxLength: maxLength(3) },
@@ -71,6 +77,25 @@ const rules = computed(() => ({
           }));
 
 const v$ = useValidate(rules, city);
+
+const selectedPais = (data, stateResponse = {} ) => {
+    const { id } = data;
+    statesList.value = [];
+    estadosByPais(id).then((data) => {
+        const optionState = data?.estados || [];
+        statesList.value = optionState.map((state) => ({ id: state._id, label: state.nombre }));
+        if (props.path === 'update'){
+          city.value.state = _asignarOpcionesAlSelect(stateResponse)
+        }
+    }).catch(err => {
+        console.log(err)
+     })
+
+};
+
+const estadosByPais = async (id) => {
+    return await statesService.estadosByPais(id)
+}
 
 const successMessage = props.path === 'create' ? t("message.city.created.success") : t("message.city.updated.success")
 
@@ -111,12 +136,16 @@ const submit = async () => {
       <FormField :label="$t('message.city.code')" :help="v$?.codigo?.$errors[0]?.$message">
         <FormControl :name="'codigo'" v-model="city.codigo" :icon="mdiCodeBraces" />            
       </FormField>
-      <FormField :label="$t('message.city.name')" :help="v$?.nombre?.$errors[0]?.$message">
-        <FormControl v-model="city.nombre" :icon="mdiRenameBox" />
+      <FormField :label="$t('message.city.country')" :help="v$?.estado?.$errors[0]?.$message">
+        <FormControl v-model="city.pais" :icon="mdiListStatus" :options="countriesList" 
+                      @onSelectChange="selectedPais"/>
       </FormField>
       <FormField :label="$t('message.city.state')" :help="v$?.state?.$errors[0]?.$message">
-        <FormControl v-model="city.state" :icon="mdiListStatus" :options="citiesList" />
+        <FormControl v-model="city.state" :icon="mdiListStatus" :options="statesList" />
       </FormField>
+      <FormField :label="$t('message.city.name')" :help="v$?.nombre?.$errors[0]?.$message">
+        <FormControl v-model="city.nombre" :icon="mdiRenameBox" />
+      </FormField>      
       <FormField :label="$t('message.city.status')" :help="v$?.estado?.$errors[0]?.$message">
         <FormControl v-model="city.estado" :icon="mdiListStatus" :options="selectOptions" />
       </FormField>      

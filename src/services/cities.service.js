@@ -41,4 +41,12 @@ export default {
                 .catch((err) => reject(err))
         })
     },
+
+    ciudadesByEstados(ciudadId) {
+        return new Promise((resolve, reject) => {
+            Service.get(`${resource}ciudadesByEstados/${ciudadId}`, {}, { headers: authHeader() })
+                .then((response) => resolve(response.data))
+                .catch((err) => reject(err))
+        })
+    },
 }

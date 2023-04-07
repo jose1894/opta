@@ -113,12 +113,12 @@ const submit = async () => {
       </FormField>
       <FormField :label="$t('message.state.name')" :help="v$?.nombre?.$errors[0]?.$message">
         <FormControl v-model="state.nombre" :icon="mdiRenameBox" />
+      </FormField>     
+      <FormField :label="$t('message.state.country')" :help="v$?.estado?.$errors[0]?.$message">
+        <FormControl v-model="state.pais" :icon="mdiListStatus" :options="countriesList" />
       </FormField>
       <FormField :label="$t('message.state.status')" :help="v$?.estado?.$errors[0]?.$message">
         <FormControl v-model="state.estado" :icon="mdiListStatus" :options="selectOptions" />
-      </FormField>
-      <FormField :label="$t('message.state.country')" :help="v$?.estado?.$errors[0]?.$message">
-        <FormControl v-model="state.pais" :icon="mdiListStatus" :options="countriesList" />
       </FormField>
     </div>
     <template #footer>

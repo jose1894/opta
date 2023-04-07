@@ -101,7 +101,7 @@ const changePage = (page) => {
 
 const edit = (id) => {
   console.log('editar')
-  router.push({name: 'CitiesUpdate', params: {id}})
+  router.push({name: 'AlliesUpdate', params: {id}})
 }
 </script>
 
