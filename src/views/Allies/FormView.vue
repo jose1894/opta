@@ -21,6 +21,7 @@ import BaseButton from '@/components/BaseButton.vue';
 import citiesService from '@/services/cities.service';
 import FormControl from '@/components/FormControl.vue';
 import statesService from '@/services/states.services';
+import alliesService from '@/services/allies.service';
 import TabsComponent from '@/components/TabsComponent.vue';
 import countriesService from '@/services/countries.service';
 import VueTailwindDatepicker from 'vue-tailwind-datepicker';
@@ -37,16 +38,6 @@ let countriesList = ref([]);
 let statesList = ref([]);
 let citiesList = ref([]);
 
-const refereridoModel = {
-    cliente: "",
-    fecha: "",
-    referido: "",
-    idFiscalReferido: "",
-    direccionReferido: "",
-    contactos: "",
-    licenciasActivas: 0
-}
-
 const tab = ref(0)
 const activeTab = (i) => {
     tab.value = i;
@@ -61,33 +52,19 @@ const ally = ref({
     _id: '',
     codigo: "00",
     nombre: "",
-    idFiscal: "",
+    iDFiscal: "",
     pais: countriesList.value,
     state: statesList.value,
     ciudad: citiesList.value,
-    direccion: "",
+    calle: "",
     paginaWeb: "",
-    nombreContacto: "",
-    apellidoContacto: "",
+    nombreContact: "",
+    apellidoContact: "",
     cargo: "",
-    telefonoOficina: "",
-    telefonoMovil: "",
-    cliente: "",
-    fecha: "",
-    referido: "",
-    idFiscalReferido: "",
-    direccionReferido: "",
-    contactos: "",
-    licenciasActivas: 0,
-    referidos: [{
-        cliente: "",
-        fecha: "",
-        referido: "",
-        idFiscalReferido: "",
-        direccionReferido: "",
-        contactos: "",
-        licenciasActivas: 0
-    }]
+    telefonoOfic: "",
+    telefonoCelu: "",
+    correoContact: "",
+    referido: [],
 });
 
 
@@ -101,7 +78,7 @@ const router = useRouter();
 const rules = computed(() => ({
     codigo: { required, maxLength: maxLength(3) },
     nombre: { required, },
-    idFiscal: { required },
+    iDFiscal: { required },
 }));
 
 const v$ = useValidate(rules, ally);
@@ -123,15 +100,44 @@ const remove = (i) => ally.value.referidos.splice(i, 1);
 const addItem = () => ally.value.referidos = [...ally.value.referidos, refereridoModel];
 
 const action = (ally) => {
-    const {referidos} = ally.value;
-    console.log(ally.value, props.path, referidos)
-    //const {_id, codigo, nombre, estado, state } = city.value;
-    //const data = {_id, codigo, nombre, estado: estado.id, state: state.id}
-    if (props.path === 'create') {
-        //return citiesService.create(data)
-    }
+    const { _id,
+        codigo,
+        nombre,
+        iDFiscal,
+        pais,
+        state,
+        ciudad,
+        calle,
+        paginaWeb,
+        nombreContact,
+        apellidoContact,
+        cargo,
+        telefonoOfic,
+        telefonoCelu,
+        correoContact } = ally.value;
 
-    //return citiesService.update(data);
+    const data = {
+        _id,
+        codigo,
+        nombre,
+        iDFiscal,
+        pais: pais.id,
+        state: state.id,
+        ciudad: ciudad.id,
+        calle,
+        paginaWeb,
+        nombreContact,
+        apellidoContact,
+        cargo,
+        telefonoOfic,
+        telefonoCelu,
+        correoContact
+    }
+    console.log(data)
+    if (props.path === 'create') {
+        return alliesService.create(data)
+    }
+    return alliesService.update(data);
 }
 
 
@@ -143,11 +149,11 @@ const submit = async () => {
         action(ally)
             .then(() => {
                 toast.success(successMessage);
-                router.push('/setup/cities');
+                router.push('/setup/allies');
             })
             .catch(err => {
-                if (err.response.data?.msg) {
-                    toast.error(`${t("message.city.created.error")} ${err.response.data.msg}`)
+                if (err.response?.data?.msg) {
+                    toast.error(`${t("message.ally.created.error")} ${err.response.data.msg}`)
                     return
                 }
 
@@ -179,14 +185,14 @@ const submit = async () => {
                                 <FormField :label="$t('message.ally.name')" :help="v$?.nombre?.$errors[0]?.$message">
                                     <FormControl v-model="ally.nombre" :icon="mdiRenameBox" />
                                 </FormField>
-                                <FormField :label="$t('message.ally.idFiscal')" :help="v$?.idFiscal?.$errors[0]?.$message">
-                                    <FormControl v-model="ally.idFiscal" :icon="mdiRenameBox" />
+                                <FormField :label="$t('message.ally.idFiscal')" :help="v$?.iDFiscal?.$errors[0]?.$message">
+                                    <FormControl v-model="ally.iDFiscal" :icon="mdiRenameBox" />
                                 </FormField>
                                 <FormField :label="$t('message.ally.country')">
                                     <FormControl v-model="ally.pais" :icon="mdiListStatus" :options="countriesList" />
                                 </FormField>
                                 <FormField :label="$t('message.ally.state')">
-                                    <FormControl v-model="ally.estado" :icon="mdiListStatus" :options="statesList" />
+                                    <FormControl v-model="ally.state" :icon="mdiListStatus" :options="statesList" />
                                 </FormField>
                                 <FormField :label="$t('message.ally.city')">
                                     <FormControl v-model="ally.ciudad" :icon="mdiListStatus" :options="citiesList" />
@@ -194,7 +200,7 @@ const submit = async () => {
                             </div>
                             <div class="grid md:grid-cols-2 gap-2">
                                 <FormField :label="$t('message.ally.address')">
-                                    <FormControl v-model="ally.direccion" :icon="mdiRenameBox" />
+                                    <FormControl v-model="ally.calle" :icon="mdiRenameBox" />
                                 </FormField>
                                 <FormField :label="$t('message.ally.paginaWeb')"
                                     :help="v$?.paginaWeb?.$errors[0]?.$message">
@@ -205,10 +211,10 @@ const submit = async () => {
                         <div v-show="tab === 1">
                             <div class="grid md:grid-cols-2 gap-2">
                                 <FormField :label="$t('message.ally.name')">
-                                    <FormControl v-model="ally.nombreContacto" :icon="mdiRenameBox" />
+                                    <FormControl v-model="ally.nombreContact" :icon="mdiRenameBox" />
                                 </FormField>
                                 <FormField :label="$t('message.ally.lastName')">
-                                    <FormControl v-model="ally.apellidoContacto" :icon="mdiRenameBox" />
+                                    <FormControl v-model="ally.apellidoContact" :icon="mdiRenameBox" />
                                 </FormField>
                             </div>
                             <div class="grid md:grid-cols-3 gap-3">
@@ -216,66 +222,66 @@ const submit = async () => {
                                     <FormControl v-model="ally.cargo" :icon="mdiRenameBox" />
                                 </FormField>
                                 <FormField :label="$t('message.ally.officePhone')">
-                                    <FormControl v-model="ally.telefonoOficina" :icon="mdiRenameBox" />
+                                    <FormControl v-model="ally.telefonoOfic" :icon="mdiRenameBox" />
                                 </FormField>
                                 <FormField :label="$t('message.ally.movilPhone')">
-                                    <FormControl v-model="ally.telefonoMovil" :icon="mdiRenameBox" />
+                                    <FormControl v-model="ally.telefonoCelu" :icon="mdiRenameBox" />
                                 </FormField>
                             </div>
                             <div class="grid md:grid-cols-2 gap-2">
                                 <FormField :label="$t('message.ally.email')">
-                                    <FormControl v-model="ally.correo" :icon="mdiRenameBox" />
+                                    <FormControl v-model="ally.correoContact" :icon="mdiRenameBox" />
                                 </FormField>
                             </div>
                         </div>
                         <div v-show="tab === 2">
-                            <div v-for="(field, i) in ally.referidos" :key="i">
-                                <div class="btn-add-remove">
-                                    <h2 class="h2-tittle">Referido nro. {{ i + 1 }}</h2>
-                                    <button type="button" class="btn-add-referidos" @click="addItem(i)">
-                                        +
-                                    </button>
-                                    <button type="button" class="btn-remove-referidos" v-show="i > 0" @click="remove(i)">
-                                        -
-                                    </button>
-                                </div>
+                            <!-- <div v-for="(field, i) in ally.referidos" :key="i">
+                                        <div class="btn-add-remove">
+                                            <h2 class="h2-tittle">Referido nro. {{ i + 1 }}</h2>
+                                            <button type="button" class="btn-add-referidos" @click="addItem(i)">
+                                                +
+                                            </button>
+                                            <button type="button" class="btn-remove-referidos" v-show="i > 0" @click="remove(i)">
+                                                -
+                                            </button>
+                                        </div>
 
-                                <div class="grid md:grid-cols-2 gap-2">
-                                    <FormField :label="$t('message.ally.codeClient')"
-                                        :help="v$?.cliente?.$errors[0]?.$message">
-                                        <FormControl :id="`cliente_${i}`" v-model="ally.referidos[i].cliente"
-                                            :icon="mdiRenameBox" />
-                                    </FormField>                                   
-                                    <FormField :label="$t('message.ally.name')">
-                                        <FormControl v-model="ally.referidos[i].referido" :icon="mdiRenameBox" />
-                                    </FormField>
-                                </div>
-                                <div class="grid md:grid-cols-2 gap-2">
-                                    <FormField :label="$t('message.ally.date')">
-                                        <vue-tailwind-datepicker class="h-12 border-gray-700" as-single v-model="ally.referidos[i].fecha" />
-                                    </FormField>
-                                    <FormField :label="$t('message.ally.idFiscal')">
-                                        <FormControl :id="`idFiscalReferido_${i}`"
-                                            v-model="ally.referidos[i].idFiscalReferido" :icon="mdiRenameBox" />
-                                    </FormField>
-                                </div>
-                                <div class="grid md:grid-cols-1 gap-1">
-                                    <FormField :label="$t('message.ally.address')">
-                                        <FormControl :id="`direccionReferido_${i}`"
-                                            v-model="ally.referidos[i].direccionReferido" :icon="mdiRenameBox" />
-                                    </FormField>
-                                </div>
-                                <div class="grid md:grid-cols-2 gap-2">
-                                    <FormField :label="$t('message.ally.contacts')">
-                                        <FormControl :id="`contactos_${i}`" v-model="ally.referidos[i].contactos"
-                                            :icon="mdiRenameBox" />
-                                    </FormField>
-                                    <FormField :label="$t('message.ally.activeLicenses')">
-                                        <FormControl :id="`licenciasActivas_${i}`"
-                                            v-model="ally.referidos[i].licenciasActivas" :icon="mdiRenameBox" />
-                                    </FormField>
-                                </div>
-                            </div>
+                                        <div class="grid md:grid-cols-2 gap-2">
+                                            <FormField :label="$t('message.ally.codeClient')"
+                                                :help="v$?.cliente?.$errors[0]?.$message">
+                                                <FormControl :id="`cliente_${i}`" v-model="ally.referidos[i].cliente"
+                                                    :icon="mdiRenameBox" />
+                                            </FormField>                                   
+                                            <FormField :label="$t('message.ally.name')">
+                                                <FormControl v-model="ally.referidos[i].referido" :icon="mdiRenameBox" />
+                                            </FormField>
+                                        </div>
+                                        <div class="grid md:grid-cols-2 gap-2">
+                                            <FormField :label="$t('message.ally.date')">
+                                                <vue-tailwind-datepicker class="h-12 border-gray-700" as-single v-model="ally.referidos[i].fecha" />
+                                            </FormField>
+                                            <FormField :label="$t('message.ally.idFiscal')">
+                                                <FormControl :id="`idFiscalReferido_${i}`"
+                                                    v-model="ally.referidos[i].idFiscalReferido" :icon="mdiRenameBox" />
+                                            </FormField>
+                                        </div>
+                                        <div class="grid md:grid-cols-1 gap-1">
+                                            <FormField :label="$t('message.ally.address')">
+                                                <FormControl :id="`direccionReferido_${i}`"
+                                                    v-model="ally.referidos[i].direccionReferido" :icon="mdiRenameBox" />
+                                            </FormField>
+                                        </div>
+                                        <div class="grid md:grid-cols-2 gap-2">
+                                            <FormField :label="$t('message.ally.contacts')">
+                                                <FormControl :id="`contactos_${i}`" v-model="ally.referidos[i].contactos"
+                                                    :icon="mdiRenameBox" />
+                                            </FormField>
+                                            <FormField :label="$t('message.ally.activeLicenses')">
+                                                <FormControl :id="`licenciasActivas_${i}`"
+                                                    v-model="ally.referidos[i].licenciasActivas" :icon="mdiRenameBox" />
+                                            </FormField>
+                                        </div>
+                                    </div> -->
                         </div>
                     </div>
                 </TabsComponent>

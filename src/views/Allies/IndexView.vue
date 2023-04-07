@@ -10,14 +10,15 @@
     import SectionTitleLineWithButton from '@/components/SectionTitleLineWithButton.vue';
     import AllyTable from './AllyTable.view.vue';
     import { useMainStore } from '@/stores/main';
-    import stateService from '@/services/states.services'
+    import alliesService from '@/services/allies.service';
 
     const mainStore = useMainStore();
     const page = ref(1);
     const perPage = ref(10);
     const allies = ref([]);
     const getAllies = (data) => {
-        stateService.index(data).then(response => {
+        alliesService.index(data).then(response => {
+            console.log(response)
             mainStore.allies = response
             page.value = response.page
             perPage.value = response.perPage
