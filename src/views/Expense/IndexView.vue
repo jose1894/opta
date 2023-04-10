@@ -8,55 +8,51 @@
     import LayoutAuthenticated from '@/layouts/LayoutAuthenticated.vue';
     import CardBoxComponentEmpty from '@/components/CardBoxComponentEmpty.vue';
     import SectionTitleLineWithButton from '@/components/SectionTitleLineWithButton.vue';
-    import StateTable from './StateTable.vue';
+    import ExpenseTable from './ExpenseTable.view.vue';
     import { useMainStore } from '@/stores/main';
-    import stateService from '@/services/states.services'
-
+    import expenseService from '@/services/expense.service';
 
     const mainStore = useMainStore();
     const page = ref(1);
     const perPage = ref(10);
-    const states = ref([]);
-    const getStates = (data) => {
-        stateService.index(data).then(response => {
-            mainStore.states = response
+    const getExpense = (data) => {
+        expenseService.index(data).then(response => {
+            mainStore.expense = response
             page.value = response.page
             perPage.value = response.perPage
-            console.log(response, mainStore.states?.estados?.length)
         })
     }
 
-    getStates({page: page.value})
+    getExpense({page: page.value})
 
     const onChangePage = (page) => {
-        getStates({page})
+        getExpense({page})
     }
 
     const onSortPage = (sortBy,sortDesc) => {
-        getStates({sortBy,sortDesc});
-    }
+        getExpense({sortBy,sortDesc});
+    }  
 </script>
 <template>
   <LayoutAuthenticated>
     <SectionMain>
         <SectionTitleLineWithButton
             :icon="mdiGlobeModel"
-            :title="$t('message.state.states')">
+            :title="$t('message.expense.expense')">
             <BaseButton
-                to="states/create"
+                to="expense/create"
                 :icon="mdiPlus"
-                label="Add new"
+                :label="$t('message.add_new')"
                 color="success"
                 small
             />
         </SectionTitleLineWithButton>
-        <SectionTitleLineWithButton v-if="!mainStore?.states" :icon="mdiTableOff" title="Empty variation" />
-        <NotificationBar v-if="!mainStore?.states" color="danger" :icon="mdiTableOff">
+        <SectionTitleLineWithButton v-if="!mainStore?.expense" :icon="mdiTableOff" title="Empty variation"/>  
+        <NotificationBar v-if="!mainStore?.expense" color="danger" :icon="mdiTableOff">
             <b>{{ $t('message.empty_table') }}.</b> When there's nothing to show
         </NotificationBar>
-
-        <CardBox  v-if="mainStore?.states?.estados?.length" class="mb-6" has-table>
-            <StateTable @changePage="onChangePage" @sort="onSortPage"/>        
+        <CardBox  v-if="mainStore?.expense?.gastos?.length" class="mb-6" has-table>
+            <ExpenseTable @changePage="onChangePage" @sort="onSortPage"/>        
         </CardBox>
 
         <CardBox v-else>

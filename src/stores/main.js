@@ -24,6 +24,12 @@ export const useMainStore = defineStore("main", {
     states:[],
     cities:[],
     allies:[],
+    jobPositions:[],
+    currencies:[],
+    members:[],
+    branches:[],
+    businessUnit:[],
+    expense:[],
     data: [],
   }),
   actions: {

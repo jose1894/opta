@@ -2,13 +2,12 @@
 import { computed, ref, defineEmits } from "vue";
 import { useRouter } from "vue-router";
 import { useMainStore } from "@/stores/main";
-import { mdiEye, mdiFileEdit, mdiTrashCan } from "@mdi/js";
+import { mdiFileEdit, mdiTrashCan } from "@mdi/js";
 import CardBoxModal from "@/components/CardBoxModal.vue";
 import TableCheckboxCell from "@/components/TableCheckboxCell.vue";
 import BaseLevel from "@/components/BaseLevel.vue";
 import BaseButtons from "@/components/BaseButtons.vue";
 import BaseButton from "@/components/BaseButton.vue";
-import CountryFlag from 'vue-country-flag-next'
 
 defineProps({
   checkable: Boolean,
@@ -18,16 +17,16 @@ const router = useRouter();
 
 const mainStore = useMainStore();
 
-const items = computed(() => mainStore.allies.aliados);
-const total = computed(() => mainStore.allies.total)
+const items = computed(() => mainStore.currencies.monedas);
+const total = computed(() => mainStore.currencies.total)
 
 const isModalActive = ref(false);
 
 const isModalDangerActive = ref(false);
 
-const perPage = computed(() => mainStore.allies.perPage);
+const perPage = computed(() => mainStore.currencies.perPage);
 
-const currentPage = computed(() => mainStore.allies.page);
+const currentPage = computed(() => mainStore.currencies.page);
 
 const checkedRows = ref([]);
 
@@ -75,13 +74,13 @@ const remove = (arr, cb) => {
   return newArr;
 };
 
-const checked = (isChecked, city) => {
+const checked = (isChecked, currency) => {
   if (isChecked) {
-    checkedRows.value.push(city);
+    checkedRows.value.push(currency);
   } else {
     checkedRows.value = remove(
       checkedRows.value,
-      (row) => row.id === city.id
+      (row) => row.id === currency.id
     );
   }
 };
@@ -98,7 +97,7 @@ const changePage = (page) => {
 }
 
 const edit = (id) => {
-  router.push({name: 'AlliesUpdate', params: {id}})
+  router.push({name: 'CurrenciesUpdate', params: {id}})
 }
 </script>
 
@@ -131,34 +130,33 @@ const edit = (id) => {
   <table>
     <thead>
       <tr>
-        <th @click="sort('codigo')">{{ $t('message.ally.code') }}</th>        
-        <th @click="sort('nambre')">{{ $t('message.ally.name') }}</th>
-        <th @click="sort('idFiscal')">{{ $t('message.ally.id') }}</th>
-        <th />
+        <th @click="sort('codigo')">{{ $t('message.currencies.code') }}</th>
+        <th @click="sort('nambre')">{{ $t('message.currencies.name') }}</th>
+        <th @click="sort('estado')">{{ $t('message.currencies.status') }}</th>
       </tr>
     </thead>
     <tbody>
-      <tr v-for="(ally, index) in itemsPaginated" :key="ally._id">
+      <tr v-for="(currency, index) in itemsPaginated" :key="currency._id">
         <TableCheckboxCell
           v-if="checkable"
-          @checked="checked($event, state)"
+          @checked="checked($event, currency)"
         />
-        <td :data-label="$t('message.ally.code')">
-          {{ ally.codigo }} 
+        <td :data-label="$t('message.currencies.code')">
+          {{ currency.codigo }} 
         </td>
-        <td :data-label="$t('message.ally.state')">
-          {{ ally.nombre }}
+        <td :data-label="$t('message.currencies.name')">
+          {{ currency.nombre }}
         </td>
-        <td :data-label="$t('message.ally.id')">
-          {{ ally.nombre }}
-        </td>       
+        <td :data-label="$t('message.currencies.status')">
+          {{ $t(`message.currencies.statuses.${listStatusOption(currency.estado)}`) }}
+        </td>        
         <td class="before:hidden lg:w-1 whitespace-nowrap">
           <BaseButtons type="justify-start lg:justify-end" no-wrap>
             <BaseButton
               color="info"
               :icon="mdiFileEdit"
               small
-              @click="edit(ally._id)"
+              @click="edit(currency._id)"
             />
 
             <BaseButton

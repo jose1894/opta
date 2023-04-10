@@ -35,7 +35,7 @@ const itemsPaginated = computed(() =>
   items.value
 );
 
-console.log(mainStore?.states, '>>>>>>>>>>>>>|||||||')
+
 
 const listStatusOption = (status = '') => {
   const statuses = {0: 'inactive',1: 'active',2: 'deleted'};

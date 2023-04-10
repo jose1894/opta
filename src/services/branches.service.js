@@ -1,6 +1,6 @@
 import Service from './index.js'
 import authHeader from './auth.header.js'
-const resource = 'api/aliados'
+const resource = 'api/sucursales'
 
 export default {
     index(data) {
@@ -10,41 +10,41 @@ export default {
                 .catch((err) => reject(err))
         })
     },
-    create(aliado) {
+    create(sucursal) {
         return new Promise((resolve, reject) => {
-            Service.post(resource, aliado, { headers: authHeader() })
+            Service.post(resource, sucursal, { headers: authHeader() })
                 .then((response) => resolve(response))
                 .catch(err => reject(err))
         })
     },
-    read(aliado) {
+    read(sucursal) {
         return new Promise((resolve, reject) => {
-            Service.get(`${resource}/${aliado.id}`, { headers: authHeader() })
+            Service.get(`${resource}/${sucursal.id}`, { headers: authHeader() })
             .then(response => { 
                 resolve(response)})
             .catch(err => reject(err))
         })
     },
 
-    update(aliado) {
+    update(sucursal) {
         return new Promise((resolve, reject) => {
-            Service.put(`${resource}/${aliado._id}`, aliado, { headers: authHeader() })
+            Service.put(`${resource}/${sucursal._id}`, sucursal, { headers: authHeader() })
                 .then((response) => resolve(response.data))
                 .catch((err) => reject(err))
         })
     },
 
-    delete(aliado) {
+    delete(sucursal) {
         return new Promise((resolve, reject) => {
-            Service.delete(`${resource}/${aliado.id}`, {}, { headers: authHeader() })
+            Service.delete(`${resource}/${sucursal.id}`, {}, { headers: authHeader() })
                 .then((response) => resolve(response.data))
                 .catch((err) => reject(err))
         })
     },
 
-    allAliadosGet() {
+    sucursalesGet() {
         return new Promise((resolve, reject) => {
-            Service.get(`${resource}/allAliados`, { headers: authHeader() })
+            Service.get(`${resource}/allSucursales`, { headers: authHeader() })
             .then(response => { 
                 resolve(response)})
             .catch(err => reject(err))

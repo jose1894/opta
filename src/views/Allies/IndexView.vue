@@ -18,7 +18,6 @@
     const allies = ref([]);
     const getAllies = (data) => {
         alliesService.index(data).then(response => {
-            console.log(response)
             mainStore.allies = response
             page.value = response.page
             perPage.value = response.perPage

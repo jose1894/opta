@@ -1,6 +1,6 @@
 import Service from './index.js'
 import authHeader from './auth.header.js'
-const resource = 'api/aliados'
+const resource = 'api/monedas'
 
 export default {
     index(data) {
@@ -10,45 +10,44 @@ export default {
                 .catch((err) => reject(err))
         })
     },
-    create(aliado) {
+    create(moneda) {
         return new Promise((resolve, reject) => {
-            Service.post(resource, aliado, { headers: authHeader() })
+            Service.post(resource, moneda, { headers: authHeader() })
                 .then((response) => resolve(response))
                 .catch(err => reject(err))
         })
     },
-    read(aliado) {
+    read(moneda) {
         return new Promise((resolve, reject) => {
-            Service.get(`${resource}/${aliado.id}`, { headers: authHeader() })
+            Service.get(`${resource}/${moneda.id}`, { headers: authHeader() })
             .then(response => { 
                 resolve(response)})
             .catch(err => reject(err))
         })
     },
 
-    update(aliado) {
+    allCurrencies() {
         return new Promise((resolve, reject) => {
-            Service.put(`${resource}/${aliado._id}`, aliado, { headers: authHeader() })
-                .then((response) => resolve(response.data))
-                .catch((err) => reject(err))
-        })
-    },
-
-    delete(aliado) {
-        return new Promise((resolve, reject) => {
-            Service.delete(`${resource}/${aliado.id}`, {}, { headers: authHeader() })
-                .then((response) => resolve(response.data))
-                .catch((err) => reject(err))
-        })
-    },
-
-    allAliadosGet() {
-        return new Promise((resolve, reject) => {
-            Service.get(`${resource}/allAliados`, { headers: authHeader() })
+            Service.get(`${resource}/allMonedas`, { headers: authHeader() })
             .then(response => { 
                 resolve(response)})
             .catch(err => reject(err))
         })
     },
 
+    update(moneda) {
+        return new Promise((resolve, reject) => {
+            Service.put(`${resource}/${moneda._id}`, moneda, { headers: authHeader() })
+                .then((response) => resolve(response.data))
+                .catch((err) => reject(err))
+        })
+    },
+
+    delete(moneda) {
+        return new Promise((resolve, reject) => {
+            Service.delete(`${resource}/${moneda.id}`, {}, { headers: authHeader() })
+                .then((response) => resolve(response.data))
+                .catch((err) => reject(err))
+        })
+    },
 }

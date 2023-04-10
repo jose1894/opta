@@ -1,151 +1,320 @@
 {
-  "message":  {
-      "sign_in_to_your_account" : "¡Ingresa a tu cuenta!",
-      "sign_up": "¡Regístrate!",
-      "your_email": "Tu correo",
-      "password": "Contraseña",
-      "remember_me": "¡Recuérdame!",
-      "forgot_password": "¿Olvidaste password?",
-      "dont_have_an_account_yet": "¿No tienes cuenta aún?",
-      "already_have_an_account": "¿Ya tienes cuenta?",
-      "your_username": "Tu usuario",
-      "your_firstname": "Tu nombre",
-      "your_lastname": "Tu apellido",
-      "confirm_password": "Confirma contraseña",
-      "sign_up_success": "¡Registro exitoso!",
-      "sign_in_success" : "Ingreso exitoso",
-      "setup": "Configuración",
-      "empty_table": "Tabla vacía",
-      "submit" : "Enviar",
-      "reset" : "Reiniciar",
-      "profile":{
-          "profile": "Perfil",
-          "personal_information": "Información personal",
-          "personal_information_message" : "Use una dirección permanente donde puedas recibir correo.",
-          "username" : "Username",
-          "first_name" : "Nombre",
-          "last_name" : "Apellido",
-          "email" : "Email",
-          "country": "País",
-          "address" : "Dirección",
-          "state" : "Estado / provincia",
-          "city" : "Ciudad",
-          "postal_code": "ZIP / Código postal"
+  "message": {
+    "sign_in_to_your_account": "¡Ingresa a tu cuenta!",
+    "sign_up": "¡Regístrate!",
+    "your_email": "Tu correo",
+    "password": "Contraseña",
+    "remember_me": "¡Recuérdame!",
+    "forgot_password": "¿Olvidaste password?",
+    "dont_have_an_account_yet": "¿No tienes cuenta aún?",
+    "already_have_an_account": "¿Ya tienes cuenta?",
+    "your_username": "Tu usuario",
+    "your_firstname": "Tu nombre",
+    "your_lastname": "Tu apellido",
+    "confirm_password": "Confirma contraseña",
+    "sign_up_success": "¡Registro exitoso!",
+    "sign_in_success": "Ingreso exitoso",
+    "setup": "Configuración",
+    "empty_table": "Tabla vacía",
+    "submit": "Enviar",
+    "reset": "Reiniciar",
+    "add_new": "Agregar nuevo",
+    "profile": {
+      "profile": "Perfil",
+      "personal_information": "Información personal",
+      "personal_information_message": "Use una dirección permanente donde puedas recibir correo.",
+      "username": "Username",
+      "first_name": "Nombre",
+      "last_name": "Apellido",
+      "email": "Email",
+      "country": "País",
+      "address": "Dirección",
+      "state": "Estado / provincia",
+      "city": "Ciudad",
+      "postal_code": "ZIP / Código postal"
+    },
+    "country": {
+      "country": "País",
+      "countries": "Paises",
+      "statuses": {
+        "deleted": "Borrado",
+        "active": "Activo",
+        "inactive": "Inactivo"
       },
-      "country": {
-          "country" : "País",
-          "countries" : "Paises",
-          "statuses": {
-              "deleted" : "Borrado",
-              "active": "Activo",
-              "inactive": "Inactivo"
-          },
-          "create": "Crear país",
-          "update": "Actualizar país",
-          "code": "Código",
-          "name": "Nombre",
-          "status": "Status",   
-          "created":{
-            "success": "¡El país fue creado exitosamente!",
-            "error": "¡El país no pudo ser creado!"
-          },
-          "updated":{
-            "success": "¡El país fue actualizado exitosamente!",
-            "error": "¡El país no pudo ser actualizado!"
-          } 
+      "create": "Crear país",
+      "update": "Actualizar país",
+      "code": "Código",
+      "name": "Nombre",
+      "status": "Status",
+      "created": {
+        "success": "¡El país fue creado exitosamente!",
+        "error": "¡El país no pudo ser creado!"
       },
-      "state": {
-        "states": "Estados",
-        "statuses": {
-          "deleted": "Eliminado",
-          "active": "Activo",
-          "inactive": "Inactivo"
-        },
-          "create": "Crear estado",
-          "update": "Modificar estado",
-          "code": "Código",
-          "name": "Nombre",
-          "status": "Status", 
-          "country": "País",  
-          "created":{
-            "success": "¡El estado fue creado exitosamente!",
-            "error": "¡El estado no pudo ser creado!"
-          },
-          "updated":{
-            "success": "¡El estado fue actualizado exitosamente!",
-            "error": "¡El estado no pudo ser actualizado!"
-          } 
+      "updated": {
+        "success": "¡El país fue actualizado exitosamente!",
+        "error": "¡El país no pudo ser actualizado!"
+      }
+    },
+    "state": {
+      "states": "Estados",
+      "statuses": {
+        "deleted": "Eliminado",
+        "active": "Activo",
+        "inactive": "Inactivo"
       },
-      "city": {
-        "cities": "Ciudades",
-        "state": "Estado",
-        "statuses": {
-          "deleted": "Eliminado",
-          "active": "Activo",
-          "inactive": "Inactivo"
-        },
-          "create": "Crear ciudad",
-          "update": "Modificar ciudad",
-          "code": "Código",
-          "name": "Nombre",
-          "status": "Status", 
-          "country": "País",  
-          "created":{
-            "success": "¡la ciudad fue creada exitosamente!",
-            "error": "¡la ciudad no pudo ser creada!"
-          },
-          "updated":{
-            "success": "¡la ciudad fue actualizada exitosamente!",
-            "error": "¡la ciudad no pudo ser actualizada!"
-          } 
+      "create": "Crear estado",
+      "update": "Modificar estado",
+      "code": "Código",
+      "name": "Nombre",
+      "status": "Status",
+      "country": "País",
+      "created": {
+        "success": "¡El estado fue creado exitosamente!",
+        "error": "¡El estado no pudo ser creado!"
       },
-      "ally": {
-        "allies": "Aliados",
-        "ally": "Aliado",
-        "id": "ID Fiscal",
-        "statuses": {
-          "deleted": "Eliminado",
-          "active": "Activo",
-          "inactive": "Inactivo"
-        },
-          "create": "Crear aliado",
-          "update": "Modificar aliado",
-          "code": "Código",
-          "name": "Nombre",
-          "status": "Status", 
-          "country": "País", 
-          "state": "Estado",
-          "city": "Ciudad",
-          "address": "Dirección",
-          "paginaWeb": "Página web",
-          "lastName": "Apellido",
-          "idFiscal": "Número físcal", 
-          "cargo": "cargo",
-          "officePhone": "Teléfono de oficina",
-          "movilPhone": "Teléfono de móvil",
-          "email": "Correo eléctronico",
-          "codeClient": "Código de cliente",
-          "date": "Fecha",
-          "contacts": "Contactos",
-          "referred": "Referido",
-          "activeLicenses": "Nro. de licencias activas",
-          "created":{
-            "success": "¡El aliado fue creado exitosamente!",
-            "error": "¡El aliado no pudo ser creado!"
-          },
-          "updated":{
-            "success": "¡El aliado fue actualizado exitosamente!",
-            "error": "¡El aliado no pudo ser actualizado!"
-          } 
+      "updated": {
+        "success": "¡El estado fue actualizado exitosamente!",
+        "error": "¡El estado no pudo ser actualizado!"
+      }
+    },
+    "city": {
+      "cities": "Ciudades",
+      "state": "Estado",
+      "statuses": {
+        "deleted": "Eliminado",
+        "active": "Activo",
+        "inactive": "Inactivo"
       },
-      "Home": "Inicio",   
-      "Countries" : "Paises",
-      "Setup" : "Configuración",
-      "Dashboard" : "Dashboard"
+      "create": "Crear ciudad",
+      "update": "Modificar ciudad",
+      "code": "Código",
+      "name": "Nombre",
+      "status": "Status",
+      "country": "País",
+      "created": {
+        "success": "¡la ciudad fue creada exitosamente!",
+        "error": "¡la ciudad no pudo ser creada!"
+      },
+      "updated": {
+        "success": "¡la ciudad fue actualizada exitosamente!",
+        "error": "¡la ciudad no pudo ser actualizada!"
+      }
+    },
+    "ally": {
+      "allies": "Aliados",
+      "ally": "Aliado",
+      "id": "ID Fiscal",
+      "statuses": {
+        "deleted": "Eliminado",
+        "active": "Activo",
+        "inactive": "Inactivo"
+      },
+      "create": "Crear aliado",
+      "update": "Modificar aliado",
+      "code": "Código",
+      "name": "Nombre",
+      "status": "Status",
+      "country": "País",
+      "state": "Estado",
+      "city": "Ciudad",
+      "address": "Dirección",
+      "paginaWeb": "Página web",
+      "lastName": "Apellido",
+      "idFiscal": "Número físcal",
+      "cargo": "cargo",
+      "officePhone": "Teléfono de oficina",
+      "movilPhone": "Teléfono de móvil",
+      "email": "Correo eléctronico",
+      "codeClient": "Código de cliente",
+      "date": "Fecha",
+      "contacts": "Contactos",
+      "referred": "Referido",
+      "activeLicenses": "Nro. de licencias activas",
+      "created": {
+        "success": "¡El aliado fue creado exitosamente!",
+        "error": "¡El aliado no pudo ser creado!"
+      },
+      "updated": {
+        "success": "¡El aliado fue actualizado exitosamente!",
+        "error": "¡El aliado no pudo ser actualizado!"
+      }
+    },
+    "cargo": {
+      "cargo": "Cargo",
+      "cargos": "Cargos",
+      "statuses": {
+        "deleted": "Borrado",
+        "active": "Activo",
+        "inactive": "Inactivo"
+      },
+      "create": "Crear cargo",
+      "update": "Actualizar cargo",
+      "code": "Código",
+      "name": "Nombre",
+      "status": "Status",
+      "created": {
+        "success": "¡El cargo fue creado exitosamente!",
+        "error": "¡El cargo no pudo ser creado!"
+      },
+      "updated": {
+        "success": "¡La moneda fue actualizado exitosamente!",
+        "error": "¡La moneda no pudo ser actualizado!"
+      }
+    },
+    "currencies": {
+      "currency": "Moneda",
+      "currencies": "Monedas",
+      "statuses": {
+        "deleted": "Borrado",
+        "active": "Activo",
+        "inactive": "Inactivo"
+      },
+      "create": "Crear moneda",
+      "update": "Actualizar moneda",
+      "code": "Código",
+      "name": "Nombre",
+      "status": "Status",
+      "created": {
+        "success": "¡La moneda fue creada exitosamente!",
+        "error": "¡La moneda no pudo ser creada!"
+      },
+      "updated": {
+        "success": "¡La moneda fue actualizada exitosamente!",
+        "error": "¡La moneda no pudo ser actualizada!"
+      }
+    },
+    "member": {
+      "members": "Miembros",
+      "member": "Miembro",
+      "ally": "Aliado",
+      "id": "ID Fiscal",
+      "statuses": {
+        "deleted": "Eliminado",
+        "active": "Activo",
+        "inactive": "Inactivo"
+      },
+      "create": "Crear miembro",
+      "update": "Modificar miembro",
+      "code": "Código",
+      "name": "Nombre",
+      "status": "Status",
+      "country": "País",
+      "state": "Estado",
+      "city": "Ciudad",
+      "address": "Dirección",
+      "street": "Calle",
+      "administrative_contacts": "Contactos administrativo",
+      "technology_contacts": "Contactos tecnológicos",
+      "type_contacts": "Tipo de contactos",
+      "activation_code": "Código de activación",      
+      "paginaWeb": "Página web",
+      "lastName": "Apellido",
+      "idFiscal": "Número físcal",
+      "físcal_year": "Ejercicio físcal",
+      "cargo": "cargo",
+      "officePhone": "Teléfono de oficina",
+      "movilPhone": "Teléfono de móvil",
+      "email": "Correo eléctronico",
+      "codeClient": "Código de cliente",
+      "date": "Fecha",
+      "contacts": "Contactos",
+      "referred": "Referido",
+      "activeLicenses": "Nro. de licencias activas",
+      "validity": "Vigencia",
+      "currency": "Moneda",
+      "review_period_the_budget": "Período de revisión del presupuesto",
+      "budget_creation": "Creación de presupuesto",
+      "declaration_of_hours": "Declaración de horas",
+      "modification_of_hours": "Modificación de horas",
+      "requires_approval_to_activate_the_project": "Requiere aprobación para activar el proyecto",
+      "yes": "Si",
+      "no": "No",
+      "created": {
+        "success": "¡El miembro fue creado exitosamente!",
+        "error": "¡El miembro no pudo ser creado!"
+      },
+      "updated": {
+        "success": "¡El miembro fue actualizado exitosamente!",
+        "error": "¡El miembro no pudo ser actualizado!"
+      }
+    },
+    "branch": {
+      "branches": "Sucursales",
+      "branch": "Sucursal",
+      "statuses": {
+        "deleted": "Eliminado",
+        "active": "Activo",
+        "inactive": "Inactivo"
+      },
+      "create": "Crear sucursal",
+      "update": "Modificar sucursal",
+      "code": "Código",
+      "acronyms": "Siglas",
+      "name": "Nombre",
+      "status": "Status",
+      "country": "País",
+      "state": "Estado",
+      "city": "Ciudad",
+      "created": {
+        "success": "¡La sucursal fue creada exitosamente!",
+        "error": "¡La sucursal no pudo ser creada!"
+      },
+      "updated": {
+        "success": "¡La sucursal fue actualizada exitosamente!",
+        "error": "¡La sucursal no pudo ser actualizada!"
+      }
+    },
+    "bussinesUnit": {
+      "bussinesUnits": "Unidades de negocios",
+      "bussinesUnit": "Unidad de negocio",
+      "statuses": {
+        "deleted": "Eliminado",
+        "active": "Activo",
+        "inactive": "Inactivo"
+      },
+      "create": "Crear unidad de negocio",
+      "update": "Modificar unidad de negocio",
+      "code": "Código",
+      "acronyms": "Siglas",
+      "name": "Nombre",
+      "status": "Status",
+      "created": {
+        "success": "¡La unidad de negocio fue creada exitosamente!",
+        "error": "¡La unidad de negocio no pudo ser creada!"
+      },
+      "updated": {
+        "success": "¡La unidad de negocio fue actualizada exitosamente!",
+        "error": "¡La unidad de negocio no pudo ser actualizada!"
+      }
+    },
+    "expense": {
+      "expense": "Gastos",
+      "statuses": {
+        "deleted": "Eliminado",
+        "active": "Activo",
+        "inactive": "Inactivo"
+      },
+      "create": "Crear gastos",
+      "update": "Modificar gastos",
+      "concept": "Concepto",
+      "status": "Status",
+      "created": {
+        "success": "¡El gasto fue creado exitosamente!",
+        "error": "¡El gasto no pudo ser creado!"
+      },
+      "updated": {
+        "success": "¡El gasto fue actualizado exitosamente!",
+        "error": "¡El gasto no pudo ser actualizado!"
+      }
+    },
+    "Home": "Inicio",
+    "Countries": "Paises",
+    "Setup": "Configuración",
+    "Dashboard": "Dashboard"
   },
   "validations": {
-        "required": "El campo {property} es requerido.",
-        "minLength": "El campo {property} tiene un valor de '{model}', pero debe tener una longitud minima de {min}.",
-        "maxLength": "El campo {property} tiene un valor de '{model}', pero debe tener una longitud maxima de {max}."
-    }
+    "required": "El campo {property} es requerido.",
+    "minLength": "El campo {property} tiene un valor de '{model}', pero debe tener una longitud minima de {min}.",
+    "maxLength": "El campo {property} tiene un valor de '{model}', pero debe tener una longitud maxima de {max}."
+  }
 }

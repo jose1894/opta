@@ -1,6 +1,6 @@
 import Service from './index.js'
 import authHeader from './auth.header.js'
-const resource = 'api/aliados'
+const resource = 'api/miembros'
 
 export default {
     index(data) {
@@ -10,45 +10,35 @@ export default {
                 .catch((err) => reject(err))
         })
     },
-    create(aliado) {
+    create(miembro) {
         return new Promise((resolve, reject) => {
-            Service.post(resource, aliado, { headers: authHeader() })
+            Service.post(resource, miembro, { headers: authHeader() })
                 .then((response) => resolve(response))
                 .catch(err => reject(err))
         })
     },
-    read(aliado) {
+    read(miembro) {
         return new Promise((resolve, reject) => {
-            Service.get(`${resource}/${aliado.id}`, { headers: authHeader() })
+            Service.get(`${resource}/${miembro.id}`, { headers: authHeader() })
             .then(response => { 
                 resolve(response)})
             .catch(err => reject(err))
         })
     },
 
-    update(aliado) {
+    update(miembro) {
         return new Promise((resolve, reject) => {
-            Service.put(`${resource}/${aliado._id}`, aliado, { headers: authHeader() })
+            Service.put(`${resource}/${miembro._id}`, miembro, { headers: authHeader() })
                 .then((response) => resolve(response.data))
                 .catch((err) => reject(err))
         })
     },
 
-    delete(aliado) {
+    delete(miembro) {
         return new Promise((resolve, reject) => {
-            Service.delete(`${resource}/${aliado.id}`, {}, { headers: authHeader() })
+            Service.delete(`${resource}/${miembro.id}`, {}, { headers: authHeader() })
                 .then((response) => resolve(response.data))
                 .catch((err) => reject(err))
         })
     },
-
-    allAliadosGet() {
-        return new Promise((resolve, reject) => {
-            Service.get(`${resource}/allAliados`, { headers: authHeader() })
-            .then(response => { 
-                resolve(response)})
-            .catch(err => reject(err))
-        })
-    },
-
 }

@@ -8,7 +8,6 @@ import TableCheckboxCell from "@/components/TableCheckboxCell.vue";
 import BaseLevel from "@/components/BaseLevel.vue";
 import BaseButtons from "@/components/BaseButtons.vue";
 import BaseButton from "@/components/BaseButton.vue";
-import CountryFlag from 'vue-country-flag-next'
 
 defineProps({
   checkable: Boolean,
@@ -18,16 +17,16 @@ const router = useRouter();
 
 const mainStore = useMainStore();
 
-const items = computed(() => mainStore.allies.aliados);
-const total = computed(() => mainStore.allies.total)
+const items = computed(() => mainStore.jobPositions?.cargos);
+const total = computed(() => mainStore.jobPositions.total)
 
 const isModalActive = ref(false);
 
 const isModalDangerActive = ref(false);
 
-const perPage = computed(() => mainStore.allies.perPage);
+const perPage = computed(() => mainStore.jobPositions.perPage);
 
-const currentPage = computed(() => mainStore.allies.page);
+const currentPage = computed(() => mainStore.jobPositions.page);
 
 const checkedRows = ref([]);
 
@@ -75,13 +74,13 @@ const remove = (arr, cb) => {
   return newArr;
 };
 
-const checked = (isChecked, city) => {
+const checked = (isChecked, cargo) => {
   if (isChecked) {
-    checkedRows.value.push(city);
+    checkedRows.value.push(cargo);
   } else {
     checkedRows.value = remove(
       checkedRows.value,
-      (row) => row.id === city.id
+      (row) => row.id === cargo.id
     );
   }
 };
@@ -98,7 +97,7 @@ const changePage = (page) => {
 }
 
 const edit = (id) => {
-  router.push({name: 'AlliesUpdate', params: {id}})
+  router.push({name: 'CargosUpdate', params: {id}})
 }
 </script>
 
@@ -131,34 +130,33 @@ const edit = (id) => {
   <table>
     <thead>
       <tr>
-        <th @click="sort('codigo')">{{ $t('message.ally.code') }}</th>        
-        <th @click="sort('nambre')">{{ $t('message.ally.name') }}</th>
-        <th @click="sort('idFiscal')">{{ $t('message.ally.id') }}</th>
-        <th />
+        <th @click="sort('codigo')">{{ $t('message.cargo.code') }}</th>
+        <th @click="sort('nambre')">{{ $t('message.cargo.name') }}</th>
+        <th @click="sort('estado')">{{ $t('message.cargo.status') }}</th>
       </tr>
     </thead>
     <tbody>
-      <tr v-for="(ally, index) in itemsPaginated" :key="ally._id">
+      <tr v-for="(cargo, index) in itemsPaginated" :key="cargo._id">
         <TableCheckboxCell
           v-if="checkable"
-          @checked="checked($event, state)"
+          @checked="checked($event, cargo)"
         />
-        <td :data-label="$t('message.ally.code')">
-          {{ ally.codigo }} 
+        <td :data-label="$t('message.cargo.code')">
+          {{ cargo.codigo }} 
         </td>
-        <td :data-label="$t('message.ally.state')">
-          {{ ally.nombre }}
+        <td :data-label="$t('message.cargo.name')">
+          {{ cargo.nombre }}
         </td>
-        <td :data-label="$t('message.ally.id')">
-          {{ ally.nombre }}
-        </td>       
+        <td :data-label="$t('message.cargo.status')">
+          {{ $t(`message.cargo.statuses.${listStatusOption(cargo.estado)}`) }}
+        </td>        
         <td class="before:hidden lg:w-1 whitespace-nowrap">
           <BaseButtons type="justify-start lg:justify-end" no-wrap>
             <BaseButton
               color="info"
               :icon="mdiFileEdit"
               small
-              @click="edit(ally._id)"
+              @click="edit(cargo._id)"
             />
 
             <BaseButton

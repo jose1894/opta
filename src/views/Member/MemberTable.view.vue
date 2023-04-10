@@ -2,13 +2,12 @@
 import { computed, ref, defineEmits } from "vue";
 import { useRouter } from "vue-router";
 import { useMainStore } from "@/stores/main";
-import { mdiEye, mdiFileEdit, mdiTrashCan } from "@mdi/js";
+import { mdiFileEdit, mdiTrashCan } from "@mdi/js";
 import CardBoxModal from "@/components/CardBoxModal.vue";
 import TableCheckboxCell from "@/components/TableCheckboxCell.vue";
 import BaseLevel from "@/components/BaseLevel.vue";
 import BaseButtons from "@/components/BaseButtons.vue";
 import BaseButton from "@/components/BaseButton.vue";
-import CountryFlag from 'vue-country-flag-next'
 
 defineProps({
   checkable: Boolean,
@@ -18,16 +17,16 @@ const router = useRouter();
 
 const mainStore = useMainStore();
 
-const items = computed(() => mainStore.allies.aliados);
-const total = computed(() => mainStore.allies.total)
+const items = computed(() => mainStore.members.miembros);
+const total = computed(() => mainStore.members.total)
 
 const isModalActive = ref(false);
 
 const isModalDangerActive = ref(false);
 
-const perPage = computed(() => mainStore.allies.perPage);
+const perPage = computed(() => mainStore.members.perPage);
 
-const currentPage = computed(() => mainStore.allies.page);
+const currentPage = computed(() => mainStore.members.page);
 
 const checkedRows = ref([]);
 
@@ -75,13 +74,13 @@ const remove = (arr, cb) => {
   return newArr;
 };
 
-const checked = (isChecked, city) => {
+const checked = (isChecked, member) => {
   if (isChecked) {
-    checkedRows.value.push(city);
+    checkedRows.value.push(member);
   } else {
     checkedRows.value = remove(
       checkedRows.value,
-      (row) => row.id === city.id
+      (row) => row.id === member.id
     );
   }
 };
@@ -98,7 +97,7 @@ const changePage = (page) => {
 }
 
 const edit = (id) => {
-  router.push({name: 'AlliesUpdate', params: {id}})
+  router.push({name: 'MembersUpdate', params: {id}})
 }
 </script>
 
@@ -131,26 +130,26 @@ const edit = (id) => {
   <table>
     <thead>
       <tr>
-        <th @click="sort('codigo')">{{ $t('message.ally.code') }}</th>        
-        <th @click="sort('nambre')">{{ $t('message.ally.name') }}</th>
-        <th @click="sort('idFiscal')">{{ $t('message.ally.id') }}</th>
+        <th @click="sort('codigo')">{{ $t('message.member.code') }}</th>        
+        <th @click="sort('nambre')">{{ $t('message.member.name') }}</th>
+        <th @click="sort('idFiscal')">{{ $t('message.member.id') }}</th>
         <th />
       </tr>
     </thead>
     <tbody>
-      <tr v-for="(ally, index) in itemsPaginated" :key="ally._id">
+      <tr v-for="(member, index) in itemsPaginated" :key="member._id">
         <TableCheckboxCell
           v-if="checkable"
           @checked="checked($event, state)"
         />
-        <td :data-label="$t('message.ally.code')">
-          {{ ally.codigo }} 
+        <td :data-label="$t('message.member.code')">
+          {{ member.codigo }} 
         </td>
-        <td :data-label="$t('message.ally.state')">
-          {{ ally.nombre }}
+        <td :data-label="$t('message.member.state')">
+          {{ member.nombre }}
         </td>
-        <td :data-label="$t('message.ally.id')">
-          {{ ally.nombre }}
+        <td :data-label="$t('message.member.id')">
+          {{ member.nombre }}
         </td>       
         <td class="before:hidden lg:w-1 whitespace-nowrap">
           <BaseButtons type="justify-start lg:justify-end" no-wrap>
@@ -158,7 +157,7 @@ const edit = (id) => {
               color="info"
               :icon="mdiFileEdit"
               small
-              @click="edit(ally._id)"
+              @click="edit(member._id)"
             />
 
             <BaseButton

@@ -92,6 +92,10 @@ export default [
     icon: mdiCog,
     menu: [
       {
+        label: "Currency",
+        to: "/setup/currencies",
+      },
+      {
         label: "Countries",
         to: "/setup/countries",
       },
@@ -104,9 +108,29 @@ export default [
         to: "/setup/cities",
       },
       {
+        label: "Cargos",
+        to: "/setup/jobPositions",
+      },
+      {
         label: "Allies",
         to: "/setup/allies",
       },
+      {
+        label: "Members",
+        to: "/setup/members",
+      },
+      {
+        label: "Branches",
+        to: "/setup/branches",
+      },
+      {
+        label: "Business unit",
+        to: "/setup/businessUnit",
+      },
+      {
+        label: "Expense",
+        to: "/setup/expense",
+      }  
     ],
   },
   {

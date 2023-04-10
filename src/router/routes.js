@@ -4,6 +4,12 @@ import CountriesRoutes from './CountriesRoutes.js';
 import StatesRoutes from './StatesRoutes.js';
 import CitiesRoutes from "./CitiesRoutes.js";
 import Allies from "./Allies.js";
+import MembersRoutes from "./MembersRoutes.js";
+import JobsPositionRoutes from "./JobPositionRoutes.js";
+import CurrenciesRoutes from "./CurrenciesRoutes.js";
+import BranchesRoutes from "./BranchesRoutes.js";
+import BusinessUnitRoutes from "./BusinessUnit.Routes.js";
+import ExpenseRoutes from "./ExpenseRoutes.js";
 
 
 export default [
@@ -84,5 +90,11 @@ export default [
   ...CountriesRoutes,
   ...StatesRoutes,
   ...CitiesRoutes,
-  ...Allies
+  ...Allies,
+  ...JobsPositionRoutes,
+  ...MembersRoutes,
+  ...CurrenciesRoutes,
+  ...BranchesRoutes,
+  ...BusinessUnitRoutes,
+  ...ExpenseRoutes
 ];

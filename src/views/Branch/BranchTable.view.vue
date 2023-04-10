@@ -2,13 +2,12 @@
 import { computed, ref, defineEmits } from "vue";
 import { useRouter } from "vue-router";
 import { useMainStore } from "@/stores/main";
-import { mdiEye, mdiFileEdit, mdiTrashCan } from "@mdi/js";
+import { mdiFileEdit, mdiTrashCan } from "@mdi/js";
 import CardBoxModal from "@/components/CardBoxModal.vue";
 import TableCheckboxCell from "@/components/TableCheckboxCell.vue";
 import BaseLevel from "@/components/BaseLevel.vue";
 import BaseButtons from "@/components/BaseButtons.vue";
 import BaseButton from "@/components/BaseButton.vue";
-import CountryFlag from 'vue-country-flag-next'
 
 defineProps({
   checkable: Boolean,
@@ -18,16 +17,16 @@ const router = useRouter();
 
 const mainStore = useMainStore();
 
-const items = computed(() => mainStore.allies.aliados);
-const total = computed(() => mainStore.allies.total)
+const items = computed(() => mainStore.branches.sucursales);
+const total = computed(() => mainStore.branches.total)
 
 const isModalActive = ref(false);
 
 const isModalDangerActive = ref(false);
 
-const perPage = computed(() => mainStore.allies.perPage);
+const perPage = computed(() => mainStore.branches.perPage);
 
-const currentPage = computed(() => mainStore.allies.page);
+const currentPage = computed(() => mainStore.branches.page);
 
 const checkedRows = ref([]);
 
@@ -75,13 +74,13 @@ const remove = (arr, cb) => {
   return newArr;
 };
 
-const checked = (isChecked, city) => {
+const checked = (isChecked, branch) => {
   if (isChecked) {
-    checkedRows.value.push(city);
+    checkedRows.value.push(branch);
   } else {
     checkedRows.value = remove(
       checkedRows.value,
-      (row) => row.id === city.id
+      (row) => row.id === branch.id
     );
   }
 };
@@ -98,7 +97,7 @@ const changePage = (page) => {
 }
 
 const edit = (id) => {
-  router.push({name: 'AlliesUpdate', params: {id}})
+  router.push({name: 'BranchesUpdate', params: {id}})
 }
 </script>
 
@@ -131,34 +130,38 @@ const edit = (id) => {
   <table>
     <thead>
       <tr>
-        <th @click="sort('codigo')">{{ $t('message.ally.code') }}</th>        
-        <th @click="sort('nambre')">{{ $t('message.ally.name') }}</th>
-        <th @click="sort('idFiscal')">{{ $t('message.ally.id') }}</th>
+        <th @click="sort('codigo')">{{ $t('message.branch.code') }}</th>        
+        <th @click="sort('nambre')">{{ $t('message.branch.name') }}</th>
+        <th @click="sort('siglas')">{{ $t('message.branch.acronyms') }}</th>
+        <th @click="sort('estado')">{{ $t('message.branch.status') }}</th>
         <th />
       </tr>
     </thead>
     <tbody>
-      <tr v-for="(ally, index) in itemsPaginated" :key="ally._id">
+      <tr v-for="(branch, index) in itemsPaginated" :key="branch._id">
         <TableCheckboxCell
           v-if="checkable"
-          @checked="checked($event, state)"
+          @checked="checked($event, branch)"
         />
-        <td :data-label="$t('message.ally.code')">
-          {{ ally.codigo }} 
+        <td :data-label="$t('message.branch.code')">
+          {{ branch.codigo }} 
         </td>
-        <td :data-label="$t('message.ally.state')">
-          {{ ally.nombre }}
+        <td :data-label="$t('message.branch.state')">
+          {{ branch.nombre }}
         </td>
-        <td :data-label="$t('message.ally.id')">
-          {{ ally.nombre }}
-        </td>       
+        <td :data-label="$t('message.branch.acronyms')">
+          {{ branch.siglas }}
+        </td>
+        <td :data-label="$t('message.branch.status')">
+          {{ $t(`message.branch.statuses.${listStatusOption(branch.estado)}`) }}
+        </td>        
         <td class="before:hidden lg:w-1 whitespace-nowrap">
           <BaseButtons type="justify-start lg:justify-end" no-wrap>
             <BaseButton
               color="info"
               :icon="mdiFileEdit"
               small
-              @click="edit(ally._id)"
+              @click="edit(branch._id)"
             />
 
             <BaseButton

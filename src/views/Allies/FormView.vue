@@ -24,6 +24,7 @@ import statesService from '@/services/states.services';
 import alliesService from '@/services/allies.service';
 import TabsComponent from '@/components/TabsComponent.vue';
 import countriesService from '@/services/countries.service';
+import cargosService from '@/services/cargos.service';
 import VueTailwindDatepicker from 'vue-tailwind-datepicker';
 import { required, maxLength } from '@/utils/i18n-validators';
 
@@ -37,6 +38,7 @@ const dateValue = ref([])
 let countriesList = ref([]);
 let statesList = ref([]);
 let citiesList = ref([]);
+let cargosList = ref([]);
 
 const tab = ref(0)
 const activeTab = (i) => {
@@ -60,7 +62,7 @@ const ally = ref({
     paginaWeb: "",
     nombreContact: "",
     apellidoContact: "",
-    cargo: "",
+    cargo: cargosList.value,
     telefonoOfic: "",
     telefonoCelu: "",
     correoContact: "",
@@ -87,12 +89,16 @@ onMounted(async () => {
     let listPaises = await countriesService.index();
     const optionCountry = listPaises?.paises || [];
     countriesList.value = optionCountry.map((country) => ({ id: country._id, label: country.nombre }));
+    let listCargos = await cargosService.allCargos();
+    const dataCargos = listCargos?.data.cargos;
+    cargosList.value = dataCargos.map((cargo) => ({ id: cargo._id, label: cargo.nombre }));
     if (props.path === 'update') {
         const res = await alliesService.read(route.params);
         ally.value = res.data
+       const  { cargo } = res.data
+        ally.value.cargo = { id: cargo._id, label: cargo.nombre }
         ally.value.pais = _asignarOpcionesAlSelect(res.data?.pais)
-        selectedPais(ally.value.pais, res.data)  
-        //ally.value.ciudad = _asignarOpcionesAlSelect(res.data?.ciudad)
+        selectedPais(ally.value.pais, res.data)
     }
 });
 
@@ -169,12 +175,11 @@ const action = (ally) => {
         paginaWeb,
         nombreContact,
         apellidoContact,
-        cargo,
+        cargo: cargo.id,
         telefonoOfic,
         telefonoCelu,
         correoContact
     }
-    console.log(data)
     if (props.path === 'create') {
         return alliesService.create(data)
     }
@@ -262,8 +267,8 @@ const submit = async () => {
                             </div>
                             <div class="grid md:grid-cols-3 gap-3">
                                 <FormField :label="$t('message.ally.cargo')">
-                                    <FormControl v-model="ally.cargo" :icon="mdiRenameBox" />
-                                </FormField>
+                                    <FormControl v-model="ally.cargo" :icon="mdiListStatus" :options="cargosList" />
+                                </FormField>                                
                                 <FormField :label="$t('message.ally.officePhone')">
                                     <FormControl v-model="ally.telefonoOfic" :icon="mdiRenameBox" />
                                 </FormField>

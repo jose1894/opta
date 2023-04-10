@@ -1,6 +1,6 @@
 import Service from './index.js'
 import authHeader from './auth.header.js'
-const resource = 'api/aliados'
+const resource = 'api/gastos'
 
 export default {
     index(data) {
@@ -10,41 +10,41 @@ export default {
                 .catch((err) => reject(err))
         })
     },
-    create(aliado) {
+    create(gasto) {
         return new Promise((resolve, reject) => {
-            Service.post(resource, aliado, { headers: authHeader() })
+            Service.post(resource, gasto, { headers: authHeader() })
                 .then((response) => resolve(response))
                 .catch(err => reject(err))
         })
     },
-    read(aliado) {
+    read(gasto) {
         return new Promise((resolve, reject) => {
-            Service.get(`${resource}/${aliado.id}`, { headers: authHeader() })
+            Service.get(`${resource}/${gasto.id}`, { headers: authHeader() })
             .then(response => { 
                 resolve(response)})
             .catch(err => reject(err))
         })
     },
 
-    update(aliado) {
+    update(gasto) {
         return new Promise((resolve, reject) => {
-            Service.put(`${resource}/${aliado._id}`, aliado, { headers: authHeader() })
+            Service.put(`${resource}/${gasto._id}`, gasto, { headers: authHeader() })
                 .then((response) => resolve(response.data))
                 .catch((err) => reject(err))
         })
     },
 
-    delete(aliado) {
+    delete(gasto) {
         return new Promise((resolve, reject) => {
-            Service.delete(`${resource}/${aliado.id}`, {}, { headers: authHeader() })
+            Service.delete(`${resource}/${gasto.id}`, {}, { headers: authHeader() })
                 .then((response) => resolve(response.data))
                 .catch((err) => reject(err))
         })
     },
 
-    allAliadosGet() {
+    sucursalesGet() {
         return new Promise((resolve, reject) => {
-            Service.get(`${resource}/allAliados`, { headers: authHeader() })
+            Service.get(`${resource}/allGastos`, { headers: authHeader() })
             .then(response => { 
                 resolve(response)})
             .catch(err => reject(err))

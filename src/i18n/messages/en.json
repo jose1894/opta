@@ -18,6 +18,7 @@
     "empty_table": "Empty table",
     "submit": "Submit",
     "reset": "Reset",
+    "Add new": "Add new",
     "profile": {
       "profile": "Profile",
       "personal_information": "Personal information",
@@ -116,6 +117,173 @@
     "updated": {
       "success": "Ally updated successfully!",
       "error": "Ally couldn't be updated!"
+    }
+  },
+  "cargo": {
+    "cargo": "Cargo",
+    "cargos": "Cargos",
+    "statuses": {
+      "deleted": "Deleted",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "create": "Create cargo",
+    "update": "Update cargo",
+    "code": "Code",
+    "name": "Name",
+    "status": "Status",
+    "created": {
+      "success": "Cargo created successfully!",
+      "error": "Cargo couldn't be created!"
+    },
+    "updated": {
+      "success": "Cargo updated successfully!",
+      "error": "Cargo couldn't be updated!"
+    }
+  },
+  "currencies": {
+    "currency": "Currency",
+    "currencies": "Currencies",
+    "statuses": {
+      "deleted": "Deleted",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "create": "Create currency",
+    "update": "Update currency",
+    "code": "Code",
+    "name": "Name",
+    "status": "Status",
+    "created": {
+      "success": "Currency created successfully!",
+      "error": "Currency couldn't be created!"
+    },
+    "updated": {
+      "success": "Currency updated successfully!",
+      "error": "Currency couldn't be updated!"
+    }
+  },
+  "member": {
+    "members": "Members",
+    "member": "Member",
+    "ally": "Ally",
+    "statuses": {
+      "deleted": "Deleted",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "create": "Create member",
+    "update": "Update member",
+    "code": "Code",
+    "name": "Name",
+    "id": "ID Fiscal",
+    "idFiscal": "ID Físcal",
+    "físcal_year": "Físcal year",
+    "state": "State",
+    "city": "City",
+    "address": "Addres",
+    "street": "Street",
+    "administrative_contacts": "Administrative contacts",
+    "technology_contacts": "Technology contacts",
+    "type_contacts": "Type contacts",
+    "activation_code": "Activation code",  
+    "validity": "Validity",
+    "paginaWeb": "Web page",
+    "lastName": "Last name",
+    "cargo": "cargo",
+    "officePhone": "Office phone",
+    "movilPhone": "Movil phone",
+    "email": "Email",
+    "codeClient": "Code client",
+    "date": "Date",
+    "contacts": "Contacts",
+    "referred": "Referred",
+    "activeLicenses": "Nro. Active licenses",
+    "currency": "Currency",
+    "review_period_the_budget": "Review period the budget",
+    "budget_creation": "Budget creation",
+    "declaration_of_hours": "Declaration of hours",
+    "yes": "Yes",
+    "no": "No",
+    "modification_of_hours": "Modification of hours",
+    "requires_approval_to_activate_the_project": "Requires approval to activate the project",
+    "created": {
+      "success": "Member created successfully!",
+      "error": "Member couldn't be created!"
+    },
+    "updated": {
+      "success": "Member updated successfully!",
+      "error": "Member couldn't be updated!"
+    }
+  },  
+  "branch": {
+    "branch": "Branch",
+    "branches": "Branches",
+    "statuses": {
+      "deleted": "Deleted",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "create": "Create ally",
+    "update": "Update ally",
+    "code": "Code",
+    "acronyms": "Acronyms",
+    "name": "Name",
+    "state": "State",
+    "city": "City",
+    "status": "Status",
+    "created": {
+      "success": "Ally created successfully!",
+      "error": "Ally couldn't be created!"
+    },
+    "updated": {
+      "success": "Ally updated successfully!",
+      "error": "Ally couldn't be updated!"
+    }
+  },
+  "bussinesUnit": {
+    "bussinesUnits": "Bussines units",
+    "bussinesUnit": "Bussines unit",
+    "statuses": {
+      "deleted": "Deleted",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "create": "Create bussines unit",
+    "update": "Update bussines unit",
+    "code": "Code",
+    "acronyms": "Acronyms",
+    "name": "Name",
+    "state": "State",
+    "city": "City",
+    "status": "Status",
+    "created": {
+      "success": "Bussines unit created successfully!",
+      "error": "Bussines unit couldn't be created!"
+    },
+    "updated": {
+      "success": "Bussines unit updated successfully!",
+      "error": "Bussines unit couldn't be updated!"
+    }
+  },
+  "expense": {
+    "expense": "Expense",
+    "statuses": {
+      "deleted": "Deleted",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "create": "Create expense",
+    "update": "Update expense",
+    "concept": "Concept",
+    "status": "Status",
+    "created": {
+      "success": "Expense created successfully!",
+      "error": "Expense couldn't be created!"
+    },
+    "updated": {
+      "success": "Expense updated successfully!",
+      "error": "Expense couldn't be updated!"
     }
   },
   "validations": {
