@@ -53,6 +53,11 @@
       "updated": {
         "success": "¡El país fue actualizado exitosamente!",
         "error": "¡El país no pudo ser actualizado!"
+      },
+      "deleted": {
+        "success": "¡El pais fue eliminado exitosamente!",
+        "error": "¡El pais no pudo ser eliminado!",
+        "question": "Desea eliminar el pais"
       }
     },
     "state": {
@@ -75,6 +80,11 @@
       "updated": {
         "success": "¡El estado fue actualizado exitosamente!",
         "error": "¡El estado no pudo ser actualizado!"
+      },
+      "deleted": {
+        "success": "¡El estado fue eliminado exitosamente!",
+        "error": "¡El estado no pudo ser eliminado!",
+        "question": "Desea eliminar el estado "
       }
     },
     "city": {
@@ -98,6 +108,11 @@
       "updated": {
         "success": "¡la ciudad fue actualizada exitosamente!",
         "error": "¡la ciudad no pudo ser actualizada!"
+      },
+      "deleted": {
+        "success": "¡la ciudad fue eliminada exitosamente!",
+        "error": "¡la ciudad no pudo ser eliminada!",
+        "question": "Desea eliminar la ciudad "
       }
     },
     "ally": {
@@ -181,6 +196,11 @@
       "updated": {
         "success": "¡La moneda fue actualizada exitosamente!",
         "error": "¡La moneda no pudo ser actualizada!"
+      },
+      "deleted": {
+        "success": "¡la moneda fue eliminada exitosamente!",
+        "error": "¡La moneda no pudo ser eliminada!",
+        "question": "Desea eliminar la moneda"
       }
     },
     "member": {

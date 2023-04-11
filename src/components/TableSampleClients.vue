@@ -70,6 +70,10 @@ const checked = (isChecked, client) => {
     );
   }
 };
+
+const eventDone = (option) => {
+  console.log('editar ______', option, checkedRows.value)
+}
 </script>
 
 <template>
@@ -83,6 +87,7 @@ const checked = (isChecked, client) => {
     title="Please confirm"
     button="danger"
     has-cancel
+    @confirm="eventDone"
   >
     <p>Lorem ipsum dolor sit amet <b>adipiscing elit</b></p>
     <p>This is sample modal</p>

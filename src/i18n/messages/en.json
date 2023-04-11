@@ -53,6 +53,38 @@
       "updated": {
         "success": "Country updated successfully!",
         "error": "Country couldn't be updated!"
+      },
+      "deleted": {
+        "success": "Country deleted successfully!",
+        "error": "Country couldn't be deleted!",
+        "question": "Do you want to delete country"
+      }
+    },
+    "city": {
+      "cities": "Ciudades",
+      "city": "Ciudad",
+      "statuses": {
+        "deleted": "Deleted",
+        "active": "Active",
+        "inactive": "Inactive"
+      },
+      "create": "Create city",
+      "update": "Update city",
+      "code": "Code",
+      "name": "Name",
+      "status": "Status",
+      "created": {
+        "success": "City created successfully!",
+        "error": "City couldn't be created!"
+      },
+      "updated": {
+        "success": "City updated successfully!",
+        "error": "City couldn't be updated!"
+      },
+      "deleted": {
+        "success": "City deleted successfully!",
+        "error": "City couldn't be deleted!",
+        "question": "Do you want to delete city"
       }
     },
     "state": {
@@ -76,6 +108,11 @@
       "updated": {
         "success": "State updated successfully!",
         "error": "State couldn't be updated!"
+      },
+      "deleted": {
+        "success": "¡State deleted successfully!",
+        "error": "¡State couldn't be deleted!",
+        "question": "Do you want to delete state "
       }
     },
     "Home": "Home",
@@ -161,6 +198,11 @@
     "updated": {
       "success": "Currency updated successfully!",
       "error": "Currency couldn't be updated!"
+    },
+    "deleted": {
+      "success": "Currency deleted successfully!",
+      "error": "Currency couldn't be updated!",
+      "question": "Do you want to delete currency"
     }
   },
   "member": {
@@ -284,6 +326,10 @@
     "updated": {
       "success": "Expense updated successfully!",
       "error": "Expense couldn't be updated!"
+    },
+    "deleted": {
+      "success": "Expense deleted successfully!",
+      "error": "Expense couldn't be deleted!"
     }
   },
   "validations": {

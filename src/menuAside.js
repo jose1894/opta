@@ -73,6 +73,11 @@ export default [
     ],
   },*/
   {
+    to: "/tables",
+    label: "Tables",
+    icon: mdiTable,
+  },
+  {
     to: "/forms",
     label: "Forms",
     icon: mdiSquareEditOutline,

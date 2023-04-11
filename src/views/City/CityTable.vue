@@ -2,18 +2,21 @@
 import { computed, ref, defineEmits } from "vue";
 import { useRouter } from "vue-router";
 import { useMainStore } from "@/stores/main";
-import { mdiEye, mdiFileEdit, mdiTrashCan } from "@mdi/js";
+import { useI18n } from "vue-i18n";
+import { mdiFileEdit, mdiTrashCan } from "@mdi/js";
+import { useToast } from 'vue-toastification';
 import CardBoxModal from "@/components/CardBoxModal.vue";
-import TableCheckboxCell from "@/components/TableCheckboxCell.vue";
 import BaseLevel from "@/components/BaseLevel.vue";
 import BaseButtons from "@/components/BaseButtons.vue";
 import BaseButton from "@/components/BaseButton.vue";
-import CountryFlag from 'vue-country-flag-next'
+import citiesService from '@/services/cities.service';
 
 defineProps({
   checkable: Boolean,
 });
 
+const { t } = useI18n();
+const toast = useToast()
 const router = useRouter();
 
 const mainStore = useMainStore();
@@ -25,6 +28,8 @@ const isModalActive = ref(false);
 
 const isModalDangerActive = ref(false);
 
+const selectedCities = ref([]);
+
 const perPage = computed(() => mainStore.cities.perPage);
 
 const currentPage = computed(() => mainStore.cities.page);
@@ -34,8 +39,6 @@ const checkedRows = ref([]);
 const itemsPaginated = computed(() =>
   items.value
 );
-
-console.log(mainStore?.cities, '>>>>>>>>>>>>>|||||||')
 
 const listStatusOption = (status = '') => {
   const statuses = {0: 'inactive',1: 'active',2: 'deleted'};
@@ -77,59 +80,48 @@ const remove = (arr, cb) => {
   return newArr;
 };
 
-const checked = (isChecked, city) => {
-  if (isChecked) {
-    checkedRows.value.push(city);
-  } else {
-    checkedRows.value = remove(
-      checkedRows.value,
-      (row) => row.id === city.id
-    );
-  }
-};
-
 const emit = defineEmits(['changePage', 'confirm', 'sort'])
-
-const confirmAction = () => {
-  console.log('confirm')
-  emit('confirm')
-}
-
 const changePage = (page) => {
   emit('changePage', page)
 }
 
 const edit = (id) => {
-  console.log('editar')
   router.push({name: 'CitiesUpdate', params: {id}})
+}
+
+const selectedItem = (state) => selectedCities.value = state
+
+const dataName = () => {
+  const { nombre } = selectedCities.value
+  return nombre
+}
+const successMessage = t("message.city.deleted.success")
+
+const deleteItem = async () => {
+  action()
+    .then(() => {
+      toast.success(successMessage);
+      emit('changePage', currentPage.value)      
+    })
+    .catch(err => {
+      toast.error(`${t("message.city.deleted.error")} ${err?.response?.data.msg}`)
+    })
+};
+
+const action = () => {
+  const { _id } = selectedCities.value
+  return citiesService.delete(_id);
 }
 </script>
 
 <template>
-  <CardBoxModal v-model="isModalActive" title="Sample modal">
-    <p>Lorem ipsum dolor sit amet <b>adipiscing elit</b></p>
-    <p>This is sample modal</p>
+   <CardBoxModal 
+      v-model="isModalDangerActive" 
+      title="Please confirm" 
+      button="danger" 
+      @confirm="deleteItem" has-cancel>
+    <strong>{{ $t('message.state.deleted.question') }} <b> {{ dataName() }} </b></strong> ?
   </CardBoxModal>
-
-  <CardBoxModal
-    v-model="isModalDangerActive"
-    title="Please confirm"
-    button="danger"
-    has-cancel
-  >
-    <p>Lorem ipsum dolor sit amet <b>adipiscing elit</b></p>
-    <p>This is sample modal</p>
-  </CardBoxModal>
-
-  <div v-if="checkedRows.length" class="p-3 bg-gray-100/50 dark:bg-slate-800">
-    <span
-      v-for="checkedRow in checkedRows"
-      :key="checkedRow.id"
-      class="inline-block px-2 py-1 rounded-sm mr-2 text-sm bg-gray-100 dark:bg-slate-700"
-    >
-      {{ checkedRow.name }}
-    </span>
-  </div>
 
   <table>
     <thead>
@@ -142,11 +134,7 @@ const edit = (id) => {
       </tr>
     </thead>
     <tbody>
-      <tr v-for="(city, index) in itemsPaginated" :key="city._id">
-        <TableCheckboxCell
-          v-if="checkable"
-          @checked="checked($event, state)"
-        />
+      <tr v-for="(city, index) in itemsPaginated" :key="city._id" @click="selectedItem(city)">
         <td :data-label="$t('message.city.code')">
           {{ city.codigo }} 
         </td>

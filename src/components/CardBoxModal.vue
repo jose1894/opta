@@ -25,6 +25,10 @@ const props = defineProps({
     type: [String, Number, Boolean],
     default: null,
   },
+  data: {
+    type: {},
+    default: null,
+  },
 });
 
 const emit = defineEmits(["update:modelValue", "cancel", "confirm"]);
@@ -36,6 +40,7 @@ const value = computed({
 
 const confirmCancel = (mode) => {
   value.value = false;
+  console.log(mode, props.modelValue)
   emit(mode);
 };
 

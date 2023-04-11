@@ -34,9 +34,9 @@ export default {
         })
     },
 
-    delete(pais) {
+    delete(paisId) {
         return new Promise((resolve, reject) => {
-            Service.delete(`${resource}/${pais.id}`, {}, { headers: authHeader() })
+            Service.delete(`${resource}${paisId}`, { headers: authHeader() })
                 .then((response) => resolve(response.data))
                 .catch((err) => reject(err))
         })
