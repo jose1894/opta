@@ -154,6 +154,11 @@
     "updated": {
       "success": "Ally updated successfully!",
       "error": "Ally couldn't be updated!"
+    },
+    "deleted": {
+      "success": "Ally deleted successfully!",
+      "error": "Ally couldn't be deleted!",
+      "question": "Do you want to ally "
     }
   },
   "cargo": {
@@ -176,6 +181,11 @@
     "updated": {
       "success": "Cargo updated successfully!",
       "error": "Cargo couldn't be updated!"
+    },
+    "deleted": {
+      "success": "Cargo deleted successfully!",
+      "error": "Cargo couldn't be deleted!",
+      "question": "Do you want to delete cargo "
     }
   },
   "currencies": {
@@ -255,8 +265,15 @@
     },
     "updated": {
       "success": "Member updated successfully!",
-      "error": "Member couldn't be updated!"
+      "error": "Member couldn't be updated!",
+      "question": "Do you want to delete member "
+    },
+    "deleted": {
+      "success": "Member deleted successfully!",
+      "error": "Member couldn't be deleted!",
+      "question": "Do you want to delete member"
     }
+
   },  
   "branch": {
     "branch": "Branch",
@@ -266,8 +283,8 @@
       "active": "Active",
       "inactive": "Inactive"
     },
-    "create": "Create ally",
-    "update": "Update ally",
+    "create": "Create branch",
+    "update": "Update branch",
     "code": "Code",
     "acronyms": "Acronyms",
     "name": "Name",
@@ -275,12 +292,17 @@
     "city": "City",
     "status": "Status",
     "created": {
-      "success": "Ally created successfully!",
-      "error": "Ally couldn't be created!"
+      "success": "Branch created successfully!",
+      "error": "Branch couldn't be created!"
     },
     "updated": {
-      "success": "Ally updated successfully!",
-      "error": "Ally couldn't be updated!"
+      "success": "Branch updated successfully!",
+      "error": "Branch couldn't be updated!"
+    },
+    "deleted": {
+      "success": "Branch deleted successfully!",
+      "error": "Branch couldn't be deleted!",
+      "question": "Do you want to delete branch"
     }
   },
   "bussinesUnit": {
@@ -306,6 +328,11 @@
     "updated": {
       "success": "Bussines unit updated successfully!",
       "error": "Bussines unit couldn't be updated!"
+    },
+    "deleted": {
+      "success": "Bussines unit deleted successfully!",
+      "error": "Bussines unit couldn't be deleted!",
+      "question": "Do ypu want to bussiness unit "
     }
   },
   "expense": {
@@ -329,7 +356,8 @@
     },
     "deleted": {
       "success": "Expense deleted successfully!",
-      "error": "Expense couldn't be deleted!"
+      "error": "Expense couldn't be deleted!",
+      "question": "Do ypu want to expense "
     }
   },
   "validations": {

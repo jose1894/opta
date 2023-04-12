@@ -5,7 +5,7 @@ import BaseButton from '@/components/BaseButton.vue';
 import CardBox from '@/components/CardBox.vue';
 import FormField from '@/components/FormField.vue';
 import FormControl from '@/components/FormControl.vue';
-import { mdiBallotOutline, mdiAccount, mdiMail, mdiGithub, mdiCodeBraces, mdiRenameBox, mdiListStatus } from "@mdi/js";
+import { mdiCodeBraces, mdiRenameBox, mdiListStatus } from "@mdi/js";
 import { required, maxLength } from '@/utils/i18n-validators';
 import useValidate from '@vuelidate/core';
 import countriesService from '@/services/countries.service';

@@ -34,9 +34,9 @@ export default {
         })
     },
 
-    delete(gasto) {
+    delete(expenseId) {
         return new Promise((resolve, reject) => {
-            Service.delete(`${resource}/${gasto.id}`, {}, { headers: authHeader() })
+            Service.delete(`${resource}/${expenseId}`, { headers: authHeader() })
                 .then((response) => resolve(response.data))
                 .catch((err) => reject(err))
         })

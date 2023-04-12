@@ -152,6 +152,11 @@
       "updated": {
         "success": "¡El aliado fue actualizado exitosamente!",
         "error": "¡El aliado no pudo ser actualizado!"
+      },
+      "deleted": {
+        "success": "¡El aliado fue eliminado exitosamente!",
+        "error": "¡El aliado no pudo ser eliminado!",
+        "question": "Desea eliminar el aliado "
       }
     },
     "cargo": {
@@ -174,6 +179,11 @@
       "updated": {
         "success": "¡La moneda fue actualizado exitosamente!",
         "error": "¡La moneda no pudo ser actualizado!"
+      },
+      "deleted": {
+        "success": "¡El cargo fue eliminado exitosamente!",
+        "error": "¡El cargo no pudo ser eliminado!",
+        "question": "Desea eliminar el cargo "
       }
     },
     "currencies": {
@@ -256,6 +266,11 @@
       "updated": {
         "success": "¡El miembro fue actualizado exitosamente!",
         "error": "¡El miembro no pudo ser actualizado!"
+      },
+      "deleted": {
+        "success": "¡El miembro fue eliminado exitosamente!",
+        "error": "¡El miembro no pudo ser eliminado!",
+        "question": "Desea eliminar el miembro "
       }
     },
     "branch": {
@@ -282,6 +297,11 @@
       "updated": {
         "success": "¡La sucursal fue actualizada exitosamente!",
         "error": "¡La sucursal no pudo ser actualizada!"
+      },
+      "deleted": {
+        "success": "¡La sucursal fue eliminada exitosamente!",
+        "error": "¡La sucursal no pudo ser eliminada!",
+        "question": "Desea eliminar la sucursal "
       }
     },
     "bussinesUnit": {
@@ -305,6 +325,11 @@
       "updated": {
         "success": "¡La unidad de negocio fue actualizada exitosamente!",
         "error": "¡La unidad de negocio no pudo ser actualizada!"
+      },
+      "deleted": {
+        "success": "¡La unidad de negocio fue eliminada exitosamente!",
+        "error": "¡La unidad de negocio no pudo ser eliminada!",
+        "question": "Desea eliminar la unidad "
       }
     },
     "expense": {
@@ -325,6 +350,11 @@
       "updated": {
         "success": "¡El gasto fue actualizado exitosamente!",
         "error": "¡El gasto no pudo ser actualizado!"
+      },
+      "deleted": {
+        "success": "¡El gasto fue eliminado exitosamente!",
+        "error": "¡El gasto no pudo ser eliminado!",
+        "question": "Desea eliminar el gasto "
       }
     },
     "Home": "Inicio",

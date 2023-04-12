@@ -34,9 +34,9 @@ export default {
         })
     },
 
-    delete(businessUnit) {
+    delete(businessUnitId) {
         return new Promise((resolve, reject) => {
-            Service.delete(`${resource}/${businessUnit.id}`, {}, { headers: authHeader() })
+            Service.delete(`${resource}/${businessUnitId}`, { headers: authHeader() })
                 .then((response) => resolve(response.data))
                 .catch((err) => reject(err))
         })

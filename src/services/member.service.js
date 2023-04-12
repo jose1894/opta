@@ -34,9 +34,9 @@ export default {
         })
     },
 
-    delete(miembro) {
+    delete(miembroId) {
         return new Promise((resolve, reject) => {
-            Service.delete(`${resource}/${miembro.id}`, {}, { headers: authHeader() })
+            Service.delete(`${resource}/${miembroId}`, { headers: authHeader() })
                 .then((response) => resolve(response.data))
                 .catch((err) => reject(err))
         })

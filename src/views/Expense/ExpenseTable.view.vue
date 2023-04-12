@@ -2,17 +2,22 @@
 import { computed, ref, defineEmits } from "vue";
 import { useRouter } from "vue-router";
 import { useMainStore } from "@/stores/main";
+import { useI18n } from "vue-i18n";
 import { mdiFileEdit, mdiTrashCan } from "@mdi/js";
+import { useToast } from 'vue-toastification';
 import CardBoxModal from "@/components/CardBoxModal.vue";
 import TableCheckboxCell from "@/components/TableCheckboxCell.vue";
 import BaseLevel from "@/components/BaseLevel.vue";
 import BaseButtons from "@/components/BaseButtons.vue";
 import BaseButton from "@/components/BaseButton.vue";
+import expenseService from '@/services/expense.service';
 
 defineProps({
   checkable: Boolean,
 });
 
+const { t } = useI18n();
+const toast = useToast()
 const router = useRouter();
 
 const mainStore = useMainStore();
@@ -27,6 +32,8 @@ const isModalDangerActive = ref(false);
 const perPage = computed(() => mainStore.expense.perPage);
 
 const currentPage = computed(() => mainStore.expense.page);
+
+const selectedExpense = ref([]);
 
 const checkedRows = ref([]);
 
@@ -62,35 +69,7 @@ const pagesList = computed(() => {
   return pagesList;
 });
 
-const remove = (arr, cb) => {
-  const newArr = [];
-
-  arr.forEach((item) => {
-    if (!cb(item)) {
-      newArr.push(item);
-    }
-  });
-
-  return newArr;
-};
-
-const checked = (isChecked, expense) => {
-  if (isChecked) {
-    checkedRows.value.push(expense);
-  } else {
-    checkedRows.value = remove(
-      checkedRows.value,
-      (row) => row.id === expense.id
-    );
-  }
-};
-
 const emit = defineEmits(['changePage', 'confirm', 'sort'])
-
-const confirmAction = () => {
-  console.log('confirm')
-  emit('confirm')
-}
 
 const changePage = (page) => {
   emit('changePage', page)
@@ -99,34 +78,41 @@ const changePage = (page) => {
 const edit = (id) => {
   router.push({name: 'ExpenseUpdate', params: {id}})
 }
+
+const selectedItem = (expense) => selectedExpense.value = expense
+
+const dataName = () => {
+  const { concepto } = selectedExpense.value
+  return concepto
+}
+const successMessage = t("message.expense.deleted.success")
+
+const deleteItem = async () => {
+  action()
+    .then(() => {
+      toast.success(successMessage);
+      emit('changePage', currentPage.value)      
+    })
+    .catch(err => {
+      toast.error(`${t("message.expense.deleted.error")} ${err?.response?.data.msg}`)
+    })
+};
+
+const action = () => {
+  const { _id } = selectedExpense.value
+  return expenseService.delete(_id);
+}
 </script>
 
 <template>
-  <CardBoxModal v-model="isModalActive" title="Sample modal">
-    <p>Lorem ipsum dolor sit amet <b>adipiscing elit</b></p>
-    <p>This is sample modal</p>
+  <CardBoxModal 
+      v-model="isModalDangerActive" 
+      title="Please confirm" 
+      button="danger" 
+      @confirm="deleteItem" 
+      has-cancel>
+    <strong>{{ $t('message.expense.deleted.question') }} <b> {{ dataName() }} </b></strong> ?
   </CardBoxModal>
-
-  <CardBoxModal
-    v-model="isModalDangerActive"
-    title="Please confirm"
-    button="danger"
-    has-cancel
-  >
-    <p>Lorem ipsum dolor sit amet <b>adipiscing elit</b></p>
-    <p>This is sample modal</p>
-  </CardBoxModal>
-
-  <div v-if="checkedRows.length" class="p-3 bg-gray-100/50 dark:bg-slate-800">
-    <span
-      v-for="checkedRow in checkedRows"
-      :key="checkedRow.id"
-      class="inline-block px-2 py-1 rounded-sm mr-2 text-sm bg-gray-100 dark:bg-slate-700"
-    >
-      {{ checkedRow.name }}
-    </span>
-  </div>
-
   <table>
     <thead>
       <tr>
@@ -136,11 +122,7 @@ const edit = (id) => {
       </tr>
     </thead>
     <tbody>
-      <tr v-for="(expense, index) in itemsPaginated" :key="expense._id">
-        <TableCheckboxCell
-          v-if="checkable"
-          @checked="checked($event, expense)"
-        />
+      <tr v-for="(expense, index) in itemsPaginated" :key="expense._id" @click="selectedItem(expense)">
         <td :data-label="$t('message.expense.concept')">
           {{ expense.concepto }} 
         </td>
