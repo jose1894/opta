@@ -54,7 +54,7 @@ const action = (city) =>{
 }
 
 onMounted(async () => { 
-  let listPaises = await countriesService.index();
+  let listPaises = await countriesService.getDelete({estado: 1});
   const optionCountry = listPaises?.paises || [];
   console.log(optionCountry)
   countriesList.value = optionCountry.map((country) => ({id: country._id, label: country.nombre})); 

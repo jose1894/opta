@@ -40,7 +40,7 @@ const inputType = computed(() =>
 </script>
 
 <template>
-  <label :class="type">
+  <label :class="type" class="switch-label">
     <input
       v-model="computedValue"
       :type="inputType"

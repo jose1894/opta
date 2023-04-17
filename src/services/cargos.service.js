@@ -10,6 +10,14 @@ export default {
                 .catch((err) => reject(err))
         })
     },
+    getDelete(data) {
+        return new Promise((resolve, reject) => {
+           
+            Service.get(`${resource}cargosDeleted`, {params: data}, { headers: authHeader() })
+                .then((response) => resolve(response.data))
+                .catch((err) => reject(err))
+        })
+    },
     create(cargo) {
         return new Promise((resolve, reject) => {
             Service.post(resource, cargo, { headers: authHeader() })

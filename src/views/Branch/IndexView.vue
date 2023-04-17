@@ -1,5 +1,5 @@
 <script setup>
-    import { ref } from 'vue';
+    import { ref, reactive  } from 'vue';
     import { mdiGlobeModel, mdiPlus } from '@mdi/js';  
     import CardBox from '@/components/CardBox.vue';      
     import BaseButton from '@/components/BaseButton.vue';
@@ -11,10 +11,15 @@
     import BranchTable from './BranchTable.view.vue';
     import { useMainStore } from '@/stores/main';
     import branchesService from '@/services/branches.service';
+    import FormField from "@/components/FormField.vue";
+    import FormCheckRadioGroup from "@/components/FormCheckRadioGroup.vue";
 
     const mainStore = useMainStore();
     const page = ref(1);
     const perPage = ref(10);
+    const customElementsForm = reactive({
+        switch: [],
+    });
     const getBranches = (data) => {
         branchesService.index(data).then(response => {
             mainStore.branches = response
@@ -26,12 +31,34 @@
     getBranches({page: page.value})
 
     const onChangePage = (page) => {
-        getBranches({page})
+        endPointUse({ page })
+    }
+    
+    const onSortPage = (sortBy, sortDesc) => {
+        endPointUseSort({ sortBy, sortDesc });
     }
 
-    const onSortPage = (sortBy,sortDesc) => {
-        getBranches({sortBy,sortDesc});
-    }  
+    const onChangeSwtch = () => {
+        endPointUse({ page: page.value })
+    }
+
+    const getBranchesDelete = (data) => {
+        branchesService.getDelete(data).then(response => {
+            mainStore.branches = response
+            page.value = response.page
+            perPage.value = response.perPage
+        })
+    }
+
+    const endPointUse = (page) => {
+        customElementsForm.switch.length === 0 ? getBranches({ page }) :
+            getBranchesDelete({ page })
+    }
+
+const endPointUseSort = (sortBy, sortDesc) => {
+  customElementsForm.switch.length === 0 ? getBranches({ sortBy, sortDesc }) :
+    getBranchesDelete({ sortBy, sortDesc })
+}  
 </script>
 <template>
   <LayoutAuthenticated>
@@ -47,6 +74,14 @@
                 small
             />
         </SectionTitleLineWithButton>
+        <FormField label="">
+            <FormCheckRadioGroup 
+                v-model="customElementsForm.switch" 
+                name="sample-switch" 
+                type="switch"
+                :options="{ one: 'Mostrar registros eliminados' }" 
+                @change="onChangeSwtch" />
+        </FormField>
         <SectionTitleLineWithButton v-if="!mainStore?.branches" :icon="mdiTableOff" title="Empty variation"/>  
         <NotificationBar v-if="!mainStore?.branches" color="danger" :icon="mdiTableOff">
             <b>{{ $t('message.empty_table') }}.</b> When there's nothing to show

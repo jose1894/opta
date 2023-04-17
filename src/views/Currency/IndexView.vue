@@ -1,9 +1,10 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, reactive } from 'vue';
 import {  mdiGlobeModel, mdiPlus, mdiTableOff } from '@mdi/js';
 import LayoutAuthenticated from '@/layouts/LayoutAuthenticated.vue'
 import SectionMain from '@/components/SectionMain.vue';
 import BaseButton from '@/components/BaseButton.vue';
+import FormField from "@/components/FormField.vue";
 import SectionTitleLineWithButton from '@/components/SectionTitleLineWithButton.vue';
 import NotificationBar from '@/components/NotificationBar.vue';
 import CardBox from '@/components/CardBox.vue';
@@ -11,29 +12,54 @@ import CardBoxComponentEmpty from '@/components/CardBoxComponentEmpty.vue';
 import CurrencyTable from './CurrencyTable.vue';
 import { useMainStore } from '@/stores/main';
 import currenciesService from '@/services/currencies.service'
+import FormCheckRadioGroup from "@/components/FormCheckRadioGroup.vue";
 
 const mainStore = useMainStore();
 const page = ref(1);
 const perPage = ref(10);
-const currencies = ref([]);
+const customElementsForm = reactive({
+  switch: [],
+});
 const getCurrencies = (data) => {
     currenciesService.index(data).then(response => {        
     mainStore.currencies = response
     page.value = response.page
     perPage.value = response.perPage
-    console.log(response, mainStore.currencies)
   })
 }
 
 getCurrencies({page: page.value})
 
 const onChangePage = (page) => {
-  getCurrencies({page})
+  endPointUse({page})
 }
 
 const onSortPage = (sortBy,sortDesc) => {
-  getCurrencies({sortBy,sortDesc});
+  endPointUseSort({sortBy,sortDesc});
 }
+
+const onChangeSwtch = () => {
+  endPointUse({ page: page.value })
+}
+
+const getCurrenciesDelete = (data) => {
+  currenciesService.getDelete(data).then(response => {
+    mainStore.currencies = response
+    page.value = response.page
+    perPage.value = response.perPage
+  })
+}
+
+const endPointUse = (page) => {
+  customElementsForm.switch.length === 0 ? getCurrencies({ page }) :
+    getCurrenciesDelete({ page })
+}
+
+const endPointUseSort = (sortBy, sortDesc) => {
+  customElementsForm.switch.length === 0 ? getCountries({ sortBy, sortDesc }) :
+    getCurrenciesDelete({ sortBy, sortDesc })
+}
+
 
 </script>
 <template>
@@ -51,6 +77,14 @@ const onSortPage = (sortBy,sortDesc) => {
           small
         />
       </SectionTitleLineWithButton>
+
+      <FormField label="">
+        <FormCheckRadioGroup 
+            v-model="customElementsForm.switch" 
+            name="sample-switch" 
+            type="switch"
+          :options="{ one: 'Mostrar registros eliminados' }" @change="onChangeSwtch" />
+      </FormField>
 
       <SectionTitleLineWithButton v-if="!mainStore?.currencies" :icon="mdiTableOff" title="Empty variation" />
 

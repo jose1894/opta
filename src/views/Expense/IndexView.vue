@@ -1,5 +1,5 @@
 <script setup>
-    import { ref } from 'vue';
+    import { ref, reactive } from 'vue';
     import { mdiGlobeModel, mdiPlus } from '@mdi/js';  
     import CardBox from '@/components/CardBox.vue';      
     import BaseButton from '@/components/BaseButton.vue';
@@ -11,10 +11,15 @@
     import ExpenseTable from './ExpenseTable.view.vue';
     import { useMainStore } from '@/stores/main';
     import expenseService from '@/services/expense.service';
+    import FormField from "@/components/FormField.vue";
+    import FormCheckRadioGroup from "@/components/FormCheckRadioGroup.vue";
 
     const mainStore = useMainStore();
     const page = ref(1);
     const perPage = ref(10);
+    const customElementsForm = reactive({
+        switch: [],
+    });
     const getExpense = (data) => {
         expenseService.index(data).then(response => {
             mainStore.expense = response
@@ -26,12 +31,35 @@
     getExpense({page: page.value})
 
     const onChangePage = (page) => {
-        getExpense({page})
+        endPointUse({ page })
     }
 
-    const onSortPage = (sortBy,sortDesc) => {
-        getExpense({sortBy,sortDesc});
-    }  
+    const onSortPage = (sortBy, sortDesc) => {
+        endPointUseSort({ sortBy, sortDesc });
+    }
+
+    const onChangeSwtch = () => {
+        endPointUse({ page: page.value })
+    }
+
+    const getExpenseDelete = (data) => {
+        expenseService.getDelete(data).then(response => {
+            mainStore.expense = response
+            page.value = response.page
+            perPage.value = response.perPage
+        })
+    }
+
+    const endPointUse = (page) => {
+        customElementsForm.switch.length === 0 ? getExpense({ page }) :
+            getExpenseDelete({ page })
+    }
+
+    const endPointUseSort = (sortBy, sortDesc) => {
+        customElementsForm.switch.length === 0 ? getExpense({ sortBy, sortDesc }) :
+        getExpenseDelete({ sortBy, sortDesc })
+    }
+
 </script>
 <template>
   <LayoutAuthenticated>
@@ -47,6 +75,13 @@
                 small
             />
         </SectionTitleLineWithButton>
+        <FormField label="">
+        <FormCheckRadioGroup 
+                v-model="customElementsForm.switch" 
+                name="sample-switch" 
+                type="switch" 
+                :options="{ one: 'Mostrar registros eliminados' }" @change="onChangeSwtch" />
+        </FormField>
         <SectionTitleLineWithButton v-if="!mainStore?.expense" :icon="mdiTableOff" title="Empty variation"/>  
         <NotificationBar v-if="!mainStore?.expense" color="danger" :icon="mdiTableOff">
             <b>{{ $t('message.empty_table') }}.</b> When there's nothing to show

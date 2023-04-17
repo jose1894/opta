@@ -54,7 +54,7 @@ const activeTab = (i) => {
     tab.value = i;
 }
 const listTabs = [
-    { title: 'Miembro' },
+    { title: 'Membresia' },
     { title: 'Contacto' },
     { title: 'Datos del softwere y  presupuesto' }
 ]
@@ -272,7 +272,7 @@ const submit = async () => {
         action(member)
             .then(() => {
                 toast.success(successMessage);
-                router.push('/setup/members');
+                router.push('/setup/memberships');
             })
             .catch(err => {
                 if (err.response?.data?.msg) {

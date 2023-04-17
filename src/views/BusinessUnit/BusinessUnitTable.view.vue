@@ -163,6 +163,7 @@ const action = () => {
               :icon="mdiTrashCan"
               small
               @click="isModalDangerActive = true"
+              v-show="bussinesUnit.estado !== 2"
             />
           </BaseButtons>
         </td>

@@ -31,7 +31,7 @@ const selectOptions = [
 
 const state = ref({
   _id: '',
-  codigo: "00",
+  codigo: "",
   nombre: "",
   estado: selectOptions[0],
 });
@@ -76,7 +76,9 @@ const submit = async () => {
       })
       .catch(err => {
         if (err.response.data?.msg){
-          toast.error(`${t("message.country.created.error")} ${err.response.data.msg}`)
+          const  { estado = 1  } = err.response?.data?.data || { estado: 1  }
+          estado === 1 ? toast.error(`${t("message.country.created.error")} ${err.response.data.msg}`) :
+                         toast.error(`${t("message.country.created.errorStatus")}`)
           return
         }
 

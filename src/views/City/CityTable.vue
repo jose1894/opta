@@ -157,6 +157,7 @@ const action = () => {
             />
 
             <BaseButton
+              v-show="city.estado !== 2"
               color="danger"
               :icon="mdiTrashCan"
               small

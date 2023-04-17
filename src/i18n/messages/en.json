@@ -48,7 +48,8 @@
       "status": "Status",
       "created": {
         "success": "Country created successfully!",
-        "error": "Country couldn't be created!"
+        "error": "Country couldn't be created!",
+        "errorStatus": "¡Country already exists, but it is inactive!"
       },
       "updated": {
         "success": "Country updated successfully!",

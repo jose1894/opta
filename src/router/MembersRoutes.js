@@ -1,27 +1,27 @@
-const url = "/setup/members";
+const url = "/setup/memberships";
 export default [
   {
     meta: {
-      title: "Members", requiresAuth: true,
+      title: "Memberships", requiresAuth: true,
     },
     path: url,
-    name: "Members",
+    name: "Memberships",
     component: () => import("@/views/Member/IndexView.vue"),
   },
   {
     meta: {
-      title: "Member - create ", requiresAuth: true,
+      title: "Membership - create ", requiresAuth: true,
     },
     path: `${url}/create`,
-    name: "MembersCreate",
+    name: "MembershipsCreate",
     component: () => import("@/views/Member/CreateView.vue"),
   },
   {
     meta: {
-      title: "Member - update ", requiresAuth: true,
+      title: "Membership - update ", requiresAuth: true,
     },
     path: `${url}/update/:id`,
-    name: "MembersUpdate",
+    name: "MembershipsUpdate",
     component: () => import("@/views/Member/UpdateView.vue"),
   },
 

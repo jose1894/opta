@@ -89,7 +89,7 @@ const deleteItem = async () => {
   action()
     .then(() => {
       toast.success(successMessage);
-      emit('changePage', currentPage.value)      
+      emit('changePage', currentPage.value)
     })
     .catch(err => {
       toast.error(`${t("message.country.deleted.error")} ${err?.response?.data.msg}`)
@@ -103,7 +103,6 @@ const action = () => {
 </script>
 
 <template>
-
   <CardBoxModal v-model="isModalDangerActive" title="Please confirm" button="danger" @confirm="deleteItem" has-cancel>
     <strong>{{ $t('message.country.deleted.question') }} <b> {{ dataName() }} </b></strong> ?
   </CardBoxModal>
@@ -133,7 +132,7 @@ const action = () => {
           <BaseButtons type="justify-start lg:justify-end" no-wrap>
             <BaseButton color="info" :icon="mdiFileEdit" small @click="edit(country._id)" />
 
-            <BaseButton color="danger" :icon="mdiTrashCan" small @click="isModalDangerActive = true" />
+            <BaseButton v-show="country.estado !== 2" color="danger" :icon="mdiTrashCan" small @click="isModalDangerActive = true" />
           </BaseButtons>
         </td>
       </tr>
@@ -149,3 +148,8 @@ const action = () => {
     </BaseLevel>
   </div>
 </template>
+<style scoped>
+label {
+  display: none;
+}
+</style>

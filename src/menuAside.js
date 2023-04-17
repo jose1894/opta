@@ -71,7 +71,7 @@ export default [
         label: "Item Two",
       },
     ],
-  },*/
+  },
   {
     to: "/tables",
     label: "Tables",
@@ -91,7 +91,7 @@ export default [
     to: "/login",
     label: "Login",
     icon: mdiLock,
-  },
+  },*/
   {
     label: "SetUp",
     icon: mdiCog,
@@ -121,8 +121,8 @@ export default [
         to: "/setup/allies",
       },
       {
-        label: "Members",
-        to: "/setup/members",
+        label: "Memberships",
+        to: "/setup/memberships",
       },
       {
         label: "Branches",

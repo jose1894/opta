@@ -10,6 +10,13 @@ export default {
                 .catch((err) => reject(err))
         })
     },
+    getDelete(data) {
+        return new Promise((resolve, reject) => {
+            Service.get(`${resource}/membresiasDelete`, {params: data}, { headers: authHeader() })
+                .then((response) => resolve(response.data))
+                .catch((err) => reject(err))
+        })
+    },
     create(miembro) {
         return new Promise((resolve, reject) => {
             Service.post(resource, miembro, { headers: authHeader() })
@@ -34,9 +41,9 @@ export default {
         })
     },
 
-    delete(miembroId) {
+    delete(menbresiaId) {
         return new Promise((resolve, reject) => {
-            Service.delete(`${resource}/${miembroId}`, { headers: authHeader() })
+            Service.delete(`${resource}/${menbresiaId}`, { headers: authHeader() })
                 .then((response) => resolve(response.data))
                 .catch((err) => reject(err))
         })

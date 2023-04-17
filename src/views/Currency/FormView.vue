@@ -81,11 +81,13 @@ const submit = async () => {
         }
 
         if  (err.response.data?.errors){
-          const errors = err.response.data.errors;
-          let errorStr = '';
-          debugger
-          for(let attr of errors){
-          }
+          const errors = err.response.data.errors;          
+          const result = Object.keys(errors).map(function(key, index) {
+              const error = errors[key]
+              return error.length > 1 ? error.map(i => error[i]).join() : error[0];
+          });
+          let errorStr = result.length > 1 ? result.map(i => result[i]).join() : result[0];
+          toast.error(`${errorStr}`)
         }
       })
     }else{

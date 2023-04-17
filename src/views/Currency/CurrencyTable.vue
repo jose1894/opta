@@ -110,6 +110,7 @@ const deleteItem = async () => {
 
 const action = () => {
   const { _id } = selectedCurrency.value
+  console.log(_id)
   return currenciesService.delete(_id);
 }
 </script>
@@ -153,6 +154,7 @@ const action = () => {
             />
 
             <BaseButton
+              v-show="currency.estado !== 2"
               color="danger"
               :icon="mdiTrashCan"
               small

@@ -1,40 +1,64 @@
 <script setup>
-    import { ref } from 'vue';
+    import { ref, reactive  } from 'vue';
     import { mdiGlobeModel, mdiPlus } from '@mdi/js';  
     import CardBox from '@/components/CardBox.vue';      
     import BaseButton from '@/components/BaseButton.vue';
     import SectionMain from '@/components/SectionMain.vue';
     import NotificationBar from '@/components/NotificationBar.vue';
     import LayoutAuthenticated from '@/layouts/LayoutAuthenticated.vue';
+    import FormCheckRadioGroup from "@/components/FormCheckRadioGroup.vue";
     import CardBoxComponentEmpty from '@/components/CardBoxComponentEmpty.vue';
-    import SectionTitleLineWithButton from '@/components/SectionTitleLineWithButton.vue';
-    import StateTable from './StateTable.vue';
-    import { useMainStore } from '@/stores/main';
+    import SectionTitleLineWithButton from '@/components/SectionTitleLineWithButton.vue';  
     import stateService from '@/services/states.services'
+    import FormField from "@/components/FormField.vue";    
+    import { useMainStore } from '@/stores/main';
+    import StateTable from './StateTable.vue';
 
 
     const mainStore = useMainStore();
     const page = ref(1);
     const perPage = ref(10);
-    const states = ref([]);
+    const customElementsForm = reactive({
+        switch: [],
+    });
     const getStates = (data) => {
         stateService.index(data).then(response => {
             mainStore.states = response
             page.value = response.page
             perPage.value = response.perPage
-            console.log(response, mainStore.states?.estados?.length)
         })
     }
 
     getStates({page: page.value})
 
+    const onChangeSwtch = () => {
+        endPointUse({ page: page.value })
+    }
+
     const onChangePage = (page) => {
-        getStates({page})
+        endPointUse({page})
     }
 
     const onSortPage = (sortBy,sortDesc) => {
-        getStates({sortBy,sortDesc});
+        endPointUseSort({sortBy,sortDesc});
     }
+
+    const getStatesDelete = (data) => {
+        stateService.getDelete(data).then(response => {
+            mainStore.states = response
+            page.value = response.page
+            perPage.value = response.perPage
+        })
+    }
+    const endPointUse = (page) => {
+        customElementsForm.switch.length === 0 ? getStates({ page }) :
+        getStatesDelete({ page })
+    }
+
+    const endPointUseSort = (sortBy, sortDesc) => {
+        customElementsForm.switch.length === 0 ? getStates({ sortBy, sortDesc }) :
+        getStatesDelete({ sortBy, sortDesc })
+    }   
 </script>
 <template>
   <LayoutAuthenticated>
@@ -45,11 +69,18 @@
             <BaseButton
                 to="states/create"
                 :icon="mdiPlus"
-                label="Add new"
+                :label="$t('message.add_new')"
                 color="success"
                 small
             />
         </SectionTitleLineWithButton>
+        <FormField label="">
+        <FormCheckRadioGroup 
+            v-model="customElementsForm.switch" 
+            name="sample-switch" 
+            type="switch"
+            :options="{ one: 'Mostrar registros eliminados' }" @change="onChangeSwtch" />
+        </FormField>
         <SectionTitleLineWithButton v-if="!mainStore?.states" :icon="mdiTableOff" title="Empty variation" />
         <NotificationBar v-if="!mainStore?.states" color="danger" :icon="mdiTableOff">
             <b>{{ $t('message.empty_table') }}.</b> When there's nothing to show

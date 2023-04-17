@@ -48,7 +48,8 @@
       "status": "Status",
       "created": {
         "success": "¡El país fue creado exitosamente!",
-        "error": "¡El país no pudo ser creado!"
+        "error": "¡El país no pudo ser creado!",
+        "errorStatus": "¡El registro ya existe, pero esta inactivo!"
       },
       "updated": {
         "success": "¡El país fue actualizado exitosamente!",
@@ -177,8 +178,8 @@
         "error": "¡El cargo no pudo ser creado!"
       },
       "updated": {
-        "success": "¡La moneda fue actualizado exitosamente!",
-        "error": "¡La moneda no pudo ser actualizado!"
+        "success": "¡El cargo fue actualizado exitosamente!",
+        "error": "¡El cargo no pudo ser actualizado!"
       },
       "deleted": {
         "success": "¡El cargo fue eliminado exitosamente!",
@@ -214,8 +215,8 @@
       }
     },
     "member": {
-      "members": "Miembros",
-      "member": "Miembro",
+      "memberships": "Membresias",
+      "membership": "Membresia",
       "ally": "Aliado",
       "id": "ID Fiscal",
       "statuses": {
@@ -223,8 +224,8 @@
         "active": "Activo",
         "inactive": "Inactivo"
       },
-      "create": "Crear miembro",
-      "update": "Modificar miembro",
+      "create": "Crear membresia",
+      "update": "Modificar membresia",
       "code": "Código",
       "name": "Nombre",
       "status": "Status",
@@ -260,17 +261,17 @@
       "yes": "Si",
       "no": "No",
       "created": {
-        "success": "¡El miembro fue creado exitosamente!",
-        "error": "¡El miembro no pudo ser creado!"
+        "success": "¡La menbresia fue creada exitosamente!",
+        "error": "¡La menbresia no pudo ser creada!"
       },
       "updated": {
-        "success": "¡El miembro fue actualizado exitosamente!",
-        "error": "¡El miembro no pudo ser actualizado!"
+        "success": "¡La menbresia fue actualizada exitosamente!",
+        "error": "¡La menbresia no pudo ser actualizada!"
       },
       "deleted": {
-        "success": "¡El miembro fue eliminado exitosamente!",
-        "error": "¡El miembro no pudo ser eliminado!",
-        "question": "Desea eliminar el miembro "
+        "success": "¡La menbresia fue eliminada exitosamente!",
+        "error": "¡La menbresia no pudo ser eliminada!",
+        "question": "Desea eliminar la mmbresia "
       }
     },
     "branch": {

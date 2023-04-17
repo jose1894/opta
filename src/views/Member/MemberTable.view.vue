@@ -88,7 +88,7 @@ const changePage = (page) => {
 }
 
 const edit = (id) => {
-  router.push({name: 'MembersUpdate', params: {id}})
+  router.push({name: 'MembershipsUpdate', params: {id}})
 }
 
 const selectedItem = (country) => selectedMember.value = country
@@ -130,7 +130,8 @@ const action = () => {
       <tr>
         <th @click="sort('codigo')">{{ $t('message.member.code') }}</th>        
         <th @click="sort('nambre')">{{ $t('message.member.name') }}</th>
-        <th @click="sort('idFiscal')">{{ $t('message.member.id') }}</th>
+        <th @click="sort('iDFiscal')">{{ $t('message.member.id') }}</th>
+        <th @click="sort('estado')">{{ $t('message.member.status') }}</th>
         <th />
       </tr>
     </thead>
@@ -143,8 +144,11 @@ const action = () => {
           {{ member.nombre }}
         </td>
         <td :data-label="$t('message.member.id')">
-          {{ member.nombre }}
-        </td>       
+          {{ member.iDFiscal }}
+        </td> 
+        <td :data-label="$t('message.member.status')">
+          {{ $t(`message.member.statuses.${listStatusOption(member.estado)}`) }}
+        </td>      
         <td class="before:hidden lg:w-1 whitespace-nowrap">
           <BaseButtons type="justify-start lg:justify-end" no-wrap>
             <BaseButton
@@ -159,6 +163,7 @@ const action = () => {
               :icon="mdiTrashCan"
               small
               @click="isModalDangerActive = true"
+              v-show="member.estado !== 2"
             />
           </BaseButtons>
         </td>

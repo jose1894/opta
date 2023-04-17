@@ -132,6 +132,7 @@ const action = () => {
         <th @click="sort('codigo')">{{ $t('message.ally.code') }}</th>        
         <th @click="sort('nambre')">{{ $t('message.ally.name') }}</th>
         <th @click="sort('idFiscal')">{{ $t('message.ally.id') }}</th>
+        <th @click="sort('estado')">{{ $t('message.ally.status') }}</th>
         <th />
       </tr>
     </thead>
@@ -141,12 +142,15 @@ const action = () => {
         <td :data-label="$t('message.ally.code')">
           {{ ally.codigo }} 
         </td>
-        <td :data-label="$t('message.ally.state')">
+        <td :data-label="$t('message.ally.name')">
           {{ ally.nombre }}
         </td>
         <td :data-label="$t('message.ally.id')">
-          {{ ally.nombre }}
-        </td>       
+          {{ ally.iDFiscal }}
+        </td>
+        <td :data-label="$t('message.ally.status')">
+          {{ $t(`message.ally.statuses.${listStatusOption(ally.estado)}`) }}
+        </td>        
         <td class="before:hidden lg:w-1 whitespace-nowrap">
           <BaseButtons type="justify-start lg:justify-end" no-wrap>
             <BaseButton
@@ -161,6 +165,7 @@ const action = () => {
               :icon="mdiTrashCan"
               small
               @click="isModalDangerActive = true"
+              v-show="ally.estado !== 2"
             />
           </BaseButtons>
         </td>

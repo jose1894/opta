@@ -140,7 +140,7 @@ const action = () => {
         <td :data-label="$t('message.branch.code')">
           {{ branch.codigo }} 
         </td>
-        <td :data-label="$t('message.branch.state')">
+        <td :data-label="$t('message.branch.name')">
           {{ branch.nombre }}
         </td>
         <td :data-label="$t('message.branch.acronyms')">
@@ -163,6 +163,7 @@ const action = () => {
               :icon="mdiTrashCan"
               small
               @click="isModalDangerActive = true"
+              v-show="branch.estado !== 2"
             />
           </BaseButtons>
         </td>

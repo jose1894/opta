@@ -34,6 +34,7 @@ const props = defineProps({
     state: {}
 })
 
+const { t } = useI18n();
 const dateValue = ref([])
 let countriesList = ref([]);
 let statesList = ref([]);
@@ -49,6 +50,12 @@ const listTabs = [
     { title: 'Contacto' },
     { title: 'Referidos' }
 ]
+
+const selectOptions = [
+    { id: 1, label: t('message.ally.statuses.active') },
+    { id: 0, label: t('message.ally.statuses.inactive') },
+    { id: 2, label: t('message.ally.statuses.deleted') },
+];
 
 const ally = ref({
     _id: '',
@@ -67,11 +74,9 @@ const ally = ref({
     telefonoCelu: "",
     correoContact: "",
     referido: [],
+    estado: selectOptions[0],
 });
 
-
-
-const { t } = useI18n();
 const toast = useToast();
 const route = useRoute();
 const router = useRouter();
@@ -95,17 +100,15 @@ onMounted(async () => {
     if (props.path === 'update') {
         const res = await alliesService.read(route.params);
         ally.value = res.data
-       const  { cargo } = res.data
+       const  { cargo, estado } = res.data
         ally.value.cargo = { id: cargo._id, label: cargo.nombre }
         ally.value.pais = _asignarOpcionesAlSelect(res.data?.pais)
+        ally.value.estado = selectOptions.filter(status => status.id === estado)[0]
         selectedPais(ally.value.pais, res.data)
     }
 });
 
 const _asignarOpcionesAlSelect = (data) => { return { id: data._id, label: data.nombre } };
-
-const remove = (i) => ally.value.referidos.splice(i, 1);
-const addItem = () => ally.value.referidos = [...ally.value.referidos, refereridoModel];
 
 const selectedPais = (data, response = {} ) => {
     const { id } = data;
@@ -161,7 +164,8 @@ const action = (ally) => {
         cargo,
         telefonoOfic,
         telefonoCelu,
-        correoContact } = ally.value;
+        correoContact,
+        estado } = ally.value;
 
     const data = {
         _id,
@@ -178,7 +182,8 @@ const action = (ally) => {
         cargo: cargo.id,
         telefonoOfic,
         telefonoCelu,
-        correoContact
+        correoContact,
+        estado: estado.id
     }
     if (props.path === 'create') {
         return alliesService.create(data)
@@ -203,12 +208,16 @@ const submit = async () => {
                     return
                 }
 
-                if (err.response.data?.errors) {
-                    const errors = err.response.data.errors;
-                    let errorStr = '';
-                    debugger
-                    for (let attr of errors) {
-                    }
+                if  (err.response.data?.errors){
+                    const errors = err.response.data.errors;          
+                    const result = Object.keys(errors).map(function(key, index) {
+                        const error = errors[key]
+                        return error.length > 1 ? error.map(i => error[i]).join() : error[0];
+                    });
+                    console.log(result.length, result)
+                    let errorStr = result.length > 1 ? result.map(i => result[i]).join() : result[0];
+                    //toast.error(`${errorStr}`)
+                    toast.error(`Error al procesar la data`)
                 }
             })
     } else {
@@ -246,13 +255,16 @@ const submit = async () => {
                                     <FormControl v-model="ally.ciudad" :icon="mdiListStatus" :options="citiesList" />
                                 </FormField>
                             </div>
-                            <div class="grid md:grid-cols-2 gap-2">
+                            <div class="grid md:grid-cols-3 gap-3">
                                 <FormField :label="$t('message.ally.address')">
                                     <FormControl v-model="ally.calle" :icon="mdiRenameBox" />
                                 </FormField>
                                 <FormField :label="$t('message.ally.paginaWeb')"
                                     :help="v$?.paginaWeb?.$errors[0]?.$message">
                                     <FormControl v-model="ally.paginaWeb" :icon="mdiRenameBox" />
+                                </FormField>
+                                <FormField :label="$t('message.ally.status')">
+                                    <FormControl v-model="ally.estado" :icon="mdiListStatus" :options="selectOptions" />
                                 </FormField>
                             </div>
                         </div>
