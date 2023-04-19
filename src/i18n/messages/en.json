@@ -189,6 +189,60 @@
       "question": "Do you want to delete cargo "
     }
   },
+  "profileAction": {
+    "profileAction": "Profile action",
+    "profileActions": "Profile actions",
+    "statuses": {
+      "deleted": "Deleted",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "create": "Create profile action",
+    "update": "Update profile action",
+    "code": "Code",
+    "description": "Description",
+    "status": "Status",
+    "created": {
+      "success": "Profile action created successfully!",
+      "error": "Profile action couldn't be created!"
+    },
+    "updated": {
+      "success": "Profile action updated successfully!",
+      "error": "Profile action couldn't be updated!"
+    },
+    "deleted": {
+      "success": "Profile action deleted successfully!",
+      "error": "Profile action couldn't be deleted!",
+      "question": "Do you want to delete profile action "
+    }
+  }, 
+  "itemMenu": {
+    "itemMenu": "Item menu",
+    "ItemsMenu": "Items menu",
+    "statuses": {
+      "deleted": "Deleted",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "create": "Create item menu",
+    "update": "Update item menu",
+    "code": "Code",
+    "description": "Description",
+    "status": "Status",
+    "created": {
+      "success": "Item menu created successfully!",
+      "error": "Item menu couldn't be created!"
+    },
+    "updated": {
+      "success": "Item menu updated successfully!",
+      "error": "Item menu couldn't be updated!"
+    },
+    "deleted": {
+      "success": "Item menu deleted successfully!",
+      "error": "Item menu couldn't be deleted!",
+      "question": "Do you want to delete item menu "
+    }
+  }, 
   "currencies": {
     "currency": "Currency",
     "currencies": "Currencies",

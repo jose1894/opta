@@ -10,7 +10,8 @@ import CurrenciesRoutes from "./CurrenciesRoutes.js";
 import BranchesRoutes from "./BranchesRoutes.js";
 import BusinessUnitRoutes from "./BusinessUnit.Routes.js";
 import ExpenseRoutes from "./ExpenseRoutes.js";
-
+import ProfileActionsRoutes from "./ProfileActionsRoutes.js";
+import ItemsMenuRoutes from "./ItemsMenuRoutes.js";
 
 export default [
   {
@@ -96,5 +97,7 @@ export default [
   ...CurrenciesRoutes,
   ...BranchesRoutes,
   ...BusinessUnitRoutes,
-  ...ExpenseRoutes
+  ...ExpenseRoutes,
+  ...ProfileActionsRoutes,
+  ...ItemsMenuRoutes
 ];

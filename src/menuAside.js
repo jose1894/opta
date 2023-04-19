@@ -135,7 +135,15 @@ export default [
       {
         label: "Expense",
         to: "/setup/expense",
-      }  
+      },
+      {
+        label: "Profile action",
+        to: "/setup/profileActions",
+      },
+      {
+        label: "Items menu",
+        to: "/setup/itemsMenu",
+      }      
     ],
   },
   {

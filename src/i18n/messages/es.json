@@ -358,6 +358,60 @@
         "question": "Desea eliminar el gasto "
       }
     },
+    "profileAction": {
+      "profileAction": "Acción de perfil",
+      "profileActions": "Acción de perfiles",
+      "statuses": {
+        "deleted": "Borrado",
+        "active": "Activo",
+        "inactive": "Inactivo"
+      },
+      "create": "Crear acción de perfil",
+      "update": "Actualizar acción de perfil",
+      "code": "Código",
+      "description": "Descripción",
+      "status": "Estado",
+      "created": {
+        "success": "¡La acción de perfil fue creada exitosamente!",
+        "error": "¡La acción de perfil no pudo ser creada!"
+      },
+      "updated": {
+        "success": "¡La acción de perfil fue actualizada exitosamente!",
+        "error": "¡La acción de perfil no pudo ser actualizada!"
+      },
+      "deleted": {
+        "success": "¡La acción de perfil fue eliminada exitosamente!",
+        "error": "¡La acción de perfil no pudo ser eliminada!",
+        "question": "Desea eliminar la acción de perfil "
+      }
+    },
+    "itemMenu": {
+      "itemMenu": "Item menú",
+      "ItemsMenu": "Ítems menú",
+      "statuses": {
+        "deleted": "Borrado",
+        "active": "Activo",
+        "inactive": "Inactivo"
+      },
+      "create": "Crear ítem menú",
+      "update": "Actualizar ítem menú",
+      "code": "Código",
+      "description": "Descripción",
+      "status": "Estado",
+      "created": {
+        "success": "¡El ítem menú fue creado exitosamente!",
+        "error": "¡El ítem menú no pudo ser creado!"
+      },
+      "updated": {
+        "success": "¡El ítem menú fue actualizado exitosamente!",
+        "error": "¡El ítem menú no pudo ser actualizado!"
+      },
+      "deleted": {
+        "success": "¡El ítem menú fue eliminado exitosamente!",
+        "error": "¡El ítem menú no pudo ser eliminado!",
+        "question": "Desea eliminar el ítem menú "
+      }
+    },
     "Home": "Inicio",
     "Countries": "Paises",
     "Setup": "Configuración",
