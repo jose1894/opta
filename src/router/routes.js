@@ -12,6 +12,7 @@ import BusinessUnitRoutes from "./BusinessUnit.Routes.js";
 import ExpenseRoutes from "./ExpenseRoutes.js";
 import ProfileActionsRoutes from "./ProfileActionsRoutes.js";
 import ItemsMenuRoutes from "./ItemsMenuRoutes.js";
+import ProfilesRoutes from "./ProfilesRoutes.js";
 
 export default [
   {
@@ -99,5 +100,6 @@ export default [
   ...BusinessUnitRoutes,
   ...ExpenseRoutes,
   ...ProfileActionsRoutes,
-  ...ItemsMenuRoutes
+  ...ItemsMenuRoutes,
+  ...ProfilesRoutes
 ];

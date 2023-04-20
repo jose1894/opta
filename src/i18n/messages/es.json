@@ -412,6 +412,34 @@
         "question": "Desea eliminar el ítem menú "
       }
     },
+    "profiles": {
+      "profile": "Perfil",
+      "profiles": "Perfiles",
+      "statuses": {
+        "deleted": "Borrado",
+        "active": "Activo",
+        "inactive": "Inactivo"
+      },
+      "create": "Crear pelfil",
+      "update": "Actualizar pelfil",
+      "code": "Código",
+      "description": "Descripción",
+      "menu": "Manu",
+      "status": "Estado",
+      "created": {
+        "success": "¡El pelfil fue creado exitosamente!",
+        "error": "¡El pelfil no pudo ser creado!"
+      },
+      "updated": {
+        "success": "¡El pelfil fue actualizado exitosamente!",
+        "error": "¡El pelfil no pudo ser actualizado!"
+      },
+      "deleted": {
+        "success": "¡El pelfil fue eliminado exitosamente!",
+        "error": "¡El pelfil no pudo ser eliminado!",
+        "question": "Desea eliminar el pelfil "
+      }
+    },
     "Home": "Inicio",
     "Countries": "Paises",
     "Setup": "Configuración",

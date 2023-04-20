@@ -415,6 +415,34 @@
       "question": "Do ypu want to expense "
     }
   },
+  "profiles": {
+    "profile": "Profile",
+    "profiles": "Profiles",
+    "statuses": {
+      "deleted": "Deleted",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "create": "Create profile",
+    "update": "Update profile",
+    "code": "Code",
+    "description": "Description",
+    "menu": "Manu",
+    "status": "Status",
+    "created": {
+      "success": "Profile created successfully!",
+      "error": "Profile couldn't be created!"
+    },
+    "updated": {
+      "success": "Profile updated successfully!",
+      "error": "Profile couldn't be updated!"
+    },
+    "deleted": {
+      "success": "Profile deleted successfully!",
+      "error": "Profile couldn't be deleted!",
+      "question": "Do you want to delete profile "
+    }
+  }, 
   "validations": {
     "required": "The field {property} is required.",
     "minLength": "The {property} field has a value of '{model}', but it must have a min length of {min}.",

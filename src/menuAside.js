@@ -143,7 +143,11 @@ export default [
       {
         label: "Items menu",
         to: "/setup/itemsMenu",
-      }      
+      },
+      {
+        label: "Profile",
+        to: "/setup/profiles",
+      }       
     ],
   },
   {

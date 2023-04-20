@@ -32,6 +32,7 @@ export const useMainStore = defineStore("main", {
     expense:[],
     profileActions:[],
     itemsMenu:[],
+    profiles:[],
     data: [],
   }),
   actions: {
