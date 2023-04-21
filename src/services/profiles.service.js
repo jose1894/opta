@@ -1,6 +1,6 @@
 import Service from './index.js'
 import authHeader from './auth.header.js'
-const resource = 'api/accionesPerfiles'
+const resource = 'api/perfiles'
 
 export default {
     index(data) {

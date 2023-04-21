@@ -19,6 +19,7 @@ const { t } = useI18n();
 const toast = useToast();
 const route = useRoute();
 const router = useRouter();
+let dataMenu = []
 
 const customElementsForm = reactive({
   checkbox: []
@@ -52,8 +53,8 @@ const perfil = ref({
 });
 
 const action = (perfil) => {
-  const { _id, codigo, descripcion, estado } = perfil.value;
-  const data = { _id, codigo, descripcion, estado: estado.id }
+  const { _id, codigo, descripcion, menu, accionesPerfil, estado } = perfil.value;
+  const data = { _id, codigo, descripcion, menu: menu.id, accionesPerfil, estado: estado.id }
   if (props.path === 'create') {
     return profilesService.create(data)
   }
@@ -68,6 +69,11 @@ onMounted(async () => {
     const res = await profilesService.read(route.params);
     perfil.value = res.data
     perfil.value.estado = selectOptions.filter(status => status.id === res.data.estado)[0]
+    const accionesPerfiles = res.data?.accionesPerfil
+    dataMenu = accionesPerfiles.map((menu) => ({ '_id': menu._id }))
+    customElementsForm.checkbox = accionesPerfiles.map((menu) => menu._id)
+   /*perfil.value.accionesPerfil = res.data?.accionesPerfil*/
+
   }
 })
 
@@ -80,8 +86,10 @@ const listarMenu = (async () => {
 const listarAccionesMenu = (async () => {
   let accionesMenu = await profileActionsService.allAccionesPerfiles();
   const dataAccionesMenu = accionesMenu?.data.accionesPerfiles;
-  accionesPerfilList.value = dataAccionesMenu.map(({ _id, descripcion }) => ({ [_id]: descripcion }));
+  accionesPerfilList.value = arrayItemMenu(dataAccionesMenu);
 })
+
+const arrayItemMenu = (dataAccionesMenu) => dataAccionesMenu.map(({ _id, descripcion }) => ({ [_id]: descripcion }))
 
 const rules = computed(() => ({
   codigo: { required, maxLength: maxLength(3) },
@@ -98,7 +106,7 @@ const submit = async () => {
   const result = await v$.value.$validate();
 
   if (result) {
-    action(accionPerfil)
+    action(perfil)
       .then(() => {
         toast.success(successMessage);
         router.push('/setup/profiles');
@@ -121,7 +129,7 @@ const submit = async () => {
   }
 
 };
-let dataMenu = []
+
 const onChangeCheckbox = (accionData) => {
   const valueId = Object.keys(accionData)[0]
   const exist = dataMenu.filter((item) => item._id === valueId)
