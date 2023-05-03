@@ -1,6 +1,6 @@
 import Service from './index.js'
 import authHeader from './auth.header.js'
-const resource = 'api/miembros'
+const resource = 'api/profesiones/'
 
 export default {
     index(data) {
@@ -12,47 +12,48 @@ export default {
     },
     getDelete(data) {
         return new Promise((resolve, reject) => {
-            Service.get(`${resource}/membresiasDelete`, {params: data}, { headers: authHeader() })
+           
+            Service.get(`${resource}profesionesDeleted`, {params: data}, { headers: authHeader() })
                 .then((response) => resolve(response.data))
                 .catch((err) => reject(err))
         })
     },
-    create(miembro) {
+    create(profession) {
         return new Promise((resolve, reject) => {
-            Service.post(resource, miembro, { headers: authHeader() })
+            Service.post(resource, profession, { headers: authHeader() })
                 .then((response) => resolve(response))
                 .catch(err => reject(err))
         })
     },
-    read(miembro) {
+    read(profession) {
         return new Promise((resolve, reject) => {
-            Service.get(`${resource}/${miembro.id}`, { headers: authHeader() })
+            Service.get(`${resource}/${profession.id}`, { headers: authHeader() })
             .then(response => { 
                 resolve(response)})
             .catch(err => reject(err))
         })
     },
 
-    allMiembrosGet() {
+    allProfesiones() {
         return new Promise((resolve, reject) => {
-            Service.get(`${resource}/allMiembros`, { headers: authHeader() })
+            Service.get(`${resource}allProfesiones`, { headers: authHeader() })
             .then(response => { 
                 resolve(response)})
             .catch(err => reject(err))
         })
     },
 
-    update(miembro) {
+    update(profession) {
         return new Promise((resolve, reject) => {
-            Service.put(`${resource}/${miembro._id}`, miembro, { headers: authHeader() })
+            Service.put(`${resource}/${profession._id}`, profession, { headers: authHeader() })
                 .then((response) => resolve(response.data))
                 .catch((err) => reject(err))
         })
     },
 
-    delete(menbresiaId) {
+    delete(professionId) {
         return new Promise((resolve, reject) => {
-            Service.delete(`${resource}/${menbresiaId}`, { headers: authHeader() })
+            Service.delete(`${resource}${professionId}`, { headers: authHeader() })
                 .then((response) => resolve(response.data))
                 .catch((err) => reject(err))
         })

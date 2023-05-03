@@ -1,6 +1,6 @@
 import Service from './index.js'
 import authHeader from './auth.header.js'
-const resource = 'api/miembros'
+const resource = 'api/categorias'
 
 export default {
     index(data) {
@@ -12,49 +12,59 @@ export default {
     },
     getDelete(data) {
         return new Promise((resolve, reject) => {
-            Service.get(`${resource}/membresiasDelete`, {params: data}, { headers: authHeader() })
+           
+            Service.get(`${resource}/categoriasDeleted`, {params: data}, { headers: authHeader() })
                 .then((response) => resolve(response.data))
                 .catch((err) => reject(err))
         })
     },
-    create(miembro) {
+    create(category) {
         return new Promise((resolve, reject) => {
-            Service.post(resource, miembro, { headers: authHeader() })
+            Service.post(resource, category, { headers: authHeader() })
                 .then((response) => resolve(response))
                 .catch(err => reject(err))
         })
     },
-    read(miembro) {
+    read(category) {
         return new Promise((resolve, reject) => {
-            Service.get(`${resource}/${miembro.id}`, { headers: authHeader() })
+            Service.get(`${resource}/${category.id}`, { headers: authHeader() })
             .then(response => { 
                 resolve(response)})
             .catch(err => reject(err))
         })
     },
 
-    allMiembrosGet() {
+    allCategoris() {
         return new Promise((resolve, reject) => {
-            Service.get(`${resource}/allMiembros`, { headers: authHeader() })
+            Service.get(`${resource}/allCategorias`, { headers: authHeader() })
             .then(response => { 
                 resolve(response)})
             .catch(err => reject(err))
         })
     },
 
-    update(miembro) {
+    update(category) {
         return new Promise((resolve, reject) => {
-            Service.put(`${resource}/${miembro._id}`, miembro, { headers: authHeader() })
+            Service.put(`${resource}/${category._id}`, category, { headers: authHeader() })
                 .then((response) => resolve(response.data))
                 .catch((err) => reject(err))
         })
     },
 
-    delete(menbresiaId) {
+    delete(categoryId) {
         return new Promise((resolve, reject) => {
-            Service.delete(`${resource}/${menbresiaId}`, { headers: authHeader() })
+            Service.delete(`${resource}/${categoryId}`, { headers: authHeader() })
                 .then((response) => resolve(response.data))
                 .catch((err) => reject(err))
+        })
+    },
+
+    categoriasPorUnidadNegocio(unidadNegocioId) {
+        return new Promise((resolve, reject) => {
+            Service.get(`${resource}/categoriasPorUnidadNegocio/${unidadNegocioId}`, { headers: authHeader() })
+            .then(response => { 
+                resolve(response)})
+            .catch(err => reject(err))
         })
     },
 }

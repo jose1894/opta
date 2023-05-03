@@ -147,7 +147,28 @@ export default [
       {
         label: "Profile",
         to: "/setup/profiles",
-      }       
+      },
+      {
+        label: "Category",
+        to: "/setup/categories",
+      },
+      {
+        label: "Rate",
+        to: "/setup/rates",
+      },
+      {
+        label: "Language",
+        to: "/setup/languages",
+      },
+      {
+        label: "Profession",
+        to: "/setup/professions",
+      },
+      {
+        label: "Personnal",
+        to: "/setup/personal",
+      },
+             
     ],
   },
   {

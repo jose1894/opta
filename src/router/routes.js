@@ -13,6 +13,11 @@ import ExpenseRoutes from "./ExpenseRoutes.js";
 import ProfileActionsRoutes from "./ProfileActionsRoutes.js";
 import ItemsMenuRoutes from "./ItemsMenuRoutes.js";
 import ProfilesRoutes from "./ProfilesRoutes.js";
+import CategoryRoutes from "./CategoryRoutes.js";
+import RatesRoutes from "./RatesRoute.js";
+import LanguagesRoutes from "./LanguagesRoutes.js";
+import ProfessionsRoutes from "./ProfessionsRoutes.js";
+import PersonalRoutes from "./PersonalRoutes.js";
 
 export default [
   {
@@ -101,5 +106,10 @@ export default [
   ...ExpenseRoutes,
   ...ProfileActionsRoutes,
   ...ItemsMenuRoutes,
-  ...ProfilesRoutes
+  ...ProfilesRoutes,
+  ...CategoryRoutes,
+  ...RatesRoutes,
+  ...LanguagesRoutes,
+  ...ProfessionsRoutes,
+  ...PersonalRoutes
 ];

@@ -440,11 +440,170 @@
         "question": "Desea eliminar el pelfil "
       }
     },
+    "category": {
+      "catgory": "Categoria",
+      "categories": "Categorias",
+      "statuses": {
+        "deleted": "Borrado",
+        "active": "Activo",
+        "inactive": "Inactivo"
+      },
+      "create": "Crear categoria",
+      "update": "Actualizar categoria",
+      "acronyms": "Siglas",
+      "name": "Nombre",
+      "code": "Codigo",
+      "businessUnit": "Unidad de negocio",
+      "currentRate": "Tasa actual",
+      "previousRate": "Tasa anterior",
+      "status": "Estado",
+      "created": {
+        "success": "¡La catgoria fue creada exitosamente!",
+        "error": "¡La catgoria no pudo ser creada!"
+      },
+      "updated": {
+        "success": "¡La catgoria fue actualizada exitosamente!",
+        "error": "¡La catgoria no pudo ser actualizada!"
+      },
+      "deleted": {
+        "success": "¡La categoria fue eliminada exitosamente!",
+        "error": "¡La categoria no pudo ser eliminada!",
+        "question": "Desea eliminar La categoria "
+      }
+    },
+    "language": {
+      "language": "Idioma",
+      "languages": "Idiomas",
+      "statuses": {
+        "deleted": "Borrado",
+        "active": "Activo",
+        "inactive": "Inactivo"
+      },
+      "create": "Crear idioma",
+      "update": "Actualizar idioma",
+      "code": "Código",
+      "name": "Nombre",
+      "status": "Status",
+      "created": {
+        "success": "¡El idioma fue creado exitosamente!",
+        "error": "¡El idioma no pudo ser creado!"
+      },
+      "updated": {
+        "success": "¡El idioma fue actualizado exitosamente!",
+        "error": "¡El idioma no pudo ser actualizado!"
+      },
+      "deleted": {
+        "success": "¡El idioma fue eliminado exitosamente!",
+        "error": "¡El idioma no pudo ser eliminado!",
+        "question": "Desea eliminar el idioma "
+      }
+    },
+    "rate": {      
+      "rate": "Tasa",
+      "rates": "Tasas",
+      "statuses": {
+        "deleted": "Borrado",
+        "active": "Activo",
+        "inactive": "Inactivo"
+      },
+      "create": "Crear tasa",
+      "update": "Actualizar tasa",
+      "acronyms": "Siglas",
+      "name": "Nombre",
+      "code": "Codigo",
+      "date": "Fecha",
+      "category": "Categoria",
+      "businessUnit": "Unidad de negocio",
+      "currentRate": "Tasa actual $",
+      "previousRate": "Tasa anterior $",
+      "categories": "Categorias",
+      "status": "Estado",
+      "created": {
+        "success": "¡La tasa fue creada exitosamente!",
+        "error": "¡La tasa no pudo ser creada!"
+      },
+      "updated": {
+        "success": "¡La tasa fue actualizada exitosamente!",
+        "error": "¡La tasa no pudo ser actualizada!"
+      },
+      "deleted": {
+        "success": "¡La tasa fue eliminada exitosamente!",
+        "error": "¡La tasa no pudo ser eliminada!",
+        "question": "Desea eliminar La tasa "
+      }
+    },
+    "profession": {
+      "profession": "Profesión",
+      "professions": "Profesiones",
+      "statuses": {
+        "deleted": "Borrado",
+        "active": "Activo",
+        "inactive": "Inactivo"
+      },
+      "create": "Crear profesión",
+      "update": "Actualizar profesión",
+      "code": "Código",
+      "name": "Nombre",
+      "status": "Status",
+      "created": {
+        "success": "¡La profesión fue creado exitosamente!",
+        "error": "¡La profesión no pudo ser creado!"
+      },
+      "updated": {
+        "success": "¡La profesión fue actualizado exitosamente!",
+        "error": "¡La profesión no pudo ser actualizado!"
+      },
+      "deleted": {
+        "success": "¡La profesión fue eliminado exitosamente!",
+        "error": "¡La profesión no pudo ser eliminado!",
+        "question": "Desea eliminar la profesión "
+      }
+    },
+    "personal": {
+      "personal": "Personal",
+      "statuses": {
+        "deleted": "Borrado",
+        "active": "Activo",
+        "inactive": "Inactivo"
+      },
+      "create": "Crear personal",
+      "update": "Actualizar personal",
+      "names": "Nombres",
+      "idFiscal": "Número físcal",
+      "surnames": "Apellidos",
+      "phone": "Télefono",
+      "address": "Dirección",
+      "email": "Correo eléctronico",
+      "profession": "Profesión",
+      "languages": "Idiomas",
+      "postgraduate": "Postgrados",
+      "businessUnit": "Unidad de negocio",
+      "category": "Categoria",
+      "branch": "Sucursal",
+      "profile": "Perfil",
+      "user": "Usuario",
+      "password": "Contraseña",
+      "membership": "Membresia",      
+      "status": "Status",
+      "created": {
+        "success": "¡Los datos fueron creados exitosamente!",
+        "error": "¡El registro no pudo ser creado!"
+      },
+      "updated": {
+        "success": "¡Los datos fueron actualizados exitosamente!",
+        "error": "¡Los datos no fueron actualizados!"
+      },
+      "deleted": {
+        "success": "¡El registro fue eliminado exitosamente!",
+        "error": "¡El registro no pudo ser eliminado!",
+        "question": "Desea eliminar el registro "
+      }
+    },
     "Home": "Inicio",
     "Countries": "Paises",
     "Setup": "Configuración",
     "Dashboard": "Dashboard"
-  },
+  },  
   "validations": {
     "required": "El campo {property} es requerido.",
     "minLength": "El campo {property} tiene un valor de '{model}', pero debe tener una longitud minima de {min}.",

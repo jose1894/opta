@@ -33,6 +33,11 @@ export const useMainStore = defineStore("main", {
     profileActions:[],
     itemsMenu:[],
     profiles:[],
+    categories:[],
+    rates:[],
+    languages:[],
+    professions:[],
+    personal:[],
     data: [],
   }),
   actions: {

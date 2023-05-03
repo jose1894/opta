@@ -163,30 +163,30 @@
     }
   },
   "cargo": {
-    "cargo": "Cargo",
-    "cargos": "Cargos",
+    "cargo": "Job position",
+    "cargos": "Job positions",
     "statuses": {
       "deleted": "Deleted",
       "active": "Active",
       "inactive": "Inactive"
     },
-    "create": "Create cargo",
-    "update": "Update cargo",
+    "create": "Create job position",
+    "update": "Update job position",
     "code": "Code",
     "name": "Name",
     "status": "Status",
     "created": {
-      "success": "Cargo created successfully!",
-      "error": "Cargo couldn't be created!"
+      "success": "Job position created successfully!",
+      "error": "Job position couldn't be created!"
     },
     "updated": {
-      "success": "Cargo updated successfully!",
-      "error": "Cargo couldn't be updated!"
+      "success": "Job position updated successfully!",
+      "error": "Job position couldn't be updated!"
     },
     "deleted": {
-      "success": "Cargo deleted successfully!",
-      "error": "Cargo couldn't be deleted!",
-      "question": "Do you want to delete cargo "
+      "success": "Job position deleted successfully!",
+      "error": "Job position couldn't be deleted!",
+      "question": "Do you want to delete job position "
     }
   },
   "profileAction": {
@@ -440,9 +440,168 @@
     "deleted": {
       "success": "Profile deleted successfully!",
       "error": "Profile couldn't be deleted!",
-      "question": "Do you want to delete profile "
+      "question": "Do you want to delete profile "      
+    }    
+  },
+  "category": {
+    "catgory": "Category",
+    "categories": "Categories",
+    "statuses": {
+      "deleted": "Deleted",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "create": "Create category",
+    "update": "Update category",
+    "acronyms": "Acronyms",
+    "name": "Name",
+    "code": "Code",
+    "businessUnit": "Business unit",
+    "currentRate": "Current rate",
+    "previousRate": "Previous rate",
+    "status": "Status",
+    "created": {
+      "success": "Category created successfully!",
+      "error": "Category couldn't be created!"
+    },
+    "updated": {
+      "success": "Category updated successfully!",
+      "error": "Category couldn't be updated!"
+    },
+    "deleted": {
+      "success": "Category deleted successfully!",
+      "error": "Category couldn't be deleted!",
+      "question": "Do you want to delete category "      
+    } 
+  },
+  "rate": {
+    "rate": "Rate",
+    "rates": "Rates",
+    "category": "Category",
+    "statuses": {
+      "deleted": "Deleted",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "create": "Create rate",
+    "update": "Update rate",
+    "acronyms": "Acronyms",
+    "name": "Name",
+    "code": "Code",
+    "date": "Date",
+    "categories": "Categories",
+    "businessUnit": "Business unit",
+    "currentRate": "Current rate $",
+    "previousRate": "Previous rate $",
+    "status": "Status",
+    "created": {
+      "success": "Rate created successfully!",
+      "error": "Rate couldn't be created!"
+    },
+    "updated": {
+      "success": "Rate updated successfully!",
+      "error": "Rate couldn't be updated!"
+    },
+    "deleted": {
+      "success": "Rate deleted successfully!",
+      "error": "Rate couldn't be deleted!",
+      "question": "Do you want to delete rate "      
+    } 
+  },
+  "language": {
+    "language": "Language",
+    "languages": "Languages",
+    "statuses": {
+      "deleted": "Deleted",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "create": "Create language",
+    "update": "Update language",
+    "code": "Code",
+    "name": "Name",
+    "status": "Status",
+    "created": {
+      "success": "Language created successfully!",
+      "error": "Language couldn't be created!"
+    },
+    "updated": {
+      "success": "Language updated successfully!",
+      "error": "Language couldn't be updated!"
+    },
+    "deleted": {
+      "success": "Language deleted successfully!",
+      "error": "Language couldn't be deleted!",
+      "question": "Do you want to delete language "
     }
-  }, 
+  },
+  "profession": {
+    "profession": "Profession",
+    "professions": "Professions",
+    "statuses": {
+      "deleted": "Deleted",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "create": "Create profession",
+    "update": "Update profession",
+    "code": "Code",
+    "name": "Name",
+    "status": "Status",
+    "created": {
+      "success": "Profession created successfully!",
+      "error": "Profession couldn't be created!"
+    },
+    "updated": {
+      "success": "Profession updated successfully!",
+      "error": "Profession couldn't be updated!"
+    },
+    "deleted": {
+      "success": "Profession deleted successfully!",
+      "error": "Profession couldn't be deleted!",
+      "question": "Do you want to delete profession "
+    }
+  },
+  "personal": {
+    "personal": "Personal",
+    "statuses": {
+      "deleted": "Deleted",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "create": "Create personal",
+    "update": "Update personal",
+    "names": "Names",
+    "idFiscal": "ID físcal",
+    "surnames": "Surnames",
+    "address": "Addres",
+    "phone": "Phone",
+    "email": "Email",
+    "profession": "Profession",
+    "languages": "Languages",
+    "postgraduate": "Postgraduate",
+    "businessUnit": "Business unit",
+    "category": "Category",
+    "branch": "Branch",
+    "profile": "Profile",
+    "user": "User",
+    "password": "Password",
+    "membership": "Membership",
+    "status": "Status",
+    "created": {
+      "success": "¡Data was successfully created!",
+      "error": "¡Record could not be created!"
+    },
+    "updated": {
+      "success": "¡The data was successfully updated!",
+      "error": "¡Data not updated!"
+    },
+    "deleted": {
+      "success": "¡The record was successfully deleted!",
+      "error": "¡The record could not be deleted!",
+      "question": "You want to delete the record "
+    }
+  },
   "validations": {
     "required": "The field {property} is required.",
     "minLength": "The {property} field has a value of '{model}', but it must have a min length of {min}.",

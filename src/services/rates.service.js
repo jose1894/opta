@@ -1,6 +1,6 @@
 import Service from './index.js'
 import authHeader from './auth.header.js'
-const resource = 'api/miembros'
+const resource = 'api/tasas/'
 
 export default {
     index(data) {
@@ -12,47 +12,48 @@ export default {
     },
     getDelete(data) {
         return new Promise((resolve, reject) => {
-            Service.get(`${resource}/membresiasDelete`, {params: data}, { headers: authHeader() })
+           
+            Service.get(`${resource}tasasDelete`, {params: data}, { headers: authHeader() })
                 .then((response) => resolve(response.data))
                 .catch((err) => reject(err))
         })
     },
-    create(miembro) {
+    create(tasa) {
         return new Promise((resolve, reject) => {
-            Service.post(resource, miembro, { headers: authHeader() })
+            Service.post(resource, tasa, { headers: authHeader() })
                 .then((response) => resolve(response))
                 .catch(err => reject(err))
         })
     },
-    read(miembro) {
+    read(tasa) {
         return new Promise((resolve, reject) => {
-            Service.get(`${resource}/${miembro.id}`, { headers: authHeader() })
+            Service.get(`${resource}/${tasa.id}`, { headers: authHeader() })
             .then(response => { 
                 resolve(response)})
             .catch(err => reject(err))
         })
     },
 
-    allMiembrosGet() {
+    allTasas() {
         return new Promise((resolve, reject) => {
-            Service.get(`${resource}/allMiembros`, { headers: authHeader() })
+            Service.get(`${resource}allTasas`, { headers: authHeader() })
             .then(response => { 
                 resolve(response)})
             .catch(err => reject(err))
         })
     },
 
-    update(miembro) {
+    update(tasa) {
         return new Promise((resolve, reject) => {
-            Service.put(`${resource}/${miembro._id}`, miembro, { headers: authHeader() })
+            Service.put(`${resource}/${tasa._id}`, tasa, { headers: authHeader() })
                 .then((response) => resolve(response.data))
                 .catch((err) => reject(err))
         })
     },
 
-    delete(menbresiaId) {
+    delete(tasaId) {
         return new Promise((resolve, reject) => {
-            Service.delete(`${resource}/${menbresiaId}`, { headers: authHeader() })
+            Service.delete(`${resource}${tasaId}`, { headers: authHeader() })
                 .then((response) => resolve(response.data))
                 .catch((err) => reject(err))
         })
