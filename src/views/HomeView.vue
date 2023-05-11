@@ -21,10 +21,35 @@ import BaseButton from "@/components/BaseButton.vue";
 import CardBoxTransaction from "@/components/CardBoxTransaction.vue";
 import CardBoxClient from "@/components/CardBoxClient.vue";
 import LayoutAuthenticated from "@/layouts/LayoutAuthenticated.vue";
+import TreeItem from '@/components/TreeItem.vue'
 import SectionTitleLineWithButton from "@/components/SectionTitleLineWithButton.vue";
 import SectionBannerStarOnGitHub from "@/components/SectionBannerStarOnGitHub.vue";
 
+
 const chartData = ref(null);
+
+const treeData = ref({
+  name: 'My Tree',
+  children: [
+    { name: 'hello' },
+    { name: 'world' },
+    {
+      name: 'child folder',
+      children: [
+        {
+          name: 'child folder',
+          children: [{ name: 'hello' }, { name: 'world' }]
+        },
+        { name: 'hello' },
+        { name: 'world' },
+        {
+          name: 'child folder',
+          children: [{ name: 'hello' }, { name: 'world' }]
+        }
+      ]
+    }
+  ]
+})
 
 const fillChartData = () => {
   chartData.value = chartConfig.sampleChartData();
@@ -197,6 +222,21 @@ const activeTabThree = () => {
           </div>
         </div>
       </div>
+
+      <ul>
+        <TreeItem class="item" :model="treeData"></TreeItem>
+      </ul>
     </SectionMain>
   </LayoutAuthenticated>
 </template>
+
+
+<style>
+.item {
+  cursor: pointer;
+  line-height: 1.5;
+}
+.bold {
+  font-weight: bold;
+}
+</style>

@@ -168,7 +168,18 @@ export default [
         label: "Personnal",
         to: "/setup/personal",
       },
-             
+      {
+        label: "Industry",
+        to: "/setup/industries",
+      },
+      {
+        label: "Client",
+        to: "/setup/clients",
+      },
+      {
+        label: "Approaches",
+        to: "/setup/approaches",
+      },             
     ],
   },
   {

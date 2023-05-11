@@ -19,6 +19,10 @@
     "submit": "Enviar",
     "reset": "Reiniciar",
     "add_new": "Agregar nuevo",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "yes": "Si",
+    "no": "No",
     "profile": {
       "profile": "Perfil",
       "personal_information": "Información personal",
@@ -185,6 +189,33 @@
         "success": "¡El cargo fue eliminado exitosamente!",
         "error": "¡El cargo no pudo ser eliminado!",
         "question": "Desea eliminar el cargo "
+      }
+    },
+    "industry": {
+      "industry": "Industria",
+      "industries": "Industrias",
+      "statuses": {
+        "deleted": "Borrado",
+        "active": "Activo",
+        "inactive": "Inactivo"
+      },
+      "create": "Crear industria",
+      "update": "Actualizar industria",
+      "code": "Código",
+      "name": "Nombre",
+      "status": "Status",
+      "created": {
+        "success": "¡La industria fue creado exitosamente!",
+        "error": "¡La industria no pudo ser creado!"
+      },
+      "updated": {
+        "success": "¡La industria fue actualizado exitosamente!",
+        "error": "¡La industria no pudo ser actualizado!"
+      },
+      "deleted": {
+        "success": "¡La industria fue eliminado exitosamente!",
+        "error": "¡La industria no pudo ser eliminado!",
+        "question": "Desea eliminar la industria "
       }
     },
     "currencies": {
@@ -598,6 +629,68 @@
         "error": "¡El registro no pudo ser eliminado!",
         "question": "Desea eliminar el registro "
       }
+    },
+    "client": {
+      "clients": "Clientes",
+      "client": "Clente",
+      "id": "ID Fiscal",
+      "statuses": {
+        "deleted": "Eliminado",
+        "active": "Activo",
+        "inactive": "Inactivo"
+      },
+      "tab": {
+        "client": "Cliente",
+        "contacts": "Contactos"
+      },
+      "create": "Crear cliente",
+      "update": "Modificar cliente",
+      "code": "Código",
+      "name": "Nombre",
+      "idFiscal": "Número físcal",
+      "industry": "Industria",
+      "listedCompany": "Compañia listada",
+      "regulatedCompany": "Compañia regulada",
+      "parentCompany": "Casa matriz",
+      "status": "Status",
+      "country": "País",
+      "state": "Estado",
+      "city": "Ciudad",
+      "street": "Calle",
+      "address": "Dirección",
+      "paginaWeb": "Página web",
+      "membership": "Membresia",
+      "lastName": "Apellido",
+      "jobPosition": "cargo",
+      "officePhone": "Teléfono de oficina",
+      "movilPhone": "Teléfono de móvil",
+      "email": "Correo eléctronico",
+      "contacts": "Contactos",
+      "created": {
+        "success": "¡El cliente fue creado exitosamente!",
+        "error": "¡El cliente no pudo ser creado!"
+      },
+      "updated": {
+        "success": "¡El cliente fue actualizado exitosamente!",
+        "error": "¡El cliente no pudo ser actualizado!"
+      },
+      "deleted": {
+        "success": "¡El cliente fue eliminado exitosamente!",
+        "error": "¡El cliente no pudo ser eliminado!",
+        "question": "Desea eliminar el cliente "
+      }
+    },
+    "approach": {
+      "approaches": "Enfoques",
+      "indice": "Indice",
+      "name": "Nombre",
+      "parentArea": "Area padre",
+      "route": "Ruta",  
+      "visible": "Visible",  
+      "rcr": "Rcr",  
+      "editable": "Editable",
+      "membership": "Membresia",
+      "status": "Status"      
     },
     "Home": "Inicio",
     "Countries": "Paises",

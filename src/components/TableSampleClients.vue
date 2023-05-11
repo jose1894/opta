@@ -1,9 +1,13 @@
 <script setup>
+import { useI18n } from "vue-i18n";
 import { computed, ref } from "vue";
 import { useMainStore } from "@/stores/main";
 import { mdiEye, mdiTrashCan } from "@mdi/js";
+import CardBox from '@/components/CardBox.vue';
 import CardBoxModal from "@/components/CardBoxModal.vue";
 import TableCheckboxCell from "@/components/TableCheckboxCell.vue";
+import FormField from '@/components/FormField.vue';
+import FormControl from '@/components/FormControl.vue';
 import BaseLevel from "@/components/BaseLevel.vue";
 import BaseButtons from "@/components/BaseButtons.vue";
 import BaseButton from "@/components/BaseButton.vue";
@@ -11,6 +15,13 @@ import UserAvatar from "@/components/UserAvatar.vue";
 
 defineProps({
   checkable: Boolean,
+});
+
+const { t } = useI18n();
+const city = ref({
+  _id: '',
+  codigo: "00",
+  nombre: "",
 });
 
 const mainStore = useMainStore();
@@ -80,6 +91,12 @@ const eventDone = (option) => {
   <CardBoxModal v-model="isModalActive" title="Sample modal">
     <p>Lorem ipsum dolor sit amet <b>adipiscing elit</b></p>
     <p>This is sample modal</p>
+    <CardBox isForm @submit.prevent="submit">
+      <FormField :label="$t('message.city.code')" :help="v$?.codigo?.$errors[0]?.$message">
+        <FormControl :name="'codigo'" v-model="city.codigo" :icon="mdiCodeBraces" />            
+      </FormField>
+    
+    </CardBox>
   </CardBoxModal>
 
   <CardBoxModal

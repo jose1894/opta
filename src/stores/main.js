@@ -38,6 +38,8 @@ export const useMainStore = defineStore("main", {
     languages:[],
     professions:[],
     personal:[],
+    industries:[],
+    clients:[],
     data: [],
   }),
   actions: {

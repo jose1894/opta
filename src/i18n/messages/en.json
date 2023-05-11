@@ -19,6 +19,10 @@
     "submit": "Submit",
     "reset": "Reset",
     "Add new": "Add new",
+    "edit": "Edit",
+    "delete": "Delete",
+    "yes": "Yes",
+    "no": "No",
     "profile": {
       "profile": "Profile",
       "personal_information": "Personal information",
@@ -187,6 +191,33 @@
       "success": "Job position deleted successfully!",
       "error": "Job position couldn't be deleted!",
       "question": "Do you want to delete job position "
+    }
+  },
+  "industry": {
+    "industry": "Industry",
+    "industries": "Industries",
+    "statuses": {
+      "deleted": "Deleted",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "create": "Create industry",
+    "update": "Update industry",
+    "code": "Code",
+    "name": "Name",
+    "status": "Status",
+    "created": {
+      "success": "Industry created successfully!",
+      "error": "Industry couldn't be created!"
+    },
+    "updated": {
+      "success": "Industry updated successfully!",
+      "error": "Industry couldn't be updated!"
+    },
+    "deleted": {
+      "success": "Industry deleted successfully!",
+      "error": "Industry couldn't be deleted!",
+      "question": "Do you want to delete industry "
     }
   },
   "profileAction": {
@@ -601,6 +632,68 @@
       "error": "¡The record could not be deleted!",
       "question": "You want to delete the record "
     }
+  },
+  "client": {
+    "clients": "Clients",
+    "client": "Clent",
+    "id": "ID Fiscal",
+    "statuses": {
+      "deleted": "Deleted",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "tab": {
+      "client": "Client",
+      "contacts": "Contacts"
+    },
+    "create": "Client created",
+    "update": "Client updated",
+    "code": "Code",
+    "name": "Name",
+    "idFiscal": "Id físcal",
+    "industry": "Industry",
+    "listedCompany": "Listed company",
+    "regulatedCompany": "Regulated company",
+    "parentCompany": "Parent company",
+    "status": "Status",
+    "country": "Country",
+    "state": "State",
+    "city": "City",
+    "street": "Street",
+    "address": "Addres",
+    "paginaWeb": "Website",
+    "membership": "Membership",
+    "lastName": "Last name",
+    "jobPosition": "Job position",
+    "officePhone": "Office phone",
+    "movilPhone": "Movil phone",
+    "email": "Email",
+    "contacts": "Contacts",
+    "created": {
+      "success": "Client created successfully!",
+      "error": "Client couldn't be created!"
+    },
+    "updated": {
+      "success": "Client updated successfully!",
+      "error": "Client couldn't be updated!"
+    },
+    "deleted": {
+      "success": "Client deleted successfully!",
+      "error": "Client couldn't be deleted!",
+      "question": "Do you want to delete client "
+    }
+  },
+  "approach": {
+    "approaches": "Approache",
+    "indice": "Indice",
+    "name": "Name",
+    "parentArea": "Parent node",
+    "route": "Route",  
+    "visible": "Visible",  
+    "rcr": "Rcr",  
+    "editable": "Editable",
+    "membership": "Membership",
+    "status": "Status"      
   },
   "validations": {
     "required": "The field {property} is required.",

@@ -18,6 +18,9 @@ import RatesRoutes from "./RatesRoute.js";
 import LanguagesRoutes from "./LanguagesRoutes.js";
 import ProfessionsRoutes from "./ProfessionsRoutes.js";
 import PersonalRoutes from "./PersonalRoutes.js";
+import IndustriesRoutes from "./IndustriesRoutes.js";
+import ClientsRoutes from "./ClientsRoutes.js";
+import ApproachesRoutes from "./ApproachesRoutes.js";
 
 export default [
   {
@@ -111,5 +114,8 @@ export default [
   ...RatesRoutes,
   ...LanguagesRoutes,
   ...ProfessionsRoutes,
-  ...PersonalRoutes
+  ...PersonalRoutes,
+  ...IndustriesRoutes,
+  ...ClientsRoutes,
+  ...ApproachesRoutes
 ];
