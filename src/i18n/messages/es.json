@@ -690,7 +690,12 @@
       "rcr": "Rcr",  
       "editable": "Editable",
       "membership": "Membresia",
-      "status": "Status"      
+      "status": "Status",
+      "statuses": {
+        "deleted": "Borrado",
+        "active": "Activo",
+        "inactive": "Inactivo"
+      }      
     },
     "Home": "Inicio",
     "Countries": "Paises",

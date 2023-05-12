@@ -72,7 +72,7 @@ const contacts = ref({
     contact: [{
         nombre: "",
         apellido: "",
-        cargo: miembroList.value,
+        cargo: cargoList.value,
         telefonoOfic: "",
         telefonoCelu: "",
         correo: "",

@@ -693,7 +693,12 @@
     "rcr": "Rcr",  
     "editable": "Editable",
     "membership": "Membership",
-    "status": "Status"      
+    "status": "Status",
+    "statuses": {
+      "deleted": "Deleted",
+      "active": "Active",
+      "inactive": "Inactive"
+    }      
   },
   "validations": {
     "required": "The field {property} is required.",

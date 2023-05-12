@@ -1,24 +1,30 @@
 <script setup>
-import { ref, computed } from 'vue'
+import {
+    computed,
+    defineProps,
+    ref
+} from 'vue';
 
 const props = defineProps({
   model: Object
 })
 
+const emit = defineEmits(["update:modelValue", "optionTreeSelected"]);
 const isOpen = ref(false)
 const isFolder = computed(() => {
   return props.model.children && props.model.children.length
 })
 
-const dataSelected = () => {
-    console.log(props.model)
+const dataSelected = (item) => {
+    console.log(item)
+    emit("optionTreeSelected", item);    
 };
 
-function toggle() {    
+const toggle = () => {    
   isOpen.value = !isOpen.value  
 }
 
-function changeType() {
+const changeType = () => {
   if (!isFolder.value) {
     props.model.children = []
     addChild()
@@ -26,8 +32,8 @@ function changeType() {
   }
 }
 
-function addChild() {
-  props.model.children.push({ name: 'new stuff' })
+const addChild = () => {
+  props.model.children.push({ name: 'Root' })
 }
 </script>
 
@@ -37,7 +43,7 @@ function addChild() {
       :class="{ bold: isFolder }"
       @click="toggle"
       @dblclick="changeType">
-      <span  @click="dataSelected">{{ model.name }}</span>
+      <span  @click="dataSelected(model)">{{ model.name }}</span>
       <span v-if="isFolder">[{{ isOpen ? '-' : '+' }}]</span>
     </div>
     <ul v-show="isOpen" v-if="isFolder">
