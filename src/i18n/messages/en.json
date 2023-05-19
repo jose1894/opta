@@ -693,11 +693,25 @@
     "rcr": "Rcr",  
     "editable": "Editable",
     "membership": "Membership",
+    "selectedNode": "You must select an item",  
     "status": "Status",
     "statuses": {
       "deleted": "Deleted",
       "active": "Active",
       "inactive": "Inactive"
+    },
+    "created": {
+      "success": "Approach created successfully!",
+      "error": "Approach couldn't be created!"
+    },
+    "updated": {
+      "success": "Approach updated successfully!",
+      "error": "Approach couldn't be updated!"
+    },
+    "deleted": {
+      "success": "Approach deleted successfully!",
+      "error": "Approach couldn't be deleted!",
+      "question": "Do you want to delete approach "
     }      
   },
   "validations": {

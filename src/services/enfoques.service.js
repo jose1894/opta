@@ -3,11 +3,20 @@ import authHeader from './auth.header.js'
 const resource = 'api/enfoques/'
 
 export default {
-    index(data) {
+    index() {
         return new Promise((resolve, reject) => {
-            Service.get(resource, {params: data}, { headers: authHeader() })
+            Service.get(resource, {}, { headers: authHeader() })
                 .then((response) => resolve(response.data))
                 .catch((err) => reject(err))
+        })
+    },
+
+    getChildren(enfoqueId) {
+        return new Promise((resolve, reject) => {
+            Service.get(`${resource}/getChildren/${enfoqueId}`, { headers: authHeader() })
+            .then(response => { 
+                resolve(response)})
+            .catch(err => reject(err))
         })
     },
     /*getDelete(data) {

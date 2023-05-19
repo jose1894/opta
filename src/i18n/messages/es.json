@@ -690,11 +690,25 @@
       "rcr": "Rcr",  
       "editable": "Editable",
       "membership": "Membresia",
+      "selectedNode": "Debe seleccionar un item",       
       "status": "Status",
       "statuses": {
         "deleted": "Borrado",
         "active": "Activo",
         "inactive": "Inactivo"
+      },
+      "created": {
+        "success": "¡El enfoque fue creado exitosamente!",
+        "error": "¡El enfoque no pudo ser creado!"
+      },
+      "updated": {
+        "success": "¡El enfoque fue actualizado exitosamente!",
+        "error": "¡El enfoque no pudo ser actualizado!"
+      },
+      "deleted": {
+        "success": "¡El enfoque fue eliminado exitosamente!",
+        "error": "¡El enfoque no pudo ser eliminado!",
+        "question": "Desea eliminar el enfoque "
       }      
     },
     "Home": "Inicio",
