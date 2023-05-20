@@ -285,7 +285,12 @@ const handleNodeSelected = (parentId) => {
                     
                     
                 </div>
-                <p>**Un solo click para seleccionar el nodo y 2 click para mostrar los sub nodos del nodo seleccionado</p>
+                <p>
+                    *Un solo click para seleccionar el nodo
+                </p>
+                <p>
+                    **2 click para mostrar los sub nodos del nodo seleccionado
+                </p>
             </div>
             <!-- <TreeItem :nodes="treeData" @nodeSelected="handleNodeSelected" /> -->
             <TreeItem :nodes="treeData" :selectedNodeId="state.selectedNodeId" @nodeSelected="handleNodeSelected" />
