@@ -70,9 +70,10 @@ const selectOptions = [
 
 const contacts = ref({
     contact: [{
+        _id: '',
         nombre: "",
         apellido: "",
-        cargo: cargoList.value,
+        cargo: cargosList.value,
         telefonoOfic: "",
         telefonoCelu: "",
         correo: "",
@@ -98,6 +99,7 @@ const client = ref({
     direccion: "",
     miembro: miembroList.value,
     estado: selectOptions[0],
+    contactos: contacts.value
 });
 
 const toast = useToast();
@@ -129,20 +131,29 @@ onMounted(async () => {
     miembroList.value = dataMiembros.map((miembro) => ({ id: miembro._id, label: miembro.nombre }));
     if (props.path === 'update') {
         const res = await clientsService.read(route.params);
-        client.value = res.data
-       const  { cargo, estado, industria, companiaListada,companiaRegulada } = res.data
-        client.value.cargo = { id: cargo._id, label: cargo.nombre }
+        client.value = res.data.cliente
+        contacts.value.contact = res.data.contactos
+        const dataContactoCargo = contacts.value.contact
+        dataContactoCargo.map((contacto) => { 
+            contacto.cargo = _asignarOpcionesAlSelect(contacto.cargo)
+            return contacto
+         });
+        client.value.contactos = contacts.value
+        const  { cargo, estado, industria, companiaListada,companiaRegulada } = res.data.cliente
         client.value.industria = { id: industria._id, label: industria.nombre }
-        client.value.pais = _asignarOpcionesAlSelect(res.data?.pais)
+        client.value.pais = _asignarOpcionesAlSelect(res.data.cliente?.pais)
         client.value.estado = selectOptions.filter(status => status.id === estado)[0]
-        client.value.companiaListada = selectOptions.filter(company => company.id === companiaListada)[0]
-        client.value.companiaRegulada = selectOptions.filter(company => company.id === companiaRegulada)[0]
-        client.value.miembro = _asignarOpcionesAlSelect(res.data?.miembro)
-        selectedPais(ally.value.pais, res.data)
+        client.value.companiaListada = option.filter(company => company.id === companiaListada)[0]
+        client.value.companiaRegulada = option.filter(company => company.id === companiaRegulada)[0]
+        client.value.miembro = _asignarOpcionesAlSelect(res.data.cliente?.miembro)
+        selectedPais(client.value.pais, res.data.cliente)
     }
 });
 
-const _asignarOpcionesAlSelect = (data) => { return { id: data._id, label: data.nombre } };
+const _asignarOpcionesAlSelect = (data) => { 
+    console.log(data) 
+    return { id: data?._id || data.id, label: data.nombre } 
+};
 
 const selectedPais = (data, response = {} ) => {
     const { id } = data;
@@ -199,7 +210,24 @@ const action = (client) => {
         paginaWeb,
         direccion,
         miembro,
-        estado } = client.value;
+        estado,
+        contactos } = client.value;
+
+    const contactData =  contactos.contact   
+
+    const saveDataContact = contactData.map(({_id,nombre,apellido,cargo,telefonoOfic,telefonoCelu,correo,cliente}) => {
+        const data = {
+            _id,
+            nombre,
+            apellido,
+            cargo: cargo.id,
+            telefonoOfic,
+            telefonoCelu,
+            correo,
+            cliente
+        }
+        return data
+    })
 
     const data = {
         _id,
@@ -217,7 +245,9 @@ const action = (client) => {
         paginaWeb,        
         direccion,
         miembro: miembro.id,
-        estado: estado.id
+        estado: estado.id,
+        contactos: saveDataContact
+
     }
     if (props.path === 'create') {
         return clientsService.create(data)
@@ -228,48 +258,7 @@ const action = (client) => {
 const successMessage = props.path === 'create' ? t("message.client.created.success") : t("message.client.updated.success")
 const errorMessage = props.path === 'create' ? t("message.client.created.error") : t("message.client.updated.error")
 
-const saveClient = async () => {
-    const result = await v$.value.$validate();
-    
-    const dataContact = contacts.value.contact
-    contacts.value.contact = dataContact.map((contact) => {
-                                            contact.cliente = '111'
-                                            return contact;
-                                        })
-    console.log(contacts.value.contact)
-    if (result) {
-        action(client)
-            .then((result) => {
-                console.log(result)
-                const { data } = result
-                clientId = data._id
-                contacts.value.contact[0].cliente = data._id
-                //listTabs.push({ title: t('message.client.tab.contacts')})
-               // toast.success(successMessage);
-               // router.push('/setup/clients');
-            })
-            .catch(err => {
-                if (err.response?.data?.msg) {
-                    toast.error(`${errorMessage} ${err.response.data.msg}`)
-                    return
-                }
-
-                if  (err.response.data?.errors){
-                    const errors = err.response.data.errors;          
-                    const result = Object.keys(errors).map(function(key, index) {
-                        const error = errors[key]
-                        return error.length > 1 ? error.map(i => error[i]).join() : error[0];
-                    });
-                    console.log(result.length, result)
-                    let errorStr = result.length > 1 ? result.map(i => result[i]).join() : result[0];
-                    //toast.error(`${errorStr}`)
-                    toast.error(`Error al procesar la data`)
-                }
-            })
-    } else {
-        console.log('error')
-    }
-}
+const saveClient = async () => {}
 
 const addItem = async (i) => { 
     contacts.value.contact.push ({
@@ -289,8 +278,6 @@ const removeItem = async (i) => {
 }
 
 const submit = async () => {
-    console.log(`Error submit`)
-    
     const result = await v$.value.$validate();
     if (result) {
         action(client)
@@ -303,8 +290,7 @@ const submit = async () => {
                     toast.error(`${errorMessage} ${err.response.data.msg}`)
                     return
                 }
-
-                if  (err.response.data?.errors){
+                if  (err?.response?.data?.errors){
                     const errors = err.response.data.errors;          
                     const result = Object.keys(errors).map(function(key, index) {
                         const error = errors[key]
@@ -371,7 +357,7 @@ const submit = async () => {
                             </div>
                             <div class="grid md:grid-cols-3 gap-3">
                                 <FormField :label="$t('message.client.address')">
-                                    <FormControl v-model="client.calle" :icon="mdiRenameBox" />
+                                    <FormControl v-model="client.direccion" :icon="mdiRenameBox" />
                                 </FormField>
 
                                 <FormField :label="$t('message.client.membership')">
@@ -382,7 +368,7 @@ const submit = async () => {
                                     <FormControl v-model="client.estado" :icon="mdiListStatus" :options="selectOptions" />
                                 </FormField>
                             </div>
-                            <BaseButton  :label="$t(`message.${props.saveLabel}`)" color="info" @click="saveClient"/>
+                            <!-- <BaseButton  :label="$t(`message.${props.saveLabel}`)" color="info" @click="saveClient"/> -->
                         </div>
                         <div v-show="tab === 1">
                             
@@ -399,7 +385,7 @@ const submit = async () => {
 
                                 <div class="grid md:grid-cols-3 gap-3">
                                     <FormField :label="$t('message.client.name')">
-                                        <FormControl v-model="contacts.contact[i].name" :icon="mdiRenameBox" />
+                                        <FormControl v-model="contacts.contact[i].nombre" :icon="mdiRenameBox" />
                                     </FormField>                                
                                     <FormField :label="$t('message.client.lastName')">
                                         <FormControl v-model="contacts.contact[i].apellido" :icon="mdiRenameBox" />

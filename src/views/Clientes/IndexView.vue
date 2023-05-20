@@ -84,7 +84,7 @@
         <NotificationBar v-if="!mainStore?.clients" color="danger" :icon="mdiTableOff">
             <b>{{ $t('message.empty_table') }}.</b> When there's nothing to show
         </NotificationBar>
-        <CardBox  v-if="mainStore?.aclients?.clientes?.length" class="mb-6" has-table>
+        <CardBox  v-if="mainStore?.clients?.clientes?.length" class="mb-6" has-table>
             <ClientTable @changePage="onChangePage" @sort="onSortPage"/>        
         </CardBox>
 

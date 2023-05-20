@@ -35,7 +35,7 @@ export default {
 
     update(cliente) {
         return new Promise((resolve, reject) => {
-            Service.put(`${resource}/${cliente._id}`, ciudad, { headers: authHeader() })
+            Service.put(`${resource}/${cliente._id}`, cliente, { headers: authHeader() })
                 .then((response) => resolve(response.data))
                 .catch((err) => reject(err))
         })

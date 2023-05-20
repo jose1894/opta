@@ -2,75 +2,55 @@
 import {
     computed,
     defineProps,
+    onMounted,
+    reactive,
     ref
 } from 'vue';
 
 const props = defineProps({
-  model: Object
+  nodes:{
+    type: Array,
+    required: true,
+  },
+  selectedNodeId: Number,
 })
 
-const emit = defineEmits(["update:modelValue", "optionTreeSelected", "onOpen"]);
-const isOpen = ref(false)
-const isFolder = computed(() => {
-  return props.model?.children && props.model?.children.length
-})
+const emit = defineEmits(["nodeSelected"]);
+const state = reactive({
+  nodes: props.nodes
+});
 
-const dataSelected = (model, index, child) => {
-    console.log(index)
-    console.log(model)
-    console.log(child)
-    emit("optionTreeSelected", child, isOpen.value);    
+const toggleCollapse = (nodeId) => {
+  const node = props.nodes.find((n) => n._id === nodeId);
+  if (node) {
+    node.collapsed = !node.collapsed;
+  }
+  emit('nodeSelected', node);
 };
 
-const toggle = () => {    
-  console.log("toggle*************")
-  console.log(props.model)
-  isOpen.value = !isOpen.value 
-  emit("optionTreeSelected", props.model, isOpen.value); 
-  
-}
 
-const changeType = () => {
-  if (!isFolder.value) {
-    props.model.children = []
-    addChild()
-    isOpen.value = true
-  } 
-}
-
-const openChild = (open, model) => {
-  console.log("openChild*************")
-  console.log(model)
-  //emit("onOpen", open, model);
-}
-const addChild = () => {
-  console.log("AddnChild*************")
-  console.log(props.model)
-  //props.model.children.push({ nombre: 'Root' })
-}
+const handleNodeSelected = (nodeId) => {
+  console.log(nodeId)
+  //console.log(state.selectedNodeId)
+  emit('nodeSelected', nodeId);
+};
 </script>
 
 <template>
-  <li>
-    <div
-      :class="{ bold: isFolder }"
-      @click="toggle"
-      @dblclick="changeType">
-      <span >{{ model?.nombre }}</span>
-      <span @click="addChild">[{{ isOpen ? '-' : '+' }}]</span>
-    </div>
-    <ul v-show="isOpen" v-if="isFolder">
-      <TreeItem
-        class="item"
-        v-for="(child, index) in model.children"
-        :key="index"
-        :model="child" 
-        @click="dataSelected(model.children, index, child)">
-        jkjkj
-      </TreeItem>
-      <li class="add" @click="addChild">+</li>
+  <div>
+    <ul>
+      <li :class="{ selected: state.selectedNodeId === node._id }" v-for="node in nodes" :key="node._id">
+        <span @click="toggleCollapse(node._id)">
+          <i v-if="node.children" :class="node.collapsed ? 'fa fa-chevron-right' : 'fa fa-chevron-down'"></i>
+          {{ node.nombre }}
+        </span>
+        <TreeItem 
+          :nodes="node.children" 
+          v-if="node.children && !node.collapsed" 
+          @nodeSelected="handleNodeSelected" />
+      </li>
     </ul>
-  </li>
+  </div>
 </template>
 <style scoped>
 .item {

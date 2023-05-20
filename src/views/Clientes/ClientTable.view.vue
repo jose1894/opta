@@ -87,7 +87,7 @@ const changePage = (page) => {
 }
 
 const edit = (id) => {
-  router.push({name: 'ClientsCreate', params: {id}})
+  router.push({name: 'ClientsUpdate', params: {id}})
 }
 
 const selectedItem = (client) => selectedClient.value = client

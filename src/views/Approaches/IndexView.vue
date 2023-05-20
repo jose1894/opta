@@ -17,7 +17,7 @@ import SectionMain from "@/components/SectionMain.vue";
 import membersServices from '@/services/member.service';
 import enfoquesServices from '@/services/enfoques.service';
 import CardBoxModal from "@/components/CardBoxModal.vue";
-import { mdiCodeBraces, mdiRenameBox, mdiListStatus } from "@mdi/js";
+import { mdiCodeBraces, mdiPlus, mdiListStatus } from "@mdi/js";
 import LayoutAuthenticated from "@/layouts/LayoutAuthenticated.vue";
 import SectionTitleLineWithButton from '@/components/SectionTitleLineWithButton.vue';
 
@@ -60,8 +60,46 @@ const dataInitial = {
 }
 const enfoque = ref(dataInitial);
 
+const state = reactive({
+    selectedNodeId: null,
+});
 
-const treeData = ref()
+
+const treeData = ref(/*[
+      {
+        id: 1,
+        label: 'Node 1',
+        children: [
+          {
+            id: 2,
+            label: 'Node 1.1',
+            children: [],
+          },
+          {
+            id: 3,
+            label: 'Node 1.2',
+            children: [
+              {
+                id: 4,
+                label: 'Node 1.2.1',
+                children: [],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: 5,
+        label: 'Node 2',
+        children: [
+          {
+            id: 6,
+            label: 'Node 2.1',
+            children: [],
+          },
+        ],
+      },
+    ]*/)
 
 onMounted(async () => {
     let listarMiembros = await membersServices.allMiembrosGet()
@@ -70,12 +108,12 @@ onMounted(async () => {
 
     let listEnfoques = await enfoquesServices.index()
     const { enfoques } = listEnfoques
-    treeData.value = enfoques[0]
+    treeData.value = enfoques
     /*if (props.path === 'update') {
         const res = await clientsService.read(route.params);
         client.value = res.data
        const  { cargo, estado, industria, companiaListada,companiaRegulada } = res.data
-        client.value.cargo = { id: cargo._id, label: cargo.nombre }
+        client.value.cargo = { id: cargo._id, label: cargo.nombre }fsubmit
         client.value.industria = { id: industria._id, label: industria.nombre }
         client.value.pais = _asignarOpcionesAlSelect(res.data?.pais)
         client.value.estado = selectOptions.filter(status => status.id === estado)[0]
@@ -93,7 +131,7 @@ const submit = async () => {
     action(enfoque)
         .then(() => {
             const m = selectedItemEnfoque.value
-            enfoqueChildren(m)            
+            enfoqueChildren(m)
             isModalActive.value = false
             enfoque.value = dataInitial
             toast.success(successMessage);
@@ -174,23 +212,30 @@ const addChild = async (i, m) => {
 
 const enfoqueChildren = async (m) => {
     //m.children = []
-    const child = await enfoquesServices.getChildren(m._id)
-    const itemsEnfoque = child?.data?.children || [];
-    m.children = itemsEnfoque
+    if (!m?.collapsed) {
+        const child = await enfoquesServices.getChildren(m._id)
+        const itemsEnfoque = child?.data?.children || [];
+        m.children = itemsEnfoque
+    }
 }
 
 const asignarNodoPadre = (selectedEnfoque) => {
-    console.log(selectedEnfoque)
     selectedItemEnfoque.value = selectedEnfoque
     enfoque.value.areaPadre = selectedEnfoque._id
     enfoque.value.areaPadreNombre = selectedEnfoque.nombre
 }
 
+const handleNodeSelected = (parentId) => {
+    console.log(parentId)
+    enfoqueChildren(parentId)
+    asignarNodoPadre(parentId)
+};
+
 
 </script>
 
 <template>
-    <CardBoxModal v-model="isModalActive" title="Crear enfoque" :hasDone="hasModalValue">
+    <CardBoxModal v-model="isModalActive" title="Crear enfoque" :hasDone="hasModalValue" claseModal="shadow-lg max-h-modal w-11/12 md:w-3/5 lg:w-11/12 xl:w-11/12 z-50">
         <CardBox isForm @submit.prevent="submit" style="height: 500px;
                 overflow-y: scroll;scroll-behavior: smooth;">
             <div class="grid md:grid-cols-2 gap-2">
@@ -235,13 +280,17 @@ const asignarNodoPadre = (selectedEnfoque) => {
                 <div class="grid md:grid-cols-4 gap-4 flex items-center">
                     <BaseButton :icon="mdiPlus" :label="$t('message.add_new')" color="success" small
                         @click="btnAgregarEnfoque" />
-                    <BaseButton to="branches/create" :icon="mdiPlus" :label="$t('message.edit')" color="success" small />
-                    <BaseButton to="branches/create" :icon="mdiPlus" :label="$t('message.delete')" color="success" small />
+                    <!-- <BaseButton to="branches/create" :icon="mdiPlus" :label="$t('message.edit')" color="success" small />
+                    <BaseButton to="branches/create" :icon="mdiPlus" :label="$t('message.delete')" color="success" small /> -->
                 </div>
             </div>
-            <ul>
-                <TreeItem class="item" :model="treeData" @optionTreeSelected="selelctedItemTreeView"/>
-            </ul>
+            <!-- <TreeItem :nodes="treeData" @nodeSelected="handleNodeSelected" /> -->
+            <TreeItem :nodes="treeData" :selectedNodeId="state.selectedNodeId" @nodeSelected="handleNodeSelected" />
+            <!-- <ul>
+                <li>
+                    <TreeItem class="item" :model="treeData" @optionTreeSelected="selelctedItemTreeView"/>
+                </li>                
+            </ul> -->
         </SectionMain>
     </LayoutAuthenticated>
 </template>
