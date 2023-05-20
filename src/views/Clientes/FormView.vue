@@ -70,7 +70,6 @@ const selectOptions = [
 
 const contacts = ref({
     contact: [{
-        _id: '',
         nombre: "",
         apellido: "",
         cargo: cargosList.value,

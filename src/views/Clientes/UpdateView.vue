@@ -11,7 +11,7 @@
     <SectionMain>
       <SectionTitleLineWithButton
         :icon="mdiBallotOutline"
-        :title="$t('message.clent.update')"
+        :title="$t('message.client.update')"
         main
       >
       </SectionTitleLineWithButton>
