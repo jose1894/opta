@@ -120,7 +120,7 @@ export default [
         to: "/setup/cities",
       },
       {
-        label: "Cargos",
+        label: "Job-position",
         to: "/setup/jobPositions",
       },
       {
@@ -136,7 +136,7 @@ export default [
         to: "/setup/branches",
       },
       {
-        label: "Business unit",
+        label: "Bussiness units",
         to: "/setup/businessUnit",
       },
       {
@@ -160,7 +160,7 @@ export default [
         to: "/setup/categories",
       },
       {
-        label: "Rate",
+        label: "Rates",
         to: "/setup/rates",
       },
       {
@@ -172,7 +172,7 @@ export default [
         to: "/setup/professions",
       },
       {
-        label: "Personnal",
+        label: "Employees",
         to: "/setup/personal",
       },
       {
@@ -188,18 +188,6 @@ export default [
         to: "/setup/approaches",
       },             
     ],
-  },
-  {
-    href: "https://github.com/justboil/admin-one-vue-tailwind",
-    label: "GitHub",
-    icon: mdiGithub,
-    target: "_blank",
-  },
-  {
-    href: "https://github.com/justboil/admin-one-react-tailwind",
-    label: "React version",
-    icon: mdiReact,
-    target: "_blank",
   },
 ];
 

@@ -723,5 +723,29 @@
     "required": "The field {property} is required.",
     "minLength": "The {property} field has a value of '{model}', but it must have a min length of {min}.",
     "maxLength": "The {property} field has a value of '{model}', but it must have a max length of {max}."
-  }
+  },
+  "menu": {
+    "SetUp": "Setup",
+    "Currency": "Currency",
+    "Countries": "Countries",
+    "States": "States",
+    "Cities": "Cities",
+    "Job-position": "Job position",
+    "Allies": "Allies",
+    "Memberships": "Memberships",
+    "Branches": "Branches",
+    "Bussiness units": "Bussiness units",
+    "Expense": "Expense", 
+    "Profile action": "Profile action",
+    "Items menu": "Items menu",
+    "Profile": "Profile",
+    "Category": "Category",
+    "Rates":"Rate",
+    "Language": "Language",
+    "Profession": "Profession",
+    "Employees": "Employees",
+    "Industry": "Industry",
+    "Client": "Client",
+    "Approaches": "Approaches"
+    }
 }

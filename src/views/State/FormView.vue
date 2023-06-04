@@ -93,7 +93,7 @@ const submit = async () => {
         if  (err.response.data?.errors){
           const errors = err.response.data.errors;
           let errorStr = '';
-          debugger
+          
           for(let attr of errors){
           }
         }

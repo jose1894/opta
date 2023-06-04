@@ -72,7 +72,7 @@ export const useMainStore = defineStore("main", {
       return new Promise((resolve, reject) => {
         AuthService.login(user)
           .then(user => {
-            debugger
+            
             self.userName = user.userData.username;
             self.userEmail = user.userData.email;
             self.user = {...user, isLoggedIn : true}
