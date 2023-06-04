@@ -255,10 +255,12 @@ const submit = async () => {
                                     <FormControl v-model="ally.ciudad" :icon="mdiListStatus" :options="citiesList" />
                                 </FormField>
                             </div>
-                            <div class="grid md:grid-cols-3 gap-3">
+                            <div class="grid gap-3">
                                 <FormField :label="$t('message.ally.address')">
-                                    <FormControl v-model="ally.calle" :icon="mdiRenameBox" />
-                                </FormField>
+                                    <FormControl type="textarea" v-model="ally.direccion" :icon="mdiRenameBox" />
+                                </FormField>                                
+                            </div>
+                            <div class="grid md:grid-cols-2 gap-3">
                                 <FormField :label="$t('message.ally.paginaWeb')"
                                     :help="v$?.paginaWeb?.$errors[0]?.$message">
                                     <FormControl v-model="ally.paginaWeb" :icon="mdiRenameBox" />
