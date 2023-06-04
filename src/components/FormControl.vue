@@ -44,6 +44,10 @@ const props = defineProps({
   borderless: Boolean,
   transparent: Boolean,
   ctrlKFocus: Boolean,
+  readonly: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const emit = defineEmits(["update:modelValue", "setRef", "onSelectChange"]);
@@ -133,6 +137,7 @@ if (props.ctrlKFocus) {
       v-model="computedValue" 
       :name="name" 
       :class="inputElClass"
+      :readonly="readonly"
       @change="onSelectChange($event)">
       <option v-for="option in options" :key="option.id ?? option" :value="option">
         {{ option.label ?? option }}
@@ -144,7 +149,8 @@ if (props.ctrlKFocus) {
       :class="inputElClass" 
       :name="name"
       :placeholder="placeholder" 
-      :required="required" />
+      :required="required" 
+      :readonly="readonly"/>
     <input v-else 
       :id="id" 
       ref="inputEl" 
@@ -155,7 +161,8 @@ if (props.ctrlKFocus) {
       :required="required" 
       :placeholder="placeholder" 
       :type="computedType"
-      :class="inputElClass" />
+      :class="inputElClass"
+      :readonly="readonly" />
     <FormControlIcon v-if="icon" :icon="icon" :h="controlIconH" />
   </div>
 </template>

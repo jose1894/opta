@@ -277,18 +277,18 @@ const submit = async () => {
                                     <FormControl v-model="ally.apellidoContact" :icon="mdiRenameBox" />
                                 </FormField>
                             </div>
-                            <div class="grid md:grid-cols-3 gap-3">
+                            <div class="grid md:grid-cols-2 gap-2">
                                 <FormField :label="$t('message.ally.cargo')">
                                     <FormControl v-model="ally.cargo" :icon="mdiListStatus" :options="cargosList" />
                                 </FormField>                                
                                 <FormField :label="$t('message.ally.officePhone')">
                                     <FormControl v-model="ally.telefonoOfic" :icon="mdiRenameBox" />
                                 </FormField>
+                            </div>
+                            <div class="grid md:grid-cols-2 gap-2">
                                 <FormField :label="$t('message.ally.movilPhone')">
                                     <FormControl v-model="ally.telefonoCelu" :icon="mdiRenameBox" />
                                 </FormField>
-                            </div>
-                            <div class="grid md:grid-cols-2 gap-2">
                                 <FormField :label="$t('message.ally.email')">
                                     <FormControl v-model="ally.correoContact" :icon="mdiRenameBox" />
                                 </FormField>

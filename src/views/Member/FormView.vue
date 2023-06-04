@@ -56,7 +56,7 @@ const activeTab = (i) => {
 const listTabs = [
     { title: 'Membresia' },
     { title: 'Contacto' },
-    { title: 'Datos del softwere y  presupuesto' }
+    // { title: 'Datos del softwere y  presupuesto' }
 ]
 
 const selectOptions = [
@@ -99,7 +99,7 @@ const member = ref({
     telefonoOfic: "",
     telefonoCelu: "",
     correoContact: "",
-    codigoActivacion: "",
+    /*codigoActivacion: "",
     licencias: "",
     vigencia: new Date(),
     moneda: monedasList.value,
@@ -107,7 +107,7 @@ const member = ref({
     creacion: creationOptions[0],
     declaracionHoras: 0,
     modificacionHoras: 0,
-    requiereAprobacion: "",
+    requiereAprobacion: "",*/
     estado: selectOptions[0],
 });
 
@@ -141,16 +141,13 @@ onMounted(async () => {
     if (props.path === 'update') {
         const res = await membersService.read(route.params);
         member.value = res.data
-        console.log(res.data)
         const { cargo, aliado, moneda, estado, tipoContacto, creacion } = res.data
         member.value.cargo = { id: cargo._id, label: cargo.nombre }
         member.value.aliado = { id: aliado._id, label: aliado.nombre }
-        member.value.moneda = { id: moneda._id, label: moneda.nombre }
         member.value.pais = _asignarOpcionesAlSelect(res.data?.pais)
         member.value.estado = selectOptions.filter(status => status.id === estado)[0]
         member.value.tipoContacto = typeContactOptions.filter(typeContact => typeContact.id === tipoContacto)[0]
-        member.value.creacion = creationOptions.filter(typeContact => typeContact.id === creacion)[0]
-        
+        member.value.creacion = creationOptions.filter(typeContact => typeContact.id === creacion)[0]        
         selectedPais(member.value.pais, res.data)
     }
 });
@@ -215,7 +212,7 @@ const action = (member) => {
         telefonoOfic,
         telefonoCelu,
         correoContact,
-        codigoActivacion,
+        /*codigoActivacion,
         licencias,
         vigencia,
         moneda,
@@ -223,7 +220,7 @@ const action = (member) => {
         creacion,
         declaracionHoras,
         modificacionHoras,
-        requiereAprobacion,
+        requiereAprobacion,*/
         estado
     } = member.value;
 
@@ -246,7 +243,7 @@ const data = {
     telefonoOfic,
     telefonoCelu,
     correoContact,
-    codigoActivacion,
+    /*codigoActivacion,
     licencias,
     vigencia: vigencia.undefined,
     moneda: moneda.id,
@@ -254,7 +251,7 @@ const data = {
     creacion: creacion.id,
     declaracionHoras: +declaracionHoras,
     modificacionHoras: +modificacionHoras,
-    requiereAprobacion,
+    requiereAprobacion,*/
     estado: estado.id
 }
 if (props.path === 'create') {
@@ -332,7 +329,7 @@ const submit = async () => {
                                     <FormControl v-model="member.calle" :icon="mdiRenameBox" />
                                 </FormField>
                             </div>
-                            <div class="grid md:grid-cols-3 gap-3">
+                            <div class="grid md:grid-cols-2 gap-2">
                                 <FormField :label="$t('message.member.paginaWeb')">
                                     <FormControl v-model="member.paginaWeb" :icon="mdiRenameBox" />
                                 </FormField>
@@ -364,13 +361,13 @@ const submit = async () => {
                                     <FormControl v-model="member.telefonoCelu" :icon="mdiRenameBox" />
                                 </FormField>
                             </div>
-                            <div class="grid md:grid-cols-2 gap-2">
+                            <div class="grid md:grid-cols-1 gap-1">
                                 <FormField :label="$t('message.member.email')">
                                     <FormControl v-model="member.correoContact" :icon="mdiRenameBox" />
                                 </FormField>
                             </div>
                         </div>
-                        <div v-show="tab === 2">
+                        <!-- <div v-show="tab === 2">
                             <h2 class="h2-tittle">Softwere</h2>
                             <div class="grid md:grid-cols-3 gap-3">
                                 <FormField :label="$t('message.member.activation_code')">
@@ -411,7 +408,7 @@ const submit = async () => {
                                     <FormControl v-model="member.requiereAprobacion"  :icon="mdiRenameBox"/>
                                 </FormField>
                             </div>                        
-                        </div>
+                        </div> -->
                         <div>
                             <!-- <div v-for="(field, i) in ally.referidos" :key="i">
                                                     <div class="btn-add-remove">
@@ -466,7 +463,7 @@ const submit = async () => {
             </div>
         </div>
         <template #footer>
-            <BaseButton v-show="tab === 2" :label="$t(`message.${props.saveLabel}`)" type="submit" color="info" />
+            <BaseButton v-show="tab === 1" :label="$t(`message.${props.saveLabel}`)" type="submit" color="info" />
         </template>
     </CardBox>
 </template>

@@ -9,6 +9,7 @@ import SectionTitleLineWithButton from '@/components/SectionTitleLineWithButton.
 import NotificationBar from '@/components/NotificationBar.vue';
 import CardBox from '@/components/CardBox.vue';
 import CardBoxComponentEmpty from '@/components/CardBoxComponentEmpty.vue';
+import Breadcrumb from '@/components/Breadcrumb.vue'
 import CurrencyTable from './CurrencyTable.vue';
 import { useMainStore } from '@/stores/main';
 import currenciesService from '@/services/currencies.service'
@@ -20,6 +21,14 @@ const perPage = ref(10);
 const customElementsForm = reactive({
   switch: [],
 });
+const customCheckDelete = ref(false);
+
+const breadcrumbs = ref( [
+        { name: 'Inicio' },
+])
+
+//checkDelete
+
 const getCurrencies = (data) => {
     currenciesService.index(data).then(response => {        
     mainStore.currencies = response
@@ -38,8 +47,9 @@ const onSortPage = (sortBy,sortDesc) => {
   endPointUseSort({sortBy,sortDesc});
 }
 
-const onChangeSwtch = () => {
+const onChangeSwtch = () => { 
   endPointUse({ page: page.value })
+  customCheckDelete.value = customElementsForm.switch.length === 0 ? false : true
 }
 
 const getCurrenciesDelete = (data) => {
@@ -53,6 +63,7 @@ const getCurrenciesDelete = (data) => {
 const endPointUse = (page) => {
   customElementsForm.switch.length === 0 ? getCurrencies({ page }) :
     getCurrenciesDelete({ page })
+  
 }
 
 const endPointUseSort = (sortBy, sortDesc) => {
@@ -65,19 +76,21 @@ const endPointUseSort = (sortBy, sortDesc) => {
 <template>
   <LayoutAuthenticated>
     <SectionMain>
+      
       <SectionTitleLineWithButton
         :icon="mdiGlobeModel"
         :title="$t('message.currencies.currency')"
       >
+      
       <BaseButton
           to="currencies/create"
           :icon="mdiPlus"
           :label="$t('message.add_new')"
           color="success"
           small
-        />
+        />       
       </SectionTitleLineWithButton>
-
+      <Breadcrumb :items="breadcrumbs" />
       <FormField label="">
         <FormCheckRadioGroup 
             v-model="customElementsForm.switch" 
@@ -93,7 +106,7 @@ const endPointUseSort = (sortBy, sortDesc) => {
       </NotificationBar>
 
       <CardBox  v-if="mainStore?.currencies?.monedas?.length" class="mb-6" has-table>
-        <CurrencyTable @changePage="onChangePage" @sort="onSortPage"/>
+        <CurrencyTable :checkDelete ="customCheckDelete" @changePage="onChangePage" @sort="onSortPage"/>
       </CardBox>
 
       <CardBox v-else>

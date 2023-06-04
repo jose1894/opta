@@ -25,9 +25,11 @@ import SectionTitleLineWithButton from '@/components/SectionTitleLineWithButton.
 const { t } = useI18n();
 const toast = useToast();
 let miembroList = ref([]);
+const isReadOnly = ref(true);
 const isModalActive = ref(false);
 const hasModalValue = false;
 const selectedItemEnfoque = ref({});
+const isModalDangerActive = ref(false);
 let path = '';
 const props = defineProps({
     path: '',
@@ -101,14 +103,30 @@ const treeData = ref(/*[
       },
     ]*/)
 
+    const chilItem = (data, enfoques=[]) => {
+        const menu1 = data.map((item) => { 
+        const child =  enfoques.filter((itemEnfo) => itemEnfo?.areaPadre === item._id)
+            if(child.length > 0) {
+                item.children = child 
+                chilItem(child, enfoques)
+            }
+            //data.children = child
+            return item
+        })
+
+    }
+
 onMounted(async () => {
     let listarMiembros = await membersServices.allMiembrosGet()
     const dataMiembros = listarMiembros?.data.miembros;
     miembroList.value = dataMiembros.map((miembro) => ({ id: miembro._id, label: miembro.nombre }));
-
-    let listEnfoques = await enfoquesServices.index()
+    getEnfoques()
+    /*let listEnfoques = await enfoquesServices.index()
     const { enfoques } = listEnfoques
-    treeData.value = enfoques
+    const nodeFirst = enfoques.filter((item) => item.nombre === "Root");
+    const dataEnfoques = enfoques.filter((item) => item.nombre !== "Root");
+    const menu11= chilItem(nodeFirst, dataEnfoques)
+    treeData.value = nodeFirst*/
     /*if (props.path === 'update') {
         const res = await clientsService.read(route.params);
         client.value = res.data
@@ -124,6 +142,14 @@ onMounted(async () => {
     }*/
 });
 
+const getEnfoques = (async () => {
+    let listEnfoques = await enfoquesServices.index()
+    const { enfoques } = listEnfoques
+    const nodeFirst = enfoques.filter((item) => item.nombre === "Root");
+    const dataEnfoques = enfoques.filter((item) => item.nombre !== "Root");
+    const menu11= chilItem(nodeFirst, dataEnfoques)
+    treeData.value = nodeFirst
+});
 const successMessage = props.path === 'create' ? t("message.approach.created.success") : t("message.approach.updated.success")
 const errorMessage = props.path === 'create' ? t("message.approach.created.error") : t("message.approach.updated.error")
 
@@ -131,7 +157,8 @@ const submit = async () => {
     action(enfoque)
         .then(() => {
             const m = selectedItemEnfoque.value
-            enfoqueChildren(m)
+            enfoqueChildren7878(m)
+            //getEnfoques()
             isModalActive.value = false
             enfoque.value = dataInitial
             toast.success(successMessage);
@@ -180,11 +207,12 @@ const action = async (enfoque) => {
     if (path === 'create') {
         return enfoquesServices.create(data)
     }
-    //return clientsService.update(data);
+    return enfoquesServices.update(data);
 }
 
 const successMessageSelectNode = t("message.approach.selectedNode")
 const btnAgregarEnfoque = () => {
+    enfoque.value = dataInitial
     path = "create";
     if (Object.keys(selectedItemEnfoque.value).length === 0) {
         toast.error(successMessageSelectNode)
@@ -192,6 +220,25 @@ const btnAgregarEnfoque = () => {
         isModalActive.value = true
     }
 }
+
+const btnEditarEnfoque = () => {
+    path = "update";
+    console.log(selectedItemEnfoque.value)
+    enfoque.value = selectedItemEnfoque.value
+    const { visible, estado, rcr, editable, miembro, areaPadre }  = selectedItemEnfoque.value
+    enfoque.value.areaPadre = areaPadre._id
+    enfoque.value.areaPadreNombre = areaPadre.nombre
+    enfoque.value.estado = selectOptions.filter(status => status.id === estado)[0]
+    enfoque.value.visible = option.filter(item => item.id === visible)[0]
+    enfoque.value.rcr = option.filter(item => item.id === rcr)[0]
+    enfoque.value.editable = option.filter(item => item.id === editable)[0]
+    enfoque.value.miembro = _asignarOpcionesAlSelect(miembro)
+    isModalActive.value = true
+}
+
+const _asignarOpcionesAlSelect = (data) => { 
+    return { id: data?._id || data.id, label: data.nombre } 
+};
 
 const selelctedItemTreeView = (m, i) => {
     asignarNodoPadre(m)
@@ -211,12 +258,19 @@ const addChild = async (i, m) => {
 }
 
 const enfoqueChildren = async (m) => {
-    //m.children = []
+   /* m.children = []
     if (!m?.collapsed) {
         const child = await enfoquesServices.getChildren(m._id)
         const itemsEnfoque = child?.data?.children || [];
         m.children = itemsEnfoque
-    }
+    }*/
+}
+
+const enfoqueChildren7878 = async (m) => {
+   m.children = []
+   const child = await enfoquesServices.getChildren(m._id)
+   const itemsEnfoque = child?.data?.children || [];
+   m.children = itemsEnfoque
 }
 
 const asignarNodoPadre = (selectedEnfoque) => {
@@ -231,11 +285,45 @@ const handleNodeSelected = (parentId) => {
     asignarNodoPadre(parentId)
 };
 
+const dataName = () => {
+  const { nombre } = selectedItemEnfoque.value
+  return nombre
+}
+const successMessageError = t("message.approach.deleted.success")
+const deleteItem = async () => {
+    console.log(selectedItemEnfoque.value)
+    deleteEnfoqueById()
+    .then(async () => {        
+      let listEnfoques = await enfoquesServices.index()
+        const { enfoques } = listEnfoques
+        treeData.value = enfoques
+        toast.success(successMessageError);
+    })
+    .catch(err => {
+      toast.error(`${t("message.approach.deleted.error")} ${err?.response?.data.msg}`)
+    })
+};
+
+const deleteEnfoqueById = () => {
+    const { _id } = selectedItemEnfoque.value
+    return enfoquesServices.delete(_id);
+};
+
 
 </script>
 
 <template>
-    <CardBoxModal v-model="isModalActive" title="Crear enfoque" :hasDone="hasModalValue" claseModal="shadow-lg max-h-modal w-11/12 md:w-3/5 lg:w-11/12 xl:w-11/12 z-50">
+    <CardBoxModal 
+        v-model="isModalDangerActive" 
+        title="Please confirm" 
+        button="danger" 
+        @confirm="deleteItem" 
+        has-cancel>
+        <strong>{{ $t('message.approach.deleted.question') }} <b> {{ dataName() }} </b></strong> ?
+    </CardBoxModal>
+    <CardBoxModal v-model="isModalActive" title="Crear enfoque" 
+        :hasDone="hasModalValue" 
+        claseModal="shadow-lg max-h-modal w-11/12 md:w-3/5 lg:w-8/12 xl:w-8/12 z-50">
         <CardBox isForm @submit.prevent="submit" style="height: 500px;
                 overflow-y: scroll;scroll-behavior: smooth;">
             <div class="grid md:grid-cols-2 gap-2">
@@ -246,7 +334,7 @@ const handleNodeSelected = (parentId) => {
                     <FormControl :name="'name'" v-model="enfoque.nombre" :icon="mdiCodeBraces" />
                 </FormField>
                 <FormField :label="$t('message.approach.parentArea')">
-                    <FormControl :name="'parentArea'" v-model="enfoque.areaPadreNombre" :icon="mdiCodeBraces" />
+                    <FormControl :name="'parentArea'" v-model="enfoque.areaPadreNombre" :icon="mdiCodeBraces" :readonly="isReadOnly"/>
                 </FormField>
                 <FormField :label="$t('message.approach.route')">
                     <FormControl :name="'route'" v-model="enfoque.ruta" :icon="mdiCodeBraces" />
@@ -261,7 +349,7 @@ const handleNodeSelected = (parentId) => {
                     <FormControl v-model="enfoque.editable" :icon="mdiListStatus" :options="option" />
                 </FormField>
                 <FormField :label="$t('message.approach.membership')">
-                    <FormControl v-model="enfoque.miembro" :icon="mdiListStatus" :options="miembroList" />
+                    <FormControl v-model="enfoque.miembro" :icon="mdiListStatus" :options="miembroList" :readonly="isReadOnly"/>
                 </FormField>
                 <FormField :label="$t('message.approach.status')">
                     <FormControl v-model="enfoque.estado" :icon="mdiListStatus" :options="selectOptions" />
@@ -278,10 +366,22 @@ const handleNodeSelected = (parentId) => {
             </SectionTitleLineWithButton>
             <div class="container mx-auto">
                 <div class="grid md:grid-cols-4 gap-4 flex items-center">
-                    <BaseButton :icon="mdiPlus" :label="$t('message.add_new')" color="success" small
+                    <BaseButton 
+                        :icon="mdiPlus" 
+                        :label="$t('message.add_new')"
+                        color="success" small
                         @click="btnAgregarEnfoque" />
-                    <!-- <BaseButton to="branches/create" :icon="mdiPlus" :label="$t('message.edit')" color="success" small />
-                    <BaseButton to="branches/create" :icon="mdiPlus" :label="$t('message.delete')" color="success" small /> -->
+                    <BaseButton 
+                        :icon="mdiPlus" 
+                        :label="$t('message.edit')" 
+                        color="success" small 
+                        @click="btnEditarEnfoque"
+                        />
+                    <BaseButton 
+                        :icon="mdiPlus" 
+                        :label="$t('message.delete')" 
+                        color="success" small 
+                        @click="isModalDangerActive = true"/>
                     
                     
                 </div>

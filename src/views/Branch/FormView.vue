@@ -191,6 +191,8 @@ const submit = async () => {
                     <FormField :label="$t('message.branch.acronyms')" :help="v$?.siglas?.$errors[0]?.$message">
                         <FormControl v-model="branch.siglas" :icon="mdiRenameBox" />
                     </FormField>
+                </div>
+                <div class="grid md:grid-cols-2 gap-2">
                     <FormField :label="$t('message.branch.country')">
                         <FormControl v-model="branch.pais" :icon="mdiListStatus" :options="countriesList"
                             @onSelectChange="selectedPais" />
@@ -199,6 +201,9 @@ const submit = async () => {
                         <FormControl v-model="branch.state" :icon="mdiListStatus" :options="statesList"
                             @onSelectChange="selectedCiudad" />
                     </FormField>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-2">
                     <FormField :label="$t('message.branch.city')">
                         <FormControl v-model="branch.ciudad" :icon="mdiListStatus" :options="citiesList" />
                     </FormField>

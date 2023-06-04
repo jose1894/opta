@@ -299,6 +299,11 @@
       "success": "Currency deleted successfully!",
       "error": "Currency couldn't be updated!",
       "question": "Do you want to delete currency"
+    },
+    "confirm": {
+      "success": "¡Currency was successfully activated!",
+      "error": "¡Currency could not be activated!",
+      "question": "You want to activate the currency"
     }
   },
   "member": {

@@ -243,6 +243,11 @@
         "success": "¡la moneda fue eliminada exitosamente!",
         "error": "¡La moneda no pudo ser eliminada!",
         "question": "Desea eliminar la moneda"
+      },
+      "confirm": {
+        "success": "¡la moneda fue activada exitosamente!",
+        "error": "¡La moneda no pudo ser activada!",
+        "question": "Desea activar la moneda"
       }
     },
     "member": {

@@ -7,12 +7,18 @@ import SectionMain from '@/components/SectionMain.vue';
 import SectionTitleLineWithButton from '@/components/SectionTitleLineWithButton.vue';
 import FormView from './FormView.vue';
 import { useRouter } from 'vue-router';
+import Breadcrumb from '@/components/Breadcrumb.vue'
 
 const router = useRouter();
 
 const formStatusWithHeader = ref(true);
 
 const formStatusCurrent = ref(0);
+
+const breadcrumbs = ref( [
+        { name: 'Inicio', link: '/setup/currencies' },
+        { name: 'Create'},
+])
 
 const formStatusOptions = ["info", "success", "danger", "warning"];
 
@@ -31,6 +37,7 @@ const formStatusSubmit = () => {
         main
       >
       </SectionTitleLineWithButton>
+      <Breadcrumb :items="breadcrumbs" />
       <form-view path="create" save-label="submit"></form-view>
     </SectionMain>
 

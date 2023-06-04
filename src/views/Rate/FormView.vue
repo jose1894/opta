@@ -226,6 +226,9 @@ console.log('simulateNow ES MAYOR A simulateToken?', simulateNow.isAfter(simulat
                         <FormControl v-model="rate.actual" :icon="mdiRenameBox" />                        
                     </FormField>
                     <!-- <ElCurrencyInput v-model="rate.actual" :options="{ currency: 'EUR'}" /> -->
+                    
+                </div>
+                <div class="grid md:grid-cols-2 gap-2">
                     <FormField :label="$t('message.rate.previousRate')">
                         <FormControl v-model="rate.anterior" :icon="mdiRenameBox" />
                     </FormField>

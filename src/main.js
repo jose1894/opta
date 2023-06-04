@@ -18,8 +18,20 @@ import moment from 'moment';
 /* Init Pinia */
 const pinia = createPinia();
 
+
 /* Create Vue app */
-createApp(App).use(router).use(pinia).use(i18n).use(Toast).use(VueTailwindDatepicker).use(VueNumeric).use(moment).mount("#app");
+const app = createApp(App)
+
+app.use(router).use(pinia).use(i18n/*, {
+  install: (app, options) => {
+    app.config.globalProperties.$translate = (key) => {
+      console.log(key)
+      return key.split('.').reduce((o, i) => {        
+        if (o) return o[i]
+      }, options)
+    }
+  }
+}*/).use(Toast).use(VueTailwindDatepicker).use(VueNumeric).use(moment).mount("#app");
 
 /* Init Pinia stores */
 const mainStore = useMainStore(pinia);

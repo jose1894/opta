@@ -22,11 +22,18 @@ import CardBoxTransaction from "@/components/CardBoxTransaction.vue";
 import CardBoxClient from "@/components/CardBoxClient.vue";
 import LayoutAuthenticated from "@/layouts/LayoutAuthenticated.vue";
 import TreeItem from '@/components/TreeItem.vue'
+import Breadcrumb from '@/components/Breadcrumb.vue'
 import SectionTitleLineWithButton from "@/components/SectionTitleLineWithButton.vue";
 import SectionBannerStarOnGitHub from "@/components/SectionBannerStarOnGitHub.vue";
 
 
 const chartData = ref(null);
+
+const breadcrumbs = ref( [
+        { name: 'Inicio', link: '/' },
+        { name: 'Blog', link: '/blog' },
+        { name: 'Tecnología', link: '/blog/tecnologia' },
+      ])
 
 const treeData = ref({
   name: 'My Tree',
@@ -226,6 +233,10 @@ const activeTabThree = () => {
       <ul>
         <TreeItem class="item" :model="treeData"></TreeItem>
       </ul>
+
+      <div>
+        <Breadcrumb :items="breadcrumbs" />
+      </div>
     </SectionMain>
   </LayoutAuthenticated>
 </template>
