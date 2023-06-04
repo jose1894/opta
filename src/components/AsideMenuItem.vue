@@ -71,7 +71,7 @@ const menuClick = (event) => {
           { 'pr-12': !hasDropdown },
           vSlot && vSlot.isExactActive ? asideMenuItemActiveStyle : '',
         ]"
-        >{{ item.label }}</span
+        >{{ $t(`menu.${item.label}`)}}</span
       >
       <BaseIcon
         v-if="hasDropdown"
