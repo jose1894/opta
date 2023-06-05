@@ -39,14 +39,14 @@ const handleNodeSelected = (nodeId) => {
 <template>
   <div>
     <ul>
-      <li :class="{ selected: state.selectedNodeId === node._id }" v-for="node in nodes" :key="node._id">
-        <span @click="toggleCollapse(node._id)">
+      <li v-for="node in nodes" :key="node._id">
+        <span :class="{ selected: node.collapsed }" @click="toggleCollapse(node._id)">
           <i v-if="node.children" :class="node.collapsed ? 'fa fa-chevron-right' : 'fa fa-chevron-down'"></i>
-          {{ node.nombre }}
+          {{ node.nombre }} {{ node.collapsed }} 
         </span>
         <TreeItem 
           :nodes="node.children" 
-          v-if="node.children && !node.collapsed" 
+          v-if="node.children && node.collapsed" 
           @nodeSelected="handleNodeSelected" />
       </li>
     </ul>
@@ -56,9 +56,10 @@ const handleNodeSelected = (nodeId) => {
 .item {
   cursor: pointer;
 }
-.bold {
+.bold, .selected {
   font-weight: bold;
 }
+
 ul {
   padding-left: 1em;
   line-height: 1.5em;

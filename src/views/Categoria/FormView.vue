@@ -136,7 +136,7 @@ const submit = async () => {
     <CardBox isForm @submit.prevent="submit">
         <div>
             <div class="container mx-auto">
-                <div class="grid md:grid-cols-4 gap-4">
+                <div class="grid md:grid-cols-3 gap-3">
                     <FormField :label="$t('message.category.code')" :help="v$?.codigo?.$errors[0]?.$message">
                         <FormControl v-model="category.codigo" :icon="mdiRenameBox" />
                     </FormField>
@@ -145,7 +145,9 @@ const submit = async () => {
                     </FormField>
                     <FormField :label="$t('message.category.acronyms')" :help="v$?.siglas?.$errors[0]?.$message">
                         <FormControl v-model="category.siglas" :icon="mdiRenameBox" />
-                    </FormField>
+                    </FormField>                    
+                </div>
+                <div class="grid md:grid-cols-2 gap-2">
                     <FormField :label="$t('message.category.businessUnit')">
                         <FormControl v-model="category.unidadNegocio" :icon="mdiListStatus" :options="bussinessUnitList"
                             @onSelectChange="selectedBussinesUnit" />

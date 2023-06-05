@@ -13,6 +13,7 @@ import currenciesService from '@/services/currencies.service';
 
 defineProps({
   checkable: Boolean,
+  checkDelete: Boolean, 
 });
 
 const { t } = useI18n();
@@ -113,6 +114,19 @@ const action = () => {
   console.log(_id)
   return currenciesService.delete(_id);
 }
+const successConfirmMessage = t("message.currencies.confirm.success")
+const activateItem = () => {
+  const { _id } = selectedCurrency.value
+  currenciesService.restore(_id).then(() => {
+      toast.success(successConfirmMessage);
+      emit('changePage', currentPage.value)      
+    })
+    .catch(err => {
+      toast.error(`${t("message.currencies.confirm.error")} ${err?.response?.data.msg}`)
+    });
+  //return result
+
+}
 </script>
 
 <template>
@@ -123,6 +137,13 @@ const action = () => {
       @confirm="deleteItem" 
       has-cancel>
       <strong>{{ $t('message.currencies.deleted.question') }} <b> {{ dataName() }} </b></strong> ?
+  </CardBoxModal>
+
+  <CardBoxModal 
+    v-model="isModalActive" 
+    title="Please confirm"
+    @confirm="activateItem">
+    <strong>{{ $t('message.currencies.confirm.question') }} <b> {{ dataName() }} </b></strong> ?   
   </CardBoxModal>
 
   <table>
@@ -139,7 +160,7 @@ const action = () => {
           {{ currency.codigo }} 
         </td>
         <td :data-label="$t('message.currencies.name')">
-          {{ currency.nombre }}
+          {{ currency.nombre }} 
         </td>
         <td :data-label="$t('message.currencies.status')">
           {{ $t(`message.currencies.statuses.${listStatusOption(currency.estado)}`) }}
@@ -147,6 +168,15 @@ const action = () => {
         <td class="before:hidden lg:w-1 whitespace-nowrap">
           <BaseButtons type="justify-start lg:justify-end" no-wrap>
             <BaseButton
+              v-show="checkDelete"
+              color="info"
+              :icon="mdiFileEdit"
+              small
+              @click="isModalActive = true"
+            />
+
+            <BaseButton
+              v-show="!checkDelete"
               color="info"
               :icon="mdiFileEdit"
               small

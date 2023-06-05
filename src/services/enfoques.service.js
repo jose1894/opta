@@ -52,19 +52,19 @@ export default {
         })
     },*/
 
-    /*update(cargo) {
+    update(enfoque) {
         return new Promise((resolve, reject) => {
-            Service.put(`${resource}/${cargo._id}`, cargo, { headers: authHeader() })
+            Service.put(`${resource}/${enfoque._id}`, enfoque, { headers: authHeader() })
                 .then((response) => resolve(response.data))
                 .catch((err) => reject(err))
         })
     },
 
-    delete(cargoId) {
+    delete(enfoqueId) {
         return new Promise((resolve, reject) => {
-            Service.delete(`${resource}${cargoId}`, { headers: authHeader() })
+            Service.delete(`${resource}${enfoqueId}`, { headers: authHeader() })
                 .then((response) => resolve(response.data))
                 .catch((err) => reject(err))
         })
-    },*/
+    },
 }

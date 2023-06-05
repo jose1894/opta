@@ -1,3 +1,4 @@
+import i18n from "@/i18n";
 import {
   mdiAccountCircle,
   mdiMonitor,
@@ -14,6 +15,12 @@ import {
   mdiCog,
 } from "@mdi/js";
 
+
+/*setup: () => ({ 
+  $t: useI18n().t
+})*/
+console.log("@mdi/jsssssssssssssss")
+console.log("@mdi/jsssssssssssssss", i18n)
 export default [
   /*{
     to: "/dashboard",
@@ -183,3 +190,5 @@ export default [
     ],
   },
 ];
+
+

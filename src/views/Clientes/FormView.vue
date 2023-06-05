@@ -150,7 +150,6 @@ onMounted(async () => {
 });
 
 const _asignarOpcionesAlSelect = (data) => { 
-    console.log(data) 
     return { id: data?._id || data.id, label: data.nombre } 
 };
 
@@ -295,7 +294,6 @@ const submit = async () => {
                         const error = errors[key]
                         return error.length > 1 ? error.map(i => error[i]).join() : error[0];
                     });
-                    console.log(result.length, result)
                     let errorStr = result.length > 1 ? result.map(i => result[i]).join() : result[0];
                     //toast.error(`${errorStr}`)
                     toast.error(`Error al procesar la data`)
@@ -397,7 +395,7 @@ const submit = async () => {
                                     </FormField>
                                     <FormField :label="$t('message.client.movilPhone')">
                                         <FormControl v-model="contacts.contact[i].telefonoCelu" :icon="mdiRenameBox" />
-                                    </FormField>email
+                                    </FormField>
                                     <FormField :label="$t('message.client.email')">
                                         <FormControl v-model="contacts.contact[i].correo" :icon="mdiRenameBox" />
                                     </FormField>
