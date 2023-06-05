@@ -154,7 +154,8 @@ if (props.ctrlKFocus) {
       :class="inputElClass" 
       :name="name"
       :placeholder="placeholder" 
-      :required="required" />
+      :required="required" 
+      :readonly="props.readonly"/>
     <input v-else 
       :id="id" 
       ref="inputEl" 
@@ -165,7 +166,8 @@ if (props.ctrlKFocus) {
       :required="required" 
       :placeholder="placeholder" 
       :type="computedType"
-      :class="inputElClass" />
+      :class="inputElClass" 
+      :readonly="props.readonly"/>
     <FormControlIcon v-if="icon" :icon="icon" :h="controlIconH" />
   </div>
 </template>
