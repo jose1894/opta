@@ -6,7 +6,7 @@ export default [
     },
     path: url,
     name: "Industries",
-    component: () => import("@/views/Industry/IndexView.vue"),
+    component: () => import("@/views/industry/IndexView.vue"),
   },
   {
     meta: {
@@ -14,7 +14,7 @@ export default [
     },
     path: `${url}/create`,
     name: "IndustriesCreate",
-    component: () => import("@/views/Industry/CreateView.vue"),
+    component: () => import("@/views/industry/CreateView.vue"),
   },
   {
     meta: {
@@ -22,7 +22,7 @@ export default [
     },
     path: `${url}/update/:id`,
     name: "IndustriesUpdate",
-    component: () => import("@/views/Industry/UpdateView.vue"),
+    component: () => import("@/views/industry/UpdateView.vue"),
   },
 
 ]

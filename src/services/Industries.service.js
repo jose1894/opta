@@ -13,7 +13,7 @@ export default {
     getDelete(data) {
         return new Promise((resolve, reject) => {
            
-            Service.get(`${resource}industriasGetDeleted`, {params: data}, { headers: authHeader() })
+            Service.get(`${resource}industriasDeleted`, {params: data}, { headers: authHeader() })
                 .then((response) => resolve(response.data))
                 .catch((err) => reject(err))
         })
