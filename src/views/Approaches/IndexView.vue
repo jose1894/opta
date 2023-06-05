@@ -145,7 +145,7 @@ const submit = async () => {
             if (err.response.data?.errors) {
                 const errors = err.response.data.errors;
                 let errorStr = '';
-                
+                debugger
                 for (let attr of errors) {
                 }
             }
@@ -246,7 +246,7 @@ const handleNodeSelected = (parentId) => {
                     <FormControl :name="'name'" v-model="enfoque.nombre" :icon="mdiCodeBraces" />
                 </FormField>
                 <FormField :label="$t('message.approach.parentArea')">
-                    <FormControl :name="'parentArea'" v-model="enfoque.areaPadreNombre" :icon="mdiCodeBraces" />
+                    <FormControl :name="'parentArea'" v-model="enfoque.areaPadreNombre" :icon="mdiCodeBraces" :readonly="true" />
                 </FormField>
                 <FormField :label="$t('message.approach.route')">
                     <FormControl :name="'route'" v-model="enfoque.ruta" :icon="mdiCodeBraces" />

@@ -40,6 +40,10 @@ const props = defineProps({
     type: [String, Number, Boolean, Array, Object],
     default: "",
   },
+  readonly: {
+    type: Boolean,
+    default: false
+  },
   required: Boolean,
   borderless: Boolean,
   transparent: Boolean,
@@ -62,6 +66,7 @@ const inputElClass = computed(() => {
     computedType.value === "textarea" ? "h-24" : "h-12",
     props.borderless ? "border-0" : "border",
     props.transparent ? "bg-transparent" : "bg-white dark:bg-slate-800",
+    props.readonly ? "bg-gray" : ""
   ];
 
   if (props.icon) {
@@ -144,7 +149,8 @@ if (props.ctrlKFocus) {
       :class="inputElClass" 
       :name="name"
       :placeholder="placeholder" 
-      :required="required" />
+      :required="required"
+      :readonly="props.readonly" />
     <input v-else 
       :id="id" 
       ref="inputEl" 
@@ -155,7 +161,8 @@ if (props.ctrlKFocus) {
       :required="required" 
       :placeholder="placeholder" 
       :type="computedType"
-      :class="inputElClass" />
+      :class="inputElClass"
+      :readonly="props.readonly" />
     <FormControlIcon v-if="icon" :icon="icon" :h="controlIconH" />
   </div>
 </template>
