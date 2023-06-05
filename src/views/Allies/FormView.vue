@@ -254,12 +254,7 @@ const submit = async () => {
                                 <FormField :label="$t('message.ally.city')">
                                     <FormControl v-model="ally.ciudad" :icon="mdiListStatus" :options="citiesList" />
                                 </FormField>
-                            </div>
-                            <div class="grid gap-3">
-                                <FormField :label="$t('message.ally.address')">
-                                    <FormControl type="textarea" v-model="ally.direccion" :icon="mdiRenameBox" />
-                                </FormField>                                
-                            </div>
+                            </div>                           
                             <div class="grid md:grid-cols-2 gap-3">
                                 <FormField :label="$t('message.ally.paginaWeb')"
                                     :help="v$?.paginaWeb?.$errors[0]?.$message">
@@ -268,6 +263,11 @@ const submit = async () => {
                                 <FormField :label="$t('message.ally.status')">
                                     <FormControl v-model="ally.estado" :icon="mdiListStatus" :options="selectOptions" />
                                 </FormField>
+                            </div>
+                            <div class="grid gap-3">
+                                <FormField :label="$t('message.ally.address')">
+                                    <FormControl type="textarea" v-model="ally.direccion" :icon="mdiRenameBox" />
+                                </FormField>                                
                             </div>
                         </div>
                         <div v-show="tab === 1">

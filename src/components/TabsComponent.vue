@@ -1,5 +1,7 @@
 <script setup>
     import { ref } from "vue";
+    import { useI18n } from "vue-i18n";
+    const { t } = useI18n();
     const props = defineProps({
         tabs: []
     });
@@ -8,6 +10,18 @@
     const selectTab = (i) => {
         emit("tabClick", i);
         activeTab.value = i;
+    }
+    const nextTab = () => {
+        console.log(activeTab.value)
+        const nextTab = activeTab.value + 1;
+        emit("tabClick", nextTab);
+        activeTab.value = nextTab;
+    }
+    const backTab  = () => {
+        console.log(activeTab.value)
+        const nextTab = activeTab.value - 1;
+        emit("tabClick", nextTab);
+        activeTab.value = nextTab;
     }
 </script>
 <template>
@@ -25,8 +39,28 @@
                 {{ tab.title }}
             </a>
         </li>
-    </ul>
+    </ul>   
     <slot></slot>
+    <div style="display: inline-block;">
+        <button 
+        v-show="activeTab !== tabs.length - 1" 
+        type="button" 
+        class="btn-next" 
+        color="info"
+        @click="nextTab">
+        {{ $t('message.next') }}
+    </button>
+    <button 
+        v-show="activeTab !== 0" 
+        type="button" 
+        class="btn-next" 
+        color="info"
+        @click="backTab">
+        {{ $t('message.back') }}
+    </button>
+    
+    </div>
+    
 </template>
 <style scoped>
 li:hover {
@@ -37,5 +71,13 @@ li:hover {
     border-bottom: 1px solid;
     background: #e0e0e6;
     ;
+}
+.btn-next {
+    background: blue;
+    padding: 5px 10px;
+    color: white;
+    border-radius: 5px;
+    min-width: 86px;
+    margin-left: 2px;
 }
 </style>

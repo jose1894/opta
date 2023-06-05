@@ -23,6 +23,8 @@
     "delete": "Delete",
     "yes": "Yes",
     "no": "No",
+    "next": "Next",
+    "back": "Back",
     "profile": {
       "profile": "Profile",
       "personal_information": "Personal information",
