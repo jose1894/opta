@@ -42,7 +42,7 @@ const handleNodeSelected = (nodeId) => {
       <li v-for="node in nodes" :key="node._id">
         <span :class="{ selected: node.collapsed }" @click="toggleCollapse(node._id)">
           <i v-if="node.children" :class="node.collapsed ? 'fa fa-chevron-right' : 'fa fa-chevron-down'"></i>
-          {{ node.nombre }} {{ node.collapsed }} 
+          {{ node.nombre }}
         </span>
         <TreeItem 
           :nodes="node.children" 

@@ -121,6 +121,9 @@ onMounted(async () => {
     const dataMiembros = listarMiembros?.data.miembros;
     miembroList.value = dataMiembros.map((miembro) => ({ id: miembro._id, label: miembro.nombre }));
     getEnfoques()
+    if (props.path === 'update') {
+        console.log(props.path)
+    }
     /*let listEnfoques = await enfoquesServices.index()
     const { enfoques } = listEnfoques
     const nodeFirst = enfoques.filter((item) => item.nombre === "Root");
@@ -221,13 +224,18 @@ const btnAgregarEnfoque = () => {
     }
 }
 
-const btnEditarEnfoque = () => {
+const btnEditarEnfoque = async () => {
     path = "update";
     console.log(selectedItemEnfoque.value)
     enfoque.value = selectedItemEnfoque.value
     const { visible, estado, rcr, editable, miembro, areaPadre }  = selectedItemEnfoque.value
-    enfoque.value.areaPadre = areaPadre._id
-    enfoque.value.areaPadreNombre = areaPadre.nombre
+    if(areaPadre) {
+        const res = await enfoquesServices.read(areaPadre);
+        console.log(res)
+        //const child = await enfoquesServices.getChildren(m._id)
+        enfoque.value.areaPadre = res.data?._id
+        enfoque.value.areaPadreNombre = res.data?.nombre
+    }    
     enfoque.value.estado = selectOptions.filter(status => status.id === estado)[0]
     enfoque.value.visible = option.filter(item => item.id === visible)[0]
     enfoque.value.rcr = option.filter(item => item.id === rcr)[0]
@@ -385,12 +393,6 @@ const deleteEnfoqueById = () => {
                     
                     
                 </div>
-                <p>
-                    *Un solo click para seleccionar el nodo
-                </p>
-                <p>
-                    **2 click para mostrar los sub nodos del nodo seleccionado
-                </p>
             </div>
             <!-- <TreeItem :nodes="treeData" @nodeSelected="handleNodeSelected" /> -->
             <TreeItem :nodes="treeData" :selectedNodeId="state.selectedNodeId" @nodeSelected="handleNodeSelected" />

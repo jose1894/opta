@@ -34,9 +34,9 @@ export default {
                 .catch(err => reject(err))
         })
     },
-    read(enfoque) {
+    read(enfoqueId) {
         return new Promise((resolve, reject) => {
-            Service.get(`${resource}/${enfoque.id}`, { headers: authHeader() })
+            Service.get(`${resource}/${enfoqueId}`, { headers: authHeader() })
             .then(response => { 
                 resolve(response)})
             .catch(err => reject(err))
