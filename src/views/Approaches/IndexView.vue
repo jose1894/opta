@@ -231,8 +231,6 @@ const btnEditarEnfoque = async () => {
     const { visible, estado, rcr, editable, miembro, areaPadre }  = selectedItemEnfoque.value
     if(areaPadre) {
         const res = await enfoquesServices.read(areaPadre);
-        console.log(res)
-        //const child = await enfoquesServices.getChildren(m._id)
         enfoque.value.areaPadre = res.data?._id
         enfoque.value.areaPadreNombre = res.data?.nombre
     }    
@@ -301,10 +299,24 @@ const successMessageError = t("message.approach.deleted.success")
 const deleteItem = async () => {
     console.log(selectedItemEnfoque.value)
     deleteEnfoqueById()
-    .then(async () => {        
-      let listEnfoques = await enfoquesServices.index()
+    .then(async () => {     
+        console.log(treeData.value) 
+        const dataT = treeData.value
+        const dataDeleteId = selectedItemEnfoque.value.areaPadre
+
+        const menu1 = dataT.map((item) => { 
+            console.log(item)
+        /*const child =  enfoques.filter((itemEnfo) => itemEnfo?.id === dataDeleteId)
+            if(child.length === 0) {
+                item.children = child 
+                chilItem(child, enfoques)
+            }
+            return item*/
+        })
+
+      /*let listEnfoques = await enfoquesServices.index()
         const { enfoques } = listEnfoques
-        treeData.value = enfoques
+        treeData.value = enfoques*/
         toast.success(successMessageError);
     })
     .catch(err => {
