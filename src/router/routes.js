@@ -21,7 +21,7 @@ import PersonalRoutes from "./PersonalRoutes.js";
 import IndustriesRoutes from "./IndustriesRoutes.js";
 import ClientsRoutes from "./ClientsRoutes.js";
 import ApproachesRoutes from "./ApproachesRoutes.js";
-
+import ActivitiesRoutes from "./ActivitiesRoutes.js";
 export default [
   {
     meta: {
@@ -117,5 +117,6 @@ export default [
   ...PersonalRoutes,
   ...IndustriesRoutes,
   ...ClientsRoutes,
-  ...ApproachesRoutes
+  ...ApproachesRoutes,
+  ...ActivitiesRoutes
 ];

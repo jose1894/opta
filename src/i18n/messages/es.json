@@ -699,6 +699,8 @@
       "membership": "Membresia",
       "selectedNode": "Debe seleccionar un item",       
       "status": "Status",
+      "chargeable": "Cargable",
+      "non-chargeable": "No cargable",
       "statuses": {
         "deleted": "Borrado",
         "active": "Activo",
@@ -715,6 +717,37 @@
       "deleted": {
         "success": "¡El enfoque fue eliminado exitosamente!",
         "error": "¡El enfoque no pudo ser eliminado!",
+        "question": "Desea eliminar el enfoque "
+      }      
+    },
+    "activity": {
+      "activity": "Actividad",
+      "activities": "Actividades",
+      "create": "Crear actividad",
+      "update": "Modificar actividad",
+      "name": "Nombre",
+      "acronyms": "Siglas",
+      "membership": "Membresia",
+      "bussinesUnit": "Unidad de negocio",
+      "chargeable": "Cargable",
+      "non-chargeable": "No cargable",
+      "status": "Status",
+      "statuses": {
+        "deleted": "Borrado",
+        "active": "Activo",
+        "inactive": "Inactivo"
+      },
+      "created": {
+        "success": "¡La actividad fue creado exitosamente!",
+        "error": "¡La actividad no pudo ser creado!"
+      },
+      "updated": {
+        "success": "¡La actividad fue actualizada exitosamente!",
+        "error": "¡La actividad no pudo ser actualziada!"
+      },
+      "deleted": {
+        "success": "¡La actividad fue eliminada exitosamente!",
+        "error": "¡La actividad no pudo ser eliminada!",
         "question": "Desea eliminar el enfoque "
       }      
     },
@@ -750,6 +783,7 @@
     "Employees": "Personal",
     "Industry": "Industria",
     "Client": "Clientes",
-    "Approaches": "Enfoques"
+    "Approaches": "Enfoques",
+    "Activities": "Actividades"
   }
 }

@@ -721,6 +721,37 @@
       "question": "Do you want to delete approach "
     }      
   },
+  "activity": {
+    "activity": "Activity",
+    "activities": "Activities",
+    "create": "Create activity",
+    "update": "Update activity",
+    "name": "Name",
+    "acronyms": "Acronyms",
+    "membership": "Membresia",
+    "status": "Status",
+    "chargeable": "Chargeable",
+    "non-chargeable": "Non-Chargeable",
+    "bussinesUnit": "Bussines unit",
+    "statuses": {
+      "deleted": "Deleted",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "created": {
+      "success": "Activity created successfully!",
+      "error": "Activity couldn't be created!"
+    },
+    "updated": {
+      "success": "Activity updated successfully!",
+      "error": "Activity couldn't be updated!"
+    },
+    "deleted": {
+      "success": "Activity deleted successfully!",
+      "error": "Activity couldn't be deleted!",
+      "question": "Do you want to delete activity "
+    }      
+  },
   "validations": {
     "required": "The field {property} is required.",
     "minLength": "The {property} field has a value of '{model}', but it must have a min length of {min}.",
@@ -748,6 +779,7 @@
     "Employees": "Employees",
     "Industry": "Industry",
     "Client": "Client",
-    "Approaches": "Approaches"
+    "Approaches": "Approaches",
+    "Activities": "Activities"
     }
 }

@@ -40,6 +40,7 @@ export const useMainStore = defineStore("main", {
     personal:[],
     industries:[],
     clients:[],
+    activities:[],
     data: [],
   }),
   actions: {
