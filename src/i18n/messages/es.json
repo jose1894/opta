@@ -751,6 +751,42 @@
         "question": "Desea eliminar el enfoque "
       }      
     },
+    "project": {
+      "project": "Proyecto",
+      "projects": "Proyectos",
+      "create": "Crear proyecto",
+      "update": "Modificar proyecto",
+      "code": "Código",
+      "client": "Cliente",
+      "partner": "Socio",
+      "date": "Fecha",
+      "createdProject": "Creado",
+      "branch": "Sucursal",      
+      "bussinesUnit": "Unidad de negocio",    
+      "typeOfService": "Tipo de servicio", 
+      "serviceDescription": "Descripción de servicio", 
+      "manager": "Gerente", 
+      "membership": "Membresia",
+      "status": "Status",
+      "statuses": {
+        "deleted": "Borrado",
+        "active": "Activo",
+        "inactive": "Inactivo"
+      },
+      "created": {
+        "success": "¡El proyecto fue creado exitosamente!",
+        "error": "¡El proyecto no pudo ser creado!"
+      },
+      "updated": {
+        "success": "¡El proyecto fue actualizada exitosamente!",
+        "error": "¡El proyecto no pudo ser actualziada!"
+      },
+      "deleted": {
+        "success": "¡El proyecto fue eliminada exitosamente!",
+        "error": "¡El proyecto no pudo ser eliminada!",
+        "question": "Desea eliminar el enfoque "
+      }      
+    },
     "Home": "Inicio",
     "Countries": "Paises",
     "Setup": "Configuración",
@@ -784,6 +820,7 @@
     "Industry": "Industria",
     "Client": "Clientes",
     "Approaches": "Enfoques",
-    "Activities": "Actividades"
+    "Activities": "Actividades",
+    "Projects": "Proyectos"
   }
 }

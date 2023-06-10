@@ -752,6 +752,42 @@
       "question": "Do you want to delete activity "
     }      
   },
+  "project": {
+    "project": "Project",
+    "projects": "Projects",
+    "create": "Create project",
+    "update": "Update project",
+    "code": "Code",
+    "client": "Client",
+    "partner": "Partner",
+    "date": "Date",
+    "createdProject": "Create",
+    "branch": "Breanch",    
+    "bussinesUnit": "Bussines unit",
+    "typeOfService": "Type of service", 
+    "serviceDescription": "Service description", 
+    "manager": "Manager", 
+    "status": "Status",
+    "membership": "Membresia",    
+    "statuses": {
+      "deleted": "Deleted",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "created": {
+      "success": "Project created successfully!",
+      "error": "Project couldn't be created!"
+    },
+    "updated": {
+      "success": "Project updated successfully!",
+      "error": "Project couldn't be updated!"
+    },
+    "deleted": {
+      "success": "Project deleted successfully!",
+      "error": "Project couldn't be deleted!",
+      "question": "Do you want to delete project "
+    }      
+  },
   "validations": {
     "required": "The field {property} is required.",
     "minLength": "The {property} field has a value of '{model}', but it must have a min length of {min}.",
@@ -780,6 +816,7 @@
     "Industry": "Industry",
     "Client": "Client",
     "Approaches": "Approaches",
-    "Activities": "Activities"
+    "Activities": "Activities",
+    "Projects": "Projects"
     }
 }

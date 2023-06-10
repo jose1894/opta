@@ -184,7 +184,11 @@ export default [
       {
         label: "Activities",
         to: "/setup/activities",
-      },             
+      },  
+      {
+        label: "Projects",
+        to: "/setup/projects",
+      },               
     ],
   },
 ];
