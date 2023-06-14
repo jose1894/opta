@@ -217,10 +217,6 @@ const addChild = async (i, m) => {
 }
 
 const enfoqueChildren = async (m) => {
-   
-}
-
-const enfoqueChildren = async (m) => {
    m.children = []
    const child = await enfoquesServices.getChildren(m._id)
    const itemsEnfoque = child?.data?.children || [];
