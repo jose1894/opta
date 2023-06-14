@@ -27,8 +27,16 @@ const countries = ref([]);
 const customElementsForm = reactive({
   switch: [],
 });
-const getCountries = (data) => {
-  countriesService.index(data).then(response => {
+
+const customCheckDelete = ref(false);
+
+const onChangeSwtch = () => { 
+  endPointUse({ page: page.value })
+  customCheckDelete.value = customElementsForm.switch.length === 0 ? false : true
+}
+
+const getCountries = async (data) => {
+  await countriesService.index(data).then(response => {
     mainStore.countries = response
     page.value = response.page
     perPage.value = response.perPage
@@ -45,12 +53,8 @@ const onSortPage = (sortBy, sortDesc) => {
   endPointUseSort({ sortBy, sortDesc });
 }
 
-const onChangeSwtch = () => {
-  endPointUse({ page: page.value })
-}
-
-const getCountriesDelete = (data) => {
-  countriesService.getDelete(data).then(response => {
+const getCountriesDelete = async (data) => {
+  await countriesService.getDelete(data).then(response => {
     mainStore.countries = response
     page.value = response.page
     perPage.value = response.perPage
@@ -58,13 +62,15 @@ const getCountriesDelete = (data) => {
 }
 
 const endPointUse = (page) => {
-  customElementsForm.switch.length === 0 ? getCountries({ page }) :
-    getCountriesDelete({ page })
+  customElementsForm.switch.length === 0 
+    ? getCountries({ page }) 
+    : getCountriesDelete({ page })
 }
 
-const endPointUseSort = (sortBy, sortDesc) => {
-  customElementsForm.switch.length === 0 ? getCountries({ sortBy, sortDesc }) :
-    getCountriesDelete({ sortBy, sortDesc })
+const endPointUseSort = (sort) => {
+  customElementsForm.switch.length === 0 
+  ? getCountries(sort) :
+    getCountriesDelete(sort)
 }
 
 
@@ -78,7 +84,7 @@ const endPointUseSort = (sortBy, sortDesc) => {
       </SectionTitleLineWithButton>
 
       <Breadcrumb :items="breadcrumbs" />
-
+      
       <FormField label="">
         <FormCheckRadioGroup v-model="customElementsForm.switch" name="sample-switch" type="switch"
           :options="{ one: 'Mostrar registros eliminados' }" @change="onChangeSwtch" />
@@ -91,7 +97,7 @@ const endPointUseSort = (sortBy, sortDesc) => {
       </NotificationBar>
 
       <CardBox v-if="mainStore?.countries?.paises?.length" class="mb-6" has-table>
-        <CountryTable @changePage="onChangePage" @sort="onSortPage" />
+        <CountryTable :checkDelete="customCheckDelete" @changePage="onChangePage" @sort="onSortPage" />
       </CardBox>
 
       <CardBox v-else>

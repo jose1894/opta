@@ -101,7 +101,7 @@ const formStatusSubmit = () => {
 
         <template #footer>
           <BaseButtons>
-            <BaseButton type="submit" color="info" label="Submit" />
+            <BaseButton type="submit" color="success" label="Submit" />
             <BaseButton type="reset" color="info" outline label="Reset" />
           </BaseButtons>
         </template>
@@ -176,7 +176,7 @@ const formStatusSubmit = () => {
         </FormField>
 
         <template #footer>
-          <BaseButton label="Trigger" type="submit" color="info" />
+          <BaseButton label="Trigger" type="submit" color="success" />
         </template>
       </CardBox>
     </SectionMain>

@@ -100,7 +100,7 @@ const submit = () => {
 
         <BaseButton
           type="submit"
-          color="info"
+          color="success"
           label="Reset password"
           :class="{ 'opacity-25': form.processing }"
           :disabled="form.processing"

@@ -49,6 +49,14 @@ export default {
         })
     },
 
+    restore(paisId) {
+        return new Promise((resolve, reject) => {
+            Service.delete(`${resource}restore/${paisId}`, { headers: authHeader() })
+                .then((response) => resolve(response.data))
+                .catch((err) => reject(err))
+        })
+    },
+
     countryActivate() {
         return new Promise((resolve, reject) => {
             Service.paisesActivosGet()

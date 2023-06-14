@@ -60,7 +60,7 @@ const submit = () => {
         <BaseLevel>
           <BaseButton
             type="submit"
-            color="info"
+            color="success"
             label="Resend Verification Email"
             :class="{ 'opacity-25': form.processing }"
             :disabled="form.processing"

@@ -65,6 +65,11 @@
         "success": "Country deleted successfully!",
         "error": "Country couldn't be deleted!",
         "question": "Do you want to delete country"
+      },
+      "restore": {
+          "success": "Country restored successfully!",
+          "error" : "Country couldn't be restored!",
+          "question": "Do you want to restore "
       }
     },
     "city": {
@@ -822,6 +827,8 @@
     "Client": "Client",
     "Approaches": "Approaches",
     "Activities": "Activities",
-    "Projects": "Projects"
+    "Projects": "Projects",
+    "Location": "Location", 
+    "Logout": "Logout"
     }
 }

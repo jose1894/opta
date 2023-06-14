@@ -123,14 +123,14 @@ const submit = () => {
         <BaseButtons>
           <BaseButton
             type="submit"
-            color="info"
+            color="success"
             label="Register"
             :class="{ 'opacity-25': form.processing }"
             :disabled="form.processing"
           />
           <BaseButton
             route-name="login"
-            color="info"
+            color="success"
             outline
             label="Login"
           />
