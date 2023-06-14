@@ -9,11 +9,16 @@ import SectionMain from '@/components/SectionMain.vue';
 import countriesService from '@/services/countries.service'
 import { mdiGlobeModel, mdiPlus, mdiTableOff } from '@mdi/js';
 import NotificationBar from '@/components/NotificationBar.vue';
+import Breadcrumb from '@/components/Breadcrumb.vue'
 import LayoutAuthenticated from '@/layouts/LayoutAuthenticated.vue'
 import FormCheckRadioGroup from "@/components/FormCheckRadioGroup.vue";
 import CardBoxComponentEmpty from '@/components/CardBoxComponentEmpty.vue';
 import SectionTitleLineWithButton from '@/components/SectionTitleLineWithButton.vue';
 
+
+const breadcrumbs = ref( [
+        { name: 'Inicio' },
+])
 const mainStore = useMainStore();
 const page = ref(1);
 const perPage = ref(10);
@@ -69,8 +74,10 @@ const endPointUseSort = (sortBy, sortDesc) => {
   <LayoutAuthenticated>
     <SectionMain>
       <SectionTitleLineWithButton :icon="mdiGlobeModel" :title="$t('message.country.countries')">
-        <BaseButton to="countries/create" :icon="mdiPlus" :label="$t('message.add_new')" color="success" small />
+        <BaseButton :to="{name: 'CountriesCreate'}" :icon="mdiPlus" :label="$t('message.add_new')" color="success" small />
       </SectionTitleLineWithButton>
+
+      <Breadcrumb :items="breadcrumbs" />
 
       <FormField label="">
         <FormCheckRadioGroup v-model="customElementsForm.switch" name="sample-switch" type="switch"

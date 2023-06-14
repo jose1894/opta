@@ -68,54 +68,20 @@ const state = reactive({
 });
 
 
-const treeData = ref(/*[
-      {
-        id: 1,
-        label: 'Node 1',
-        children: [
-          {
-            id: 2,
-            label: 'Node 1.1',
-            children: [],
-          },
-          {
-            id: 3,
-            label: 'Node 1.2',
-            children: [
-              {
-                id: 4,
-                label: 'Node 1.2.1',
-                children: [],
-              },
-            ],
-          },
-        ],
-      },
-      {
-        id: 5,
-        label: 'Node 2',
-        children: [
-          {
-            id: 6,
-            label: 'Node 2.1',
-            children: [],
-          },
-        ],
-      },
-    ]*/)
+const treeData = ref()
 
-    const chilItem = (data, enfoques=[]) => {
-        const menu1 = data.map((item) => { 
-        const child =  enfoques.filter((itemEnfo) => itemEnfo?.areaPadre === item._id)
-            if(child.length > 0) {
-                item.children = child 
-                chilItem(child, enfoques)
-            }
-            //data.children = child
-            return item
-        })
+const chilItem = (data, enfoques=[]) => {
+    const menu1 = data.map((item) => { 
+    const child =  enfoques.filter((itemEnfo) => itemEnfo?.areaPadre === item._id)
+        if(child.length > 0) {
+            item.children = child 
+            chilItem(child, enfoques)
+        }
+        //data.children = child
+        return item
+    })
 
-    }
+}
 
 onMounted(async () => {
     let listarMiembros = await membersServices.allMiembrosGet()
@@ -124,26 +90,7 @@ onMounted(async () => {
     getEnfoques()
     if (props.path === 'update') {
         console.log(props.path)
-    }
-    /*let listEnfoques = await enfoquesServices.index()
-    const { enfoques } = listEnfoques
-    const nodeFirst = enfoques.filter((item) => item.nombre === "Root");
-    const dataEnfoques = enfoques.filter((item) => item.nombre !== "Root");
-    const menu11= chilItem(nodeFirst, dataEnfoques)
-    treeData.value = nodeFirst*/
-    /*if (props.path === 'update') {
-        const res = await clientsService.read(route.params);
-        client.value = res.data
-       const  { cargo, estado, industria, companiaListada,companiaRegulada } = res.data
-        client.value.cargo = { id: cargo._id, label: cargo.nombre }fsubmit
-        client.value.industria = { id: industria._id, label: industria.nombre }
-        client.value.pais = _asignarOpcionesAlSelect(res.data?.pais)
-        client.value.estado = selectOptions.filter(status => status.id === estado)[0]
-        client.value.companiaListada = selectOptions.filter(company => company.id === companiaListada)[0]
-        client.value.companiaRegulada = selectOptions.filter(company => company.id === companiaRegulada)[0]
-        client.value.miembro = _asignarOpcionesAlSelect(res.data?.miembro)
-        selectedPais(ally.value.pais, res.data)
-    }*/
+    }    
 });
 
 const getEnfoques = (async () => {
@@ -264,21 +211,14 @@ const selelctedItemTreeView = (m, i) => {
 
 
 const addChild = async (i, m) => {
-    //asignarNodoPadre(m)
-    //m.children = []
     if (!i.value) {
         enfoqueChildren(m)
     }
 }
 
-/*const enfoqueChildren = async (m) => {
-    m.children = []
-    if (!m?.collapsed) {
-        const child = await enfoquesServices.getChildren(m._id)
-        const itemsEnfoque = child?.data?.children || [];
-        m.children = itemsEnfoque
-    }
-}*/
+const enfoqueChildren = async (m) => {
+   
+}
 
 const enfoqueChildren = async (m) => {
    m.children = []
@@ -312,17 +252,10 @@ const deleteItem = async () => {
         const dataDeleteId = selectedItemEnfoque.value.areaPadre
 
         const menu1 = dataT.map((item) => { 
-        /*const child =  enfoques.filter((itemEnfo) => itemEnfo?.id === dataDeleteId)
-            if(child.length === 0) {
-                item.children = child 
-                chilItem(child, enfoques)
-            }
-            return item*/
+            console.log(item)
+   
         })
 
-      /*let listEnfoques = await enfoquesServices.index()
-        const { enfoques } = listEnfoques
-        treeData.value = enfoques*/
         toast.success(successMessageError);
     })
     .catch(err => {

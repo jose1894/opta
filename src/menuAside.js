@@ -13,6 +13,33 @@ import {
   mdiPalette,
   mdiReact,
   mdiCog,
+  mdiCurrencyUsd,
+  mdiFlag,
+  mdiMapCheck,
+  mdiMapMarker,
+  mdiAccountDetails,
+  mdiProfessionalHexagon,
+  mdiAccountBox,
+  mdiAccountStarOutline,
+  mdiCheckbook,
+  mdiNotebookCheck,
+  mdiCubeOutline,
+  mdiHandCoin,
+  mdiArrowRightBold,
+  mdiAccountCog,
+  mdiListStatus,
+  mdiSeal,
+  mdiCash100,
+  mdiSignLanguage,
+  mdiLanguageMarkdownOutline,
+  mdiEmoticonTongue,
+  mdiEmoticonTongueOutline,
+  mdiAccount,
+  mdiFactory,
+  mdiNaturePeople,
+  mdiSourceBranch,
+  mdiNewspaper,
+  mdiAccountChild,
 } from "@mdi/js";
 
 export default [
@@ -100,97 +127,126 @@ export default [
       {
         label: "Currency",
         to: "/setup/currencies",
+        icon: mdiCurrencyUsd
       },
       {
         label: "Countries",
         to: "/setup/countries",
+        icon: mdiFlag
       },
       {
         label: "States",
         to: "/setup/states",
+        icon: mdiMapCheck
       },
       {
         label: "Cities",
         to: "/setup/cities",
+        icon: mdiMapMarker
       },
       {
         label: "Job-position",
         to: "/setup/jobPositions",
+        icon:mdiAccountDetails
       },
       {
         label: "Allies",
         to: "/setup/allies",
+        icon: mdiAccountCircle
       },
       {
         label: "Memberships",
         to: "/setup/memberships",
+        icon: mdiAccountStarOutline
       },
       {
         label: "Branches",
         to: "/setup/branches",
+        icon: mdiNotebookCheck
       },
       {
         label: "Bussiness units",
         to: "/setup/businessUnit",
+        icon: mdiCubeOutline
       },
       {
         label: "Expense",
         to: "/setup/expense",
+        icon:  mdiHandCoin
       },
       {
-        label: "Profile action",
-        to: "/setup/profileActions",
-      },
-      {
-        label: "Items menu",
-        to: "/setup/itemsMenu",
-      },
-      {
-        label: "Profile",
-        to: "/setup/profiles",
+        label: 'User profile',
+        icon: mdiAccountCog,
+        menu: [
+          {
+            label: "Actions",
+            to: "/setup/profileActions",
+            icon:mdiArrowRightBold
+          },
+          {
+            label: "Menu items",
+            icon: mdiListStatus,
+            to: "/setup/itemsMenu",
+          },
+          {
+            label: "Profile",
+            icon: mdiAccountBox,
+            to: "/setup/profiles",
+          },
+        ]
       },
       {
         label: "Category",
         to: "/setup/categories",
+        icon: mdiSeal
       },
       {
         label: "Rates",
         to: "/setup/rates",
+        icon: mdiCash100
       },
       {
         label: "Language",
+        icon: mdiEmoticonTongueOutline,
         to: "/setup/languages",
       },
       {
         label: "Profession",
+        icon: mdiProfessionalHexagon,
         to: "/setup/professions",
       },
       {
         label: "Employees",
+        icon:mdiAccount,
         to: "/setup/personal",
       },
       {
         label: "Industry",
+        icon: mdiFactory,
         to: "/setup/industries",
       },
       {
-        label: "Client",
-        to: "/setup/clients",
-      },
-      {
-        label: "Approaches",
-        to: "/setup/approaches",
-      },
-      {
         label: "Activities",
+        icon:mdiAccountChild,
         to: "/setup/activities",
-      },  
-      {
-        label: "Projects",
-        to: "/setup/projects",
-      },               
+      },                 
     ],
   },
+  {
+    label: "Client",
+    icon: mdiNaturePeople,
+    to: "/setup/clients",
+  },
+  {
+    label: "Approaches",
+    icon: mdiSourceBranch,
+    to: "/setup/approaches",
+  },
+  {
+    label: "Projects",
+    icon: mdiNewspaper,
+    to: "/setup/projects",
+  }
 ];
 
 

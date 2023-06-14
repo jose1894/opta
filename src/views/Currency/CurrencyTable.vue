@@ -3,7 +3,7 @@ import { computed, ref, defineEmits } from "vue";
 import { useRouter } from "vue-router";
 import { useMainStore } from "@/stores/main";
 import { useI18n } from "vue-i18n";
-import { mdiFileEdit, mdiTrashCan } from "@mdi/js";
+import { mdiFileEdit, mdiTrashCan, mdiRestore } from "@mdi/js";
 import { useToast } from 'vue-toastification';
 import CardBoxModal from "@/components/CardBoxModal.vue";
 import BaseLevel from "@/components/BaseLevel.vue";
@@ -45,7 +45,7 @@ const listStatusOption = (status = '') => {
   return statuses[status];
 }
 /* Sorting */
-const currentSort = 'name';
+const currentSort = 'nombre';
 const sortDesc = ref(false);
 
 const sort = (s) => {
@@ -124,8 +124,6 @@ const activateItem = () => {
     .catch(err => {
       toast.error(`${t("message.currencies.confirm.error")} ${err?.response?.data.msg}`)
     });
-  //return result
-
 }
 </script>
 
@@ -150,7 +148,7 @@ const activateItem = () => {
     <thead>
       <tr>
         <th @click="sort('codigo')">{{ $t('message.currencies.code') }}</th>
-        <th @click="sort('nambre')">{{ $t('message.currencies.name') }}</th>
+        <th @click="sort('nombre')">{{ $t('message.currencies.name') }}</th>
         <th @click="sort('estado')">{{ $t('message.currencies.status') }}</th>
       </tr>
     </thead>
@@ -169,8 +167,8 @@ const activateItem = () => {
           <BaseButtons type="justify-start lg:justify-end" no-wrap>
             <BaseButton
               v-show="checkDelete"
-              color="info"
-              :icon="mdiFileEdit"
+              color="success"
+              :icon="mdiRestore"
               small
               @click="isModalActive = true"
             />

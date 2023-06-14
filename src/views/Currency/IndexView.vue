@@ -21,16 +21,15 @@ const perPage = ref(10);
 const customElementsForm = reactive({
   switch: [],
 });
+
 const customCheckDelete = ref(false);
 
 const breadcrumbs = ref( [
         { name: 'Inicio' },
 ])
 
-//checkDelete
-
 const getCurrencies = (data) => {
-    currenciesService.index(data).then(response => {        
+  currenciesService.index(data).then(response => {        
     mainStore.currencies = response
     page.value = response.page
     perPage.value = response.perPage
@@ -61,14 +60,17 @@ const getCurrenciesDelete = (data) => {
 }
 
 const endPointUse = (page) => {
-  customElementsForm.switch.length === 0 ? getCurrencies({ page }) :
-    getCurrenciesDelete({ page })
+  customElementsForm.switch.length === 0 
+    ? getCurrencies({ page }) 
+    : getCurrenciesDelete({ page })
   
 }
 
 const endPointUseSort = (sortBy, sortDesc) => {
-  customElementsForm.switch.length === 0 ? getCurrencies({ sortBy, sortDesc }) :
-    getCurrenciesDelete({ sortBy, sortDesc })
+  debugger
+  customElementsForm.switch.length === 0 
+    ? getCurrencies({ sortBy, sortDesc }) 
+    : getCurrenciesDelete({ sortBy, sortDesc })
 }
 
 
