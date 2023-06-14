@@ -52,6 +52,7 @@ const dataInitial = {
     indice: 0,
     nombre: "",
     areaPadreNombre: "",
+    rutaPadre: "",
     areaPadre: "",
     ruta: "",
     visible: option[0],
@@ -160,7 +161,7 @@ const submit = async () => {
     action(enfoque)
         .then(() => {
             const m = selectedItemEnfoque.value
-            enfoqueChildren7878(m)
+            enfoqueChildren(m)
             //getEnfoques()
             isModalActive.value = false
             enfoque.value = dataInitial
@@ -188,6 +189,8 @@ const action = async (enfoque) => {
         indice,
         nombre,
         areaPadre,
+        areaPadreNombre,
+        rutaPadre,
         ruta,
         visible,
         rcr,
@@ -200,6 +203,8 @@ const action = async (enfoque) => {
         indice,
         nombre,
         areaPadre,
+        areaPadreNombre,
+        rutaPadre,
         ruta,
         visible: visible.id,
         rcr: rcr.id,
@@ -226,24 +231,28 @@ const btnAgregarEnfoque = () => {
 
 const btnEditarEnfoque = async () => {
     path = "update";
-    console.log(selectedItemEnfoque.value)
     enfoque.value = selectedItemEnfoque.value
-    const { visible, estado, rcr, editable, miembro, areaPadre }  = selectedItemEnfoque.value
+    const { visible, estado, rcr, editable, miembro, areaPadre, areaPadreNombre, rutaPadre }  = selectedItemEnfoque.value
     if(areaPadre) {
-        const res = await enfoquesServices.read(areaPadre);
-        enfoque.value.areaPadre = res.data?._id
-        enfoque.value.areaPadreNombre = res.data?.nombre
+        //const res = await enfoquesServices.read(areaPadre);
+        enfoque.value.areaPadre = (typeof areaPadre === "object") ? areaPadre._id : areaPadre
+        enfoque.value.areaPadreNombre = (typeof areaPadre === "object") ? areaPadre.nombre : areaPadreNombre 
+        enfoque.value.rutaPadre = (typeof areaPadre === "object") ? areaPadre.ruta : rutaPadre  
     }    
-    enfoque.value.estado = selectOptions.filter(status => status.id === estado)[0]
-    enfoque.value.visible = option.filter(item => item.id === visible)[0]
-    enfoque.value.rcr = option.filter(item => item.id === rcr)[0]
-    enfoque.value.editable = option.filter(item => item.id === editable)[0]
+    enfoque.value.estado = selectOptions.filter(status => status.id === _isObject(estado))[0]
+    enfoque.value.visible = option.filter(item => item.id === _isObject(visible))[0]
+    enfoque.value.rcr = option.filter(item => item.id === _isObject(rcr))[0]
+    enfoque.value.editable = option.filter(item => item.id === _isObject(editable))[0]
     enfoque.value.miembro = _asignarOpcionesAlSelect(miembro)
     isModalActive.value = true
 }
 
+const _isObject=(data) => { 
+    return (typeof data === "object") ? data.id : data
+};
+
 const _asignarOpcionesAlSelect = (data) => { 
-    return { id: data?._id || data.id, label: data.nombre } 
+    return { id: data?._id || data.id, label: data?.nombre || data?.label } 
 };
 
 const selelctedItemTreeView = (m, i) => {
@@ -257,22 +266,21 @@ const selelctedItemTreeView = (m, i) => {
 const addChild = async (i, m) => {
     //asignarNodoPadre(m)
     //m.children = []
-    console.log(i)
     if (!i.value) {
         enfoqueChildren(m)
     }
 }
 
-const enfoqueChildren = async (m) => {
-   /* m.children = []
+/*const enfoqueChildren = async (m) => {
+    m.children = []
     if (!m?.collapsed) {
         const child = await enfoquesServices.getChildren(m._id)
         const itemsEnfoque = child?.data?.children || [];
         m.children = itemsEnfoque
-    }*/
-}
+    }
+}*/
 
-const enfoqueChildren7878 = async (m) => {
+const enfoqueChildren = async (m) => {
    m.children = []
    const child = await enfoquesServices.getChildren(m._id)
    const itemsEnfoque = child?.data?.children || [];
@@ -283,10 +291,10 @@ const asignarNodoPadre = (selectedEnfoque) => {
     selectedItemEnfoque.value = selectedEnfoque
     enfoque.value.areaPadre = selectedEnfoque._id
     enfoque.value.areaPadreNombre = selectedEnfoque.nombre
+    enfoque.value.rutaPadre = selectedEnfoque.ruta
 }
 
 const handleNodeSelected = (parentId) => {
-    console.log(parentId)
     enfoqueChildren(parentId)
     asignarNodoPadre(parentId)
 };
@@ -297,7 +305,6 @@ const dataName = () => {
 }
 const successMessageError = t("message.approach.deleted.success")
 const deleteItem = async () => {
-    console.log(selectedItemEnfoque.value)
     deleteEnfoqueById()
     .then(async () => {     
         console.log(treeData.value) 
@@ -305,7 +312,6 @@ const deleteItem = async () => {
         const dataDeleteId = selectedItemEnfoque.value.areaPadre
 
         const menu1 = dataT.map((item) => { 
-            console.log(item)
         /*const child =  enfoques.filter((itemEnfo) => itemEnfo?.id === dataDeleteId)
             if(child.length === 0) {
                 item.children = child 
@@ -357,7 +363,7 @@ const deleteEnfoqueById = () => {
                     <FormControl :name="'parentArea'" v-model="enfoque.areaPadreNombre" :icon="mdiCodeBraces" :readonly="true"/>
                 </FormField>
                 <FormField :label="$t('message.approach.route')">
-                    <FormControl :name="'route'" v-model="enfoque.ruta" :icon="mdiCodeBraces" />
+                    <FormControl :name="'route'" v-model="enfoque.ruta" :icon="mdiCodeBraces" :readonly="true"/>
                 </FormField>
                 <FormField :label="$t('message.approach.visible')">
                     <FormControl v-model="enfoque.visible" :icon="mdiListStatus" :options="option" />

@@ -598,7 +598,10 @@
       }
     },
     "personal": {
-      "personal": "Personal",
+      "personal": "Personal",     
+      "others": "Otros",
+      "partner": "Socio",
+      "manager": "Gerente",
       "statuses": {
         "deleted": "Borrado",
         "active": "Activo",
@@ -621,7 +624,8 @@
       "profile": "Perfil",
       "user": "Usuario",
       "password": "Contraseña",
-      "membership": "Membresia",      
+      "membership": "Membresia",   
+      "typePersonnel": "Tipo de personal",   
       "status": "Status",
       "created": {
         "success": "¡Los datos fueron creados exitosamente!",

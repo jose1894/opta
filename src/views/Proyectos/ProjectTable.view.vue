@@ -140,7 +140,7 @@ const action = () => {
       <tr v-for="(project, index) in itemsPaginated" :key="project._id" 
         @click="selectedItem(project)">
         <td :data-label="$t('message.project.code')">
-          {{ project.code }}
+          {{ project.codigo }}
         </td>
         <td :data-label="$t('message.project.client')">
           {{ project.cliente.nombre }}

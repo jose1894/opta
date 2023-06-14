@@ -14,6 +14,8 @@ import "vue-toastification/dist/index.css";
 import VueTailwindDatepicker from 'vue-tailwind-datepicker'
 import VueNumeric from 'vue-numeric'
 import moment from 'moment';
+import '@fortawesome/fontawesome-free/css/all.css';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 /* Init Pinia */
 const pinia = createPinia();
@@ -21,6 +23,7 @@ const pinia = createPinia();
 
 /* Create Vue app */
 const app = createApp(App)
+app.component('font-awesome-icon', FontAwesomeIcon);
 
 app.use(router).use(pinia).use(i18n/*, {
   install: (app, options) => {

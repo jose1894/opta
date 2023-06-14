@@ -18,11 +18,14 @@ import personalService from '@/services/personal.service'
 import breanchesService from '@/services/branches.service'
 import activitiesService from '@/services/activities.service'
 import VueTailwindDatepicker from 'vue-tailwind-datepicker';
+import moment from 'moment';
+import { format } from 'date-fns'
 
 const { t } = useI18n();
 const toast = useToast();
 const route = useRoute();
 const router = useRouter();
+const isReadonly = ref(true);
 let miembroList = ref([]);
 let unidadNegocioList = ref([]);
 let clienteList = ref([]);
@@ -48,10 +51,13 @@ const formatter = ref({
   month: 'MMM'
 })
 
+const fechaTest = ref('');
+const fechaFormateada = ref('');
+
 const project = ref({
   _id: '',
   codigo: '0000000',
-  fecha: new Date(),
+  fecha: moment(new Date(), 'DD-MM-YYYY').format('DD-MM-YYYY'),
   creado: "",
   cliente: clienteList.value,
   socio: socioList.value,
@@ -70,7 +76,7 @@ const action = (project) => {
   const data = {
     _id,
     codigo,
-    fecha: fecha.undefined,
+    fecha,
     creado,
     cliente: cliente.id,
     socio: socio.id,
@@ -97,10 +103,13 @@ onMounted(async () => {
   let listarClientes = await clientService.allClientes()
   const dataClientes = listarClientes?.data.cliente;
   clienteList.value = dataClientes.map((client) => ({ id: client._id, label: client.nombre }));
+   
+  let listarPersonasSocios = await personalService.getListTipoPersonal(1)
+  const dataPersonasSocio = listarPersonasSocios?.data.personas;
+  socioList.value = dataPersonasSocio.map((persona) => ({ id: persona._id, label: persona.nombres }));
 
-  let listarPersonas = await personalService.allPersona()
+  let listarPersonas = await personalService.getListTipoPersonal(2)
   const dataPersonas = listarPersonas?.data.personas;
-  socioList.value = dataPersonas.map((persona) => ({ id: persona._id, label: persona.nombres }));
   gerenteList.value = dataPersonas.map((persona) => ({ id: persona._id, label: persona.nombres }));
 
   let listarSucursal = await breanchesService.sucursalesGet()
@@ -124,9 +133,11 @@ onMounted(async () => {
   if (props.path === 'update') {
     const res = await projectsService.read(route.params);
     project.value = res.data
-    const {firstname, lastname, id } = res.data?.creado ?? {}
+    const {firstname, lastname, _id } = res.data?.creado ?? {}
     project.value.creadoName = `${firstname} ${lastname}`
-    project.value.creado = id
+    project.value.creado = _id
+    fechaTest.value = new Date(res.data?.fecha);
+    project.value.fecha = moment(fechaTest.value, 'DD-MM-YYYY').format('DD-MM-YYYY'),
     project.value.cliente = _asignarOpcionesAlSelect(res.data?.cliente)
     project.value.socio = _asignarOpcionesAlSelect(res.data?.socio)
     project.value.gerente = _asignarOpcionesAlSelect(res.data?.gerente)
@@ -186,10 +197,13 @@ const submit = async () => {
         <FormControl :name="'codigo'" v-model="project.codigo" :icon="mdiCodeBraces" />
       </FormField>
       <FormField :label="$t('message.project.date')">
-        <vue-tailwind-datepicker class="h-12 border-gray-700" :formatter="formatter" as-single v-model="project.fecha"/>
+        <FormControl :name="'fecha'" v-model="project.fecha" :icon="mdiCodeBraces" :readonly="isReadonly"/>      
       </FormField>
-      <FormField :label="$t('message.project.createdProject')">
-        <FormControl v-model="project.creadoName" :icon="mdiRenameBox" readonly="true"/>
+      <!-- <FormField :label="$t('message.project.date')" :readonly="true">
+        <vue-tailwind-datepicker class="h-12 border-gray-700" :formatter="formatter" as-single v-model="project.fecha"/>      
+      </FormField> -->
+      <FormField :label="$t('message.project.createdProject')" class="c_hidden">
+        <FormControl v-model="project.creadoName" :icon="mdiRenameBox" :readonly="isReadonly"/>
       </FormField>
       <FormField :label="$t('message.project.client')">
         <FormControl v-model="project.cliente" :icon="mdiListStatus" :options="clienteList" />
@@ -202,7 +216,9 @@ const submit = async () => {
       </FormField>
       <FormField :label="$t('message.project.branch')">
         <FormControl v-model="project.sucursal" :icon="mdiListStatus" :options="sucursalList" />
-      </FormField>
+      </FormField>      
+    </div>
+    <div class="grid md:grid-cols-2 gap-2">
       <FormField :label="$t('message.project.bussinesUnit')">
         <FormControl v-model="project.unidadNegocio" :icon="mdiListStatus" :options="unidadNegocioList" />
       </FormField>
@@ -228,3 +244,8 @@ const submit = async () => {
     </template>
   </CardBox>
 </template>
+<style scoped>
+.c_hidden {
+  display: none;
+}
+</style>

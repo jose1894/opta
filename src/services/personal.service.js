@@ -25,6 +25,14 @@ export default {
                 .catch(err => reject(err))
         })
     },
+    getListTipoPersonal(tipoPersonalId) {
+        return new Promise((resolve, reject) => {
+            Service.get(`${resource}/listTipoPersonal/${tipoPersonalId}`, { headers: authHeader() })
+            .then(response => { 
+                resolve(response)})
+            .catch(err => reject(err))
+        })
+    },
     read(persona) {
         return new Promise((resolve, reject) => {
             Service.get(`${resource}/${persona.id}`, { headers: authHeader() })

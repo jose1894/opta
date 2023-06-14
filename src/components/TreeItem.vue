@@ -14,6 +14,7 @@ const props = defineProps({
   },
   selectedNodeId: Number,
 })
+const activeIndex = ref(0);
 
 const emit = defineEmits(["nodeSelected"]);
 const state = reactive({
@@ -21,18 +22,25 @@ const state = reactive({
 });
 
 const toggleCollapse = (nodeId) => {
+  activeIndex.value = 0 
   const node = props.nodes.find((n) => n._id === nodeId);
+  const nodesList = props.nodes
+  props.nodes = nodesList.map((nod)=>{
+    nod.active = nod._id === nodeId ? 'active' : 'selected'
+    return nod
+  })
   if (node) {
     node.collapsed = !node.collapsed;
-  }
+  }  
   emit('nodeSelected', node);
+  activeIndex.value = nodeId
 };
 
 
 const handleNodeSelected = (nodeId) => {
-  console.log(nodeId)
-  //console.log(state.selectedNodeId)
+  activeIndex.value = 0 
   emit('nodeSelected', nodeId);
+  activeIndex.value = nodeId._id
 };
 </script>
 
@@ -40,8 +48,8 @@ const handleNodeSelected = (nodeId) => {
   <div>
     <ul>
       <li v-for="node in nodes" :key="node._id">
-        <span :class="{ selected: node.collapsed }" @click="toggleCollapse(node._id)">
-          <i v-if="node.children" :class="node.collapsed ? 'fa fa-chevron-right' : 'fa fa-chevron-down'"></i>
+        <span :class="activeIndex === node._id ? 'selected' : ''" @click="toggleCollapse(node._id)">
+          <i v-if="node.children" :class="node.collapsed ? 'fa fa-folder-open' : 'fa fa-folder' "></i>
           {{ node.nombre }}
         </span>
         <TreeItem 
@@ -59,10 +67,22 @@ const handleNodeSelected = (nodeId) => {
 .bold, .selected {
   font-weight: bold;
 }
-
 ul {
   padding-left: 1em;
   line-height: 1.5em;
-  list-style-type: dot;
+  /*list-style-type: dot;*/
+}
+.fa-folder-open {
+  color:rgb(246, 246, 0); 
+  padding: 5px; 
+}
+
+.fa-folder {
+  color: rgb(198, 198, 101);;
+  border: 1px solid rgb(250, 253, 250); 
+  padding: 5px; 
+}
+.active {
+  color: rgb(255, 0, 0);
 }
 </style>

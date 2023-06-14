@@ -602,6 +602,9 @@
   },
   "personal": {
     "personal": "Personal",
+    "others": "Others",
+    "partner": "Partner",
+    "manager": "Manager",
     "statuses": {
       "deleted": "Deleted",
       "active": "Active",
@@ -625,6 +628,7 @@
     "user": "User",
     "password": "Password",
     "membership": "Membership",
+    "typePersonnel": "Type of personnel",
     "status": "Status",
     "created": {
       "success": "¡Data was successfully created!",

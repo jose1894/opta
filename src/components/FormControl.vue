@@ -40,10 +40,6 @@ const props = defineProps({
     type: [String, Number, Boolean, Array, Object],
     default: "",
   },
-  readonly: {
-    type: Boolean,
-    default: false
-  },
   required: Boolean,
   borderless: Boolean,
   transparent: Boolean,
@@ -155,7 +151,7 @@ if (props.ctrlKFocus) {
       :name="name"
       :placeholder="placeholder" 
       :required="required" 
-      :readonly="props.readonly"/>
+      :readonly="readonly"/>
     <input v-else 
       :id="id" 
       ref="inputEl" 
@@ -167,7 +163,7 @@ if (props.ctrlKFocus) {
       :placeholder="placeholder" 
       :type="computedType"
       :class="inputElClass" 
-      :readonly="props.readonly"/>
+      :readonly="readonly"/>
     <FormControlIcon v-if="icon" :icon="icon" :h="controlIconH" />
   </div>
 </template>

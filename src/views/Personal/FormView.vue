@@ -37,6 +37,13 @@ const selectOptions = [
   { id: 2, label: t('message.personal.statuses.deleted') },
 ];
 
+const selectOptionsTypePersonal = [
+  { id: 0, label: t('message.personal.others') },
+  { id: 1, label: t('message.personal.partner') },
+  { id: 2, label: t('message.personal.manager') },
+];
+
+
 let profesionList = ref([])
 let idiomasList = ref([])
 let unidadNegocioList = ref([])
@@ -65,6 +72,7 @@ const persona = ref({
   claveAcceso: '', 
   miembro: miembroList.value, 
   estado: selectOptions[0],
+  tipoPersonal: selectOptionsTypePersonal[0]
 });
 
 const action = (cargo) =>{
@@ -85,7 +93,8 @@ const action = (cargo) =>{
     perfil, 
     usuarioAcceso, 
     claveAcceso, 
-    miembro, 
+    miembro,
+    tipoPersonal, 
     estado
    } = cargo.value;
   const data = { _id,
@@ -105,6 +114,7 @@ const action = (cargo) =>{
     usuarioAcceso, 
     claveAcceso, 
     miembro: miembro.id, 
+    tipoPersonal: tipoPersonal.id,
     estado: estado.id,  }
   if (props.path === 'create'){
     return personalService.create(data)
@@ -144,6 +154,7 @@ onMounted(async () => {
   if (props.path === 'update'){
     const res = await personalService.read(route.params);
     persona.value = res.data
+    persona.value.tipoPersonal = selectOptionsTypePersonal.filter(tipoP => tipoP.id === res.data.tipoPersonal)[0]
     persona.value.estado = selectOptions.filter(status => status.id === res.data.estado)[0]
     persona.value.profesion = _asignarOpcionesAlSelect(res.data?.profesion)
     persona.value.idiomas = _asignarOpcionesAlSelect(res.data?.idiomas)
@@ -250,10 +261,15 @@ const submit = async () => {
       <FormField :label="$t('message.personal.membership')">
           <FormControl v-model="persona.miembro" :icon="mdiListStatus" :options="miembroList"/>
       </FormField>
-      <FormField :label="$t('message.personal.address')">
-        <FormControl v-model="persona.direccion" :icon="mdiRenameBox" />
+      <FormField :label="$t('message.personal.typePersonnel')">
+        <FormControl v-model="persona.tipoPersonal" :icon="mdiListStatus" :options="selectOptionsTypePersonal" />
       </FormField>
     </div>
+    <div class="grid gap-1">
+      <FormField :label="$t('message.personal.address')">
+        <FormControl type="textarea" v-model="persona.direccion" :icon="mdiRenameBox" />
+      </FormField>
+    </div>    
     <template #footer>
       <BaseButton :label="$t(`message.${props.saveLabel}`)" type="submit" color="info" />
     </template>
