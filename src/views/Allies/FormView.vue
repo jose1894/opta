@@ -328,7 +328,7 @@ const submit = async () => {
             </div>
         </div>
         <template #footer>
-            <BaseButton v-show="tab === 1" :label="$t(`message.${props.saveLabel}`)" type="submit" color="info" />
+            <BaseButton v-show="tab === 1" :label="$t(`message.${props.saveLabel}`)" type="submit" color="success" />
         </template>
     </CardBox>
 </template>

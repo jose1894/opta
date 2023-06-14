@@ -6,7 +6,8 @@ import {
     reactive,
     ref
 } from 'vue';
-
+import { mdiFolder } from '@mdi/js'
+import BaseIcon from './BaseIcon.vue';
 const props = defineProps({
   nodes:{
     type: Array,

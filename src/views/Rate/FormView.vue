@@ -239,7 +239,7 @@ console.log('simulateNow ES MAYOR A simulateToken?', simulateNow.isAfter(simulat
             </div>
         </div>
         <template #footer>
-            <BaseButton :label="$t(`message.${props.saveLabel}`)" type="submit" color="info" />
+            <BaseButton :label="$t(`message.${props.saveLabel}`)" type="submit" color="success" />
         </template>
     </CardBox>
 </template>

@@ -104,7 +104,7 @@ const submit = () => {
           <BaseButtons>
             <BaseButton
               type="submit"
-              color="info"
+              color="success"
               label="Login"
               :class="{ 'opacity-25': form.processing }"
               :disabled="form.processing"

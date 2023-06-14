@@ -65,6 +65,11 @@
         "success": "¡El pais fue eliminado exitosamente!",
         "error": "¡El pais no pudo ser eliminado!",
         "question": "Desea eliminar el pais"
+      },
+      "restore": {
+        "success": "Country restored successfully!",
+        "error" : "Country couldn't be restored!",
+        "question": "Do you want to restore "
       }
     },
     "state": {
@@ -826,6 +831,8 @@
     "Client": "Clientes",
     "Approaches": "Enfoques",
     "Activities": "Actividades",
-    "Projects": "Proyectos"
+    "Projects": "Proyectos",
+    "Location" : "Ubicacion",
+    "Logout": "Cerrar sesion"
   }
 }

@@ -123,7 +123,6 @@ const submit = async () => {
             if (err.response.data?.errors) {
                 const errors = err.response.data.errors;
                 let errorStr = '';
-                debugger
                 for (let attr of errors) {
                 }
             }
@@ -311,7 +310,7 @@ const deleteEnfoqueById = () => {
                 </FormField>
             </div>
             <template #footer>
-                <BaseButton :label="$t(`message.submit`)" type="submit" color="info" />
+                <BaseButton :label="$t(`message.submit`)" type="submit" color="success" />
             </template>
         </CardBox>
     </CardBoxModal>

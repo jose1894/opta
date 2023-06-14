@@ -87,7 +87,7 @@ const submitPass = () => {
 
           <template #footer>
             <BaseButtons>
-              <BaseButton color="info" type="submit" label="Submit" />
+              <BaseButton color="success" type="submit" label="Submit" />
               <BaseButton color="info" label="Options" outline />
             </BaseButtons>
           </template>
@@ -137,7 +137,7 @@ const submitPass = () => {
 
           <template #footer>
             <BaseButtons>
-              <BaseButton type="submit" color="info" label="Submit" />
+              <BaseButton type="submit" color="success" label="Submit" />
               <BaseButton color="info" label="Options" outline />
             </BaseButtons>
           </template>

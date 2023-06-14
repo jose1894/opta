@@ -28,7 +28,7 @@
     <ul class="mb-5 flex list-none flex-col flex-wrap border-b-0 pl-0 md:flex-row">
         <li v-for="(tab, i) in tabs" :key="tab.title" class="flex-grow basis-0 text-center"
             :class="{ active: activeTab === i }" @click="selectTab(i)">
-            <a class="my-2 block border-x-0 border-t-0 border-b-2 border-transparent 
+            <a class="my-2 block text-blue-600 border-x-0 border-t-0 border-b-2 border-transparent 
                         px-7 pt-4 pb-3.5 text-xs font-medium uppercase 
                         leading-tight text-neutral-500 hover:isolate 
                         hover:border-transparent hover:bg-neutral-100 
@@ -67,13 +67,13 @@ li:hover {
     cursor: pointer;
 }
 .active a {
-    color: blue;
+    /* color: blue; */
     border-bottom: 1px solid;
     background: #e0e0e6;
     ;
 }
 .btn-next {
-    background: blue;
+    background: #2563eb;
     padding: 5px 10px;
     color: white;
     border-radius: 5px;

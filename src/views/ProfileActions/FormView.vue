@@ -108,7 +108,7 @@ const submit = async () => {
       </FormField>
     </div>
     <template #footer>
-      <BaseButton :label="$t(`message.${props.saveLabel}`)" type="submit" color="info" />
+      <BaseButton :label="$t(`message.${props.saveLabel}`)" type="submit" color="success" />
     </template>
   </CardBox>
 </template>

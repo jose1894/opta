@@ -3,7 +3,7 @@ import { computed, ref, defineEmits } from "vue";
 import { useRouter } from "vue-router";
 import { useMainStore } from "@/stores/main";
 import { useI18n } from "vue-i18n";
-import { mdiFileEdit, mdiTrashCan } from "@mdi/js";
+import { mdiFileEdit, mdiRestore, mdiTrashCan } from "@mdi/js";
 import { useToast } from 'vue-toastification';
 import CardBoxModal from "@/components/CardBoxModal.vue";
 import BaseLevel from "@/components/BaseLevel.vue";
@@ -14,6 +14,7 @@ import countriesService from '@/services/countries.service';
 
 defineProps({
   checkable: Boolean,
+  checkDelete: Boolean, 
 });
 
 const { t } = useI18n();
@@ -44,7 +45,7 @@ const listStatusOption = (status = '') => {
   return statuses[status];
 }
 /* Sorting */
-const currentSort = 'name';
+const currentSort = 'nombre';
 const sortDesc = ref(false);
 
 const sort = (s) => {
@@ -97,8 +98,20 @@ const deleteItem = async () => {
 };
 
 const action = () => {
+  debugger
   const { _id } = selectedCountry.value
   return countriesService.delete(_id);
+}
+
+const activateItem = () => {
+  const { _id } = selectedCountry.value
+  countriesService.restore(_id).then(() => {
+      toast.success(t("message.country.retore.success"));
+      emit('changePage', currentPage.value)      
+    })
+    .catch(err => {
+      toast.error(`${t("message.country.restore.error")} ${err?.response?.data.msg}`)
+    });
 }
 </script>
 
@@ -107,11 +120,18 @@ const action = () => {
     <strong>{{ $t('message.country.deleted.question') }} <b> {{ dataName() }} </b></strong> ?
   </CardBoxModal>
 
+  <CardBoxModal 
+    v-model="isModalActive" 
+    title="Please confirm"
+    @confirm="activateItem">
+    <strong>{{ $t('message.country.restore.question') }} <b> {{ dataName() }} </b></strong> ?   
+  </CardBoxModal>
+  
   <table>
     <thead>
       <tr>
         <th @click="sort('codigo')">{{ $t('message.country.code') }}</th>
-        <th @click="sort('nambre')">{{ $t('message.country.name') }}</th>
+        <th @click="sort('nombre')">{{ $t('message.country.name') }}</th>
         <th @click="sort('estado')">{{ $t('message.country.status') }}</th>
         <th />
       </tr>
@@ -130,9 +150,23 @@ const action = () => {
         </td>
         <td class="before:hidden lg:w-1 whitespace-nowrap">
           <BaseButtons type="justify-start lg:justify-end" no-wrap>
-            <BaseButton color="info" :icon="mdiFileEdit" small @click="edit(country._id)" />
+            <BaseButton
+              v-show="checkDelete && country.estado === 2"
+              color="success"
+              :icon="mdiRestore"
+              small
+              @click="isModalActive = true"
+            />
 
-            <BaseButton v-show="country.estado !== 2" color="danger" :icon="mdiTrashCan" small @click="isModalDangerActive = true" />
+            <BaseButton
+              v-show="!checkDelete && country.estado !== 2"
+              color="info"
+              :icon="mdiFileEdit"
+              small
+              @click="edit(country._id)"
+            />
+
+            <BaseButton v-show="!checkDelete && country.estado !== 2" color="danger" :icon="mdiTrashCan" small @click="isModalDangerActive = true" />
           </BaseButtons>
         </td>
       </tr>

@@ -1,17 +1,6 @@
 import i18n from "@/i18n";
 import {
   mdiAccountCircle,
-  mdiMonitor,
-  mdiGithub,
-  mdiLock,
-  mdiAlertCircle,
-  mdiSquareEditOutline,
-  mdiTable,
-  mdiViewList,
-  mdiTelevisionGuide,
-  mdiResponsive,
-  mdiPalette,
-  mdiReact,
   mdiCog,
   mdiCurrencyUsd,
   mdiFlag,
@@ -21,7 +10,6 @@ import {
   mdiProfessionalHexagon,
   mdiAccountBox,
   mdiAccountStarOutline,
-  mdiCheckbook,
   mdiNotebookCheck,
   mdiCubeOutline,
   mdiHandCoin,
@@ -30,9 +18,6 @@ import {
   mdiListStatus,
   mdiSeal,
   mdiCash100,
-  mdiSignLanguage,
-  mdiLanguageMarkdownOutline,
-  mdiEmoticonTongue,
   mdiEmoticonTongueOutline,
   mdiAccount,
   mdiFactory,
@@ -40,86 +25,10 @@ import {
   mdiSourceBranch,
   mdiNewspaper,
   mdiAccountChild,
+  mdiEarth,
 } from "@mdi/js";
 
 export default [
-  /*{
-    to: "/dashboard",
-    icon: mdiMonitor,
-    label: "Dashboard",
-  },
-  {
-    to: "/tables",
-    label: "Tables",
-    icon: mdiTable,
-  },
-  {
-    to: "/forms",
-    label: "Forms",
-    icon: mdiSquareEditOutline,
-  },
-  {
-    to: "/ui",
-    label: "UI",
-    icon: mdiTelevisionGuide,
-  },
-  {
-    to: "/responsive",
-    label: "Responsive",
-    icon: mdiResponsive,
-  },
-  {
-    to: "/",
-    label: "Styles",
-    icon: mdiPalette,
-  },
-  {
-    to: "/profile",
-    label: "Profile",
-    icon: mdiAccountCircle,
-  },
-  {
-    to: "/login",
-    label: "Login",
-    icon: mdiLock,
-  },
-  {
-    to: "/error",
-    label: "Error",
-    icon: mdiAlertCircle,
-  },
-  {
-    label: "Dropdown",
-    icon: mdiViewList,
-    menu: [
-      {
-        label: "Item One",
-      },
-      {
-        label: "Item Two",
-      },
-    ],
-  },
-  {
-    to: "/tables",
-    label: "Tables",
-    icon: mdiTable,
-  },
-  {
-    to: "/forms",
-    label: "Forms",
-    icon: mdiSquareEditOutline,
-  },
-  {
-    to: "/profile",
-    label: "Profile",
-    icon: mdiAccountCircle,
-  },
-  {
-    to: "/login",
-    label: "Login",
-    icon: mdiLock,
-  },*/
   {
     label: "SetUp",
     icon: mdiCog,
@@ -129,20 +38,25 @@ export default [
         to: "/setup/currencies",
         icon: mdiCurrencyUsd
       },
-      {
-        label: "Countries",
-        to: "/setup/countries",
-        icon: mdiFlag
-      },
-      {
-        label: "States",
-        to: "/setup/states",
-        icon: mdiMapCheck
-      },
-      {
-        label: "Cities",
-        to: "/setup/cities",
-        icon: mdiMapMarker
+      { label: "Location",
+        icon: mdiEarth,
+        menu: [
+          {
+            label: "Countries",
+            to: "/setup/countries",
+            icon: mdiFlag
+          },
+          {
+            label: "States",
+            to: "/setup/states",
+            icon: mdiMapCheck
+          },
+          {
+            label: "Cities",
+            to: "/setup/cities",
+            icon: mdiMapMarker
+          },
+        ]
       },
       {
         label: "Job-position",

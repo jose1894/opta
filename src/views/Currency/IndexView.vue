@@ -67,7 +67,6 @@ const endPointUse = (page) => {
 }
 
 const endPointUseSort = (sortBy, sortDesc) => {
-  debugger
   customElementsForm.switch.length === 0 
     ? getCurrencies({ sortBy, sortDesc }) 
     : getCurrenciesDelete({ sortBy, sortDesc })
