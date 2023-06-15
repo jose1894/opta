@@ -3,7 +3,7 @@ import { computed, ref, defineEmits } from "vue";
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { useMainStore } from "@/stores/main";
-import { mdiFileEdit, mdiTrashCan } from "@mdi/js";
+import { mdiFileEdit, mdiTrashCan, mdiRestore } from "@mdi/js";
 import { useToast } from 'vue-toastification';
 import CardBoxModal from "@/components/CardBoxModal.vue";
 import BaseLevel from "@/components/BaseLevel.vue";
@@ -13,6 +13,7 @@ import cargosService from '@/services/cargos.service';
 
 defineProps({
   checkable: Boolean,
+  checkDelete: Boolean, 
 });
 
 const { t } = useI18n();
@@ -45,7 +46,7 @@ const listStatusOption = (status = '') => {
   return statuses[status];
 }
 /* Sorting */
-const currentSort = 'name';
+const currentSort = 'nombre';
 const sortDesc = ref(false);
 
 const sort = (s) => {
@@ -101,6 +102,17 @@ const action = () => {
   const { _id } = selectedCargos.value
   return cargosService.delete(_id);
 }
+
+const activateItem = () => {
+  const { _id } = selectedCargos.value
+  cargosService.restore(_id).then(() => {
+      toast.success(t("message.cargo.restore.success"));
+      emit('changePage', currentPage.value)      
+    })
+    .catch(err => {
+      toast.error(`${t("message.cargo.restore.error")} ${err?.response?.data.msg}`)
+    });
+}
 </script>
 
 <template>
@@ -114,11 +126,18 @@ const action = () => {
     <strong>{{ $t('message.cargo.deleted.question') }} <b> {{ dataName() }} </b></strong> ?
   </CardBoxModal>
 
+  <CardBoxModal 
+    v-model="isModalActive" 
+    title="Please confirm"
+    @confirm="activateItem">
+    <strong>{{ $t('message.cargo.restore.question') }} <b> {{ dataName() }} </b></strong> ?   
+  </CardBoxModal>
+
   <table>
     <thead>
       <tr>
         <th @click="sort('codigo')">{{ $t('message.cargo.code') }}</th>
-        <th @click="sort('nambre')">{{ $t('message.cargo.name') }}</th>
+        <th @click="sort('nombre')">{{ $t('message.cargo.name') }}</th>
         <th @click="sort('estado')">{{ $t('message.cargo.status') }}</th>
       </tr>
     </thead>
@@ -137,19 +156,23 @@ const action = () => {
         <td class="before:hidden lg:w-1 whitespace-nowrap">
           <BaseButtons type="justify-start lg:justify-end" no-wrap>
             <BaseButton
+              v-show="checkDelete && cargo.estado === 2"
+              color="success"
+              :icon="mdiRestore"
+              small
+              @click="isModalActive = true"
+            />
+
+            <BaseButton
+              v-show="!checkDelete && cargo.estado !== 2"
               color="info"
               :icon="mdiFileEdit"
               small
               @click="edit(cargo._id)"
             />
 
-            <BaseButton
-              color="danger"
-              :icon="mdiTrashCan"
-              small
-              @click="isModalDangerActive = true"
-              v-show="cargo.estado !== 2"
-            />
+            <BaseButton v-show="!checkDelete && cargo.estado !== 2" color="danger" :icon="mdiTrashCan" small @click="isModalDangerActive = true" />
+
           </BaseButtons>
         </td>
       </tr>

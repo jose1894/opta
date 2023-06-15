@@ -6,7 +6,7 @@ import {
     reactive,
     ref
 } from 'vue';
-import { mdiFolder } from '@mdi/js'
+import { mdiFolder, mdiFolderOpen } from '@mdi/js'
 import BaseIcon from './BaseIcon.vue';
 const props = defineProps({
   nodes:{
@@ -53,6 +53,13 @@ const handleNodeSelected = (nodeId) => {
           <i v-if="node.children" :class="node.collapsed ? 'fa fa-folder-open' : 'fa fa-folder' "></i>
           {{ node.nombre }}
         </span>
+
+        <!-- <BaseIcon
+          :path="mdiFolderOpen"
+          class="flex-none"
+          w="w-16"
+          :size="18"
+        /> -->
         <TreeItem 
           :nodes="node.children" 
           v-if="node.children && node.collapsed" 

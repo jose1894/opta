@@ -13,7 +13,12 @@
     import membersService from '@/services/member.service';
     import FormField from "@/components/FormField.vue";
     import FormCheckRadioGroup from "@/components/FormCheckRadioGroup.vue";
+    import Breadcrumb from '@/components/Breadcrumb.vue';
 
+    const breadcrumbs = ref( [
+        { name: 'Inicio' },
+    ])
+    
     const mainStore = useMainStore();
     const page = ref(1);
     const perPage = ref(10);
@@ -40,8 +45,11 @@
         endPointUseSort({ sortBy, sortDesc });
     }
 
+    const customCheckDelete = ref(false);
+
     const onChangeSwtch = () => {
         endPointUse({ page: page.value })
+        customCheckDelete.value = customElementsForm.switch.length === 0 ? false : true
     }
 
     const getMembersDelete = (data) => {
@@ -53,13 +61,15 @@
     }
 
 const endPointUse = (page) => {
-  customElementsForm.switch.length === 0 ? getMembers({ page }) :
-    getMembersDelete({ page })
+  customElementsForm.switch.length === 0 
+    ? getMembers({ page }) 
+    :getMembersDelete({ page })
 }
 
-const endPointUseSort = (sortBy, sortDesc) => {
-  customElementsForm.switch.length === 0 ? getMembers({ sortBy, sortDesc }) :
-    getMembersDelete({ sortBy, sortDesc })
+const endPointUseSort = (sort) => {
+  customElementsForm.switch.length === 0 
+    ? getMembers(sort) 
+    : getMembersDelete(sort)
 }
 
 </script>
@@ -70,13 +80,16 @@ const endPointUseSort = (sortBy, sortDesc) => {
             :icon="mdiGlobeModel"
             :title="$t('message.member.memberships')">
             <BaseButton
-                to="memberships/create"
+                :to='{name: "MembershipsCreate"}'
                 :icon="mdiPlus"
                 :label="$t('message.add_new')"
                 color="success"
                 small
             />
         </SectionTitleLineWithButton>
+
+        <Breadcrumb :items="breadcrumbs" />
+
         <FormField label="">
             <FormCheckRadioGroup 
                 v-model="customElementsForm.switch" 
@@ -90,7 +103,7 @@ const endPointUseSort = (sortBy, sortDesc) => {
             <b>{{ $t('message.empty_table') }}.</b> When there's nothing to show
         </NotificationBar>
         <CardBox  v-if="mainStore?.members?.miembros?.length" class="mb-6" has-table>
-            <MemberTable @changePage="onChangePage" @sort="onSortPage"/>        
+            <MemberTable :checkDelete="customCheckDelete" @changePage="onChangePage" @sort="onSortPage"/>        
         </CardBox>
 
         <CardBox v-else>

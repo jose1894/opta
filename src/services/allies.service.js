@@ -50,6 +50,14 @@ export default {
         })
     },
 
+    restore(aliadoId) {
+        return new Promise((resolve, reject) => {
+            Service.delete(`${resource}/restore/${aliadoId}`, { headers: authHeader() })
+                .then((response) => resolve(response.data))
+                .catch((err) => reject(err))
+        })
+    },
+
     allAliadosGet() {
         return new Promise((resolve, reject) => {
             Service.get(`${resource}/allAliados`, { headers: authHeader() })

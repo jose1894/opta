@@ -2,7 +2,7 @@
 import { computed, ref, defineEmits } from "vue";
 import { useRouter } from "vue-router";
 import { useMainStore } from "@/stores/main";
-import { mdiFileEdit, mdiTrashCan } from "@mdi/js";
+import { mdiFileEdit, mdiTrashCan, mdiRestore } from "@mdi/js";
 import { useI18n } from "vue-i18n";
 import { useToast } from 'vue-toastification';
 import CardBoxModal from "@/components/CardBoxModal.vue";
@@ -13,6 +13,7 @@ import alliesService from '@/services/allies.service';
 
 defineProps({
   checkable: Boolean,
+  checkDelete: Boolean
 });
 
 const { t } = useI18n();
@@ -45,7 +46,7 @@ const listStatusOption = (status = '') => {
   return statuses[status];
 }
 /* Sorting */
-const currentSort = 'name';
+const currentSort = 'nombre';
 const sortDesc = ref(false);
 
 const sort = (s) => {
@@ -113,6 +114,18 @@ const action = () => {
   const { _id } = selectedAlly.value
   return alliesService.delete(_id);
 }
+
+const activateItem = () => {
+  const { _id } = selectedAlly.value
+  
+  alliesService.restore(_id).then(() => {
+      toast.success(t("message.ally.restore.success"));
+      emit('changePage', currentPage.value)      
+    })
+    .catch(err => {
+      toast.error(`${t("message.ally.restore.error")} ${err?.response?.data.msg}`)
+    });
+}
 </script>
 
 <template>
@@ -126,11 +139,18 @@ const action = () => {
         <strong>{{ $t('message.ally.deleted.question') }} <b> {{ dataName() }} </b></strong> ?
   </CardBoxModal>
 
+  <CardBoxModal 
+    v-model="isModalActive" 
+    title="Please confirm"
+    @confirm="activateItem">
+    <strong>{{ $t('message.ally.restore.question') }} <b> {{ dataName() }} </b></strong> ?   
+  </CardBoxModal>
+
   <table>
     <thead>
       <tr>
         <th @click="sort('codigo')">{{ $t('message.ally.code') }}</th>        
-        <th @click="sort('nambre')">{{ $t('message.ally.name') }}</th>
+        <th @click="sort('nombre')">{{ $t('message.ally.name') }}</th>
         <th @click="sort('idFiscal')">{{ $t('message.ally.id') }}</th>
         <th @click="sort('estado')">{{ $t('message.ally.status') }}</th>
         <th />
@@ -154,18 +174,27 @@ const action = () => {
         <td class="before:hidden lg:w-1 whitespace-nowrap">
           <BaseButtons type="justify-start lg:justify-end" no-wrap>
             <BaseButton
+              v-show="checkDelete && ally.estado === 2"
+              color="success"
+              :icon="mdiRestore"
+              small
+              @click="isModalActive = true"
+            />
+
+            <BaseButton
+              v-show="!checkDelete && ally.estado !== 2"
               color="info"
               :icon="mdiFileEdit"
               small
               @click="edit(ally._id)"
             />
 
-            <BaseButton
-              color="danger"
-              :icon="mdiTrashCan"
-              small
-              @click="isModalDangerActive = true"
-              v-show="ally.estado !== 2"
+            <BaseButton 
+              v-show="!checkDelete && ally.estado !== 2" 
+              color="danger" 
+              :icon="mdiTrashCan" 
+              small 
+              @click="isModalDangerActive = true" 
             />
           </BaseButtons>
         </td>

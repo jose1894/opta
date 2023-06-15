@@ -58,4 +58,12 @@ export default {
                 .catch((err) => reject(err))
         })
     },
+
+    restore(cargoId) {
+        return new Promise((resolve, reject) => {
+            Service.delete(`${resource}restore/${cargoId}`, { headers: authHeader() })
+                .then((response) => resolve(response.data))
+                .catch((err) => reject(err))
+        })
+    },
 }

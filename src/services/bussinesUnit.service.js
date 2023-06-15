@@ -58,4 +58,12 @@ export default {
         })
     },
 
+    restore(businessUnitId) {
+        return new Promise((resolve, reject) => {
+            Service.delete(`${resource}/restore/${bussinessUnitId}`, { headers: authHeader() })
+                .then((response) => resolve(response.data))
+                .catch((err) => reject(err))
+        })
+    },
+
 }

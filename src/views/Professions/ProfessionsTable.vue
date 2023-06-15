@@ -118,7 +118,7 @@ const action = () => {
     <thead>
       <tr>
         <th @click="sort('codigo')">{{ $t('message.profession.code') }}</th>
-        <th @click="sort('nambre')">{{ $t('message.profession.name') }}</th>
+        <th @click="sort('nombre')">{{ $t('message.profession.name') }}</th>
         <th @click="sort('estado')">{{ $t('message.profession.status') }}</th>
       </tr>
     </thead>

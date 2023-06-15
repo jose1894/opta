@@ -13,14 +13,19 @@
     import FormField from "@/components/FormField.vue";    
     import { useMainStore } from '@/stores/main';
     import StateTable from './StateTable.vue';
+    import Breadcrumb from '@/components/Breadcrumb.vue'
 
 
     const mainStore = useMainStore();
     const page = ref(1);
     const perPage = ref(10);
+    const breadcrumbs = ref( [
+        { name: 'Inicio' },
+    ])
     const customElementsForm = reactive({
         switch: [],
     });
+    const customCheckDelete = ref(false);
     const getStates = (data) => {
         stateService.index(data).then(response => {
             mainStore.states = response
@@ -33,6 +38,7 @@
 
     const onChangeSwtch = () => {
         endPointUse({ page: page.value })
+        customCheckDelete.value = customElementsForm.switch.length === 0 ? false : true
     }
 
     const onChangePage = (page) => {
@@ -55,9 +61,10 @@
         getStatesDelete({ page })
     }
 
-    const endPointUseSort = (sortBy, sortDesc) => {
-        customElementsForm.switch.length === 0 ? getStates({ sortBy, sortDesc }) :
-        getStatesDelete({ sortBy, sortDesc })
+    const endPointUseSort = (sort) => {
+        customElementsForm.switch.length === 0 
+            ? getStates(sort) 
+            : getStatesDelete(sort)
     }   
 </script>
 <template>
@@ -67,13 +74,16 @@
             :icon="mdiGlobeModel"
             :title="$t('message.state.states')">
             <BaseButton
-                to="states/create"
+                :to="{name: 'StatesCreate'}"
                 :icon="mdiPlus"
                 :label="$t('message.add_new')"
                 color="success"
                 small
             />
         </SectionTitleLineWithButton>
+
+        <Breadcrumb :items="breadcrumbs" />
+        
         <FormField label="">
         <FormCheckRadioGroup 
             v-model="customElementsForm.switch" 
@@ -87,7 +97,7 @@
         </NotificationBar>
 
         <CardBox  v-if="mainStore?.states?.estados?.length" class="mb-6" has-table>
-            <StateTable @changePage="onChangePage" @sort="onSortPage"/>        
+            <StateTable :checkDelete="customCheckDelete" @changePage="onChangePage" @sort="onSortPage"/>        
         </CardBox>
 
         <CardBox v-else>

@@ -13,7 +13,11 @@
     import FormCheckRadioGroup from "@/components/FormCheckRadioGroup.vue";
     import FormField from "@/components/FormField.vue"; 
     import alliesService from '@/services/allies.service';
+    import Breadcrumb from '@/components/Breadcrumb.vue';
 
+    const breadcrumbs = ref( [
+        { name: 'Inicio' },
+    ])
     const mainStore = useMainStore();
     const page = ref(1);
     const perPage = ref(10);
@@ -30,8 +34,11 @@
 
     getAllies({page: page.value})
 
+    const customCheckDelete = ref(false);
+
     const onChangeSwtch = () => {
         endPointUse({ page: page.value })
+        customCheckDelete.value = customElementsForm.switch.length === 0 ? false : true
     }
 
     const onChangePage = (page) => {
@@ -50,13 +57,15 @@
         })
     }
     const endPointUse = (page) => {
-        customElementsForm.switch.length === 0 ? getAllies({ page }) :
-        getAlliesDelete({ page })
+        customElementsForm.switch.length === 0 
+            ? getAllies({ page }) 
+            : getAlliesDelete({ page })
     }
 
-    const endPointUseSort = (sortBy, sortDesc) => {
-        customElementsForm.switch.length === 0 ? getAllies({ sortBy, sortDesc }) :
-        getAlliesDelete({ sortBy, sortDesc })
+    const endPointUseSort = (sort) => {
+        customElementsForm.switch.length === 0 
+            ? getAllies(sort) 
+            : getAlliesDelete(sort)
     }    
 </script>
 <template>
@@ -66,13 +75,16 @@
             :icon="mdiGlobeModel"
             :title="$t('message.ally.allies')">
             <BaseButton
-                to="allies/create"
+                :to='{ name: "AlliesCreate"}'
                 :icon="mdiPlus"
                 :label="$t('message.add_new')"
                 color="success"
                 small
             />
         </SectionTitleLineWithButton>
+
+        <Breadcrumb :items="breadcrumbs" />
+
         <FormField label="">
         <FormCheckRadioGroup 
             v-model="customElementsForm.switch" 
@@ -85,7 +97,7 @@
             <b>{{ $t('message.empty_table') }}.</b> When there's nothing to show
         </NotificationBar>
         <CardBox  v-if="mainStore?.allies?.aliados?.length" class="mb-6" has-table>
-            <AllyTable @changePage="onChangePage" @sort="onSortPage"/>        
+            <AllyTable :checkDelete="customCheckDelete" @changePage="onChangePage" @sort="onSortPage"/>        
         </CardBox>
 
         <CardBox v-else>

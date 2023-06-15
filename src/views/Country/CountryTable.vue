@@ -98,7 +98,6 @@ const deleteItem = async () => {
 };
 
 const action = () => {
-  debugger
   const { _id } = selectedCountry.value
   return countriesService.delete(_id);
 }
