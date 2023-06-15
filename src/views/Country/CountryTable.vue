@@ -104,6 +104,7 @@ const action = () => {
 
 const activateItem = () => {
   const { _id } = selectedCountry.value
+  console.log(_id)
   countriesService.restore(_id).then(() => {
       toast.success(t("message.country.restore.success"));
       emit('changePage', currentPage.value)      
@@ -115,7 +116,12 @@ const activateItem = () => {
 </script>
 
 <template>
-  <CardBoxModal v-model="isModalDangerActive" title="Please confirm" button="danger" @confirm="deleteItem" has-cancel>
+  <CardBoxModal 
+      v-model="isModalDangerActive" 
+      title="Please confirm" 
+      button="danger" 
+      @confirm="deleteItem" 
+      has-cancel>
     <strong>{{ $t('message.country.deleted.question') }} <b> {{ dataName() }} </b></strong> ?
   </CardBoxModal>
 

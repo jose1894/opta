@@ -56,7 +56,7 @@ export default {
                 .catch((err) => reject(err))
         })
     },
-
+    
     countryActivate() {
         return new Promise((resolve, reject) => {
             Service.paisesActivosGet()
