@@ -130,7 +130,7 @@ const action = () => {
     <thead>
       <tr>
         <th @click="sort('codigo')">{{ $t('message.ally.code') }}</th>        
-        <th @click="sort('nambre')">{{ $t('message.ally.name') }}</th>
+        <th @click="sort('nombre')">{{ $t('message.ally.name') }}</th>
         <th @click="sort('idFiscal')">{{ $t('message.ally.id') }}</th>
         <th @click="sort('estado')">{{ $t('message.ally.status') }}</th>
         <th />

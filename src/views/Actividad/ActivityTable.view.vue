@@ -129,7 +129,7 @@ const action = () => {
   <table>
     <thead>
       <tr>    
-        <th @click="sort('nambre')">{{ $t('message.activity.name') }}</th>
+        <th @click="sort('nombre')">{{ $t('message.activity.name') }}</th>
         <th @click="sort('siglas')">{{ $t('message.activity.acronyms') }}</th>
         <th @click="sort('estado')">{{ $t('message.activity.status') }}</th>
         <th />

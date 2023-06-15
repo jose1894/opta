@@ -1,6 +1,9 @@
 <script setup>
     import { ref } from "vue";
     import { useI18n } from "vue-i18n";
+    import BaseButton from "./BaseButton.vue";
+    import { mdiChevronDoubleLeft, mdiChevronDoubleRight, mdiClose } from "@mdi/js";
+
     const { t } = useI18n();
     const props = defineProps({
         tabs: []
@@ -41,23 +44,25 @@
         </li>
     </ul>   
     <slot></slot>
-    <div style="display: inline-block;">
-        <button 
+    <div class="mt-2" style="display: inline-block;float:right">
+    <BaseButton
+        :icon="mdiChevronDoubleLeft"
+        small
+        rounded-full
+        :class="`mx-2`"
+        color="info"
+        v-show="activeTab !== 0"
+        @click="backTab"
+      />
+    <BaseButton
+        :icon="mdiChevronDoubleRight"
+        small
+        rounded-full
+        :class="`mx-2`"
+        color="info"
         v-show="activeTab !== tabs.length - 1" 
-        type="button" 
-        class="btn-next" 
-        color="info"
-        @click="nextTab">
-        {{ $t('message.next') }}
-    </button>
-    <button 
-        v-show="activeTab !== 0" 
-        type="button" 
-        class="btn-next" 
-        color="info"
-        @click="backTab">
-        {{ $t('message.back') }}
-    </button>
+        @click="nextTab"
+      />
     
     </div>
     

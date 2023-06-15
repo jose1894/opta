@@ -50,6 +50,14 @@ export default {
         })
     },
 
+    restore(estadoId) {
+        return new Promise((resolve, reject) => {
+            Service.delete(`${resource}restore/${estadoId}`, { headers: authHeader() })
+                .then((response) => resolve(response.data))
+                .catch((err) => reject(err))
+        })
+    },
+
     estadosByPais(paisId) {
         return new Promise((resolve, reject) => {
             Service.get(`${resource}estadosByPais/${paisId}`, {}, { headers: authHeader() })

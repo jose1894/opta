@@ -132,17 +132,19 @@ const submit = async () => {
 </script>
 <template>
   <CardBox isForm @submit.prevent="submit">
-    <div class="grid md:grid-cols-4 gap-4">
+    <div class="grid md:grid-cols-3 gap-4">
       <FormField :label="$t('message.city.code')" :help="v$?.codigo?.$errors[0]?.$message">
         <FormControl :name="'codigo'" v-model="city.codigo" :icon="mdiCodeBraces" />            
       </FormField>
       <FormField :label="$t('message.city.country')" :help="v$?.estado?.$errors[0]?.$message">
         <FormControl v-model="city.pais" :icon="mdiListStatus" :options="countriesList" 
-                      @onSelectChange="selectedPais"/>
+        @onSelectChange="selectedPais"/>
       </FormField>
       <FormField :label="$t('message.city.state')" :help="v$?.state?.$errors[0]?.$message">
         <FormControl v-model="city.state" :icon="mdiListStatus" :options="statesList" />
       </FormField>
+    </div>
+    <div class="grid md:grid-cols-2 gap-4">
       <FormField :label="$t('message.city.name')" :help="v$?.nombre?.$errors[0]?.$message">
         <FormControl v-model="city.nombre" :icon="mdiRenameBox" />
       </FormField>      

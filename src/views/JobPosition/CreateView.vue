@@ -7,7 +7,12 @@ import SectionMain from '@/components/SectionMain.vue';
 import SectionTitleLineWithButton from '@/components/SectionTitleLineWithButton.vue';
 import FormView from './FormView.vue';
 import { useRouter } from 'vue-router';
+import Breadcrumb from '@/components/Breadcrumb.vue';
 
+const breadcrumbs = ref( [
+        { name: 'Inicio', link: '/setup/jobPositions/' },
+        { name: 'Create'},
+    ])
 const router = useRouter();
 
 const formStatusWithHeader = ref(true);
@@ -31,6 +36,7 @@ const formStatusSubmit = () => {
         main
       >
       </SectionTitleLineWithButton>
+      <Breadcrumb :items="breadcrumbs" />
       <form-view path="create" save-label="submit"></form-view>
     </SectionMain>
 

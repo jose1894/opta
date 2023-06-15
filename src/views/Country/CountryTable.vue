@@ -98,7 +98,6 @@ const deleteItem = async () => {
 };
 
 const action = () => {
-  debugger
   const { _id } = selectedCountry.value
   return countriesService.delete(_id);
 }
@@ -106,7 +105,7 @@ const action = () => {
 const activateItem = () => {
   const { _id } = selectedCountry.value
   countriesService.restore(_id).then(() => {
-      toast.success(t("message.country.retore.success"));
+      toast.success(t("message.country.restore.success"));
       emit('changePage', currentPage.value)      
     })
     .catch(err => {

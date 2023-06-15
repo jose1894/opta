@@ -49,6 +49,14 @@ export default {
         })
     },
 
+    restore(ciudadId) {
+        return new Promise((resolve, reject) => {
+            Service.delete(`${resource}restore/${ciudadId}`, { headers: authHeader() })
+                .then((response) => resolve(response.data))
+                .catch((err) => reject(err))
+        })
+    },
+
     ciudadesByEstados(ciudadId) {
         return new Promise((resolve, reject) => {
             Service.get(`${resource}ciudadesByEstados/${ciudadId}`, {}, { headers: authHeader() })

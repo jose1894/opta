@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive } from 'vue';
+    import { ref, reactive } from 'vue';
     import { mdiGlobeModel, mdiPlus } from '@mdi/js';  
     import CardBox from '@/components/CardBox.vue';      
     import BaseButton from '@/components/BaseButton.vue';
@@ -13,8 +13,11 @@ import { ref, reactive } from 'vue';
     import cityService from '@/services/cities.service'
     import FormField from "@/components/FormField.vue";
     import FormCheckRadioGroup from "@/components/FormCheckRadioGroup.vue";
+    import Breadcrumb from '@/components/Breadcrumb.vue';
 
-
+    const breadcrumbs = ref( [
+        { name: 'Inicio' },
+    ])
     const mainStore = useMainStore();
     const page = ref(1);
     const perPage = ref(10);
@@ -31,8 +34,11 @@ import { ref, reactive } from 'vue';
 
     getCities({page: page.value})
 
+    const customCheckDelete = ref(false);
+
     const onChangeSwtch = () => {
         endPointUse({ page: page.value })
+        customCheckDelete.value = customElementsForm.switch.length === 0 ? false : true
     }
 
     const onChangePage = (page) => {
@@ -55,9 +61,10 @@ import { ref, reactive } from 'vue';
         getCitiesDelete({ page })
     }
 
-    const endPointUseSort = (sortBy, sortDesc) => {
-        customElementsForm.switch.length === 0 ? getCities({ sortBy, sortDesc }) :
-        getCitiesDelete({ sortBy, sortDesc })
+    const endPointUseSort = (sort) => {
+        customElementsForm.switch.length === 0 
+            ? getCities(sort) 
+            : getCitiesDelete(sort)
     }   
 </script>
 <template>
@@ -67,13 +74,16 @@ import { ref, reactive } from 'vue';
             :icon="mdiGlobeModel"
             :title="$t('message.city.cities')">
             <BaseButton
-                to="cities/create"
+                :to="{name: 'CitiesCreate'}"
                 :icon="mdiPlus"
                 :label="$t('message.add_new')"
                 color="success"
                 small
             />
         </SectionTitleLineWithButton>
+
+        <Breadcrumb :items="breadcrumbs" />
+
         <FormField label="">
             <FormCheckRadioGroup 
                 v-model="customElementsForm.switch" 
@@ -86,7 +96,7 @@ import { ref, reactive } from 'vue';
             <b>{{ $t('message.empty_table') }}.</b> When there's nothing to show
         </NotificationBar>
         <CardBox  v-if="mainStore?.cities?.ciudades?.length" class="mb-6" has-table>
-            <CityTable @changePage="onChangePage" @sort="onSortPage"/>        
+            <CityTable :checkDelete="customCheckDelete"  @changePage="onChangePage" @sort="onSortPage"/>        
         </CardBox>
 
         <CardBox v-else>

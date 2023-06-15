@@ -96,8 +96,8 @@ onMounted(async () => {
 const getEnfoques = (async () => {
     let listEnfoques = await enfoquesServices.index()
     const { enfoques } = listEnfoques
-    const nodeFirst = enfoques.filter((item) => item.nombre === "Root");
-    const dataEnfoques = enfoques.filter((item) => item.nombre !== "Root");
+    const nodeFirst = enfoques.filter((item) => item.areaPadre === null);
+    const dataEnfoques = enfoques.filter((item) => item.areaPadre !== null);
     const menu11= chilItem(nodeFirst, dataEnfoques)
     treeData.value = nodeFirst
 });

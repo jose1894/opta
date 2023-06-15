@@ -97,6 +97,11 @@
         "success": "City deleted successfully!",
         "error": "City couldn't be deleted!",
         "question": "Do you want to delete city"
+      },
+      "restore": {
+        "success": "City restored successfully!",
+        "error": "City couldn't be restored!",
+        "question": "Do you want to restore city"
       }
     },
     "state": {
@@ -125,6 +130,11 @@
         "success": "¡State deleted successfully!",
         "error": "¡State couldn't be deleted!",
         "question": "Do you want to delete state "
+      },
+      "restore": {
+        "success": "State restored successfully!",
+        "error": "State couldn't be restored!",
+        "question": "Do you want to restore state "
       }
     },
     "Home": "Home",

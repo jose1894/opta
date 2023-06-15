@@ -2,7 +2,7 @@
 import { computed, ref, defineEmits } from "vue";
 import { useRouter } from "vue-router";
 import { useMainStore } from "@/stores/main";
-import {  mdiFileEdit, mdiTrashCan } from "@mdi/js";
+import {  mdiFileEdit, mdiTrashCan, mdiRestore } from "@mdi/js";
 import CardBoxModal from "@/components/CardBoxModal.vue";
 import { useI18n } from "vue-i18n";
 import { useToast } from 'vue-toastification';
@@ -13,6 +13,7 @@ import statesService from '@/services/states.services';
 
 defineProps({
   checkable: Boolean,
+  checkDelete: Boolean,
 });
 
 const { t } = useI18n();
@@ -101,6 +102,17 @@ const action = () => {
   const { _id } = selectedStates.value
   return statesService.delete(_id);
 }
+
+const activateItem = () => {
+  const { _id } = selectedStates.value
+  statesService.restore(_id).then(() => {
+      toast.success(t("message.state.restore.success"));
+      emit('changePage', currentPage.value)      
+    })
+    .catch(err => {
+      toast.error(`${t("message.state.restore.error")} ${err?.response?.data.msg}`)
+    });
+}
 </script>
 
 <template>
@@ -111,11 +123,19 @@ const action = () => {
         @confirm="deleteItem" has-cancel>
         <strong>{{ $t('message.state.deleted.question') }} <b> {{ dataName() }} </b></strong> ?
   </CardBoxModal>
+
+  <CardBoxModal 
+    v-model="isModalActive" 
+    title="Please confirm"
+    @confirm="activateItem">
+    <strong>{{ $t('message.state.restore.question') }} <b> {{ dataName() }} </b></strong> ?   
+  </CardBoxModal>
+
   <table>
     <thead>
       <tr>
         <th @click="sort('codigo')">{{ $t('message.state.code') }}</th>        
-        <th @click="sort('nambre')">{{ $t('message.state.name') }}</th>
+        <th @click="sort('nombre')">{{ $t('message.state.name') }}</th>
         <th @click="sort('codigo')">{{ $t('message.state.country') }}</th>
         <th @click="sort('estado')">{{ $t('message.state.status') }}</th>
         <th />
@@ -138,19 +158,27 @@ const action = () => {
         <td class="before:hidden lg:w-1 whitespace-nowrap">
           <BaseButtons type="justify-start lg:justify-end" no-wrap>
             <BaseButton
+              v-show="checkDelete && state.estado === 2"
+              color="success"
+              :icon="mdiRestore"
+              small
+              @click="isModalActive = true"
+            />
+
+            <BaseButton
+              v-show="!checkDelete && state.estado !== 2"
               color="info"
               :icon="mdiFileEdit"
               small
               @click="edit(state._id)"
             />
 
-            <BaseButton
-              color="danger"
-              :icon="mdiTrashCan"
-              small
-              @click="isModalDangerActive = true"
-              v-show="state.estado !== 2"
-            />
+            <BaseButton 
+              v-show="!checkDelete && state.estado !== 2" 
+              color="danger" 
+              :icon="mdiTrashCan" 
+              small 
+              @click="isModalDangerActive = true" />
           </BaseButtons>
         </td>
       </tr>

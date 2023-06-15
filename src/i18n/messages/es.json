@@ -97,6 +97,11 @@
         "success": "¡El estado fue eliminado exitosamente!",
         "error": "¡El estado no pudo ser eliminado!",
         "question": "Desea eliminar el estado "
+      },
+      "restore": {
+        "success": "State restored successfully!",
+        "error": "State couldn't be restored!",
+        "question": "Do you want to restore state "
       }
     },
     "city": {
@@ -125,6 +130,11 @@
         "success": "¡la ciudad fue eliminada exitosamente!",
         "error": "¡la ciudad no pudo ser eliminada!",
         "question": "Desea eliminar la ciudad "
+      },
+      "restore": {
+        "success": "City restored successfully!",
+        "error": "City couldn't be restored!",
+        "question": "Do you want to restore city"
       }
     },
     "ally": {
