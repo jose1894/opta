@@ -179,6 +179,11 @@
         "success": "¡El aliado fue eliminado exitosamente!",
         "error": "¡El aliado no pudo ser eliminado!",
         "question": "Desea eliminar el aliado "
+      },
+      "restore": {
+        "success": "¡El aliado fue restaurado exitosamente!",
+        "error": "¡El aliado no pudo ser restaurado!",
+        "question": "Desea restaurar el aliado "
       }
     },
     "cargo": {
@@ -325,6 +330,11 @@
         "success": "¡La menbresia fue eliminada exitosamente!",
         "error": "¡La menbresia no pudo ser eliminada!",
         "question": "Desea eliminar la mmbresia "
+      },
+      "restore": {
+        "success": "¡La menbresia fue restaurada exitosamente!",
+        "error": "¡La menbresia no pudo ser restaurada!",
+        "question": "Desea restaurar la membresia "
       }
     },
     "branch": {
@@ -356,6 +366,11 @@
         "success": "¡La sucursal fue eliminada exitosamente!",
         "error": "¡La sucursal no pudo ser eliminada!",
         "question": "Desea eliminar la sucursal "
+      },
+      "restore": {
+        "success": "¡La sucursal fue restaurada exitosamente!",
+        "error": "¡La sucursal no pudo ser restaurada!",
+        "question": "Desea restaurar la sucursal "
       }
     },
     "bussinesUnit": {
@@ -384,6 +399,11 @@
         "success": "¡La unidad de negocio fue eliminada exitosamente!",
         "error": "¡La unidad de negocio no pudo ser eliminada!",
         "question": "Desea eliminar la unidad "
+      },
+      "restore": {
+        "success": "¡La unidad de negocio fue restaurada exitosamente!",
+        "error": "¡La unidad de negocio no pudo ser restaurada!",
+        "question": "Desea restaurar la unidad "
       }
     },
     "expense": {

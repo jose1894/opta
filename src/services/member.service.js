@@ -49,6 +49,14 @@ export default {
                 .catch((err) => reject(err))
         })
     },
+    
+    restore(miembroId) {
+        return new Promise((resolve, reject) => {
+            Service.delete(`${resource}/restore/${miembroId}`, { headers: authHeader() })
+                .then((response) => resolve(response.data))
+                .catch((err) => reject(err))
+        })
+    },
 
     delete(menbresiaId) {
         return new Promise((resolve, reject) => {

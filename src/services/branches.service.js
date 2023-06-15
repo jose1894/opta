@@ -49,6 +49,14 @@ export default {
         })
     },
 
+    restore(branchId) {
+        return new Promise((resolve, reject) => {
+            Service.delete(`${resource}/restore/${branchId}`, { headers: authHeader() })
+                .then((response) => resolve(response.data))
+                .catch((err) => reject(err))
+        })
+    },
+
     sucursalesGet() {
         return new Promise((resolve, reject) => {
             Service.get(`${resource}/allSucursales`, { headers: authHeader() })

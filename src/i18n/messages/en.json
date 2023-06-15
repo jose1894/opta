@@ -182,6 +182,11 @@
       "success": "Ally deleted successfully!",
       "error": "Ally couldn't be deleted!",
       "question": "Do you want to ally "
+    },
+    "restore": {
+      "success": "Ally restore successfully!",
+      "error": "Ally couldn't be restore!",
+      "question": "Do you want to restore ally "
     }
   },
   "cargo": {
@@ -381,8 +386,12 @@
       "success": "Member deleted successfully!",
       "error": "Member couldn't be deleted!",
       "question": "Do you want to delete member"
+    },
+    "restore": {
+      "success": "Member retored successfully!",
+      "error": "Member couldn't be retored!",
+      "question": "Do you want to restore member"
     }
-
   },  
   "branch": {
     "branch": "Branch",
@@ -412,6 +421,11 @@
       "success": "Branch deleted successfully!",
       "error": "Branch couldn't be deleted!",
       "question": "Do you want to delete branch"
+    },
+    "restore": {
+      "success": "Branch restored successfully!",
+      "error": "Branch couldn't be restored!",
+      "question": "Do you want to restore branch"
     }
   },
   "bussinesUnit": {
@@ -441,7 +455,12 @@
     "deleted": {
       "success": "Bussines unit deleted successfully!",
       "error": "Bussines unit couldn't be deleted!",
-      "question": "Do ypu want to bussiness unit "
+      "question": "Do you want to delete bussiness unit "
+    },
+    "restore": {
+      "success": "Bussines unit restored successfully!",
+      "error": "Bussines unit couldn't be restored!",
+      "question": "Do you want to restore bussiness unit "
     }
   },
   "expense": {

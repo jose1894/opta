@@ -3,7 +3,7 @@ import { computed, ref, defineEmits } from "vue";
 import { useRouter } from "vue-router";
 import { useMainStore } from "@/stores/main";
 import { useI18n } from "vue-i18n";
-import { mdiFileEdit, mdiTrashCan } from "@mdi/js";
+import { mdiFileEdit, mdiTrashCan, mdiRestore } from "@mdi/js";
 import { useToast } from 'vue-toastification';
 import CardBoxModal from "@/components/CardBoxModal.vue";
 import TableCheckboxCell from "@/components/TableCheckboxCell.vue";
@@ -14,6 +14,7 @@ import membersService from '@/services/member.service';
 
 defineProps({
   checkable: Boolean,
+  checkDelete: Boolean, 
 });
 
 const { t } = useI18n();
@@ -46,7 +47,7 @@ const listStatusOption = (status = '') => {
   return statuses[status];
 }
 /* Sorting */
-const currentSort = 'name';
+const currentSort = 'nombre';
 const sortDesc = ref(false);
 
 const sort = (s) => {
@@ -114,6 +115,18 @@ const action = () => {
   const { _id } = selectedMember.value
   return membersService.delete(_id);
 }
+
+const activateItem = () => {
+  const { _id } = selectedMember.value
+  
+  membersService.restore(_id).then(() => {
+      toast.success(t("message.member.restore.success"));
+      emit('changePage', currentPage.value)      
+    })
+    .catch(err => {
+      toast.error(`${t("message.member.restore.error")} ${err?.response?.data.msg}`)
+    });
+}
 </script>
 
 <template>
@@ -123,6 +136,13 @@ const action = () => {
       button="danger" 
       @confirm="deleteItem" has-cancel>
       <strong>{{ $t('message.member.deleted.question') }} <b> {{ dataName() }} </b></strong> ?
+  </CardBoxModal>
+
+  <CardBoxModal 
+    v-model="isModalActive" 
+    title="Please confirm"
+    @confirm="activateItem">
+    <strong>{{ $t('message.member.restore.question') }} <b> {{ dataName() }} </b></strong> ?   
   </CardBoxModal>
 
   <table>
@@ -152,19 +172,28 @@ const action = () => {
         <td class="before:hidden lg:w-1 whitespace-nowrap">
           <BaseButtons type="justify-start lg:justify-end" no-wrap>
             <BaseButton
+              v-show="checkDelete && member.estado === 2"
+              color="success"
+              :icon="mdiRestore"
+              small
+              @click="isModalActive = true"
+            />
+
+            <BaseButton
+              v-show="!checkDelete && member.estado !== 2"
               color="info"
               :icon="mdiFileEdit"
               small
               @click="edit(member._id)"
             />
 
-            <BaseButton
-              color="danger"
-              :icon="mdiTrashCan"
-              small
-              @click="isModalDangerActive = true"
-              v-show="member.estado !== 2"
-            />
+            <BaseButton 
+              v-show="!checkDelete && member.estado !== 2" 
+              color="danger" 
+              :icon="mdiTrashCan" 
+              small 
+              @click="isModalDangerActive = true" />
+          
           </BaseButtons>
         </td>
       </tr>

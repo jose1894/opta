@@ -8,11 +8,17 @@
     import LayoutAuthenticated from '@/layouts/LayoutAuthenticated.vue';
     import CardBoxComponentEmpty from '@/components/CardBoxComponentEmpty.vue';
     import SectionTitleLineWithButton from '@/components/SectionTitleLineWithButton.vue';
-    import BranchTable from './BranchTable.view.vue';
+    import BranchTable from './BranchTableView.vue';
     import { useMainStore } from '@/stores/main';
     import branchesService from '@/services/branches.service';
     import FormField from "@/components/FormField.vue";
     import FormCheckRadioGroup from "@/components/FormCheckRadioGroup.vue";
+    import Breadcrumb from '@/components/Breadcrumb.vue';
+
+
+    const breadcrumbs = ref( [
+        { name: 'Inicio' },
+    ])
 
     const mainStore = useMainStore();
     const page = ref(1);
@@ -38,8 +44,11 @@
         endPointUseSort({ sortBy, sortDesc });
     }
 
-    const onChangeSwtch = () => {
+    const customCheckDelete = ref(false);
+
+    const onChangeSwtch = () => { 
         endPointUse({ page: page.value })
+        customCheckDelete.value = customElementsForm.switch.length === 0 ? false : true
     }
 
     const getBranchesDelete = (data) => {
@@ -55,9 +64,10 @@
             getBranchesDelete({ page })
     }
 
-const endPointUseSort = (sortBy, sortDesc) => {
-  customElementsForm.switch.length === 0 ? getBranches({ sortBy, sortDesc }) :
-    getBranchesDelete({ sortBy, sortDesc })
+const endPointUseSort = (sort) => {
+  customElementsForm.switch.length === 0 
+  ? getBranches(sort) 
+  : getBranchesDelete(sort)
 }  
 </script>
 <template>
@@ -67,13 +77,16 @@ const endPointUseSort = (sortBy, sortDesc) => {
             :icon="mdiGlobeModel"
             :title="$t('message.branch.branches')">
             <BaseButton
-                to="branches/create"
+                :to='{name: "BranchesCreate"}'
                 :icon="mdiPlus"
                 :label="$t('message.add_new')"
                 color="success"
                 small
             />
         </SectionTitleLineWithButton>
+        
+        <Breadcrumb :items="breadcrumbs" />
+        
         <FormField label="">
             <FormCheckRadioGroup 
                 v-model="customElementsForm.switch" 
@@ -87,7 +100,7 @@ const endPointUseSort = (sortBy, sortDesc) => {
             <b>{{ $t('message.empty_table') }}.</b> When there's nothing to show
         </NotificationBar>
         <CardBox  v-if="mainStore?.branches?.sucursales?.length" class="mb-6" has-table>
-            <BranchTable @changePage="onChangePage" @sort="onSortPage"/>        
+            <BranchTable :checkDelete="customCheckDelete" @changePage="onChangePage" @sort="onSortPage"/>        
         </CardBox>
 
         <CardBox v-else>
