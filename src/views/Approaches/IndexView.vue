@@ -60,6 +60,7 @@ const dataInitial = {
     editable: option[0],
     estado: selectOptions[0],
     miembro: miembroList.value,
+    nodoRaiz: 0,
 }
 const enfoque = ref(dataInitial);
 
@@ -96,8 +97,8 @@ onMounted(async () => {
 const getEnfoques = (async () => {
     let listEnfoques = await enfoquesServices.index()
     const { enfoques } = listEnfoques
-    const nodeFirst = enfoques.filter((item) => item.nombre === "Root");
-    const dataEnfoques = enfoques.filter((item) => item.nombre !== "Root");
+    const nodeFirst = enfoques.filter((item) => item.ruta === "/");
+    const dataEnfoques = enfoques.filter((item) => item.ruta !== "/");
     const menu11= chilItem(nodeFirst, dataEnfoques)
     treeData.value = nodeFirst
 });
@@ -142,7 +143,9 @@ const action = async (enfoque) => {
         rcr,
         editable,
         estado,
+        nodoRaiz,
         miembro } = enfoque.value;
+    nodoRaiz = ruta === '/' ? 1 : 0
 
     const data = {
         _id,
