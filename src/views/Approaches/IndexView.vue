@@ -42,6 +42,11 @@ const option = [
     { id: 1, label: t('message.yes') },
 ];
 
+const optionVisible = [
+    { id: 0, label: t('message.list') },
+    { id: 1, label: t('message.menu') },
+];
+
 const selectOptions = [
     { id: 1, label: t('message.approach.statuses.active') },
     { id: 0, label: t('message.approach.statuses.inactive') },
@@ -55,12 +60,12 @@ const dataInitial = {
     rutaPadre: "",
     areaPadre: "",
     ruta: "",
-    visible: option[0],
+    visible: optionVisible[0],
     rcr: option[0],
     editable: option[0],
     estado: selectOptions[0],
     miembro: miembroList.value,
-    nodoRaiz: 0,
+    tipoNodo: 2,
 }
 const enfoque = ref(dataInitial);
 
@@ -97,8 +102,8 @@ onMounted(async () => {
 const getEnfoques = (async () => {
     let listEnfoques = await enfoquesServices.index()
     const { enfoques } = listEnfoques
-    const nodeFirst = enfoques.filter((item) => item.ruta === "/");
-    const dataEnfoques = enfoques.filter((item) => item.ruta !== "/");
+    const nodeFirst = enfoques.filter((item) => item.tipoNodo === 0);
+    const dataEnfoques = enfoques.filter((item) => item.tipoNodo !== 0);
     const menu11= chilItem(nodeFirst, dataEnfoques)
     treeData.value = nodeFirst
 });
@@ -116,12 +121,13 @@ const submit = async () => {
             toast.success(successMessage);
         })
         .catch(err => {
-            if (err.response.data?.msg) {
+            console.log(err) 
+            if (err.response?.data?.msg) {
                 toast.error(`${t("message.approach.created.error")} ${err.response.data.msg}`)
                 return
             }
 
-            if (err.response.data?.errors) {
+            if (err.response?.data?.errors) {
                 const errors = err.response.data.errors;
                 let errorStr = '';
                 for (let attr of errors) {
@@ -132,6 +138,7 @@ const submit = async () => {
 }
 
 const action = async (enfoque) => {
+    enfoque.value.tipoNodo = (enfoque.value.rutaPadre === '/') ? 1 : 2
     const { _id,
         indice,
         nombre,
@@ -143,9 +150,8 @@ const action = async (enfoque) => {
         rcr,
         editable,
         estado,
-        nodoRaiz,
+        tipoNodo,
         miembro } = enfoque.value;
-    nodoRaiz = ruta === '/' ? 1 : 0
 
     const data = {
         _id,
@@ -159,6 +165,7 @@ const action = async (enfoque) => {
         rcr: rcr.id,
         editable: editable.id,
         estado: estado.id,
+        tipoNodo,
         miembro: miembro.id
     }
     if (path === 'create') {
@@ -189,7 +196,7 @@ const btnEditarEnfoque = async () => {
         enfoque.value.rutaPadre = (typeof areaPadre === "object") ? areaPadre.ruta : rutaPadre  
     }    
     enfoque.value.estado = selectOptions.filter(status => status.id === _isObject(estado))[0]
-    enfoque.value.visible = option.filter(item => item.id === _isObject(visible))[0]
+    enfoque.value.visible = optionVisible.filter(item => item.id === _isObject(visible))[0]
     enfoque.value.rcr = option.filter(item => item.id === _isObject(rcr))[0]
     enfoque.value.editable = option.filter(item => item.id === _isObject(editable))[0]
     enfoque.value.miembro = _asignarOpcionesAlSelect(miembro)
@@ -297,7 +304,7 @@ const deleteEnfoqueById = () => {
                     <FormControl :name="'route'" v-model="enfoque.ruta" :icon="mdiCodeBraces" :readonly="true"/>
                 </FormField>
                 <FormField :label="$t('message.approach.visible')">
-                    <FormControl v-model="enfoque.visible" :icon="mdiListStatus" :options="option" />
+                    <FormControl v-model="enfoque.visible" :icon="mdiListStatus" :options="optionVisible" />
                 </FormField>
                 <FormField :label="$t('message.approach.rcr')">
                     <FormControl v-model="enfoque.rcr" :icon="mdiListStatus" :options="option" />
