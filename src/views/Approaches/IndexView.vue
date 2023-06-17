@@ -169,6 +169,8 @@ const action = async (enfoque) => {
         miembro: miembro.id
     }
     if (path === 'create') {
+        const fechaNew =moment(data.fecha, 'YYYY-MM-DD').format('YYYY-MM-DD');
+        data.fecha = fechaNew
         return enfoquesServices.create(data)
     }
     return enfoquesServices.update(data);
