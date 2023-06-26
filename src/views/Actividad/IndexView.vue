@@ -13,6 +13,12 @@
     import FormField from "@/components/FormField.vue"; 
     import activitiesService from '@/services/activities.service';
     import ActivityTable from './ActivityTable.view.vue';
+    import Breadcrumb from '@/components/Breadcrumb.vue';
+    
+
+    const breadcrumbs = ref( [
+            { name: 'Inicio' },
+    ])
 
     const mainStore = useMainStore();
     const page = ref(1);
@@ -30,8 +36,11 @@
 
     getActivities({page: page.value})
 
-    const onChangeSwtch = () => {
-        endPointUse({ page: page.value })
+    const customCheckDelete = ref(false);
+
+    const onChangeSwtch = () => { 
+    endPointUse({ page: page.value })
+    customCheckDelete.value = customElementsForm.switch.length === 0 ? false : true
     }
 
     const onChangePage = (page) => {
@@ -54,9 +63,10 @@
         getActivitiesDelete({ page })
     }
 
-    const endPointUseSort = (sortBy, sortDesc) => {
-        customElementsForm.switch.length === 0 ? getActivities({ sortBy, sortDesc }) :
-        getActivitiesDelete({ sortBy, sortDesc })
+    const endPointUseSort = (sort) => {
+        customElementsForm.switch.length === 0 
+        ? getActivities(sort) 
+        : getActivitiesDelete(sort)
     }    
 </script>
 <template>
@@ -66,13 +76,14 @@
             :icon="mdiGlobeModel"
             :title="$t('message.activity.activities')">
             <BaseButton
-                to="activities/create"
+                :to="{name: 'ActivitiesCreate'}"
                 :icon="mdiPlus"
                 :label="$t('message.add_new')"
                 color="success"
                 small
             />
         </SectionTitleLineWithButton>
+        <Breadcrumb :items="breadcrumbs" />
         <FormField label="">
         <FormCheckRadioGroup 
             v-model="customElementsForm.switch" 
@@ -85,7 +96,7 @@
             <b>{{ $t('message.empty_table') }}.</b> When there's nothing to show
         </NotificationBar>
         <CardBox  v-if="mainStore?.activities?.actividades?.length" class="mb-6" has-table>
-            <ActivityTable @changePage="onChangePage" @sort="onSortPage"/>                     
+            <ActivityTable :checkDelete="customCheckDelete" @changePage="onChangePage" @sort="onSortPage"/>                     
         </CardBox>
 
         <CardBox v-else>

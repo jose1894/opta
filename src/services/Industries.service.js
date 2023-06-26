@@ -51,6 +51,14 @@ export default {
         })
     },
 
+    restore(industriaId) {
+        return new Promise((resolve, reject) => {
+            Service.delete(`${resource}/restore/${industriaId}`, { headers: authHeader() })
+                .then((response) => resolve(response.data))
+                .catch((err) => reject(err))
+        })
+    },
+
     delete(industriaId) {
         return new Promise((resolve, reject) => {
             Service.delete(`${resource}${industriaId}`, { headers: authHeader() })

@@ -59,6 +59,14 @@ export default {
         })
     },
 
+    restore(categoryId) {
+        return new Promise((resolve, reject) => {
+            Service.delete(`${resource}/restore/${categoryId}`, { headers: authHeader() })
+                .then((response) => resolve(response.data))
+                .catch((err) => reject(err))
+        })
+    },
+
     categoriasPorUnidadNegocio(unidadNegocioId) {
         return new Promise((resolve, reject) => {
             Service.get(`${resource}/categoriasPorUnidadNegocio/${unidadNegocioId}`, { headers: authHeader() })

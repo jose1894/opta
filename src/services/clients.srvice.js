@@ -49,6 +49,14 @@ export default {
         })
     },
 
+    restore(clienteId) {
+        return new Promise((resolve, reject) => {
+            Service.delete(`${resource}/restore/${clienteId}`, { headers: authHeader() })
+                .then((response) => resolve(response.data))
+                .catch((err) => reject(err))
+        })
+    },
+
     allClientes() {
         return new Promise((resolve, reject) => {
             Service.get(`${resource}allClientes`, { headers: authHeader() })

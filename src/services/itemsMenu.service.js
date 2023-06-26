@@ -50,6 +50,14 @@ export default {
         })
     },
 
+    restore(menuId) {
+        return new Promise((resolve, reject) => {
+            Service.delete(`${resource}/restore/${menuId}`, { headers: authHeader() })
+                .then((response) => resolve(response.data))
+                .catch((err) => reject(err))
+        })
+    },
+
     delete(menuId) {
         return new Promise((resolve, reject) => {
             Service.delete(`${resource}/${menuId}`, { headers: authHeader() })

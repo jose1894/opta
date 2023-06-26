@@ -104,7 +104,6 @@ const action = () => {
 
 const activateItem = () => {
   const { _id } = selectedCountry.value
-  console.log(_id)
   countriesService.restore(_id).then(() => {
       toast.success(t("message.country.restore.success"));
       emit('changePage', currentPage.value)      

@@ -2,7 +2,7 @@
 import { computed, ref, defineEmits } from "vue";
 import { useRouter } from "vue-router";
 import { useMainStore } from "@/stores/main";
-import { mdiFileEdit, mdiTrashCan } from "@mdi/js";
+import { mdiFileEdit, mdiTrashCan, mdiRestore } from "@mdi/js";
 import { useI18n } from "vue-i18n";
 import { useToast } from 'vue-toastification';
 import CardBoxModal from "@/components/CardBoxModal.vue";
@@ -13,6 +13,7 @@ import clientsService from '@/services/clients.srvice';
 
 defineProps({
   checkable: Boolean,
+  checkDelete: Boolean, 
 });
 
 const { t } = useI18n();
@@ -113,6 +114,17 @@ const action = () => {
   const { _id } = selectedClient.value
   return clientsService.delete(_id);
 }
+
+const activateItem = () => {
+  const { _id } = selectedClient.value
+  clientsService.restore(_id).then(() => {
+      toast.success(t("message.client.restore.success"));
+      emit('changePage', currentPage.value)      
+    })
+    .catch(err => {
+      toast.error(`${t("message.client.restore.error")} ${err?.response?.data.msg}`)
+    });
+}
 </script>
 
 <template>
@@ -125,6 +137,15 @@ const action = () => {
         has-cancel>
         <strong>{{ $t('message.client.deleted.question') }} <b> {{ dataName() }} </b></strong> ?
   </CardBoxModal>
+
+
+  <CardBoxModal 
+    v-model="isModalActive" 
+    title="Please confirm"
+    @confirm="activateItem">
+    <strong>{{ $t('message.client.restore.question') }} <b> {{ dataName() }} </b></strong> ?   
+  </CardBoxModal>
+
 
   <table>
     <thead>
@@ -154,19 +175,22 @@ const action = () => {
         <td class="before:hidden lg:w-1 whitespace-nowrap">
           <BaseButtons type="justify-start lg:justify-end" no-wrap>
             <BaseButton
+              v-show="checkDelete && client.estado === 2"
+              color="success"
+              :icon="mdiRestore"
+              small
+              @click="isModalActive = true"
+            />
+
+            <BaseButton
+              v-show="!checkDelete && client.estado !== 2"
               color="info"
               :icon="mdiFileEdit"
               small
               @click="edit(client._id)"
             />
 
-            <BaseButton
-              color="danger"
-              :icon="mdiTrashCan"
-              small
-              @click="isModalDangerActive = true"
-              v-show="client.estado !== 2"
-            />
+            <BaseButton v-show="!checkDelete && client.estado !== 2" color="danger" :icon="mdiTrashCan" small @click="isModalDangerActive = true" />
           </BaseButtons>
         </td>
       </tr>

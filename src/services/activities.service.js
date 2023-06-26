@@ -51,6 +51,14 @@ export default {
         })
     },
 
+    restore(activityId) {
+        return new Promise((resolve, reject) => {
+            Service.delete(`${resource}/restore/${activityId}`, { headers: authHeader() })
+                .then((response) => resolve(response.data))
+                .catch((err) => reject(err))
+        })
+    },
+
     delete(activityId) {
         return new Promise((resolve, reject) => {
             Service.delete(`${resource}${activityId}`, { headers: authHeader() })

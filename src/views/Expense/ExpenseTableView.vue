@@ -3,7 +3,7 @@ import { computed, ref, defineEmits } from "vue";
 import { useRouter } from "vue-router";
 import { useMainStore } from "@/stores/main";
 import { useI18n } from "vue-i18n";
-import { mdiFileEdit, mdiTrashCan } from "@mdi/js";
+import { mdiFileEdit, mdiRestore, mdiTrashCan } from "@mdi/js";
 import { useToast } from 'vue-toastification';
 import CardBoxModal from "@/components/CardBoxModal.vue";
 import TableCheckboxCell from "@/components/TableCheckboxCell.vue";
@@ -14,6 +14,7 @@ import expenseService from '@/services/expense.service';
 
 defineProps({
   checkable: Boolean,
+  checkDelete: Boolean, 
 });
 
 const { t } = useI18n();
@@ -102,6 +103,18 @@ const action = () => {
   const { _id } = selectedExpense.value
   return expenseService.delete(_id);
 }
+
+const activateItem = () => {
+  const { _id } = selectedExpense.value
+  
+  expenseService.restore(_id).then(() => {
+      toast.success(t("message.expense.restore.success"));
+      emit('changePage', currentPage.value)      
+    })
+    .catch(err => {
+      toast.error(`${t("message.expense.restore.error")} ${err?.response?.data.msg}`)
+    });
+}
 </script>
 
 <template>
@@ -113,6 +126,14 @@ const action = () => {
       has-cancel>
     <strong>{{ $t('message.expense.deleted.question') }} <b> {{ dataName() }} </b></strong> ?
   </CardBoxModal>
+
+  <CardBoxModal 
+    v-model="isModalActive" 
+    title="Please confirm"
+    @confirm="activateItem">
+    <strong>{{ $t('message.expense.restore.question') }} <b> {{ dataName() }} </b></strong> ?   
+  </CardBoxModal>
+  
   <table>
     <thead>
       <tr>
@@ -132,19 +153,22 @@ const action = () => {
         <td class="before:hidden lg:w-1 whitespace-nowrap">
           <BaseButtons type="justify-start lg:justify-end" no-wrap>
             <BaseButton
+              v-show="checkDelete && expense.estado === 2"
+              color="success"
+              :icon="mdiRestore"
+              small
+              @click="isModalActive = true"
+            />
+
+            <BaseButton
+              v-show="!checkDelete && expense.estado !== 2"
               color="info"
               :icon="mdiFileEdit"
               small
               @click="edit(expense._id)"
             />
 
-            <BaseButton
-              color="danger"
-              :icon="mdiTrashCan"
-              small
-              @click="isModalDangerActive = true"
-              v-show="expense.estado !== 2"
-            />
+            <BaseButton v-show="!checkDelete && expense.estado !== 2" color="danger" :icon="mdiTrashCan" small @click="isModalDangerActive = true" />
           </BaseButtons>
         </td>
       </tr>

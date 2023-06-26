@@ -13,6 +13,12 @@ import { useMainStore } from '@/stores/main';
 import profileActionsService from '@/services/profileActions.service'
 import FormField from "@/components/FormField.vue"; 
 import FormCheckRadioGroup from "@/components/FormCheckRadioGroup.vue";
+import Breadcrumb from '@/components/Breadcrumb.vue';
+
+
+const breadcrumbs = ref( [
+        { name: 'Inicio' },
+])
 
 const mainStore = useMainStore();
 const page = ref(1);
@@ -30,8 +36,11 @@ const getProfileActions = (data) => {
 
 getProfileActions({page: page.value})
 
-const onChangeSwtch = () => {
+const customCheckDelete = ref(false);
+
+const onChangeSwtch = () => { 
   endPointUse({ page: page.value })
+  customCheckDelete.value = customElementsForm.switch.length === 0 ? false : true
 }
 
 const onChangePage = (page) => {
@@ -54,9 +63,10 @@ const endPointUse = (page) => {
     getProfileActionsDelete({ page })
 }
 
-const endPointUseSort = (sortBy, sortDesc) => {
-    customElementsForm.switch.length === 0 ? getProfileActions({ sortBy, sortDesc }) :
-    getProfileActionsDelete({ sortBy, sortDesc })
+const endPointUseSort = (sort) => {
+    customElementsForm.switch.length === 0 
+      ? getProfileActions(sort) 
+      : getProfileActionsDelete(sort)
 } 
 
 </script>
@@ -76,6 +86,8 @@ const endPointUseSort = (sortBy, sortDesc) => {
         />
       </SectionTitleLineWithButton>
 
+      <Breadcrumb :items="breadcrumbs" />
+
       <FormField label="">
         <FormCheckRadioGroup 
             v-model="customElementsForm.switch" 
@@ -91,7 +103,7 @@ const endPointUseSort = (sortBy, sortDesc) => {
       </NotificationBar>
 
       <CardBox  v-if="mainStore?.profileActions?.accionesPerfiles?.length" class="mb-6" has-table>
-        <ProfileActionsTable @changePage="onChangePage" @sort="onSortPage"/>
+        <ProfileActionsTable :checkDelete="customCheckDelete" @changePage="onChangePage" @sort="onSortPage"/>
       </CardBox>
 
       <CardBox v-else>

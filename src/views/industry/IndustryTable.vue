@@ -3,7 +3,7 @@ import { computed, ref, defineEmits } from "vue";
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { useMainStore } from "@/stores/main";
-import { mdiFileEdit, mdiTrashCan } from "@mdi/js";
+import { mdiFileEdit, mdiTrashCan, mdiRestore } from "@mdi/js";
 import { useToast } from 'vue-toastification';
 import CardBoxModal from "@/components/CardBoxModal.vue";
 import BaseLevel from "@/components/BaseLevel.vue";
@@ -13,6 +13,7 @@ import industriesService from '@/services/Industries.service'
 
 defineProps({
   checkable: Boolean,
+  checkDelete: Boolean, 
 });
 
 const { t } = useI18n();
@@ -101,6 +102,18 @@ const action = () => {
   const { _id } = selectedIndustrias.value
   return industriesService.delete(_id);
 }
+
+const activateItem = () => {
+  const { _id } = selectedIndustrias.value
+  
+  industriesService.restore(_id).then(() => {
+      toast.success(t("message.industry.restore.success"));
+      emit('changePage', currentPage.value)      
+    })
+    .catch(err => {
+      toast.error(`${t("message.industry.restore.error")} ${err?.response?.data.msg}`)
+    });
+}
 </script>
 
 <template>
@@ -112,6 +125,13 @@ const action = () => {
      @confirm="deleteItem" 
      has-cancel>
     <strong>{{ $t('message.industry.deleted.question') }} <b> {{ dataName() }} </b></strong> ?
+  </CardBoxModal>
+
+  <CardBoxModal 
+    v-model="isModalActive" 
+    title="Please confirm"
+    @confirm="activateItem">
+    <strong>{{ $t('message.industry.restore.question') }} <b> {{ dataName() }} </b></strong> ?   
   </CardBoxModal>
 
   <table>
@@ -137,19 +157,22 @@ const action = () => {
         <td class="before:hidden lg:w-1 whitespace-nowrap">
           <BaseButtons type="justify-start lg:justify-end" no-wrap>
             <BaseButton
+              v-show="checkDelete && industry.estado === 2"
+              color="success"
+              :icon="mdiRestore"
+              small
+              @click="isModalActive = true"
+            />
+
+            <BaseButton
+              v-show="!checkDelete && industry.estado !== 2"
               color="info"
               :icon="mdiFileEdit"
               small
               @click="edit(industry._id)"
             />
 
-            <BaseButton
-              color="danger"
-              :icon="mdiTrashCan"
-              small
-              @click="isModalDangerActive = true"
-              v-show="industry.estado !== 2"
-            />
+            <BaseButton v-show="!checkDelete && industry.estado !== 2" color="danger" :icon="mdiTrashCan" small @click="isModalDangerActive = true" />
           </BaseButtons>
         </td>
       </tr>

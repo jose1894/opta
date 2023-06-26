@@ -51,6 +51,14 @@ export default {
         })
     },
 
+    restore(professionId) {
+        return new Promise((resolve, reject) => {
+            Service.delete(`${resource}/restore/${professionId}`, { headers: authHeader() })
+                .then((response) => resolve(response.data))
+                .catch((err) => reject(err))
+        })
+    },
+
     delete(professionId) {
         return new Promise((resolve, reject) => {
             Service.delete(`${resource}${professionId}`, { headers: authHeader() })

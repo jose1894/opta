@@ -243,8 +243,13 @@
       "success": "Industry deleted successfully!",
       "error": "Industry couldn't be deleted!",
       "question": "Do you want to delete industry "
+    },
+    "restore": {
+      "success": "Industry restored successfully!",
+      "error": "Industry couldn't be restored!",
+      "question": "Do you want to restore industry "
     }
-  },
+  }, 
   "profileAction": {
     "profileAction": "Profile action",
     "profileActions": "Profile actions",
@@ -270,6 +275,11 @@
       "success": "Profile action deleted successfully!",
       "error": "Profile action couldn't be deleted!",
       "question": "Do you want to delete profile action "
+    },
+    "restore": {
+      "success": "Profile action restored successfully!",
+      "error": "Profile action couldn't be restored!",
+      "question": "Do you want to restore profile action "
     }
   }, 
   "itemMenu": {
@@ -297,6 +307,11 @@
       "success": "Item menu deleted successfully!",
       "error": "Item menu couldn't be deleted!",
       "question": "Do you want to delete item menu "
+    },
+    "restore": {
+      "success": "Item menu restored successfully!",
+      "error": "Item menu couldn't be restored!",
+      "question": "Do you want to restore item menu "
     }
   }, 
   "currencies": {
@@ -487,7 +502,12 @@
     "deleted": {
       "success": "Expense deleted successfully!",
       "error": "Expense couldn't be deleted!",
-      "question": "Do ypu want to expense "
+      "question": "Do you want to expense "
+    },
+    "restore": {
+      "success": "Expense restored successfully!",
+      "error": "Expense couldn't be restored!",
+      "question": "Do you want to restore expense "
     }
   },
   "profiles": {
@@ -516,6 +536,11 @@
       "success": "Profile deleted successfully!",
       "error": "Profile couldn't be deleted!",
       "question": "Do you want to delete profile "      
+    },    
+    "restore": {
+      "success": "Profile restored successfully!",
+      "error": "Profile couldn't be restored!",
+      "question": "Do you want to restore profile "      
     }    
   },
   "category": {
@@ -547,6 +572,11 @@
       "success": "Category deleted successfully!",
       "error": "Category couldn't be deleted!",
       "question": "Do you want to delete category "      
+    },
+    "restored": {
+      "success": "Category restored successfully!",
+      "error": "Category couldn't be restored!",
+      "question": "Do you want to restore category "      
     } 
   },
   "rate": {
@@ -608,6 +638,11 @@
       "success": "Language deleted successfully!",
       "error": "Language couldn't be deleted!",
       "question": "Do you want to delete language "
+    },
+    "restore": {
+      "success": "Language restored successfully!",
+      "error": "Language couldn't be restored!",
+      "question": "Do you want to restore language "
     }
   },
   "profession": {
@@ -635,6 +670,11 @@
       "success": "Profession deleted successfully!",
       "error": "Profession couldn't be deleted!",
       "question": "Do you want to delete profession "
+    },
+    "restore": {
+      "success": "Profession restored successfully!",
+      "error": "Profession couldn't be restored!",
+      "question": "Do you want to restore profession "
     }
   },
   "personal": {
@@ -679,6 +719,11 @@
       "success": "¡The record was successfully deleted!",
       "error": "¡The record could not be deleted!",
       "question": "You want to delete the record "
+    },
+    "restore": {
+      "success": "¡The record was successfully restored!",
+      "error": "¡The record could not be restored!",
+      "question": "Do you want to restore the record "
     }
   },
   "client": {
@@ -729,6 +774,11 @@
       "success": "Client deleted successfully!",
       "error": "Client couldn't be deleted!",
       "question": "Do you want to delete client "
+    },
+    "restore": {
+      "success": "Client restored successfully!",
+      "error": "Client couldn't be restored!",
+      "question": "Do you want to restore client "
     }
   },
   "approach": {
@@ -791,6 +841,11 @@
       "success": "Activity deleted successfully!",
       "error": "Activity couldn't be deleted!",
       "question": "Do you want to delete activity "
+    },      
+    "restore": {
+      "success": "Activity restored successfully!",
+      "error": "Activity couldn't be restored!",
+      "question": "Do you want to restore activity "
     }      
   },
   "project": {

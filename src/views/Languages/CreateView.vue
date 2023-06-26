@@ -21,6 +21,12 @@ const formStatusSubmit = () => {
     ? formStatusCurrent.value + 1
     : 0;
 };
+
+
+const breadcrumbs = ref( [
+        { name: 'Inicio', link: '/setup/languages/' },
+        { name: 'Create'},
+    ])
 </script>
 <template>
   <LayoutAuthenticated>
@@ -31,6 +37,7 @@ const formStatusSubmit = () => {
         main
       >
       </SectionTitleLineWithButton>
+      <Breadcrumb :items="breadcrumbs" />
       <form-view path="create" save-label="submit"></form-view>
     </SectionMain>
 

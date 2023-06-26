@@ -13,13 +13,25 @@ import { useMainStore } from '@/stores/main';
 import professionsService from '@/services/Professions.service'
 import FormField from "@/components/FormField.vue"; 
 import FormCheckRadioGroup from "@/components/FormCheckRadioGroup.vue";
+import Breadcrumb from '@/components/Breadcrumb.vue';
 
+const breadcrumbs = ref( [
+        { name: 'Inicio' },
+])
 const mainStore = useMainStore();
 const page = ref(1);
 const perPage = ref(10);
 const customElementsForm = reactive({
     switch: [],
 });
+
+const customCheckDelete = ref(false);
+
+const onChangeSwtch = () => { 
+  endPointUse({ page: page.value })
+  customCheckDelete.value = customElementsForm.switch.length === 0 ? false : true
+}
+
 const getProfessions = (data) => {
     professionsService.index(data).then(response => {        
     mainStore.professions = response
@@ -29,10 +41,6 @@ const getProfessions = (data) => {
 }
 
 getProfessions({page: page.value})
-
-const onChangeSwtch = () => {
-  endPointUse({ page: page.value })
-}
 
 const onChangePage = (page) => {
     endPointUse({page})
@@ -54,9 +62,10 @@ const endPointUse = (page) => {
     getProfessionsDelete({ page })
 }
 
-const endPointUseSort = (sortBy, sortDesc) => {
-    customElementsForm.switch.length === 0 ? getProfessions({ sortBy, sortDesc }) :
-    getProfessionsDelete({ sortBy, sortDesc })
+const endPointUseSort = (sort) => {
+    customElementsForm.switch.length === 0 
+    ? getProfessions(sort) 
+    : getProfessionsDelete(sort)
 } 
 
 </script>
@@ -91,7 +100,7 @@ const endPointUseSort = (sortBy, sortDesc) => {
       </NotificationBar>
 
       <CardBox  v-if="mainStore?.professions?.profesiones?.length" class="mb-6" has-table>
-        <ProfessionsTable @changePage="onChangePage" @sort="onSortPage"/>
+        <ProfessionsTable :checkDelete="customCheckDelete" @changePage="onChangePage" @sort="onSortPage"/>
       </CardBox>
 
       <CardBox v-else>

@@ -240,6 +240,11 @@
         "success": "¡La industria fue eliminado exitosamente!",
         "error": "¡La industria no pudo ser eliminado!",
         "question": "Desea eliminar la industria "
+      },
+      "restore": {
+        "success": "¡La industria fue restaurada exitosamente!",
+        "error": "¡La industria no pudo ser restaurada!",
+        "question": "Desea restaurar la industria "
       }
     },
     "currencies": {
@@ -431,6 +436,11 @@
         "success": "¡El gasto fue eliminado exitosamente!",
         "error": "¡El gasto no pudo ser eliminado!",
         "question": "Desea eliminar el gasto "
+      },
+      "restore": {
+        "success": "¡El gasto fue restaurado exitosamente!",
+        "error": "¡El gasto no pudo ser restaurado!",
+        "question": "Desea restaurar el gasto "
       }
     },
     "profileAction": {
@@ -458,6 +468,11 @@
         "success": "¡La acción de perfil fue eliminada exitosamente!",
         "error": "¡La acción de perfil no pudo ser eliminada!",
         "question": "Desea eliminar la acción de perfil "
+      },
+      "restore": {
+        "success": "¡La acción de perfil fue restaurada exitosamente!",
+        "error": "¡La acción de perfil no pudo ser restaurada!",
+        "question": "Desea restaurar la acción de perfil "
       }
     },
     "itemMenu": {
@@ -485,6 +500,11 @@
         "success": "¡El ítem menú fue eliminado exitosamente!",
         "error": "¡El ítem menú no pudo ser eliminado!",
         "question": "Desea eliminar el ítem menú "
+      },
+      "restore": {
+        "success": "¡El ítem menú fue restaurado exitosamente!",
+        "error": "¡El ítem menú no pudo ser restaurado!",
+        "question": "Desea restaurar el ítem menú "
       }
     },
     "profiles": {
@@ -495,24 +515,29 @@
         "active": "Activo",
         "inactive": "Inactivo"
       },
-      "create": "Crear pelfil",
-      "update": "Actualizar pelfil",
+      "create": "Crear perfil",
+      "update": "Actualizar perfil",
       "code": "Código",
       "description": "Descripción",
       "menu": "Manu",
       "status": "Estado",
       "created": {
-        "success": "¡El pelfil fue creado exitosamente!",
-        "error": "¡El pelfil no pudo ser creado!"
+        "success": "¡El perfil fue creado exitosamente!",
+        "error": "¡El perfil no pudo ser creado!"
       },
       "updated": {
-        "success": "¡El pelfil fue actualizado exitosamente!",
-        "error": "¡El pelfil no pudo ser actualizado!"
+        "success": "¡El perfil fue actualizado exitosamente!",
+        "error": "¡El perfil no pudo ser actualizado!"
       },
       "deleted": {
-        "success": "¡El pelfil fue eliminado exitosamente!",
-        "error": "¡El pelfil no pudo ser eliminado!",
-        "question": "Desea eliminar el pelfil "
+        "success": "¡El perfil fue eliminado exitosamente!",
+        "error": "¡El perfil no pudo ser eliminado!",
+        "question": "Desea eliminar el perfil "
+      },
+      "restore": {
+        "success": "¡El perfil fue restaurado exitosamente!",
+        "error": "¡El perfil no pudo ser restaurado!",
+        "question": "Desea restaurar el perfil "
       }
     },
     "category": {
@@ -544,6 +569,11 @@
         "success": "¡La categoria fue eliminada exitosamente!",
         "error": "¡La categoria no pudo ser eliminada!",
         "question": "Desea eliminar La categoria "
+      },
+      "restore": {
+        "success": "¡La categoria fue restaurada exitosamente!",
+        "error": "¡La categoria no pudo ser restaurada!",
+        "question": "Desea restaurar La categoria "
       }
     },
     "language": {
@@ -571,6 +601,11 @@
         "success": "¡El idioma fue eliminado exitosamente!",
         "error": "¡El idioma no pudo ser eliminado!",
         "question": "Desea eliminar el idioma "
+      },
+      "restore": {
+        "success": "¡El idioma fue restaurado exitosamente!",
+        "error": "¡El idioma no pudo ser restaurado!",
+        "question": "Desea restaurar el idioma "
       }
     },
     "rate": {      
@@ -632,6 +667,11 @@
         "success": "¡La profesión fue eliminado exitosamente!",
         "error": "¡La profesión no pudo ser eliminado!",
         "question": "Desea eliminar la profesión "
+      },
+      "restore": {
+        "success": "¡La profesión fue restaurada exitosamente!",
+        "error": "¡La profesión no pudo ser restaurada!",
+        "question": "Desea restaurar la profesión "
       }
     },
     "personal": {
@@ -676,6 +716,11 @@
         "success": "¡El registro fue eliminado exitosamente!",
         "error": "¡El registro no pudo ser eliminado!",
         "question": "Desea eliminar el registro "
+      },
+      "restore": {
+        "success": "¡El registro fue restaurado exitosamente!",
+        "error": "¡El registro no pudo ser restaurado!",
+        "question": "Desea restaurar el registro "
       }
     },
     "client": {
@@ -726,6 +771,11 @@
         "success": "¡El cliente fue eliminado exitosamente!",
         "error": "¡El cliente no pudo ser eliminado!",
         "question": "Desea eliminar el cliente "
+      },
+      "restore": {
+        "success": "¡El cliente fue restaurado exitosamente!",
+        "error": "¡El cliente no pudo ser restaurado!",
+        "question": "Desea restaurar el cliente "
       }
     },
     "approach": {
@@ -790,6 +840,11 @@
         "success": "¡La actividad fue eliminada exitosamente!",
         "error": "¡La actividad no pudo ser eliminada!",
         "question": "Desea eliminar el enfoque "
+      },      
+      "restore": {
+        "success": "¡La actividad fue restaurada exitosamente!",
+        "error": "¡La actividad no pudo ser restaurada!",
+        "question": "Desea restaurar el enfoque "
       }      
     },
     "project": {
