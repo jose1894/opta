@@ -50,6 +50,14 @@ export default {
         })
     },
 
+    restore(expenseId) {
+        return new Promise((resolve, reject) => {
+            Service.delete(`${resource}/restore/${expenseId}`, { headers: authHeader() })
+                .then((response) => resolve(response.data))
+                .catch((err) => reject(err))
+        })
+    },
+
     sucursalesGet() {
         return new Promise((resolve, reject) => {
             Service.get(`${resource}/allGastos`, { headers: authHeader() })

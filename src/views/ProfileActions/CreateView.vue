@@ -6,7 +6,13 @@ import LayoutAuthenticated from '@/layouts/LayoutAuthenticated.vue';
 import SectionMain from '@/components/SectionMain.vue';
 import SectionTitleLineWithButton from '@/components/SectionTitleLineWithButton.vue';
 import FormView from './FormView.vue';
-import { useRouter } from 'vue-router';
+import { useRouter } from 'vue-router';    
+import Breadcrumb from '@/components/Breadcrumb.vue';
+
+const breadcrumbs = ref( [
+    { name: 'Inicio', link: '/setup/profileActions/' },
+    { name: 'Create'},
+])
 
 const router = useRouter();
 
@@ -31,6 +37,7 @@ const formStatusSubmit = () => {
         main
       >
       </SectionTitleLineWithButton>
+      <Breadcrumb :items="breadcrumbs" />
       <form-view path="create" save-label="submit"></form-view>
     </SectionMain>
 

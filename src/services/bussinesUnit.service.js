@@ -58,7 +58,7 @@ export default {
         })
     },
 
-    restore(businessUnitId) {
+    restore(bussinessUnitId) {
         return new Promise((resolve, reject) => {
             Service.delete(`${resource}/restore/${bussinessUnitId}`, { headers: authHeader() })
                 .then((response) => resolve(response.data))

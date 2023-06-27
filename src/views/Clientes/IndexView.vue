@@ -13,6 +13,12 @@
     import FormCheckRadioGroup from "@/components/FormCheckRadioGroup.vue";
     import FormField from "@/components/FormField.vue"; 
     import clientsService from '@/services/clients.srvice';
+    import Breadcrumb from '@/components/Breadcrumb.vue';
+
+    
+    const breadcrumbs = ref( [
+        { name: 'Inicio' },
+    ])
 
     const mainStore = useMainStore();
     const page = ref(1);
@@ -30,8 +36,11 @@
 
     getClients({page: page.value})
 
-    const onChangeSwtch = () => {
-        endPointUse({ page: page.value })
+    const customCheckDelete = ref(false);
+
+    const onChangeSwtch = () => { 
+    endPointUse({ page: page.value })
+    customCheckDelete.value = customElementsForm.switch.length === 0 ? false : true
     }
 
     const onChangePage = (page) => {
@@ -54,9 +63,10 @@
         getClientsDelete({ page })
     }
 
-    const endPointUseSort = (sortBy, sortDesc) => {
-        customElementsForm.switch.length === 0 ? getClients({ sortBy, sortDesc }) :
-        getClientsDelete({ sortBy, sortDesc })
+    const endPointUseSort = (sort) => {
+        customElementsForm.switch.length === 0 
+        ? getClients(sort) 
+        : getClientsDelete(sort)
     }    
 </script>
 <template>
@@ -66,13 +76,14 @@
             :icon="mdiGlobeModel"
             :title="$t('message.client.clients')">
             <BaseButton
-                to="clients/create"
+                :to="{'name': 'ClientsCreate'}"
                 :icon="mdiPlus"
                 :label="$t('message.add_new')"
                 color="success"
                 small
             />
         </SectionTitleLineWithButton>
+        <Breadcrumb :items="breadcrumbs" />
         <FormField label="">
         <FormCheckRadioGroup 
             v-model="customElementsForm.switch" 
@@ -85,7 +96,7 @@
             <b>{{ $t('message.empty_table') }}.</b> When there's nothing to show
         </NotificationBar>
         <CardBox  v-if="mainStore?.clients?.clientes?.length" class="mb-6" has-table>
-            <ClientTable @changePage="onChangePage" @sort="onSortPage"/>        
+            <ClientTable :checkDelete="customCheckDelete" @changePage="onChangePage" @sort="onSortPage"/>        
         </CardBox>
 
         <CardBox v-else>

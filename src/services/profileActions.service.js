@@ -50,6 +50,14 @@ export default {
         })
     },
 
+    restore(accionPerfilId) {
+        return new Promise((resolve, reject) => {
+            Service.delete(`${resource}/restore/${accionPerfilId}`, { headers: authHeader() })
+                .then((response) => resolve(response.data))
+                .catch((err) => reject(err))
+        })
+    },
+
     delete(accionPerfilId) {
         return new Promise((resolve, reject) => {
             Service.delete(`${resource}/${accionPerfilId}`, { headers: authHeader() })

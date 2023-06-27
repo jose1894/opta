@@ -3,7 +3,7 @@ import { computed, ref, defineEmits } from "vue";
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { useMainStore } from "@/stores/main";
-import { mdiFileEdit, mdiTrashCan } from "@mdi/js";
+import { mdiFileEdit, mdiTrashCan, mdiRestore } from "@mdi/js";
 import { useToast } from 'vue-toastification';
 import CardBoxModal from "@/components/CardBoxModal.vue";
 import BaseLevel from "@/components/BaseLevel.vue";
@@ -13,6 +13,7 @@ import personalService from '@/services/personal.service'
 
 defineProps({
   checkable: Boolean,
+  checkDelete: Boolean,
 });
 
 const { t } = useI18n();
@@ -24,6 +25,8 @@ const mainStore = useMainStore();
 const items = computed(() => mainStore.personal?.personas);
 const total = computed(() => mainStore.personal.total)
 
+
+console.log(items)
 const isModalActive = ref(false);
 
 const isModalDangerActive = ref(false);
@@ -101,6 +104,17 @@ const action = () => {
   const { _id } = selectedPersonal.value
   return personalService.delete(_id);
 }
+
+const activateItem = () => {
+  const { _id } = selectedPersonal.value
+  personalService.restore(_id).then(() => {
+      toast.success(t("message.personal.restore.success"));
+      emit('changePage', currentPage.value)      
+    })
+    .catch(err => {
+      toast.error(`${t("message.personal.restore.error")} ${err?.response?.data.msg}`)
+    });
+}
 </script>
 
 <template>
@@ -113,6 +127,14 @@ const action = () => {
      has-cancel>
     <strong>{{ $t('message.personal.deleted.question') }} <b> {{ dataName() }} </b></strong> ?
   </CardBoxModal>
+
+  <CardBoxModal 
+    v-model="isModalActive" 
+    title="Please confirm"
+    @confirm="activateItem">
+    <strong>{{ $t('message.personal.restore.question') }} <b> {{ dataName() }} </b></strong> ?   
+  </CardBoxModal>
+  
 
   <table>
     <thead>
@@ -137,19 +159,23 @@ const action = () => {
         <td class="before:hidden lg:w-1 whitespace-nowrap">
           <BaseButtons type="justify-start lg:justify-end" no-wrap>
             <BaseButton
+              v-show="checkDelete && persona.estado === 2"
+              color="success"
+              :icon="mdiRestore"
+              small
+              @click="isModalActive = true"
+            />
+
+            <BaseButton
+              v-show="!checkDelete && persona.estado !== 2"
               color="info"
               :icon="mdiFileEdit"
               small
               @click="edit(persona._id)"
             />
 
-            <BaseButton
-              color="danger"
-              :icon="mdiTrashCan"
-              small
-              @click="isModalDangerActive = true"
-              v-show="persona.estado !== 2"
-            />
+            <BaseButton v-show="!checkDelete && persona.estado !== 2" color="danger" :icon="mdiTrashCan" small @click="isModalDangerActive = true" />
+          
           </BaseButtons>
         </td>
       </tr>

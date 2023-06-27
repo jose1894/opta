@@ -13,12 +13,25 @@ import categoriesService from '@/services/categories.service'
 import FormField from "@/components/FormField.vue"; 
 import FormCheckRadioGroup from "@/components/FormCheckRadioGroup.vue";
 import CategoryTable from "./CategoryTable.vue";
+import Breadcrumb from '@/components/Breadcrumb.vue';
+
+const breadcrumbs = ref( [
+        { name: 'Inicio' },
+])
 const mainStore = useMainStore();
 const page = ref(1);
 const perPage = ref(10);
 const customElementsForm = reactive({
     switch: [],
 });
+
+const customCheckDelete = ref(false);
+
+const onChangeSwtch = () => { 
+  endPointUse({ page: page.value })
+  customCheckDelete.value = customElementsForm.switch.length === 0 ? false : true
+}
+
 const getCategories = (data) => {
   categoriesService.index(data).then(response => {        
     mainStore.categories = response
@@ -28,10 +41,6 @@ const getCategories = (data) => {
 }
 
 getCategories({page: page.value})
-
-const onChangeSwtch = () => {
-  endPointUse({ page: page.value })
-}
 
 const onChangePage = (page) => {
     endPointUse({page})
@@ -53,9 +62,10 @@ const endPointUse = (page) => {
     getCategoriesDelete({ page })
 }
 
-const endPointUseSort = (sortBy, sortDesc) => {
-    customElementsForm.switch.length === 0 ? getCategories({ sortBy, sortDesc }) :
-    getCategoriesDelete({ sortBy, sortDesc })
+const endPointUseSort = (sort) => {
+    customElementsForm.switch.length === 0 
+    ? getCategories(sort) 
+    : getCategoriesDelete(sort)
 } 
 
 </script>
@@ -67,13 +77,15 @@ const endPointUseSort = (sortBy, sortDesc) => {
         :title="$t('message.category.categories')"
       >
       <BaseButton
-          to="categories/create"
+          :to="{name: 'CategoriesCreate'}"
           :icon="mdiPlus"
           :label="$t('message.add_new')"
           color="success"
           small
         />
       </SectionTitleLineWithButton>
+
+      <Breadcrumb :items="breadcrumbs" />
 
       <FormField label="">
         <FormCheckRadioGroup 
@@ -90,7 +102,7 @@ const endPointUseSort = (sortBy, sortDesc) => {
       </NotificationBar>
 
       <CardBox  v-if="mainStore?.categories?.categorias?.length" class="mb-6" has-table>
-        <CategoryTable @changePage="onChangePage" @sort="onSortPage"/>
+        <CategoryTable :checkDelete="customCheckDelete" @changePage="onChangePage" @sort="onSortPage"/>
       </CardBox>
 
       <CardBox v-else>
