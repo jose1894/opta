@@ -21,14 +21,15 @@ const props = defineProps({
 });
 
 const searchTerm = ref('');
-const showList = ref(false);
+const showList = ref(true);
 const items = ref([]);
 
 const filteredItems = computed(() => {
-    const data = items.value.filter(item =>
+    const data = items.value/*.filter(item =>
         item.nombres.toLowerCase().includes(searchTerm.value.toLowerCase())
     );
-    showList.value = data.length > 0 ? true : false
+    console.log(data)*/
+    showList.value = true
     return data
 });
 
@@ -43,8 +44,9 @@ async function search() {
 }
 
 function onItemClick(item) {
+    console.log(item.nombres)
     props.renderFunction(item);
-    searchTerm.value = '';
+    searchTerm.value = ""//item.nombreCompleto;
     showList.value = false
 }
 
@@ -59,8 +61,10 @@ watch(searchTerm, function (newSearchTerm, oldSearchTerm) {
 <template>
     <div>
       <input type="text" v-model="searchTerm" :placeholder="placeholder" style="width: 100%;">
-      <ul v-if="showList">
-        <li v-for="item in filteredItems" :key="item.id" @click="onItemClick(item)">{{ item.nombres }}</li>
+      <ul v-if="filteredItems.length > 0 && showList">
+        <li v-for="item in filteredItems" :key="item.id" @click="onItemClick(item)">
+            {{ item.nombres }} {{ item.apellidos }} 
+        </li>
       </ul>
     </div>
   </template>
@@ -87,6 +91,6 @@ li {
 }
 
 li:hover {
-  background-color: #19078c;
+  background-color: #bdb8dd;
 }
 </style>

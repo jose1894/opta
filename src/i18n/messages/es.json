@@ -851,6 +851,8 @@
       "project": "Proyecto",
       "projects": "Proyectos",
       "create": "Crear proyecto",
+      "selected": "El registro ya fue seleccionado",
+      "person": "Persona",
       "update": "Modificar proyecto",
       "code": "Código",
       "client": "Cliente",

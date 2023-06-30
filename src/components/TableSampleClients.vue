@@ -123,7 +123,7 @@ const eventDone = (option) => {
   <table>
     <thead>
       <tr>
-        <th v-if="checkable" />
+        <th />
         <th />
         <th>Name</th>
         <th>Company</th>
@@ -136,7 +136,6 @@ const eventDone = (option) => {
     <tbody>
       <tr v-for="client in itemsPaginated" :key="client.id">
         <TableCheckboxCell
-          v-if="checkable"
           @checked="checked($event, client)"
         />
         <td class="border-b-0 lg:w-6 before:hidden">

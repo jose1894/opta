@@ -51,6 +51,16 @@ export default {
         })
     },
 
+    searchPersona(query) {
+        return new Promise((resolve, reject) => {
+            Service.get(`${resource}buscarPersona/${query}`, { headers: authHeader() })
+            .then(response => { 
+                resolve(response)})
+            .catch(err => reject(err))
+        })
+    },
+
+
     update(persona) {
         return new Promise((resolve, reject) => {
             Service.put(`${resource}/${persona._id}`, persona, { headers: authHeader() })

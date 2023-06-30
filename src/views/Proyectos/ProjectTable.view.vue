@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref, defineEmits } from "vue";
+import { computed, ref, reactive, defineEmits } from "vue";
 import { useRouter } from "vue-router";
 import { useMainStore } from "@/stores/main";
 import { mdiFileEdit, mdiTrashCan, mdiPlus } from "@mdi/js";
@@ -13,23 +13,28 @@ import BaseLevel from "@/components/BaseLevel.vue";
 import BaseButtons from "@/components/BaseButtons.vue";
 import BaseButton from "@/components/BaseButton.vue";
 import projectsService from '@/services/projects.service';
-import FormField from "@/components/FormField.vue"; 
-import FormControl from "@/components/FormControl.vue"; 
+import FormField from "@/components/FormField.vue";
+import FormControl from "@/components/FormControl.vue";
+import FormCheckRadioGroup from "@/components/FormCheckRadioGroup.vue";
+import personProjectService from '@/services/personProject.service'
 
 
 defineProps({
   checkable: Boolean,
 });
-const dataInitial = {
-    _id: '',
-    indice: 0,
-    nombre: "",
-    areaPadreNombre: "",
-    rutaPadre: "",
-    areaPadre: "",
-    ruta: "",
-}
-const enfoque = ref(dataInitial);
+
+let personasList = ref([]);
+
+const customElementsForm = reactive({
+  radio: [],
+});
+
+const listarPersonas = computed(() =>
+  personasList.value
+);
+
+
+const personaProyecto = ref([]);
 
 const { t } = useI18n();
 const toast = useToast()
@@ -111,9 +116,9 @@ const edit = (id) => {
 
 const selectedItem = (project) => selectedProject.value = project
 
-const dataCodigo = () => {
+const dataCodigo = (modal = false) => {
   const { codigo } = selectedProject.value
-  return codigo
+  return (!modal) ? codigo : `${t("message.project.project")} ${codigo}`
 }
 const successMessage = t("message.project.deleted.success")
 
@@ -128,6 +133,23 @@ const deleteItem = async () => {
     })
 };
 
+const guardarPersonaProyeto = async () => {
+  actionPersonaProyecto()
+    .then(() => {
+      toast.success(successMessage);
+      emit('changePage', currentPage.value)
+    })
+    .catch(err => {
+      toast.error(`${t("message.project.deleted.error")} ${err?.response?.data.msg}`)
+    })
+};
+
+const cancelDialog = () => {
+  personasList.value = []
+  personaProyecto.value = []
+
+};
+
 const addUserProject = async () => {
   console.log(selectedProject.value)
 
@@ -138,17 +160,57 @@ const action = () => {
   return projectsService.delete(_id);
 }
 
+const actionPersonaProyecto = () => {
+ console.log(personaProyecto.value);
+ return personProjectService.create(personaProyecto.value);
+
+}
+
 const searchFunction = async searchTerm => {
   // Realiza una conexión asincrónica para obtener los elementos filtrados
-  const response = await personalService.allPersona();
-  const data = response.data?.personas || []//await response.json();
+  //searchPersona
+  const searchText = (searchTerm === "") ? "default" : searchTerm;
+  const response = await personalService.searchPersona(searchText);
+  const data = response.data?.personas || []
   return data;
 };
-
 const renderFunction = item => {
   // Define cómo se renderiza cada elemento seleccionado
-  console.log(item);
+  let personasListData = personasList.value  
+  const i = personasListData.filter((objeto) => {
+    return Object.keys(objeto).some((clave) => clave === item._id)
+  });
+  (i.length === 0) ? addItem(item) : toast.error(`El registro ya fue seleccionado`);
 };
+
+const addItem = (item) => {
+  const dataItem = [item]
+  const itemCheck = arrayItemMenu(dataItem)[0]
+  personasList.value.push(itemCheck);
+  const data = {
+    _id: '',
+    projectId: selectedProject.value._id,
+    personaId: item._id,
+    encargado: false,
+  }
+  personaProyecto.value.push(data)
+}
+
+const arrayItemMenu = (dataPersona) => dataPersona.map(({ _id, nombres, apellidos }) => ({ [_id]: `${nombres} ${apellidos}`}))
+
+const onChangeCheckbox = (accionData) => {
+  const valueId = customElementsForm.radio
+  personaProyecto.value = personaProyecto.value.map((item)=> {
+    item.encargado = (valueId === item.personaId) ? true : false
+    return item
+  })
+  console.log(personaProyecto.value)
+}
+
+const deletePersonaProyecto = (accionData) => {
+  console.log(accionData)
+}
+
 </script>
 
 <template>
@@ -156,21 +218,39 @@ const renderFunction = item => {
     <strong>{{ $t('message.project.deleted.question') }} <b> {{ dataCodigo() }} </b></strong> ?
   </CardBoxModal>
 
-  <CardBoxModal v-model="isModalAddUserProject" title="Please confirm" button="danger" @confirm="deleteItem" has-cancel>
+  <CardBoxModal v-model="isModalAddUserProject" :title="dataCodigo(true)" button="danger" @confirm="guardarPersonaProyeto" @cancel="cancelDialog"
+    has-cancel>
 
     <div class="grid md:grid-cols-1 gap-1">
-      <FormField :label="$t('message.approach.indice')">
-        <Autocomplete 
-          :placeholder="'Buscar...'" 
-          :search-function="searchFunction" 
-          :render-function="renderFunction" 
+      <FormField :label="$t('message.project.person')">
+        <Autocomplete :placeholder="'Buscar...'" :search-function="searchFunction" :render-function="renderFunction"
           :debounce-time="500">
         </Autocomplete>
       </FormField>
-    </div>      
-      <template #footer>
-                
-      </template> 
+    </div>
+    <div class="grid md:grid-cols-1 gap-1">
+
+      <h2> Encargado </h2>
+
+    </div>
+    <div class="grid md:grid-cols-1 gap-1">
+      <FormField label="" v-for="(accionData, i) in listarPersonas">
+        <FormCheckRadioGroup 
+          v-model="customElementsForm.radio" 
+          name="sample-radio" 
+          type="radio"
+          isColumn="true"
+          :options="listarPersonas[i]"
+          @change="onChangeCheckbox(listarPersonas[i])" />
+          <BaseButtons type="justify-start lg:justify-end" no-wrap>
+            <BaseButton color="danger" :icon="mdiTrashCan" small style="width: 28px;height: 28px;" @click="deletePersonaProyecto(listarPersonas[i])"/>
+          </BaseButtons>
+      </FormField>
+    </div>
+    <template #footer>
+      <BaseButton :label="$t(`message.submit`)" color="success" />
+
+    </template>
   </CardBoxModal>
 
 

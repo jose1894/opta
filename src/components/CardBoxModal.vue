@@ -48,7 +48,6 @@ const value = computed({
 
 const confirmCancel = (mode) => {
   value.value = false;
-  console.log(mode, props.modelValue)
   emit(mode);
 };
 

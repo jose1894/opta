@@ -72,6 +72,7 @@ onMounted(async () => {
     const accionesPerfiles = res.data?.accionesPerfil
     dataMenu = accionesPerfiles.map((menu) => ({ '_id': menu._id }))
     customElementsForm.checkbox = accionesPerfiles.map((menu) => menu._id)
+    console.log(customElementsForm)
    /*perfil.value.accionesPerfil = res.data?.accionesPerfil*/
 
   }
@@ -86,7 +87,9 @@ const listarMenu = (async () => {
 const listarAccionesMenu = (async () => {
   let accionesMenu = await profileActionsService.allAccionesPerfiles();
   const dataAccionesMenu = accionesMenu?.data.accionesPerfiles;
+  console.log(dataAccionesMenu)
   accionesPerfilList.value = arrayItemMenu(dataAccionesMenu);
+  console.log( accionesPerfilList)
 })
 
 const arrayItemMenu = (dataAccionesMenu) => dataAccionesMenu.map(({ _id, descripcion }) => ({ [_id]: descripcion }))

@@ -851,6 +851,8 @@
   "project": {
     "project": "Project",
     "projects": "Projects",
+    "selected": "The record has already been selected",
+    "person": "Person",
     "create": "Create project",
     "update": "Update project",
     "code": "Code",
