@@ -65,4 +65,14 @@ export default {
             .catch(err => reject(err))
         })
     },
+
+    searchCliente(query) {
+        return new Promise((resolve, reject) => {
+            Service.get(`${resource}buscarCliente/${query}`, { headers: authHeader() })
+            .then(response => { 
+                resolve(response)})
+            .catch(err => reject(err))
+        })
+    },
+
 }

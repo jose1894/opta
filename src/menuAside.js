@@ -26,6 +26,7 @@ import {
   mdiNewspaper,
   mdiAccountChild,
   mdiEarth,
+  mdiNoteMultiple,
 } from "@mdi/js";
 
 export default [
@@ -38,7 +39,8 @@ export default [
         to: "/setup/currencies",
         icon: mdiCurrencyUsd
       },
-      { label: "Location",
+      {
+        label: "Location",
         icon: mdiEarth,
         menu: [
           {
@@ -61,7 +63,7 @@ export default [
       {
         label: "Job-position",
         to: "/setup/jobPositions",
-        icon:mdiAccountDetails
+        icon: mdiAccountDetails
       },
       {
         label: "Allies",
@@ -86,7 +88,7 @@ export default [
       {
         label: "Expense",
         to: "/setup/expense",
-        icon:  mdiHandCoin
+        icon: mdiHandCoin
       },
       {
         label: 'User profile',
@@ -95,7 +97,7 @@ export default [
           {
             label: "Actions",
             to: "/setup/profileActions",
-            icon:mdiArrowRightBold
+            icon: mdiArrowRightBold
           },
           {
             label: "Menu items",
@@ -131,7 +133,7 @@ export default [
       },
       {
         label: "Employees",
-        icon:mdiAccount,
+        icon: mdiAccount,
         to: "/setup/personal",
       },
       {
@@ -141,9 +143,9 @@ export default [
       },
       {
         label: "Activities",
-        icon:mdiAccountChild,
+        icon: mdiAccountChild,
         to: "/setup/activities",
-      },                 
+      },
     ],
   },
   {
@@ -159,7 +161,18 @@ export default [
   {
     label: "Projects",
     icon: mdiNewspaper,
-    to: "/setup/projects",
+    menu: [
+      {
+        label: "Projects",
+        icon: mdiNewspaper,
+        to: "/setup/projects",
+      },
+      {
+        label: "Papers",
+        icon: mdiNoteMultiple,
+        to: "/setup/papers",
+      }
+    ]
   }
 ];
 

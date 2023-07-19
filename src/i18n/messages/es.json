@@ -16,6 +16,7 @@
     "sign_in_success": "Ingreso exitoso",
     "setup": "Configuración",
     "empty_table": "Tabla vacía",
+    "search": "Buscar",
     "submit": "Enviar",
     "reset": "Reiniciar",
     "add_new": "Agregar nuevo",
@@ -866,6 +867,7 @@
       "manager": "Gerente", 
       "membership": "Membresia",
       "status": "Status",
+      "papers": "Papeles",
       "statuses": {
         "deleted": "Borrado",
         "active": "Activo",
@@ -922,6 +924,8 @@
     "Activities": "Actividades",
     "Projects": "Proyectos",
     "Location" : "Ubicacion",
-    "Logout": "Cerrar sesion"
+    "Logout": "Cerrar sesion",
+    "Papers": "Papeles"
+
   }
 }

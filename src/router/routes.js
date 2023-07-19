@@ -23,6 +23,7 @@ import ClientsRoutes from "./ClientsRoutes.js";
 import ApproachesRoutes from "./ApproachesRoutes.js";
 import ActivitiesRoutes from "./ActivitiesRoutes.js";
 import projectsRoutes from "./ProjectsRoutes.js";
+import PapersRoutes from "./PapersRoutes.js";
 
 export default [
   {
@@ -121,5 +122,6 @@ export default [
   ...ClientsRoutes,
   ...ApproachesRoutes,
   ...ActivitiesRoutes,
-  ...projectsRoutes
+  ...projectsRoutes,
+  ...PapersRoutes
 ];

@@ -16,6 +16,8 @@ import VueNumeric from 'vue-numeric'
 import moment from 'moment';
 import '@fortawesome/fontawesome-free/css/all.css';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css'
 
 /* Init Pinia */
 const pinia = createPinia();
@@ -24,6 +26,7 @@ const pinia = createPinia();
 /* Create Vue app */
 const app = createApp(App)
 app.component('font-awesome-icon', FontAwesomeIcon);
+app.component('VueDatePicker', VueDatePicker);
 
 app.use(router).use(pinia).use(i18n/*, {
   install: (app, options) => {

@@ -12,7 +12,7 @@ export default {
     },
     read(personasProyectos) {
         return new Promise((resolve, reject) => {
-            Service.get(`${resource}/${personasProyectos.id}`, { headers: authHeader() })
+            Service.get(`${resource}/${personasProyectos._id}`, { headers: authHeader() })
             .then(response => { 
                 resolve(response)})
             .catch(err => reject(err))
@@ -26,9 +26,9 @@ export default {
         })
     },
 
-    delete(personaId) {
+    delete(dataDelete) {
         return new Promise((resolve, reject) => {
-            Service.delete(`${resource}${personaId}`, { headers: authHeader() })
+            Service.delete(`${resource}${dataDelete.id}/${dataDelete.personaId}`, { headers: authHeader() })
                 .then((response) => resolve(response.data))
                 .catch((err) => reject(err))
         })

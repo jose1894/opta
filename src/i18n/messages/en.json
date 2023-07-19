@@ -16,6 +16,7 @@
     "sign_in_success": "Sign in success",
     "Setup": "Set up",
     "empty_table": "Empty table",
+    "search": "Search",
     "submit": "Submit",
     "reset": "Reset",
     "Add new": "Add new",
@@ -866,7 +867,8 @@
     "serviceDescription": "Service description", 
     "manager": "Manager", 
     "status": "Status",
-    "membership": "Membresia",    
+    "membership": "Membresia",  
+    "papers": "Papers",  
     "statuses": {
       "deleted": "Deleted",
       "active": "Active",
@@ -918,6 +920,7 @@
     "Activities": "Activities",
     "Projects": "Projects",
     "Location": "Location", 
-    "Logout": "Logout"
+    "Logout": "Logout",
+    "Papers": "Papers"
     }
 }

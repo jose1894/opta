@@ -19,11 +19,13 @@ import FormCheckRadioGroup from "@/components/FormCheckRadioGroup.vue";
 import personProjectService from '@/services/personProject.service'
 
 
+
 defineProps({
   checkable: Boolean,
 });
 
 let personasList = ref([]);
+
 
 const customElementsForm = reactive({
   radio: [],
@@ -114,6 +116,15 @@ const edit = (id) => {
   router.push({ name: 'ProjectsUpdate', params: { id } })
 }
 
+const buscarPersonaProject = async (id) => {
+  cancelDialog()
+  const personas = await personProjectService.read(id)
+  personas.data.personas.map((persona) => {
+    addItem(persona, 'Update')
+  })
+  //addItem 
+}
+
 const selectedItem = (project) => selectedProject.value = project
 
 const dataCodigo = (modal = false) => {
@@ -161,8 +172,8 @@ const action = () => {
 }
 
 const actionPersonaProyecto = () => {
- console.log(personaProyecto.value);
- return personProjectService.create(personaProyecto.value);
+  console.log(personaProyecto.value);
+  return personProjectService.create(personaProyecto.value);
 
 }
 
@@ -176,39 +187,67 @@ const searchFunction = async searchTerm => {
 };
 const renderFunction = item => {
   // Define cómo se renderiza cada elemento seleccionado
-  let personasListData = personasList.value  
+  let personasListData = personasList.value
   const i = personasListData.filter((objeto) => {
     return Object.keys(objeto).some((clave) => clave === item._id)
   });
-  (i.length === 0) ? addItem(item) : toast.error(`El registro ya fue seleccionado`);
+  (i.length === 0) ? addItem(item, 'New') : toast.error(`El registro ya fue seleccionado`);
 };
 
-const addItem = (item) => {
-  const dataItem = [item]
+const addItem = (item, action) => {
+  const itemValue = action === 'New' ? item : item?.personaId
+  const dataItem = [itemValue]
   const itemCheck = arrayItemMenu(dataItem)[0]
   personasList.value.push(itemCheck);
   const data = {
-    _id: '',
+    _id: action === 'New' ? '' : item?._id,
     projectId: selectedProject.value._id,
-    personaId: item._id,
-    encargado: false,
+    personaId: action === 'New' ? item._id : item?.personaId?._id,
+    encargado: action === 'New' ? false : item?.encargado,
+    persisteState: action,
   }
   personaProyecto.value.push(data)
+  if (action === 'Update' && item?.encargado) {
+    customElementsForm.radio = item?.personaId?._id
+  }
+
+
 }
 
-const arrayItemMenu = (dataPersona) => dataPersona.map(({ _id, nombres, apellidos }) => ({ [_id]: `${nombres} ${apellidos}`}))
+
+const arrayItemMenu = (dataPersona) => dataPersona.map(({ _id, nombres, apellidos }) => ({ [_id]: `${nombres} ${apellidos}` }))
 
 const onChangeCheckbox = (accionData) => {
   const valueId = customElementsForm.radio
-  personaProyecto.value = personaProyecto.value.map((item)=> {
+  personaProyecto.value = personaProyecto.value.map((item) => {
     item.encargado = (valueId === item.personaId) ? true : false
     return item
   })
   console.log(personaProyecto.value)
 }
 
-const deletePersonaProyecto = (accionData) => {
-  console.log(accionData)
+const deletePersonaProyecto = async (accionData) => {
+  const { _id } = selectedProject.value
+  const data =  {
+      personaId : Object.keys(accionData)[0],
+      id : _id
+    }
+  const result = await personProjectService.delete(data)
+  personaProyecto.value = []
+  personasList.value = []
+  const personas = await personProjectService.read(selectedProject.value)
+  personas.data.personas.map((persona) => {
+    addItem(persona, 'Update')
+  })
+  /*const personaData = personaProyecto.value
+  const result = listarPersonas.value[0][valueId];
+  const data21 = listarPersonas.value
+  const result12 = Object.keys(data21).map(function (key, index) {
+    const error = data21[key][valueId]
+    if (error === undefined)  {
+      return data21[key]
+    }  
+  }).filter(val => val !== undefined);*/
 }
 
 </script>
@@ -218,8 +257,8 @@ const deletePersonaProyecto = (accionData) => {
     <strong>{{ $t('message.project.deleted.question') }} <b> {{ dataCodigo() }} </b></strong> ?
   </CardBoxModal>
 
-  <CardBoxModal v-model="isModalAddUserProject" :title="dataCodigo(true)" button="danger" @confirm="guardarPersonaProyeto" @cancel="cancelDialog"
-    has-cancel>
+  <CardBoxModal v-model="isModalAddUserProject" :title="dataCodigo(true)" button="danger" @confirm="guardarPersonaProyeto"
+    @cancel="cancelDialog" has-cancel>
 
     <div class="grid md:grid-cols-1 gap-1">
       <FormField :label="$t('message.project.person')">
@@ -235,16 +274,12 @@ const deletePersonaProyecto = (accionData) => {
     </div>
     <div class="grid md:grid-cols-1 gap-1">
       <FormField label="" v-for="(accionData, i) in listarPersonas">
-        <FormCheckRadioGroup 
-          v-model="customElementsForm.radio" 
-          name="sample-radio" 
-          type="radio"
-          isColumn="true"
-          :options="listarPersonas[i]"
-          @change="onChangeCheckbox(listarPersonas[i])" />
-          <BaseButtons type="justify-start lg:justify-end" no-wrap>
-            <BaseButton color="danger" :icon="mdiTrashCan" small style="width: 28px;height: 28px;" @click="deletePersonaProyecto(listarPersonas[i])"/>
-          </BaseButtons>
+        <FormChebckRadioGroup v-model="customElementsForm.radio" name="sample-radio" type="radio" isColumn="true"
+          :options="listarPersonas[i]" @change="onChangeCheckbox(listarPersonas[i])" />
+        <BaseButtons type="justify-start lg:justify-end" no-wrap>
+          <BaseButton color="danger" :icon="mdiTrashCan" small style="width: 28px;height: 28px;"
+            @click="deletePersonaProyecto(listarPersonas[i])" />
+        </BaseButtons>
       </FormField>
     </div>
     <template #footer>
@@ -280,7 +315,8 @@ const deletePersonaProyecto = (accionData) => {
         </td>
         <td class="before:hidden lg:w-1 whitespace-nowrap">
           <BaseButtons type="justify-start lg:justify-end" no-wrap>
-            <BaseButton color="success" :icon="mdiPlus" small @click="isModalAddUserProject = true" />
+            <BaseButton color="success" :icon="mdiPlus" small
+              @click="buscarPersonaProject(project), isModalAddUserProject = true" />
             <BaseButton color="info" :icon="mdiFileEdit" small @click="edit(project._id)" />
 
             <BaseButton color="danger" :icon="mdiTrashCan" small @click="isModalDangerActive = true"

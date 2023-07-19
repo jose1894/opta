@@ -40,7 +40,7 @@ export default {
                 .catch((err) => reject(err))
         })
     },
-
+    
     delete(ciudadId) {
         return new Promise((resolve, reject) => {
             Service.delete(`${resource}${ciudadId}`, { headers: authHeader() })
