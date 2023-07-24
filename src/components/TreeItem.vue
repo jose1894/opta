@@ -51,7 +51,7 @@ const handleNodeSelected = (nodeId) => {
       <li v-for="node in nodes" :key="node._id">
         <span :class="activeIndex === node._id ? 'selected' : ''" @click="toggleCollapse(node._id)">
           <i v-if="node.children" :class="node.collapsed ? 'fa fa-folder-open' : 'fa fa-folder' "></i>
-          {{ node.nombre }}
+          {{ node.indice }} - {{ node.nombre }}
         </span>
 
         <!-- <BaseIcon

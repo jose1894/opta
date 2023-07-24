@@ -2,6 +2,7 @@ import Service from './index.js'
 import authHeader from './auth.header.js'
 const resource = 'api/clientes/'
 
+
 export default {
     index(data) {
         return new Promise((resolve, reject) => {
@@ -68,7 +69,7 @@ export default {
 
     searchCliente(query) {
         return new Promise((resolve, reject) => {
-            Service.get(`${resource}buscarCliente/${query}`, { headers: authHeader() })
+            Service.get(`${resource}clienteSearch/${query}`, { headers: authHeader() })
             .then(response => { 
                 resolve(response)})
             .catch(err => reject(err))

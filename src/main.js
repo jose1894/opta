@@ -3,6 +3,7 @@ import { createPinia } from "pinia";
 
 import App from "./App.vue";
 import router from "./router";
+import { installGlobalFilters } from './utils';
 import { useMainStore } from "@/stores/main.js";
 import { useStyleStore } from "@/stores/style.js";
 import { darkModeKey, styleKey } from "@/config.js";
@@ -27,6 +28,8 @@ const pinia = createPinia();
 const app = createApp(App)
 app.component('font-awesome-icon', FontAwesomeIcon);
 app.component('VueDatePicker', VueDatePicker);
+
+installGlobalFilters(app);
 
 app.use(router).use(pinia).use(i18n/*, {
   install: (app, options) => {

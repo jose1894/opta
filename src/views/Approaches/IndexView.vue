@@ -302,9 +302,9 @@ const deleteEnfoqueById = () => {
                 <FormField :label="$t('message.approach.parentArea')">
                     <FormControl :name="'parentArea'" v-model="enfoque.areaPadreNombre" :icon="mdiCodeBraces" :readonly="true"/>
                 </FormField>
-                <FormField :label="$t('message.approach.route')">
+                <!-- <FormField :label="$t('message.approach.route')">
                     <FormControl :name="'route'" v-model="enfoque.ruta" :icon="mdiCodeBraces" :readonly="true"/>
-                </FormField>
+                </FormField> -->
                 <FormField :label="$t('message.approach.visible')">
                     <FormControl v-model="enfoque.visible" :icon="mdiListStatus" :options="optionVisible" />
                 </FormField>
@@ -352,13 +352,7 @@ const deleteEnfoqueById = () => {
                     
                 </div>
             </div>
-            <!-- <TreeItem :nodes="treeData" @nodeSelected="handleNodeSelected" /> -->
-            <TreeItem :nodes="treeData" :selectedNodeId="state.selectedNodeId" @nodeSelected="handleNodeSelected" />
-            <!-- <ul>
-                <li>
-                    <TreeItem class="item" :model="treeData" @optionTreeSelected="selelctedItemTreeView"/>
-                </li>                
-            </ul> -->
+            <TreeItem :nodes="treeData" :selectedNodeId="state.selectedNodeId" @nodeSelected="handleNodeSelected" />            
         </SectionMain>
     </LayoutAuthenticated>
 </template>

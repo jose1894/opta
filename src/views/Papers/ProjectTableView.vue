@@ -8,7 +8,7 @@ import { useToast } from 'vue-toastification';
 import BaseLevel from "@/components/BaseLevel.vue";
 import BaseButtons from "@/components/BaseButtons.vue";
 import BaseButton from "@/components/BaseButton.vue";
-import projectsService from '@/services/projects.service';
+import moment from 'moment';
 
 
 
@@ -71,6 +71,10 @@ const changePage = (page) => {
 
 const selectedItem = (project) => selectedProject.value = project
 
+const formatDate = (dateString, format) => {
+    const date = moment(dateString).format(format)
+  return date;
+};
 
 </script>
 
@@ -81,6 +85,7 @@ const selectedItem = (project) => selectedProject.value = project
         <th @click="sort('codigo')">{{ $t('message.project.code') }}</th>
         <th @click="sort('cliente')">{{ $t('message.project.client') }}</th>
         <th @click="sort('socio')">{{ $t('message.project.partner') }}</th>
+        <th >{{ $t('message.project.date') }}</th>
         <th @click="sort('estado')">{{ $t('message.project.status') }}</th>
         <th />
       </tr>
@@ -95,6 +100,9 @@ const selectedItem = (project) => selectedProject.value = project
         </td>
         <td :data-label="$t('message.project.partner')">
           {{ project.socio.nombres }}
+        </td>
+        <td :data-label="$t('message.project.date')">
+          {{ formatDate(project.fecha, 'DD/MM/YYYY') }}
         </td>
         <td :data-label="$t('message.project.status')">
           {{ $t(`message.project.statuses.${listStatusOption(project.estado)}`) }}

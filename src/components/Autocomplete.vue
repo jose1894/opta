@@ -63,7 +63,7 @@ watch(searchTerm, function (newSearchTerm, oldSearchTerm) {
       <input type="text" v-model="searchTerm" :placeholder="placeholder" style="width: 100%;">
       <ul v-if="filteredItems.length > 0 && showList">
         <li v-for="item in filteredItems" :key="item.id" @click="onItemClick(item)">
-            {{ item.nombres }} {{ item.apellidos }} 
+            {{ item.nombreCompleto }} {{ item?.apellidos }} 
         </li>
       </ul>
     </div>
