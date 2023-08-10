@@ -76,6 +76,13 @@ const formatDate = (dateString, format) => {
   return date;
 };
 
+const goToAudit = (project) => {
+  console.log(project)
+  const {codigo, sucursal, _id } = project
+  const { nombre  } = sucursal
+  router.push({name: 'AuditApproach', params: {codigo, nombre, _id}})
+}
+
 </script>
 
 <template>
@@ -109,7 +116,11 @@ const formatDate = (dateString, format) => {
         </td>
         <td class="before:hidden lg:w-1 whitespace-nowrap">
             <BaseButtons>
-            <BaseButton color="info" :icon="mdiEyeCircleOutline" small @click="isModalDangerActive = true"
+            <BaseButton 
+              color="info" 
+              :icon="mdiEyeCircleOutline" 
+              small 
+              @click="goToAudit(project)"
               v-show="project.estado !== 2" />
           </BaseButtons>
         </td>

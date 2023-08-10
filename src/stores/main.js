@@ -13,6 +13,8 @@ export const useMainStore = defineStore("main", {
     userEmail: null,
     userAvatar: null,
     user : initialState,
+    
+
 
     /* Field focus with ctrl+k (to register only once) */
     isFieldFocusRegistered: false,
@@ -42,6 +44,7 @@ export const useMainStore = defineStore("main", {
     clients:[],
     activities:[],
     projects:[],
+    auditAproaches:[],
     data: [],
   }),
   actions: {

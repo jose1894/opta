@@ -1,57 +1,74 @@
 <script setup>
 import {
-    computed,
-    defineProps,
-    onMounted,
-    reactive,
-    ref
+  computed,
+  defineProps,
+  onMounted,
+  reactive,
+  ref
 } from 'vue';
-import { mdiFolder, mdiFolderOpen } from '@mdi/js'
+import { mdiFolder, mdiFolderOpen, mdiPlus } from '@mdi/js'
 import BaseIcon from './BaseIcon.vue';
 const props = defineProps({
-  nodes:{
+  nodes: {
     type: Array,
     required: true,
   },
   selectedNodeId: Number,
+  treeView: {
+    type: Boolean,
+    required: true,
+    default: true,
+  },
 })
 const activeIndex = ref(0);
 
-const emit = defineEmits(["nodeSelected"]);
+const emit = defineEmits(["nodeSelected","itemSelected"]);
 const state = reactive({
   nodes: props.nodes
 });
 
-const toggleCollapse = (nodeId) => {
-  activeIndex.value = 0 
+const toggleCollapse = (nodeId, option) => {
+  activeIndex.value = 0
   const node = props.nodes.find((n) => n._id === nodeId);
   const nodesList = props.nodes
-  props.nodes = nodesList.map((nod)=>{
+  props.nodes = nodesList.map((nod) => {
     nod.active = nod._id === nodeId ? 'active' : 'selected'
     return nod
   })
   if (node) {
     node.collapsed = !node.collapsed;
-  }  
+  }
   emit('nodeSelected', node);
   activeIndex.value = nodeId
 };
 
 
 const handleNodeSelected = (nodeId) => {
-  activeIndex.value = 0 
+  activeIndex.value = 0
   emit('nodeSelected', nodeId);
   activeIndex.value = nodeId._id
 };
+
+const onSearchChildren = (node) => {
+  emit('itemSelected', node);
+};
+
+const addIconPlus = (node) => {
+  const nodeChildren = node.children
+  return nodeChildren.some((item) => item.visible === 1)
+};
+
+
+
 </script>
 
 <template>
-  <div>
+  <div v-if="treeView">
     <ul>
       <li v-for="node in nodes" :key="node._id">
-        <span :class="activeIndex === node._id ? 'selected' : ''" @click="toggleCollapse(node._id)">
-          <i v-if="node.children" :class="node.collapsed ? 'fa fa-folder-open' : 'fa fa-folder' "></i>
-          {{ node.indice }} - {{ node.nombre }}
+        <span :class="activeIndex === node._id ? 'selected' : ''" @click="toggleCollapse(node._id, 1)">
+          <i v-if="node.children.leng" :class="node.collapsed ? 'fa fa-folder-open' : 'fa fa-folder'"></i>
+          {{ node.indice }} - {{ node.nombre }} - {{ node.visible }}
         </span>
 
         <!-- <BaseIcon
@@ -60,37 +77,71 @@ const handleNodeSelected = (nodeId) => {
           w="w-16"
           :size="18"
         /> -->
-        <TreeItem 
-          :nodes="node.children" 
-          v-if="node.children && node.collapsed" 
-          @nodeSelected="handleNodeSelected" />
+        <TreeItem :nodes="node.children" v-if="node.children.length > 0 && node.collapsed"
+          @nodeSelected="handleNodeSelected"/>
       </li>
+    </ul>
+  </div>
+  <div v-if="!treeView">
+    <ul style="margin-bottom: 10px;">
+      <template v-for="node in nodes" :key="node._id">
+        <li v-if="node.visible === 1" style="margin-bottom: 10px;">
+          <span :class="activeIndex === node._id ? 'selected' : ''"  @click="onSearchChildren(node)">
+            <i v-if="node.children.length > 0 " class="fa fa-folder folder-treeView"></i>
+            <i v-if="node.children.length === 0 " class="fa-solid fa-folder-minus"></i>
+            {{ node.indice }} - {{ node.nombre }}
+            <i v-if="node.children.length > 0 && addIconPlus(node)" class="fa fa-solid fa-plus plus-icon"  @mouseover="toggleCollapse(node._id, 1)"></i>
+          </span>
+          <TreeItem :nodes="node.children" v-if="node.children && node.collapsed" :treeView="false" @itemSelected="onSearchChildren" />
+        </li>
+      </template>
+
     </ul>
   </div>
 </template>
 <style scoped>
+.dropdown{
+  display: none;
+}
+.dropdown:hover{
+    display: block;
+}
 .item {
   cursor: pointer;
 }
-.bold, .selected {
+
+.bold,
+.selected {
   font-weight: bold;
 }
+
 ul {
   padding-left: 1em;
   line-height: 1.5em;
   /*list-style-type: dot;*/
 }
+
 .fa-folder-open {
-  color:rgb(246, 246, 0); 
-  padding: 5px; 
+  color: rgb(246, 246, 0);
+  padding: 5px;
 }
 
-.fa-folder {
-  color: rgb(198, 198, 101);;
-  border: 1px solid rgb(250, 253, 250); 
-  padding: 5px; 
+.folder-treeView {
+  color: rgb(246, 246, 0)!important;
 }
+
+.fa-folder, .fa-folder-minus {
+  color: rgb(198, 198, 101);
+  border: 1px solid rgb(250, 253, 250);
+  padding: 5px;
+}
+
 .active {
   color: rgb(255, 0, 0);
 }
+
+.plus-icon {
+  color: rgb(2 46 119);
+  padding: 5px;
+}    
 </style>

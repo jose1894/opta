@@ -849,6 +849,52 @@
       "question": "Do you want to restore activity "
     }      
   },
+  "audit": {
+    "index": "Index",
+    "description": "Description",
+    "title": "Title",
+    "status": "Status",
+    "created": {
+      "success": "Risk Unit created successfully!",
+      "error": "Risk Unit couldn't be created!",
+      "errorStatus": "¡Risk Unit already exists, but it is inactive!"
+    },
+    "updated": {
+      "success": "Risk Unit updated successfully!",
+      "error": "Risk Unit couldn't be updated!"
+    },
+    "deleted": {
+      "success": "Risk Unit deleted successfully!",
+      "error": "Risk Unit couldn't be deleted!",
+      "question": "Do you want to delete Risk Unit"
+    },
+    "restore": {
+        "success": "Risk Unit restored successfully!",
+        "error" : "Risk Unit couldn't be restored!",
+        "question": "Do you want to restore "
+    }
+  },
+  "file": {
+    "created": {
+      "success": "File created successfully!",
+      "error": "File couldn't be created!",
+      "errorStatus": "¡File already exists, but it is inactive!"
+    },
+    "updated": {
+      "success": "File updated successfully!",
+      "error": "File couldn't be updated!"
+    },
+    "deleted": {
+      "success": "File deleted successfully!",
+      "error": "File couldn't be deleted!",
+      "question": "Do you want to delete file"
+    },
+    "restore": {
+        "success": "File restored successfully!",
+        "error" : "File couldn't be restored!",
+        "question": "Do you want to restore "
+    }
+  },
   "project": {
     "project": "Project",
     "projects": "Projects",

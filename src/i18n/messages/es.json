@@ -848,6 +848,49 @@
         "question": "Desea restaurar el enfoque "
       }      
     },
+    "audit": {
+      "index": "Indice",
+      "description": "Descripción",
+      "title": "Titulo",
+      "created": {
+        "success": "¡La Unidad de Riesgo fue creada exitosamente!",
+        "error": "¡La Unidad de Riesgo no pudo ser creado!"
+      },
+      "updated": {
+        "success": "¡La Unidad de Riesgo fue actualizada exitosamente!",
+        "error": "¡La Unidad de Riesgo no pudo ser actualziada!"
+      },
+      "deleted": {
+        "success": "¡La Unidad de Riesgo fue eliminada exitosamente!",
+        "error": "¡La Unidad de Riesgo no pudo ser eliminada!",
+        "question": "Desea eliminar la unidad de riesgo "
+      },      
+      "restore": {
+        "success": "¡La Unidad de Riesgo fue restaurada exitosamente!",
+        "error": "¡La Unidad de Riesgo no pudo ser restaurada!",
+        "question": "Desea restaurar la unidad de riesgo "
+      }      
+    },
+    "file": {
+      "created": {
+        "success": "¡El archivo fue creado exitosamente!",
+        "error": "¡El archivo no pudo ser creado!"
+      },
+      "updated": {
+        "success": "¡El archivo fue actualizado exitosamente!",
+        "error": "¡El archivo no pudo ser actualziado!"
+      },
+      "deleted": {
+        "success": "¡El archivo fue eliminada exitosamente!",
+        "error": "¡El archivo no pudo ser eliminada!",
+        "question": "Desea eliminar el archivo "
+      },      
+      "restore": {
+        "success": "¡El archivo fue restaurado exitosamente!",
+        "error": "¡El archivo no pudo ser restaurada!",
+        "question": "Desea restaurar el archivo "
+      }
+    },
     "project": {
       "project": "Proyecto",
       "projects": "Proyectos",

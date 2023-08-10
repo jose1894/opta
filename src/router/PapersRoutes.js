@@ -8,21 +8,12 @@ export default [
     name: "Papers",
     component: () => import("@/views/Papers/IndexView.vue"),
   },
- /* {
+ {
     meta: {
-      title: "Approach - create ", requiresAuth: true,
+      title: "Audit Approach ", requiresAuth: true,
     },
-    path: `${url}/create`,
-    name: "ApproachesCreate",
-    component: () => import("@/views/Approaches/CreateView.vue"),
-  },
-  {
-    meta: {
-      title: "Approach - update ", requiresAuth: true,
-    },
-    path: `${url}/update/:id`,
-    name: "ApproachesUpdate",
-    component: () => import("@/views/Approaches/UpdateView.vue"),
-  },*/
-
+    path: `${url}/auditApproach/:codigo/:nombre`,
+    name: "AuditApproach",
+    component: () => import("@/views/Papers/AuditApproachView.vue"),
+  }
 ]

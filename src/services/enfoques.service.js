@@ -19,6 +19,16 @@ export default {
             .catch(err => reject(err))
         })
     },
+
+    getChildrenWithPaginate(enfoqueId,data) {
+        return new Promise((resolve, reject) => {
+            Service.get(`${resource}getChildrenPaginate/${enfoqueId}/`,{params: data}, { headers: authHeader() })
+            .then(response => { 
+                resolve(response.data)})
+            .catch(err => reject(err))
+        })
+    },
+
     /*getDelete(data) {
         return new Promise((resolve, reject) => {
            

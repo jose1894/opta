@@ -1,80 +1,60 @@
 import Service from './index.js'
 import authHeader from './auth.header.js'
-const resource = 'api/clientes/'
-
+const resource = 'api/riesgos/'
 
 export default {
     index(data) {
         return new Promise((resolve, reject) => {
-            console.log(data)
             Service.get(resource, {params: data}, { headers: authHeader() })
                 .then((response) => resolve(response.data))
                 .catch((err) => reject(err))
         })
     },
-    getDelete(data) {
+    /*getDelete(data) {
         return new Promise((resolve, reject) => {
-            Service.get(`${resource}clientesDeleted`, {params: data}, { headers: authHeader() })
+           
+            Service.get(`${resource}profesionesDeleted`, {params: data}, { headers: authHeader() })
                 .then((response) => resolve(response.data))
                 .catch((err) => reject(err))
         })
-    },
-    create(cliente) {
+    },*/
+    create(riesgo) {
         return new Promise((resolve, reject) => {
-            Service.post(resource, cliente, { headers: authHeader() })
+            Service.post(resource, riesgo, { headers: authHeader() })
                 .then((response) => resolve(response))
                 .catch(err => reject(err))
         })
     },
-    read(cliente) {
+    read(riesgo) {
         return new Promise((resolve, reject) => {
-            Service.get(`${resource}/${cliente.id}`, { headers: authHeader() })
+            Service.get(`${resource}/${riesgo.id}`, { headers: authHeader() })
             .then(response => { 
                 resolve(response)})
             .catch(err => reject(err))
         })
     },
 
-    update(cliente) {
+    update(riesgo) {
         return new Promise((resolve, reject) => {
-            Service.put(`${resource}/${cliente._id}`, cliente, { headers: authHeader() })
+            Service.put(`${resource}/${riesgo._id}`, riesgo, { headers: authHeader() })
                 .then((response) => resolve(response.data))
                 .catch((err) => reject(err))
         })
     },
 
-    delete(clienteId) {
+    restore(riesgoId) {
         return new Promise((resolve, reject) => {
-            Service.delete(`${resource}${clienteId}`, { headers: authHeader() })
+            Service.delete(`${resource}/restore/${riesgoId}`, { headers: authHeader() })
                 .then((response) => resolve(response.data))
                 .catch((err) => reject(err))
         })
     },
 
-    restore(clienteId) {
+    delete(riesgoId) {
         return new Promise((resolve, reject) => {
-            Service.delete(`${resource}/restore/${clienteId}`, { headers: authHeader() })
+            Service.delete(`${resource}${riesgoId}`, { headers: authHeader() })
                 .then((response) => resolve(response.data))
                 .catch((err) => reject(err))
         })
     },
-
-    allClientes() {
-        return new Promise((resolve, reject) => {
-            Service.get(`${resource}allClientes`, { headers: authHeader() })
-            .then(response => { 
-                resolve(response)})
-            .catch(err => reject(err))
-        })
-    },
-
-    searchCliente(query) {
-        return new Promise((resolve, reject) => {
-            Service.get(`${resource}clienteSearch/${query}`, { headers: authHeader() })
-            .then(response => { 
-                resolve(response)})
-            .catch(err => reject(err))
-        })
-    },
-
 }

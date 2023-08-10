@@ -9,7 +9,7 @@ import LayoutAuthenticated from '@/layouts/LayoutAuthenticated.vue';
 import CardBoxComponentEmpty from '@/components/CardBoxComponentEmpty.vue';
 import SectionTitleLineWithButton from '@/components/SectionTitleLineWithButton.vue';
 import { useMainStore } from '@/stores/main';
-import FormCheckRadioGroup from "@/components/FormCheckRadioGroup.vue";
+import Breadcrumb from '@/components/Breadcrumb.vue'
 import FormField from '@/components/FormField.vue';
 import FormControl from '@/components/FormControl.vue';
 import projectsService from '@/services/projects.service';
@@ -30,6 +30,10 @@ const showFormFieldCliente = ref(false);
 
 const showFormFieldPesona = ref(true);
 const showFormFieldPer = ref(false);
+
+const breadcrumbs = ref( [
+        { name: 'Inicio' },
+])
 
 const format = (date) => {
     const day = date.getDate();
@@ -180,8 +184,8 @@ const enviarParametros = () => {
 <template>
     <LayoutAuthenticated>
         <SectionMain>
-            <SectionTitleLineWithButton :icon="mdiGlobeModel" :title="$t('message.project.papers')">
-            </SectionTitleLineWithButton>
+            <SectionTitleLineWithButton :icon="mdiGlobeModel" :title="$t('message.project.papers')"></SectionTitleLineWithButton>
+            <Breadcrumb :items="breadcrumbs" />
             <CardBox isForm @submit.prevent="submit" style="background: rgb(134 134 145 / 16%);">
                 <div class="grid md:grid-cols-2 gap-4">
                     <FormField :label="$t('message.project.client')" v-if="showFormField" style="padding-top: 0.5rem;padding-bottom: 0.5rem;">

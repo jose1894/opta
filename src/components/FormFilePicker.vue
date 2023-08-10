@@ -49,6 +49,7 @@ const upload = (event) => {
   const value = event.target.files || event.dataTransfer.files;
 
   file.value = value[0];
+  console.log(file.value)
 
   emit("update:modelValue", file.value);
 
