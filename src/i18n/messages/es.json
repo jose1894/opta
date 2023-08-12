@@ -872,6 +872,7 @@
       }      
     },
     "file": {
+      "name": "Nombre",
       "created": {
         "success": "¡El archivo fue creado exitosamente!",
         "error": "¡El archivo no pudo ser creado!"

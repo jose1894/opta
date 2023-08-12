@@ -16,9 +16,12 @@ import FormControl from '@/components/FormControl.vue';
 import riesgosServices from '@/services/riesgos.service';
 import uploadService from '@/services/upload.service';
 import FormFilePicker from "@/components/FormFilePicker.vue";
+import RiskTableView from "./RiskTableView.vue";
 
 
 const { t } = useI18n();
+const pageFiles = ref(1);
+const perPageFiles = ref(10);
 const toast = useToast()
 const router = useRouter();
 const isModalActive = ref(false);
@@ -29,27 +32,12 @@ const storeLayoute = useLayouteStore();
 const pathFile = ref(null);
 const archivo = ref(null);
 const enfoqueId = ref();
+const { _id, codigo } = JSON.parse(localStorage.getItem('selectedProject'))
 const props = defineProps({
-  projectId: {
-    type: String,
-    required: true,
-    default: ''
-  },
-  codigo: {
-    type: String,
-    required: true,
-    default: ''
-  },
   path: '',
   saveLabel: '',
   state: {}
 })
-
-
-/*const isAsideMobileExpanded = computed(() => {
-  storeLayoute.toggleIsAsideLgActiveTrue(true)
-  return storeLayoute.isAsideLgActive.value
-});*/
 
 const items = computed(() => mainStore.auditAproaches.enfoques);
 const total = computed(() => mainStore.auditAproaches.total)
@@ -58,7 +46,16 @@ const total = computed(() => mainStore.auditAproaches.total)
 const perPage = computed(() => mainStore.auditAproaches.perPage);
 
 const currentPage = computed(() => mainStore.auditAproaches.page);
-const selectedProject = ref([]);
+
+const onChangePage = (pageFiles) => {
+  const dataProject = JSON.parse(localStorage.getItem('selectedProject')) 
+  getFilesProjectApproaches(dataProject._id, enfoqueId.value,{ pageFiles })
+}
+
+const onSortPage = (sortBy, sortDesc) => {
+  const dataProject = JSON.parse(localStorage.getItem('selectedProject')) 
+  getFilesProjectApproaches(dataProject._id, enfoqueId.value,{ sortBy, sortDesc });
+}
 
 const itemsPaginated = computed(() =>
   items.value
@@ -72,7 +69,7 @@ const dataInitial = {
   indice: "",
   titulo: "",
   descripcion: "",
-  proyecto: props.projectId
+  proyecto: _id
 }
 const unidadRiesgo = ref(dataInitial);
 
@@ -101,14 +98,27 @@ const emit = defineEmits(['changePage', 'confirm', 'sort'])
 const changePage = (page) => {
   emit('changePage', page)
 }
-const btnFormUploadFile = (riskUnit) => {
-  const { ruta, _id } = riskUnit
-  pathFile.value = `${props.codigo}/${ruta}` 
+const btnFormUploadFile = async (approache) => {
+  const { ruta, _id } = approache
+  const dataProject = JSON.parse(localStorage.getItem('selectedProject'))  
+  pathFile.value = `${dataProject.codigo}/${ruta}` 
   enfoqueId.value = _id
+  getFilesProjectApproaches()
   setTimeout(() => {
     isModalUploadActive.value = true
   }, 10);
 }
+
+const getFilesProjectApproaches = (data) => {
+  const dataProject = JSON.parse(localStorage.getItem('selectedProject'))  
+    uploadService.read(dataProject._id, enfoqueId.value,data).then(response => {
+      console.log(response)
+        mainStore.filesProjectApproaches = response
+        pageFiles.value = response.page
+        perPageFiles.value = response.perPage
+    })
+}
+
 
 const successMessageUpload = props.path === 'create' ? t("message.file.created.success") : t("message.file.updated.success")
 const errorMessageUpload = props.path === 'create' ? t("message.file.created.error") : t("message.file.updated.error")
@@ -144,23 +154,23 @@ const actionUpload = async () => {
   formData.append('archivo', archivo.value);
   formData.append('ruta', pathFile.value);
   formData.append('nombre', archivo.value.name);
-  formData.append('proyecto', props.projectId);
+  formData.append('type', archivo.value.type);
+  formData.append('proyecto', _id);
   formData.append('enfoque', enfoqueId.value);  
   return uploadService.create(formData);
 }
 
 const handleFileChange = (event) => {
   archivo.value = event.target.files[0];
-  console.log(archivo.value  )
-
 };
 
 
-const btnAddRiesgo = (riskUnit) => {
-  const { indice } = riskUnit
-  unidadRiesgo.value.indice = indice
+const btnAddRiesgo = (approache) => {
+  const { indice, _id } = approache
+  unidadRiesgo.value.indice = _id
   unidadRiesgo.value.titulo = ''
   unidadRiesgo.value.descripcion = ''
+  
   setTimeout(() => {
     isModalActive.value = true
   }, 10);
@@ -216,10 +226,10 @@ const action = async (unidadRiesgo) => {
 
 <template>
   <CardBoxModal v-model="isModalUploadActive" title="Subir archivo" :hasDone="hasModalValue">
-    <CardBox>
-  <CardBox isForm @submit.prevent="submitUpload">
-      <div class="mb-3">
-        <label for="formFile" class="mb-2 inline-block text-neutral-700 dark:text-neutral-200">Default file input
+    <CardBox style="padding: 0px;">
+    <CardBox isForm @submit.prevent="submitUpload" class="bg-gray-200" style="padding: 0px;">
+      <div class="mb-0">
+        <label for="formFile" class="mb-0 inline-block text-neutral-700 dark:text-neutral-200">Default file input
           example</label>
         <input
           class="relative m-0 block w-full min-w-0 flex-auto 
@@ -234,16 +244,16 @@ const action = async (unidadRiesgo) => {
           dark:file:text-neutral-100 dark:focus:border-primary"
           type="file" ref="archivo" @change="handleFileChange"/>
       </div>
-      <!-- <div class="grid md:grid-cols-1 gap-2">
-        <FormField :label="$t('message.audit.title')">
-          <input type="file" @change="handleFileChange"/>
-        </FormField>
-      </div> -->
-      <template #footer>
-        <BaseButton :label="$t(`message.submit`)" type="submit" color="success" />
+      
+      <template #footer style="padding: 0px;">
+        <BaseButton :label="$t(`message.submit`)" type="submit" color="success"/>
       </template>
+    </CardBox>    
     </CardBox>
+    <CardBox v-if="mainStore?.filesProjectApproaches?.Uploads?.length" class="mb-6" has-table>
+      <RiskTableView @changePage="onChangePage" @sort="onSortPage" />
     </CardBox>
+    
   </CardBoxModal>
   <CardBoxModal v-model="isModalActive" title="Crear riego" :hasDone="hasModalValue">
     <CardBox isForm @submit.prevent="submit">

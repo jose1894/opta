@@ -129,7 +129,7 @@ const chilItem = (data, enfoques = []) => {
                         <div class="header-title">
                             <span class="span-header-title">{{ titleAuditEnfoque }}</span>
                         </div>
-                        <AudiTableView path="create" :codigo="projectCode" :projectId="projectId" @changePage="onChangePage" @sort="onSortPage" />
+                        <AudiTableView path="create" @changePage="onChangePage" @sort="onSortPage" />
                     </CardBox>
                     <CardBox v-else>
                         <CardBoxComponentEmpty />

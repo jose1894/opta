@@ -875,6 +875,7 @@
     }
   },
   "file": {
+    "name": "Name",
     "created": {
       "success": "File created successfully!",
       "error": "File couldn't be created!",

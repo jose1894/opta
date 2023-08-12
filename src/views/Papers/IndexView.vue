@@ -164,7 +164,7 @@ const toggleFormFieldPersona = () => {
 
 const enviarParametros = () => {
     console.log(params.value)
-    const { idCliente, fecha, codigo, idPersona } = params.value
+    const { idCliente, fecha, codigo, idPersona } = params.value    
     const date = fecha === null ? '' : moment(fecha).format('YYYY-MM-DD')
     if (idCliente === '' && fecha === null && codigo === '' && idPersona === '') {
         getProjects({ page: page.value })
