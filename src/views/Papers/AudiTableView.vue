@@ -16,7 +16,7 @@ import FormControl from '@/components/FormControl.vue';
 import riesgosServices from '@/services/riesgos.service';
 import uploadService from '@/services/upload.service';
 import FormFilePicker from "@/components/FormFilePicker.vue";
-import RiskTableView from "./RiskTableView.vue";
+import UploadTableView from "./UploadTableView.vue";
 
 
 const { t } = useI18n();
@@ -122,7 +122,6 @@ const getFilesProjectApproaches = (data) => {
 
 const successMessageUpload = props.path === 'create' ? t("message.file.created.success") : t("message.file.updated.success")
 const errorMessageUpload = props.path === 'create' ? t("message.file.created.error") : t("message.file.updated.error")
-
 const submitUpload = async () => {
   actionUpload()
     .then(() => {
@@ -222,11 +221,32 @@ const action = async (unidadRiesgo) => {
   return riesgosServices.update(data);
 }
 
+const tituloModal = () => { 
+  const { _id, codigo } = JSON.parse(localStorage.getItem('selectedProject'))
+  return codigo
+}
+
+const tituloProjectClientModal = () => { 
+  const { cliente } = JSON.parse(localStorage.getItem('selectedProject'))
+  return cliente?.nombre
+}
+
 </script>
 
 <template>
-  <CardBoxModal v-model="isModalUploadActive" title="Subir archivo" :hasDone="hasModalValue">
+  <CardBoxModal v-model="isModalUploadActive"  :hasDone="hasModalValue">    
     <CardBox style="padding: 0px;">
+      <div >
+      <h2 style="font-weight: 700;">
+        {{  $t('message.project.project') }}: {{  tituloModal() }}
+      </h2>
+      <h2 class="c-element-h2">
+        {{  $t('message.project.client') }}: {{  tituloProjectClientModal() }}
+      </h2>
+      <h2 class="c-element-h2">
+        {{  $t('message.audit.uploadFile') }}
+      </h2>
+    </div> 
     <CardBox isForm @submit.prevent="submitUpload" class="bg-gray-200" style="padding: 0px;">
       <div class="mb-0">
         <label for="formFile" class="mb-0 inline-block text-neutral-700 dark:text-neutral-200">Default file input
@@ -251,12 +271,23 @@ const action = async (unidadRiesgo) => {
     </CardBox>    
     </CardBox>
     <CardBox v-if="mainStore?.filesProjectApproaches?.Uploads?.length" class="mb-6" has-table>
-      <RiskTableView @changePage="onChangePage" @sort="onSortPage" />
+      <UploadTableView @changePage="onChangePage" @sort="onSortPage" />
     </CardBox>
     
   </CardBoxModal>
-  <CardBoxModal v-model="isModalActive" title="Crear riego" :hasDone="hasModalValue">
-    <CardBox isForm @submit.prevent="submit">
+  <CardBoxModal v-model="isModalActive" :hasDone="hasModalValue">
+    <div class="title-modal">
+      <h2 style="font-weight: 700;">
+        {{  $t('message.project.project') }}: {{  tituloModal() }}
+      </h2>
+      <h2 class="c-element-h2">
+        {{  $t('message.project.client') }}: {{  tituloProjectClientModal() }}
+      </h2>
+      <h2 class="c-element-h2">
+        {{  $t('message.audit.addRisk') }}
+      </h2>
+    </div>    
+    <CardBox isForm @submit.prevent="submit">      
       <div class="grid md:grid-cols-1 gap-2">
         <FormField :label="$t('message.audit.title')">
           <FormControl :name="'indice'" v-model="unidadRiesgo.titulo" :icon="mdiCodeBraces" />
@@ -293,7 +324,7 @@ const action = async (unidadRiesgo) => {
 
             <BaseButton color="info" :icon="mdiUpload" small @click="btnFormUploadFile(approache)" />
 
-            <BaseButton color="info" :icon="mdiDelete" small />
+            <!-- <BaseButton color="info" :icon="mdiDelete" small /> -->
 
           </BaseButtons>
         </td>
@@ -310,3 +341,15 @@ const action = async (unidadRiesgo) => {
     </BaseLevel>
   </div>
 </template>
+<style scoped>
+.c-element-h2{
+    margin-top: 0px!important;
+    font-weight: 700;
+}
+
+.title-modal{
+    background: #ddd;
+    padding: 8px;
+    border-radius: 6px;
+}
+</style>

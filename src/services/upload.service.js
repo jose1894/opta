@@ -26,4 +26,12 @@ export default {
             .catch((err) => reject(err))
         })
     },
+
+    delete(id) {
+        return new Promise((resolve, reject) => {
+            Service.delete(`${resource}/${id}`, { headers: authHeader() })
+                .then((response) => resolve(response.data))
+                .catch((err) => reject(err))
+        })
+    },
 }

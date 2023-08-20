@@ -62,7 +62,6 @@ const customElementsForm = reactive({
     switch: [],
 });
 const getProjects = (data) => {
-    console.log(data)
     projectsService.index(data).then(response => {
         mainStore.projects = response
         page.value = response.page
@@ -102,7 +101,6 @@ const endPointUseSort = (sortBy, sortDesc) => {
 }
 
 const searchFunction = async searchTerm => {
-    console.log(searchTerm)
     const searchText = (searchTerm === "") ? "default" : searchTerm;
     const response = await clientService.searchCliente(searchText);
     const data = response.data?.clientes || []
@@ -163,7 +161,6 @@ const toggleFormFieldPersona = () => {
 }
 
 const enviarParametros = () => {
-    console.log(params.value)
     const { idCliente, fecha, codigo, idPersona } = params.value    
     const date = fecha === null ? '' : moment(fecha).format('YYYY-MM-DD')
     if (idCliente === '' && fecha === null && codigo === '' && idPersona === '') {

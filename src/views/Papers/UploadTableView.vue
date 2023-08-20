@@ -9,13 +9,12 @@ import BaseLevel from "@/components/BaseLevel.vue";
 import BaseButtons from "@/components/BaseButtons.vue";
 import BaseButton from "@/components/BaseButton.vue";
 import uploadService from '@/services/upload.service';
-import CardBox from '@/components/CardBox.vue';
-
 
 const { t } = useI18n();
 const toast = useToast()
 const router = useRouter();
 const mainStore = useMainStore();
+const selectedFile = ref([]);
 
 const items = computed(() => mainStore.filesProjectApproaches.Uploads);
 const total = computed(() => mainStore.filesProjectApproaches.total)
@@ -59,8 +58,28 @@ const changePage = (page) => {
 }
 
 const btnDolownd = (file) => {
- console.log(file)
  uploadService.downloadFiled(file._id) 
+}
+
+const selectedItem = (file) => selectedFile.value = file
+
+const successMessageDelete =  t("message.file.deleted.success")
+const errorMessageDelete = t("message.file.deleted.error")
+const deleteItem = async (file) => {
+  selectedFile.value = file
+  actionDelete()
+    .then(() => {
+      toast.success(successMessageDelete);
+      emit('changePage', currentPage.value)      
+    })
+    .catch(err => {
+      toast.error(`${t("message.file.deleted.erro")} ${err?.response?.data.msg}`)
+    })
+};
+
+const actionDelete = () => {
+  const { _id } = selectedFile.value
+  return uploadService.delete(_id);
 }
 
 </script>
@@ -75,7 +94,7 @@ const btnDolownd = (file) => {
 
     </thead>
     <tbody>
-      <tr  v-for="(file, index) in itemsPaginated" :key="file._id">
+      <tr  v-for="(file, index) in itemsPaginated" :key="file._id" @click="selectedItem(file)">
         <td :data-label="$t('message.file.name')">
           {{ file.nombre }}
         </td>
@@ -84,7 +103,7 @@ const btnDolownd = (file) => {
 
             <BaseButton color="info" :icon="mdiUpload" small @click="btnDolownd(file)"/>
 
-            <BaseButton color="info" :icon="mdiDelete" small />
+            <BaseButton color="info" :icon="mdiDelete" small  @click="deleteItem(file)"/>
 
           </BaseButtons>
         </td>

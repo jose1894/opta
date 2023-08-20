@@ -1,6 +1,6 @@
 import Service from './index.js'
 import authHeader from './auth.header.js'
-const resource = 'api/riesgos/'
+const resource = 'api/riesgos'
 
 export default {
     index(data) {
@@ -35,6 +35,7 @@ export default {
     },
 
     update(riesgo) {
+        console.log(riesgo)
         return new Promise((resolve, reject) => {
             Service.put(`${resource}/${riesgo._id}`, riesgo, { headers: authHeader() })
                 .then((response) => resolve(response.data))

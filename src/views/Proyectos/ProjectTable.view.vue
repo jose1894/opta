@@ -187,6 +187,7 @@ const searchFunction = async searchTerm => {
 };
 const renderFunction = item => {
   // Define cómo se renderiza cada elemento seleccionado
+  console.log(personasList.value)
   let personasListData = personasList.value
   const i = personasListData.filter((objeto) => {
     return Object.keys(objeto).some((clave) => clave === item._id)
@@ -274,7 +275,7 @@ const deletePersonaProyecto = async (accionData) => {
     </div>
     <div class="grid md:grid-cols-1 gap-1">
       <FormField label="" v-for="(accionData, i) in listarPersonas">
-        <FormChebckRadioGroup v-model="customElementsForm.radio" name="sample-radio" type="radio" isColumn="true"
+        <FormCheckRadioGroup v-model="customElementsForm.radio" name="sample-radio" type="radio" isColumn="true"
           :options="listarPersonas[i]" @change="onChangeCheckbox(listarPersonas[i])" />
         <BaseButtons type="justify-start lg:justify-end" no-wrap>
           <BaseButton color="danger" :icon="mdiTrashCan" small style="width: 28px;height: 28px;"

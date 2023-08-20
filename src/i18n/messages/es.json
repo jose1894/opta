@@ -71,7 +71,7 @@
       },
       "restore": {
         "success": "Country restored successfully!",
-        "error" : "Country couldn't be restored!",
+        "error": "Country couldn't be restored!",
         "question": "Do you want to restore "
       }
     },
@@ -303,7 +303,7 @@
       "administrative_contacts": "Contactos administrativo",
       "technology_contacts": "Contactos tecnológicos",
       "type_contacts": "Tipo de contactos",
-      "activation_code": "Código de activación",      
+      "activation_code": "Código de activación",
       "paginaWeb": "Página web",
       "lastName": "Apellido",
       "idFiscal": "Número físcal",
@@ -609,7 +609,7 @@
         "question": "Desea restaurar el idioma "
       }
     },
-    "rate": {      
+    "rate": {
       "rate": "Tasa",
       "rates": "Tasas",
       "statuses": {
@@ -676,7 +676,7 @@
       }
     },
     "personal": {
-      "personal": "Personal",     
+      "personal": "Personal",
       "others": "Otros",
       "partner": "Socio",
       "manager": "Gerente",
@@ -702,8 +702,8 @@
       "profile": "Perfil",
       "user": "Usuario",
       "password": "Contraseña",
-      "membership": "Membresia",   
-      "typePersonnel": "Tipo de personal",   
+      "membership": "Membresia",
+      "typePersonnel": "Tipo de personal",
       "status": "Status",
       "created": {
         "success": "¡Los datos fueron creados exitosamente!",
@@ -784,12 +784,12 @@
       "indice": "Indice",
       "name": "Nombre",
       "parentArea": "Area padre",
-      "route": "Ruta",  
-      "visible": "Visible",  
-      "rcr": "Rcr",  
+      "route": "Ruta",
+      "visible": "Visible",
+      "rcr": "Rcr",
       "editable": "Editable",
       "membership": "Membresia",
-      "selectedNode": "Debe seleccionar un item",       
+      "selectedNode": "Debe seleccionar un item",
       "status": "Status",
       "chargeable": "Cargable",
       "non-chargeable": "No cargable",
@@ -810,7 +810,7 @@
         "success": "¡El enfoque fue eliminado exitosamente!",
         "error": "¡El enfoque no pudo ser eliminado!",
         "question": "Desea eliminar el enfoque "
-      }      
+      }
     },
     "activity": {
       "activity": "Actividad",
@@ -841,17 +841,33 @@
         "success": "¡La actividad fue eliminada exitosamente!",
         "error": "¡La actividad no pudo ser eliminada!",
         "question": "Desea eliminar el enfoque "
-      },      
+      },
       "restore": {
         "success": "¡La actividad fue restaurada exitosamente!",
         "error": "¡La actividad no pudo ser restaurada!",
         "question": "Desea restaurar el enfoque "
-      }      
+      }
     },
     "audit": {
       "index": "Indice",
       "description": "Descripción",
       "title": "Titulo",
+      "addRisk": "Agregar Riesgo",
+      "uploadFile": "Subir Archivo",
+      "riskControlRegistration": "Resgistro de Control de Riegos",
+      "ref": "Ref",
+      "auditor": "Auditor",
+      "quadrant": "Cuadrante",
+      "date": "Date",
+      "RiskMatrix": "Matriz de Riesgo",
+      "allRisks": "Todos los Riesgos",
+      "quadrantI": "Cuadrante I",
+      "quadrantII": "Cuadrante II",
+      "quadrantIII": "Cuadrante III",
+      "quadrantIV": "Cuadrante IV",
+      "customerExpectations": "Expectativas del Cliente",
+      "pointsOf": "Puntos de",
+      "sampling": "Muestreo (CMA)",
       "created": {
         "success": "¡La Unidad de Riesgo fue creada exitosamente!",
         "error": "¡La Unidad de Riesgo no pudo ser creado!"
@@ -864,12 +880,104 @@
         "success": "¡La Unidad de Riesgo fue eliminada exitosamente!",
         "error": "¡La Unidad de Riesgo no pudo ser eliminada!",
         "question": "Desea eliminar la unidad de riesgo "
-      },      
+      },
       "restore": {
         "success": "¡La Unidad de Riesgo fue restaurada exitosamente!",
         "error": "¡La Unidad de Riesgo no pudo ser restaurada!",
         "question": "Desea restaurar la unidad de riesgo "
-      }      
+      }
+    },
+    "risk": {
+      "index": "Indice",
+      "description": "Descripción",
+      "title": "Titulo",
+      "ref": "Ref",
+      "quadrant": "Cuadrante",
+      "quadrantI": "Cuadrante 1",
+      "quadrantII": "Cuadrante 2",
+      "quadrantIII": "Cuadrante 3",
+      "quadrantIV": "Cuadrante 4",
+      "othersRisk": "Otros Riesgos",
+      "riskFrom": "Riesgo proveniente de",
+      "recurringTransactions": "Transacciones Recurrentes",
+      "nonRecurringTransactions": "Transacciones no Rcurrentes",
+      "judgmentsAndEstimates": "Juicios y Estimaciones",
+      "accountingClosingEntries": "Asientos de Cierre Contable",
+      "riskArea": "Area de Riesgo",
+      "critical": "Critica",
+      "strategic": "Estrategico",
+      "support": "Soporte",
+      "natureOfTheRisk": "Naturaleza del riesgo",
+      "intentional": "Intencional",
+      "unintentional": "No Intencional",
+      "businessViability": "Viabilidad del negocio",
+      "customerExpectations": "Expectativas del Cliente",
+      "additionalProcedures": "Procedimientos Adicionales",
+      "processesWhereRiskIsInvolved": "Procesos donde esta involucrado el riesgo",
+      "causativeSourceOfRisk": "Fuente causante del riesgo",
+      "impactOnTheFinancialStatementsAndAccountsConcerned": "Consecuencia en los estados financieros y cuentas afectadas",
+      "associatedAssertions": "Aseveraciones Asociadas",
+      "assertionsAboutTransactionClassesAndEvents": "Aseveraciones sobre las Clases de Transacciones y Eventos",
+      "middle": "Mediano",
+      "low": "Bajo",
+      "high": "Alto",
+      "risksAssessment": "Evaluación de Riesgos",
+      "inherent": "Inherente",
+      "control": "Control",
+      "analytic": "Analitico",
+      "riskFactor": "Factor de risgo",
+      "iOccurrence(O)": "I. Ocurrencia (O)",
+      "iiIntegrity(I)": "II. Integridad (I)",
+      "iiiAccuracy(A)": "III. Precisión (P)",
+      "iVCourt(CO)": "IV. Corte (CO)",
+      "vClassification(CL)": "V. Clasificación (CL)",
+      "statementsOnBalancingItems": "Aseveraciones Sobre los Saldos Contables",
+      "iExistence(E)": "I. Existencia (E)",
+      "iiRightsAndObligations(RO)": "II. Derechos y Obligaciones (DO)",
+      "iiiIntegrity(I)": "III. Integridad (I)",
+      "ivEvaluationAndAssignment(EA)": "IV. Evaluación y Asignación (VA)",
+      "assertionsAboutPresentationAndDisclosure": "Aseveraciones sobre la presentación y revelación",
+      "iTheOccurrenceAndRightsAndOblications(ORO)": "I. La Ocurrencia y los Derechos y Oblicgaciones (ODO)",
+      "iiiClassificationAndComprehension(CC)": "III. Clasificación y Comprensión (CC)",
+      "ivAccuracyAndValuation(AV)": "IV. Precisión y Valuación (PV)",
+      "evaluationOfControls": "Evaluación de Controles",
+      "effectiveDesign": "Diseño Efectivo",
+      "effectiveOperability": "Operatividad Efectiva",
+      "monitoring": "Monitoreo",
+      "untried": "No Aprobado",
+      "general": "General",
+      "specific": "Específico",
+      "informationIntegrity": "Integridad de la Información",
+      "effective": "Efectivo",
+      "noeffective": "No efectivo",
+      "riskReductionApproach": "Enfoque de Reducción de Riesgo",
+      "detect/CorrectExistingErrors": "Detectar/Corregir Errores Existentes",
+      "approach": "Enfoque",
+      "outcomeOfTheAuditProceduresApplied": "Resultado de los procedimientos de auditoria aplicados",
+      "reference(s)ToWorkingPapers": "Referencia(s) a papeles de trabajo",
+      "preventionOfFutureOccurrence:": "Prevención de Futura Ocurrencia:",
+      "recommendationForProcessImprovementprocess": "Recomendación para mejoramiento del proceso",
+      "residualAuditRisk": "Riesgo de auditoria residual",
+      "effectOnTheAuditOpinion": "Efecto en el Dictamen de Auditoría",
+
+      "created": {
+        "success": "¡El Riesgo fue creado exitosamente!",
+        "error": "¡El Riesgo no pudo ser creado!"
+      },
+      "updated": {
+        "success": "¡El Riesgo fue actualizado exitosamente!",
+        "error": "El  Riesgo no pudo ser actualziado!"
+      },
+      "deleted": {
+        "success": "¡El Riesgo fue eliminada exitosamente!",
+        "error": "¡El  Riesgo no pudo ser eliminado!",
+        "question": "Desea eliminar la unidad de riesgo "
+      },
+      "restore": {
+        "success": "¡El Riesgo fue restaurado exitosamente!",
+        "error": "¡El Riesgo no pudo ser restaurado!",
+        "question": "Desea restaurar el Riesgo "
+      }
     },
     "file": {
       "name": "Nombre",
@@ -885,7 +993,7 @@
         "success": "¡El archivo fue eliminada exitosamente!",
         "error": "¡El archivo no pudo ser eliminada!",
         "question": "Desea eliminar el archivo "
-      },      
+      },
       "restore": {
         "success": "¡El archivo fue restaurado exitosamente!",
         "error": "¡El archivo no pudo ser restaurada!",
@@ -904,11 +1012,11 @@
       "partner": "Socio",
       "date": "Fecha",
       "createdProject": "Creado",
-      "branch": "Sucursal",      
-      "bussinesUnit": "Unidad de negocio",    
-      "typeOfService": "Tipo de servicio", 
-      "serviceDescription": "Descripción de servicio", 
-      "manager": "Gerente", 
+      "branch": "Sucursal",
+      "bussinesUnit": "Unidad de negocio",
+      "typeOfService": "Tipo de servicio",
+      "serviceDescription": "Descripción de servicio",
+      "manager": "Gerente",
       "membership": "Membresia",
       "status": "Status",
       "papers": "Papeles",
@@ -929,13 +1037,13 @@
         "success": "¡El proyecto fue eliminada exitosamente!",
         "error": "¡El proyecto no pudo ser eliminada!",
         "question": "Desea eliminar el enfoque "
-      }      
+      }
     },
     "Home": "Inicio",
     "Countries": "Paises",
     "Setup": "Configuración",
     "Dashboard": "Dashboard"
-  },  
+  },
   "validations": {
     "required": "El campo {property} es requerido.",
     "minLength": "El campo {property} tiene un valor de '{model}', pero debe tener una longitud minima de {min}.",
@@ -952,13 +1060,13 @@
     "Memberships": "Membresias",
     "Branches": "Sucursales",
     "Bussiness units": "Uni. de negocio",
-    "Expense": "Gastos", 
-    "User profile" : "Perfil de usuario",
+    "Expense": "Gastos",
+    "User profile": "Perfil de usuario",
     "Actions": "Acciones",
     "Menu items": "Items del menu",
     "Profile": "Perfil",
     "Category": "Categoría",
-    "Rates":"Tasas",
+    "Rates": "Tasas",
     "Language": "Idioma",
     "Profession": "Profesion",
     "Employees": "Personal",
@@ -967,9 +1075,8 @@
     "Approaches": "Enfoques",
     "Activities": "Actividades",
     "Projects": "Proyectos",
-    "Location" : "Ubicacion",
+    "Location": "Ubicacion",
     "Logout": "Cerrar sesion",
     "Papers": "Papeles"
-
   }
 }

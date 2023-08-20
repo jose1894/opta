@@ -2,8 +2,9 @@
 import { computed, defineProps, onMounted, ref, reactive } from 'vue';
 import { useRoute } from 'vue-router';
 import { useMainStore } from '@/stores/main';
+import { useI18n } from "vue-i18n";
 import CardBox from '@/components/CardBox.vue';
-import RecursiveMenuItem from '@/components/RecursiveMenuItem.vue'
+import RisksTableView from './RisksTableView.vue'
 import TreeItem from '@/components/TreeItem.vue';
 import Breadcrumb from '@/components/Breadcrumb.vue'
 import SectionMain from '@/components/SectionMain.vue';
@@ -11,8 +12,10 @@ import enfoquesServices from '@/services/enfoques.service';
 import LayoutAuthenticated from '@/layouts/LayoutAuthenticated.vue'
 import AudiTableView from './AudiTableView.vue';
 import CardBoxComponentEmpty from '@/components/CardBoxComponentEmpty.vue';
+import CardBoxModal from "@/components/CardBoxModal.vue";
+import riesgosServices from '@/services/riesgos.service';
 
-
+const { t } = useI18n();
 const page = ref(1);
 const menuItems = [];
 const dataList = ref();
@@ -23,6 +26,10 @@ const projectId = ref();
 const projectCode = ref();
 const route = useRoute();
 const mainStore = useMainStore();
+const isModalListRik = ref(false);
+const hasModalValue = false;
+const pageRisk = ref(1);
+const perPageRisk = ref(10);
 
 const state = reactive({
     selectedNodeId: null,
@@ -67,7 +74,6 @@ const getAproaches = (data) => {
     const { _id } = dataList.value ?? {}
     const dataParam = { page: page.value }
     const idEnfooque = _id === undefined ? 1 : _id
-    console.log(dataList.value)
     enfoquesServices.getChildrenWithPaginate(idEnfooque, dataParam).then(response => {
 
         mainStore.auditAproaches = response
@@ -92,9 +98,8 @@ onMounted(async () => {
     const nodeFirst = enfoques.filter((item) => item.tipoNodo === 0);
     const dataEnfoques = enfoques.filter((item) => item.tipoNodo !== 0);
     const menu11 = chilItem(nodeFirst, dataEnfoques)
+    console.log(menu11[0].children)
     menuData.value = menu11[0].children
-
-    console.log(menu11);
 })
 
 const chilItem = (data, enfoques = []) => {
@@ -109,8 +114,86 @@ const chilItem = (data, enfoques = []) => {
 
 }
 
+const openModal = () => {
+    isModalListRik.value = true
+}
+
+const titleModal = () => {
+    return  t('message.audit.riskControlRegistration')
+}
+
+const onChangePageRisk = (pageRisk) => {
+    endPointRiskUse({ pageRisk })
+}
+
+const onSortPageRisk = (sortBy, sortDesc) => {
+    endPointRiskUseSort({ sortBy, sortDesc });
+}
+
+const endPointRiskUse = (pageRisk) => {
+    getRisk({ pageRisk })
+}
+
+const endPointRiskUseSort = (sortBy, sortDesc) => {
+    getRisk({ sortBy, sortDesc })
+}
+
+const getRisk = (data) => {
+    riesgosServices.index(data).then(response => {
+        console.log(response)
+        mainStore.listRisk = response
+        pageRisk.value = response.page
+        perPageRisk.value = response.perPage
+    })
+}
+
+getRisk({ page: pageRisk.value })
+
 </script>
 <template>
+    <CardBoxModal 
+        v-model="isModalListRik" 
+        :title="titleModal()" 
+        :hasDone="hasModalValue"
+        claseModal="shadow-lg max-h-modal w-11/12 md:w-3/5 lg:w-8/12 xl:w-8/12 z-50">
+        <CardBox>
+            <div class="c-header">
+                <div class="c-body">
+                    <div class="c-padding-items">
+                        <span>{{ $t('message.audit.RiskMatrix') }}</span>
+                    </div>
+                    <div class="c-padding-items">
+                        <span>{{ $t('message.audit.allRisks') }}</span>
+                    </div>
+                    <div class="c-padding-items">
+                        <span>{{ $t('message.audit.quadrantI') }}</span>
+                    </div>
+                    <div class="c-padding-items">
+                        <span>{{ $t('message.audit.quadrantII') }}</span>
+                    </div>
+                    <div class="c-padding-items">
+                        <span>{{ $t('message.audit.quadrantIII') }}</span>
+                    </div>
+                    <div class="c-padding-items">
+                        <span>{{ $t('message.audit.quadrantIV') }}</span>
+                    </div>
+                    <div class="c-padding-items">
+                        <span>{{ $t('message.audit.customerExpectations') }}</span>
+                    </div>
+                </div>
+            </div>
+        </CardBox>
+        <CardBox style="padding-left: 0px; padding-right: 0px;">
+            <div class="container-table col-span-4">                   
+                <CardBox v-if="mainStore?.listRisk?.riesgos?.length" class="mb-6" has-table>
+                    <RisksTableView @changePage="onChangePageRisk" @sort="onSortPageRisk" />
+                 </CardBox>
+                <CardBox v-else>
+                    <CardBoxComponentEmpty />
+                </CardBox>
+            </div>
+        </CardBox>         
+    </CardBoxModal>
     <LayoutAuthenticated>
         <SectionMain>
             <Breadcrumb :items="breadcrumbs" />
@@ -118,10 +201,21 @@ const chilItem = (data, enfoques = []) => {
             <div class="grid grid-cols-1 sm:grid-cols-6 gap-2">
                 <div class=" container-treeview bg-gray-200 col-span-2">
                     <TreeItem :nodes="menuData" :treeView="false" :selectedNodeId="state.selectedNodeId"
-                        @itemSelected="onSearchChildren" />
-
-                    <!-- <RecursiveMenuItem :menuItems="menuData" /> -->
-
+                        @itemSelected="onSearchChildren" />                    
+                    <hr class="c-hr">
+                    <div>
+                        <ul class="c-ul">
+                            <li class="c-li" style="margin-top: 10px;" @click="openModal()" >
+                                <span>{{ $t('message.audit.riskControlRegistration') }}</span>
+                            </li>
+                            <li class="c-li">
+                                <span>{{ $t('message.audit.pointsOf') }}</span>
+                            </li>
+                            <li class="c-li">
+                                <span>{{ $t('message.audit.sampling') }}</span>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
                 <div class="container-table col-span-4">
                    
@@ -165,5 +259,49 @@ const chilItem = (data, enfoques = []) => {
 .span-header-title{
     font-weight: 700;
 }
+
+.c-hr {
+    border-bottom: solid 1px #80808069;
+    width: 100%;
+}
+.c-ul {
+    padding-left: 1em;
+    line-height: 1.5em;
+}
+.c-li{
+    margin-bottom: 10px;
+}
+
+.c-li:hover{
+    background: #80808054;
+    cursor: pointer;
+}
+
+.c-header{
+   height: 45px;
+}
+
+.c-body{
+    display: flex; 
+    flex-direction: row; 
+    flex-wrap: wrap;
+    height: 100%;
+}
+
+.c-padding-items{
+   padding: 0px 15px;
+   height: 100%;
+   color: blue;
+   display: grid;
+   place-content: center;
+}
+
+.c-padding-items:hover{
+   color: white;
+   background: rgb(41, 41, 202);
+}
+
+
+
 </style>
 
