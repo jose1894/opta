@@ -24,6 +24,7 @@ const isModalFormRisk = ref(false);
 const mainStore = useMainStore();
 const selectedRisk = ref([]);
 const hasModalValue = false;
+const showFormPA = ref(false);
 
 const risksFrom = [
     { id: 'Transacciones Recurrentes', label: t('message.risk.recurringTransactions') },
@@ -82,7 +83,15 @@ const customElementsENForm = reactive({
 });
 
 const customAdditionalProceduresForm = reactive({
-    radio: [],
+    switch: [],
+});
+
+const customElementsForm = reactive({
+    switch: []
+});
+
+const customElementsFormNo = reactive({
+    switch: []
 });
 
 const customChekS1Form = reactive({
@@ -237,7 +246,6 @@ const changePage = (page) => {
 }
 
 const openModalForm = (riskData) => {
-    console.log(riskData)
     const { indice, titulo, descripcion, _id, riesgoProveniente,
         cuadrante, areaRiesgo, expectativasNegocio, procedimientosAdicionales,
         inherente, control, analitico, factorRiesgo, procesosInvolucrados,
@@ -254,7 +262,9 @@ const openModalForm = (riskData) => {
     riskDataSave.value.cuadrante = quadrantOption.filter(item => item.id === cuadrante)[0]
     riskDataSave.value.areaRiesgo = riskAreaOption.filter(item => item.id === areaRiesgo)[0]
     customElementsENForm.radio = expectativasNegocio
-    customAdditionalProceduresForm.radio = procedimientosAdicionales
+    customElementsForm.switch = procedimientosAdicionales === 'Si' ? [procedimientosAdicionales] : []
+    customElementsFormNo.switch = procedimientosAdicionales === 'No' ? [procedimientosAdicionales] : []
+    showFormPA.value = procedimientosAdicionales === 'Si' ? true : false
     riskDataSave.value.inherente = generalOptions.filter(item => item.id === inherente)[0]
     riskDataSave.value.control = generalOptions.filter(item => item.id === control)[0]
     riskDataSave.value.analitico = generalOptions.filter(item => item.id === analitico)[0]
@@ -262,21 +272,21 @@ const openModalForm = (riskData) => {
     riskDataSave.value.procesosInvolucrados = procesosInvolucrados
     riskDataSave.value.fuentesCausantes = fuentesCausantes
     riskDataSave.value.consecuenciaEF = consecuenciaEF
-    customChekS1Form.checkbox = ase_a1 !=='' ? [ase_a1] : []
-    customChekS2Form.checkbox = ase_a2 !=='' ? [ase_a2] : []
-    customChekS3Form.checkbox = ase_a3 !=='' ? [ase_a3] : []
-    customChekS4Form.checkbox = ase_a4 !=='' ? [ase_a4] : []
-    customChekS5Form.checkbox = ase_a5 !=='' ? [ase_a5] : []
+    customChekS1Form.checkbox = ase_a1 !== '' ? [ase_a1] : []
+    customChekS2Form.checkbox = ase_a2 !== '' ? [ase_a2] : []
+    customChekS3Form.checkbox = ase_a3 !== '' ? [ase_a3] : []
+    customChekS4Form.checkbox = ase_a4 !== '' ? [ase_a4] : []
+    customChekS5Form.checkbox = ase_a5 !== '' ? [ase_a5] : []
 
-    customChekSB1Form.checkbox = ase_b1 !=='' ? [ase_b1] : []
-    customChekSB2Form.checkbox = ase_b2 !=='' ? [ase_b2] : []
-    customChekSB3Form.checkbox = ase_b3 !=='' ? [ase_b3] : []
-    customChekSB4Form.checkbox = ase_b4 !=='' ? [ase_b4] : []
+    customChekSB1Form.checkbox = ase_b1 !== '' ? [ase_b1] : []
+    customChekSB2Form.checkbox = ase_b2 !== '' ? [ase_b2] : []
+    customChekSB3Form.checkbox = ase_b3 !== '' ? [ase_b3] : []
+    customChekSB4Form.checkbox = ase_b4 !== '' ? [ase_b4] : []
 
-    customChekSC1Form.checkbox = ase_c1 !=='' ? [ase_c1] : []
-    customChekSC2Form.checkbox = ase_c2 !=='' ? [ase_c2] : []
-    customChekSC3Form.checkbox = ase_c3 !=='' ? [ase_c3] : []
-    customChekSC4Form.checkbox = ase_c4 !=='' ? [ase_c4] : []
+    customChekSC1Form.checkbox = ase_c1 !== '' ? [ase_c1] : []
+    customChekSC2Form.checkbox = ase_c2 !== '' ? [ase_c2] : []
+    customChekSC3Form.checkbox = ase_c3 !== '' ? [ase_c3] : []
+    customChekSC4Form.checkbox = ase_c4 !== '' ? [ase_c4] : []
 
     riskDataSave.value.sel_mon = additionalSelectOptions.filter(item => item.id === sel_mon)[0]
     riskDataSave.value.sel_mon2 = additionalSelectOptions.filter(item => item.id === sel_mon2)[0]
@@ -294,11 +304,52 @@ const openModalForm = (riskData) => {
     riskDataSave.value.conclusion = conclusion
 
     console.log(ase_a1)
-    
+
 
 
     isModalFormRisk.value = true
 
+}
+
+const clearFormValue = () => {
+
+    riskDataSave.value.inherente = generalOptions[0]
+    riskDataSave.value.control = generalOptions[0]
+    riskDataSave.value.analitico = generalOptions[0]
+    riskDataSave.value.factorRiesgo = ""
+    riskDataSave.value.procesosInvolucrados = ""
+    riskDataSave.value.fuentesCausantes = ""
+    riskDataSave.value.consecuenciaEF = ""
+    customChekS1Form.checkbox = []
+    customChekS2Form.checkbox = []
+    customChekS3Form.checkbox = []
+    customChekS4Form.checkbox = []
+    customChekS5Form.checkbox = []
+
+    customChekSB1Form.checkbox = []
+    customChekSB2Form.checkbox = []
+    customChekSB3Form.checkbox = []
+    customChekSB4Form.checkbox = []
+
+    customChekSC1Form.checkbox = []
+    customChekSC2Form.checkbox = []
+    customChekSC3Form.checkbox = []
+    customChekSC4Form.checkbox = []
+
+    riskDataSave.value.sel_mon = additionalSelectOptions[0]
+    riskDataSave.value.sel_mon2 = additionalSelectOptions[0]
+    riskDataSave.value.sel_gen = additionalSelectOptions[0]
+    riskDataSave.value.sel_gen2 = additionalSelectOptions[0]
+    riskDataSave.value.sel_esp = additionalSelectOptions[0]
+    riskDataSave.value.sel_esp2 = additionalSelectOptions[0]
+    riskDataSave.value.sel2_ini = additionalSelect2Options[0]
+
+    riskDataSave.value.padc_enf = ""
+    riskDataSave.value.padc_res = ""
+    riskDataSave.value.referencia = ""
+    riskDataSave.value.pfo_mpro = ""
+    riskDataSave.value.rda_resi = ""
+    riskDataSave.value.conclusion = ""
 }
 
 const selectedItem = (risk) => selectedRisk.value = risk
@@ -443,14 +494,24 @@ const onChangeENCheckbox = (option) => {
 }
 
 const onChangeCheckboxPA = (option) => {
-    let valueId = customAdditionalProceduresForm.radio
-    valueId[0] === undefined ? '' : valueId[0]
-    riskDataSave.value.procedimientosAdicionales = valueId
-    console.log(riskDataSave)
-    /*personaProyecto.value = personaProyecto.value.map((item) => {
-      item.encargado = (valueId === item.personaId) ? true : false
-      return item
-    })*/
+    let valueId = ''
+    switch (option) {
+        case 0:
+             valueId = customElementsFormNo.switch  
+             customElementsForm.switch =  []
+             showFormPA.value = false         
+            break;
+        case 1:
+             valueId = customElementsForm.switch
+             customElementsFormNo.switch =  []
+             showFormPA.value = true 
+            break;    
+        default:
+            valueId = ''
+            break;
+    }  
+    clearFormValue()  
+    riskDataSave.value.procedimientosAdicionales = valueId[0] === undefined ? '' : valueId[0]
 }
 
 const onChangeCustomCheckbox = (key) => {
@@ -587,15 +648,28 @@ const onChangeCustomCheckbox = (key) => {
                         <h1 style="margin-bottom: 1.5rem; font-weight: 700;">{{ $t('message.risk.additionalProcedures') }}
                         </h1>
                         <div class="grid md:grid-cols-2 gap-2">
-                            <FormField label="" v-for="(options, i) in additionalProceduresOptions">
-                                <FormCheckRadioGroup v-model="customAdditionalProceduresForm.radio" name="sample-radio"
-                                    type="radio" :options="additionalProceduresOptions[i]"
-                                    @change="onChangeCheckboxPA(additionalProceduresOptions[i])" />
+                            <FormField label="">
+                                <FormCheckRadioGroup 
+                                    v-model="customElementsForm.switch" 
+                                    name="sample-switch" 
+                                    type="switch"
+                                    :options="{ 'Si': t('message.yes')}" 
+                                    @change="onChangeCheckboxPA(1)"/>
                             </FormField>
+
+                            <FormField label="">
+                                <FormCheckRadioGroup 
+                                    v-model="customElementsFormNo.switch" 
+                                    name="sample-switch" 
+                                    type="switch"
+                                    :options="{'No': t('message.no') }" 
+                                    @change="onChangeCheckboxPA(0)"/>
+                            </FormField>
+
                         </div>
                     </div>
 
-                    <div>
+                    <div v-show="showFormPA">
                         <div class="grid lg:grid-cols-1 gap-1 card-header" style="margin-bottom: 1.5rem;">
                             <h1 style="margin-bottom: 1.5rem; font-weight: 700;" class="card-header-h1">
                                 {{ $t('message.risk.risksAssessment') }}
