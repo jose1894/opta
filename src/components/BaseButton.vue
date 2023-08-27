@@ -3,6 +3,7 @@ import { computed } from "vue";
 import { RouterLink } from "vue-router";
 import { getButtonColor } from "@/colors.js";
 import BaseIcon from "@/components/BaseIcon.vue";
+import { directive } from 'vue-tippy'
 
 const props = defineProps({
   label: {
@@ -40,6 +41,10 @@ const props = defineProps({
   as: {
     type: String,
     default: null,
+  },
+  messageTooltip: {
+    type: String,
+    default: "",
   },
   small: Boolean,
   outline: Boolean,
@@ -106,6 +111,12 @@ const componentClass = computed(() => {
 
   return base;
 });
+
+const msjToolTip = () =>  {
+  console.log(props.messageTooltip)
+  return props.messageTooltip
+}
+ 
 </script>
 
 <template>
@@ -117,8 +128,9 @@ const componentClass = computed(() => {
     :to="to"
     :target="target"
     :disabled="disabled"
+    v-tippy="{ content: messageTooltip }"
   >
     <BaseIcon v-if="icon" :path="icon" :size="iconSize" />
-    <span v-if="label" :class="labelClass">{{ label }}</span>
+    <span v-if="label" :class="labelClass">{{ label }} {{  messageTooltip }}</span>
   </component>
 </template>

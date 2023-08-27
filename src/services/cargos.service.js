@@ -2,6 +2,7 @@ import Service from './index.js'
 import authHeader from './auth.header.js'
 const resource = 'api/cargos/'
 
+
 export default {
     index(data) {
         return new Promise((resolve, reject) => {

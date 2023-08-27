@@ -26,7 +26,6 @@ const props = defineProps({
 const selectOptions = [
   { id: 1, label: t('message.itemMenu.statuses.active') },
   { id: 0, label: t('message.itemMenu.statuses.inactive') },
-  { id: 2, label: t('message.itemMenu.statuses.deleted') },
 ];
 
 const itemMenu = ref({

@@ -11,6 +11,7 @@ import BaseButtons from "@/components/BaseButtons.vue";
 import BaseButton from "@/components/BaseButton.vue";
 import cargosService from '@/services/cargos.service';
 
+
 defineProps({
   checkable: Boolean,
   checkDelete: Boolean, 
@@ -22,10 +23,12 @@ const router = useRouter();
 
 const mainStore = useMainStore();
 
+
 const items = computed(() => mainStore.jobPositions?.cargos);
 const total = computed(() => mainStore.jobPositions.total)
 
 const isModalActive = ref(false);
+const mEditTooltip = ref();
 
 const isModalDangerActive = ref(false);
 
@@ -41,7 +44,7 @@ const itemsPaginated = computed(() =>
   items.value
 );
 
-const listStatusOption = (status = '') => {
+const listStatusOption = (status = 1) => {
   const statuses = {0: 'inactive',1: 'active',2: 'deleted'};
   return statuses[status];
 }
@@ -78,6 +81,7 @@ const changePage = (page) => {
 const edit = (id) => {
   router.push({name: 'CargosUpdate', params: {id}})
 }
+
 
 const selectedItem = (cargo) => selectedCargos.value = cargo
 
@@ -159,6 +163,7 @@ const activateItem = () => {
               v-show="checkDelete && cargo.estado === 2"
               color="success"
               :icon="mdiRestore"
+              :messageTooltip="t('message.restore')"              
               small
               @click="isModalActive = true"
             />
@@ -167,11 +172,18 @@ const activateItem = () => {
               v-show="!checkDelete && cargo.estado !== 2"
               color="info"
               :icon="mdiFileEdit"
+              :messageTooltip="t('message.edit')"
               small
               @click="edit(cargo._id)"
             />
 
-            <BaseButton v-show="!checkDelete && cargo.estado !== 2" color="danger" :icon="mdiTrashCan" small @click="isModalDangerActive = true" />
+            <BaseButton 
+              v-show="!checkDelete && cargo.estado !== 2" 
+              color="danger" 
+              :icon="mdiTrashCan" 
+              :messageTooltip="t('message.delete')"
+              small 
+              @click="isModalDangerActive = true" />
 
           </BaseButtons>
         </td>

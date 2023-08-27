@@ -119,6 +119,7 @@ const goToAudit = (project) => {
             <BaseButton 
               color="info" 
               :icon="mdiEyeCircleOutline" 
+              :messageTooltip="t('message.redirect')" 
               small 
               @click="goToAudit(project)"
               v-show="project.estado !== 2" />

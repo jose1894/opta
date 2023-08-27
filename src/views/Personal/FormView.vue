@@ -33,8 +33,7 @@ const props = defineProps({
 
 const selectOptions = [
   { id: 1, label: t('message.personal.statuses.active') },
-  { id: 0, label: t('message.personal.statuses.inactive') },
-  { id: 2, label: t('message.personal.statuses.deleted') },
+  { id: 0, label: t('message.personal.statuses.inactive') }
 ];
 
 const selectOptionsTypePersonal = [

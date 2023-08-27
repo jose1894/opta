@@ -316,11 +316,26 @@ const deletePersonaProyecto = async (accionData) => {
         </td>
         <td class="before:hidden lg:w-1 whitespace-nowrap">
           <BaseButtons type="justify-start lg:justify-end" no-wrap>
-            <BaseButton color="success" :icon="mdiPlus" small
-              @click="buscarPersonaProject(project), isModalAddUserProject = true" />
-            <BaseButton color="info" :icon="mdiFileEdit" small @click="edit(project._id)" />
+            <BaseButton 
+              color="success" 
+              :icon="mdiPlus" 
+              :messageTooltip="t('message.assignPerson')"
+              small
+              @click="buscarPersonaProject(project), 
+              isModalAddUserProject = true" />
 
-            <BaseButton color="danger" :icon="mdiTrashCan" small @click="isModalDangerActive = true"
+            <BaseButton 
+              color="info" 
+              :icon="mdiFileEdit" 
+              :messageTooltip="t('message.edit')"
+              small 
+              @click="edit(project._id)" />
+
+            <BaseButton 
+              color="danger" 
+              :icon="mdiTrashCan" 
+              :messageTooltip="t('message.delete')"
+              small @click="isModalDangerActive = true"
               v-show="project.estado !== 2" />
           </BaseButtons>
         </td>

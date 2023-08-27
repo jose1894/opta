@@ -174,6 +174,7 @@ const activateItem = () => {
               v-show="checkDelete && bussinesUnit.estado === 2"
               color="success"
               :icon="mdiRestore"
+              :messageTooltip="t('message.restore')"
               small
               @click="isModalActive = true"
             />
@@ -182,11 +183,18 @@ const activateItem = () => {
               v-show="!checkDelete && bussinesUnit.estado !== 2"
               color="info"
               :icon="mdiFileEdit"
+              :messageTooltip="t('message.edit')"
               small
               @click="edit(bussinesUnit._id)"
             />
 
-            <BaseButton v-show="!checkDelete && bussinesUnit.estado !== 2" color="danger" :icon="mdiTrashCan" small @click="isModalDangerActive = true" />
+            <BaseButton 
+              v-show="!checkDelete && bussinesUnit.estado !== 2" 
+              color="danger" 
+              :icon="mdiTrashCan"
+              :messageTooltip="t('message.delete')" 
+              small 
+              @click="isModalDangerActive = true" />
           </BaseButtons>
         </td>
       </tr>

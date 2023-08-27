@@ -31,8 +31,7 @@ const props = defineProps({
 
 const selectOptions = [
   { id: 1, label: t('message.profiles.statuses.active') },
-  { id: 0, label: t('message.profiles.statuses.inactive') },
-  { id: 2, label: t('message.profiles.statuses.deleted') },
+  { id: 0, label: t('message.profiles.statuses.inactive') }
 ];
 
 let menuList = ref([]);

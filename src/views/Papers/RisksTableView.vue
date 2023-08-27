@@ -1083,11 +1083,24 @@ const onChangeCustomCheckbox = (key) => {
                 <td class="before:hidden lg:w-1 whitespace-nowrap">
                     <BaseButtons type="justify-start lg:justify-end" no-wrap>
 
-                        <BaseButton color="info" :icon="mdiPencilOutline" small @click="openModalForm(risk)" />
+                        <BaseButton 
+                            color="info" 
+                            :icon="mdiPencilOutline" 
+                            :messageTooltip="t('message.edit')"
+                            small 
+                            @click="openModalForm(risk)" />
 
-                        <BaseButton color="info" :icon="mdiPrinter" small />
+                        <BaseButton 
+                            color="info" 
+                            :icon="mdiPrinter" 
+                            :messageTooltip="t('message.print')"
+                            small />
 
-                        <BaseButton color="info" :icon="mdiDelete" small />
+                        <BaseButton 
+                            color="info" 
+                            :icon="mdiDelete" 
+                            :messageTooltip="t('message.delete')" 
+                            small />
 
                     </BaseButtons>
                 </td>

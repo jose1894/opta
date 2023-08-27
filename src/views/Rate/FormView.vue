@@ -47,8 +47,7 @@ let disabledOption = ref([false]);
 
 const selectOptions = [
     { id: 1, label: t('message.rate.statuses.active') },
-    { id: 0, label: t('message.rate.statuses.inactive') },
-    { id: 2, label: t('message.rate.statuses.deleted') },
+    { id: 0, label: t('message.rate.statuses.inactive') }
 ];
 
 

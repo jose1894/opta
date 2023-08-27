@@ -19,6 +19,8 @@ import '@fortawesome/fontawesome-free/css/all.css';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
+import { plugin as VueTippy } from 'vue-tippy'
+import 'tippy.js/dist/tippy.css' // optional for styling
 
 /* Init Pinia */
 const pinia = createPinia();
@@ -31,7 +33,20 @@ app.component('VueDatePicker', VueDatePicker);
 
 installGlobalFilters(app);
 
-app.use(router).use(pinia).use(i18n/*, {
+app.use(
+  VueTippy,
+  // optional
+  {
+    directive: 'tippy', // => v-tippy
+    component: 'tippy', // => <tippy/>
+    componentSingleton: 'tippy-singleton', // => <tippy-singleton/>,
+    defaultProps: {
+      placement: 'top',
+      moveTransition: 'transform 0.2s ease-out',
+      allowHTML: true,
+    }, // => Global default options * see all props
+  }
+).use(router).use(pinia).use(i18n/*, {
   install: (app, options) => {
     app.config.globalProperties.$translate = (key) => {
       console.log(key)

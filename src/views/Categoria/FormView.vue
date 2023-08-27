@@ -39,7 +39,6 @@ let bussinessUnitList = ref([]);
 const selectOptions = [
     { id: 1, label: t('message.category.statuses.active') },
     { id: 0, label: t('message.category.statuses.inactive') },
-    { id: 2, label: t('message.category.statuses.deleted') },
 ];
 
 

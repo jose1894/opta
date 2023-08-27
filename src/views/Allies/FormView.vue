@@ -54,7 +54,6 @@ const listTabs = [
 const selectOptions = [
     { id: 1, label: t('message.ally.statuses.active') },
     { id: 0, label: t('message.ally.statuses.inactive') },
-    { id: 2, label: t('message.ally.statuses.deleted') },
 ];
 
 const ally = ref({

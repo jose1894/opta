@@ -320,9 +320,18 @@ const tituloProjectClientModal = () => {
         </td>
         <td class="before:hidden lg:w-1 whitespace-nowrap">
           <BaseButtons type="justify-start lg:justify-end" no-wrap>
-            <BaseButton color="info" :icon="mdiFire" small @click="btnAddRiesgo(approache)" />
+            <BaseButton 
+              color="info" 
+              :icon="mdiFire"
+              :messageTooltip="t('message.addRisk')" 
+              small 
+              @click="btnAddRiesgo(approache)" />
 
-            <BaseButton color="info" :icon="mdiUpload" small @click="btnFormUploadFile(approache)" />
+            <BaseButton color="info" 
+            :icon="mdiUpload"
+            :messageTooltip="t('message.upload')" 
+            small 
+            @click="btnFormUploadFile(approache)" />
 
             <!-- <BaseButton color="info" :icon="mdiDelete" small /> -->
 

@@ -101,9 +101,19 @@ const actionDelete = () => {
         <td class="before:hidden lg:w-1 whitespace-nowrap">
           <BaseButtons type="justify-start lg:justify-end" no-wrap>
 
-            <BaseButton color="info" :icon="mdiUpload" small @click="btnDolownd(file)"/>
+            <BaseButton 
+              color="info" 
+              :icon="mdiUpload"
+              :messageTooltip="t('message.dolownd')" 
+              small 
+              @click="btnDolownd(file)"/>
 
-            <BaseButton color="info" :icon="mdiDelete" small  @click="deleteItem(file)"/>
+            <BaseButton 
+              color="info" 
+              :icon="mdiDelete"
+              :messageTooltip="t('message.delete')"  
+              small  
+              @click="deleteItem(file)"/>
 
           </BaseButtons>
         </td>

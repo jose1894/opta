@@ -39,7 +39,6 @@ const router = useRouter();
 const selectOptions = [
     { id: 1, label: t('message.branch.statuses.active') },
     { id: 0, label: t('message.branch.statuses.inactive') },
-    { id: 2, label: t('message.branch.statuses.deleted') },
 ];
 
 let countriesList = ref([]);

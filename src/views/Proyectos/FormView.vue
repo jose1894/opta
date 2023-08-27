@@ -42,8 +42,7 @@ const props = defineProps({
 
 const selectOptions = [
   { id: 1, label: t('message.project.statuses.active') },
-  { id: 0, label: t('message.project.statuses.inactive') },
-  { id: 2, label: t('message.project.statuses.deleted') },
+  { id: 0, label: t('message.project.statuses.inactive') }
 ];
 
 const formatter = ref({

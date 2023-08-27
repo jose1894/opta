@@ -51,7 +51,6 @@ const optionVisible = [
 const selectOptions = [
     { id: 1, label: t('message.approach.statuses.active') },
     { id: 0, label: t('message.approach.statuses.inactive') },
-    { id: 2, label: t('message.approach.statuses.deleted') },
 ];
 const dataInitial = {
     _id: '',

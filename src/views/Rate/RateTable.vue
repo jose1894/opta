@@ -144,6 +144,7 @@ const action = () => {
             <BaseButton
               color="info"
               :icon="mdiFileEdit"
+              :messageTooltip="t('message.edit')"
               small
               @click="edit(rate._id)"
             />
@@ -151,6 +152,7 @@ const action = () => {
             <BaseButton
               color="danger"
               :icon="mdiTrashCan"
+              :messageTooltip="t('message.delete')"
               small
               @click="isModalDangerActive = true"
               v-show="rate.estado !== 2"

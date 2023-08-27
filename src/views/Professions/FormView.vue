@@ -25,8 +25,7 @@ const props = defineProps({
 
 const selectOptions = [
   { id: 1, label: t('message.profession.statuses.active') },
-  { id: 0, label: t('message.profession.statuses.inactive') },
-  { id: 2, label: t('message.profession.statuses.deleted') },
+  { id: 0, label: t('message.profession.statuses.inactive') }
 ];
 
 const profession = ref({

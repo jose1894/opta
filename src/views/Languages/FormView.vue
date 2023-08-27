@@ -25,8 +25,7 @@ const props = defineProps({
 
 const selectOptions = [
   { id: 1, label: t('message.language.statuses.active') },
-  { id: 0, label: t('message.language.statuses.inactive') },
-  { id: 2, label: t('message.language.statuses.deleted') },
+  { id: 0, label: t('message.language.statuses.inactive') }
 ];
 
 const language = ref({

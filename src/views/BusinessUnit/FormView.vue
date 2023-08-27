@@ -36,7 +36,6 @@ const router = useRouter();
 const selectOptions = [
     { id: 1, label: t('message.bussinesUnit.statuses.active') },
     { id: 0, label: t('message.bussinesUnit.statuses.inactive') },
-    { id: 2, label: t('message.bussinesUnit.statuses.deleted') },
 ];
 
 

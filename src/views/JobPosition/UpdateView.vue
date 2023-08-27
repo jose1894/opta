@@ -1,4 +1,5 @@
 <script setup>
+    import { ref } from "vue";
     import { mdiBallotOutline } from "@mdi/js";
     import SectionTitleLineWithButton from '@/components/SectionTitleLineWithButton.vue';
     import LayoutAuthenticated from '@/layouts/LayoutAuthenticated.vue';

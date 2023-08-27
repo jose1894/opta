@@ -43,7 +43,7 @@ const onChangePage = (page) => {
 }
 
 const onSortPage = (sortBy,sortDesc) => {
-  endPointUseSort({sortBy,sortDesc});
+  endPointUseSort({ sortBy, sortDesc });
 }
 
 const onChangeSwtch = () => { 
@@ -66,10 +66,10 @@ const endPointUse = (page) => {
   
 }
 
-const endPointUseSort = (sortBy, sortDesc) => {
+const endPointUseSort = (sort) => {
   customElementsForm.switch.length === 0 
-    ? getCurrencies({ sortBy, sortDesc }) 
-    : getCurrenciesDelete({ sortBy, sortDesc })
+    ? getCurrencies(sort) 
+    : getCurrenciesDelete(sort)
 }
 
 

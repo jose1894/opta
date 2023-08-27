@@ -61,8 +61,7 @@ const listTabs = [
 
 const selectOptions = [
     { id: 1, label: t('message.cargo.statuses.active') },
-    { id: 0, label: t('message.cargo.statuses.inactive') },
-    { id: 2, label: t('message.cargo.statuses.deleted') },
+    { id: 0, label: t('message.cargo.statuses.inactive') }
 ];
 
 const typeContactOptions = [

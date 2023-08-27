@@ -49,9 +49,10 @@ const currentSort = 'nombre';
 const sortDesc = ref(false);
 
 const sort = (s) => {
-  sortDesc.value = !sortDesc.value;
-  emit('sort',s, sortDesc.value);
+  sortDesc.value = true;
+  emit('sort', s, sortDesc.value);
 }
+
 /* Sorting */
 
 const numPages = computed(() => Math.ceil(total.value / perPage.value));
@@ -169,6 +170,7 @@ const activateItem = () => {
               v-show="checkDelete"
               color="success"
               :icon="mdiRestore"
+              :messageTooltip="t('message.restore')"
               small
               @click="isModalActive = true"
             />
@@ -177,6 +179,7 @@ const activateItem = () => {
               v-show="!checkDelete"
               color="info"
               :icon="mdiFileEdit"
+              :messageTooltip="t('message.edit')"
               small
               @click="edit(currency._id)"
             />
@@ -185,6 +188,7 @@ const activateItem = () => {
               v-show="currency.estado !== 2"
               color="danger"
               :icon="mdiTrashCan"
+              :messageTooltip="t('message.delete')"
               small
               @click="isModalDangerActive = true"
             />

@@ -64,8 +64,7 @@ let listTabs = [
 
 const selectOptions = [
     { id: 1, label: t('message.client.statuses.active') },
-    { id: 0, label: t('message.client.statuses.inactive') },
-    { id: 2, label: t('message.client.statuses.deleted') },
+    { id: 0, label: t('message.client.statuses.inactive') }
 ];
 
 const contacts = ref({
