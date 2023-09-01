@@ -92,6 +92,8 @@ const submit = async () => {
 
 };
 
+const goTo = () => router.push('/setup/profileActions')
+
 </script>
 <template>
   <CardBox isForm @submit.prevent="submit">
@@ -106,8 +108,11 @@ const submit = async () => {
         <FormControl v-model="accionPerfil.estado" :icon="mdiListStatus" :options="selectOptions" />
       </FormField>
     </div>
-    <template #footer>
-      <BaseButton :label="$t(`message.${props.saveLabel}`)" type="submit" color="success" />
+    <template #footer>      
+      <div style="display: flex; justify-content: space-between;">
+        <BaseButton :label="$t(`message.${props.saveLabel}`)" type="submit" color="success" />
+        <BaseButton :label="$t('message.return')"  color="info" @click="goTo()"/>
+      </div> 
     </template>
   </CardBox>
 </template>

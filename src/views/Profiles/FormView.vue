@@ -144,6 +144,8 @@ const onChangeCheckbox = (accionData) => {
   console.log(perfil.value)
 }
 
+const goTo = () => router.push('/setup/profiles')
+
 </script>
 <template>
   <CardBox isForm @submit.prevent="submit">
@@ -173,8 +175,11 @@ const onChangeCheckbox = (accionData) => {
           @change="onChangeCheckbox(listarAccionesPerfil[i])" />
       </FormField>
     </div>
-    <template #footer>
-      <BaseButton :label="$t(`message.${props.saveLabel}`)" type="submit" color="success" />
+    <template #footer>      
+      <div style="display: flex; justify-content: space-between;">
+        <BaseButton :label="$t(`message.${props.saveLabel}`)" type="submit" color="success" />
+        <BaseButton :label="$t('message.return')"  color="info" @click="goTo()"/>
+      </div>    
     </template>
   </CardBox>
 </template>

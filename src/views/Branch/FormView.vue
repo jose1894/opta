@@ -174,6 +174,7 @@ const submit = async () => {
         console.log('error')
     }
 };
+const goTo = () => router.push('/setup/branches')
 </script>
 
 <template>
@@ -213,7 +214,11 @@ const submit = async () => {
             </div>
         </div>
         <template #footer>
-            <BaseButton :label="$t(`message.${props.saveLabel}`)" type="submit" color="success" />
+            
+            <div style="display: flex; justify-content: space-between;">
+                <BaseButton :label="$t(`message.${props.saveLabel}`)" type="submit" color="success" />
+                <BaseButton :label="$t('message.return')"  color="info" @click="goTo()"/>
+            </div>  
         </template>
     </CardBox>
 </template>

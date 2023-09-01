@@ -187,6 +187,8 @@ console.log('simulateNow ES MAYOR A simulateToken?', simulateNow.isAfter(simulat
   return simulateNow.isBefore(simulateToken) 
   //|| date > new Date(2023, 0, 8);
 }
+
+const goTo = () => router.push('/setup/rates')
 </script>
 
 <template>
@@ -237,8 +239,11 @@ console.log('simulateNow ES MAYOR A simulateToken?', simulateNow.isAfter(simulat
                 </div>
             </div>
         </div>
-        <template #footer>
-            <BaseButton :label="$t(`message.${props.saveLabel}`)" type="submit" color="success" />
+        <template #footer>            
+            <div style="display: flex; justify-content: space-between;">
+                <BaseButton :label="$t(`message.${props.saveLabel}`)" type="submit" color="success" />
+                <BaseButton :label="$t('message.return')"  color="info" @click="goTo()"/>
+            </div>  
         </template>
     </CardBox>
 </template>

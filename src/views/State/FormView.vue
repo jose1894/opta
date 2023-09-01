@@ -104,6 +104,8 @@ const submit = async () => {
 
 };
 
+const goTo = () => router.push('/setup/states')
+
 </script>
 <template>
   <CardBox isForm @submit.prevent="submit">
@@ -122,7 +124,10 @@ const submit = async () => {
       </FormField>
     </div>
     <template #footer>
-      <BaseButton :label="$t(`message.${props.saveLabel}`)" type="submit" color="success" />
+      <div style="display: flex; justify-content: space-between;">
+        <BaseButton :label="$t(`message.${props.saveLabel}`)" type="submit" color="success" />
+        <BaseButton :label="$t('message.return')"  color="info" @click="goTo()"/>
+      </div>    
     </template>
   </CardBox>
 </template>

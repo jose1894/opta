@@ -53,6 +53,8 @@ onMounted(async () => {
   }
 })
 
+const goTo = () => router.push('/setup/professions')
+
 const rules = computed(() => ({
             codigo: { required, maxLength: maxLength(3) },
             nombre: { required,  },
@@ -89,7 +91,7 @@ const submit = async () => {
       })
     }else{
       console.log('error')
-    }
+    }   
 
 };
 
@@ -107,8 +109,11 @@ const submit = async () => {
         <FormControl v-model="profession.estado" :icon="mdiListStatus" :options="selectOptions" />
       </FormField>
     </div>
-    <template #footer>
-      <BaseButton :label="$t(`message.${props.saveLabel}`)" type="submit" color="success" />
+    <template #footer>      
+      <div style="display: flex; justify-content: space-between;">
+        <BaseButton :label="$t(`message.${props.saveLabel}`)" type="submit" color="success" />
+        <BaseButton :label="$t('message.return')"  color="info" @click="goTo()"/>
+      </div> 
     </template>
   </CardBox>
 </template>

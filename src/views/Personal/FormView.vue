@@ -206,6 +206,8 @@ const submit = async () => {
 
 };
 
+const goTo = () => router.push('/setup/personal')
+
 </script>
 <template>
   <CardBox isForm @submit.prevent="submit">
@@ -269,8 +271,11 @@ const submit = async () => {
         <FormControl type="textarea" v-model="persona.direccion" :icon="mdiRenameBox" />
       </FormField>
     </div>    
-    <template #footer>
-      <BaseButton :label="$t(`message.${props.saveLabel}`)" type="submit" color="success" />
+    <template #footer>      
+      <div style="display: flex; justify-content: space-between;">
+        <BaseButton :label="$t(`message.${props.saveLabel}`)" type="submit" color="success" />
+        <BaseButton :label="$t('message.return')"  color="info" @click="goTo()"/>
+      </div>  
     </template>
   </CardBox>
 </template>

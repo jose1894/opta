@@ -302,6 +302,7 @@ const submit = async () => {
         console.log('error')
     }
 };
+const goTo = () => router.push('/setup/clients')
 </script>
 
 <template>
@@ -455,8 +456,11 @@ const submit = async () => {
                 </TabsComponent>
             </div>
         </div>
-        <template #footer>
-            <BaseButton v-show="tab === 1" :label="$t(`message.${props.saveLabel}`)" type="submit" color="success" />
+        <template #footer>            
+            <div style="display: flex; justify-content: space-between;">
+                <BaseButton v-show="tab === 1" :label="$t(`message.${props.saveLabel}`)" type="submit" color="success" />
+                <BaseButton :label="$t('message.return')"  color="info" @click="goTo()"/>
+            </div>  
         </template>
     </CardBox>
 </template>
