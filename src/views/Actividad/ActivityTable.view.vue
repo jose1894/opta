@@ -150,6 +150,7 @@ const activateItem = () => {
       <tr>    
         <th @click="sort('nombre')">{{ $t('message.activity.name') }}</th>
         <th @click="sort('siglas')">{{ $t('message.activity.acronyms') }}</th>
+        <th @click="sort('unidadNegocio')">{{ $t('message.activity.bussinesUnit') }}</th>
         <th @click="sort('estado')">{{ $t('message.activity.status') }}</th>
         <th />
       </tr>
@@ -162,6 +163,9 @@ const activateItem = () => {
         </td>
         <td :data-label="$t('message.activity.acronyms')">
           {{ activity.siglas }}
+        </td>
+        <td :data-label="$t('message.activity.bussinesUnit')">
+          {{ activity.unidadNegocio.nombre }}
         </td>
         <td :data-label="$t('message.activity.status')">
           {{ $t(`message.activity.statuses.${listStatusOption(activity.estado)}`) }}

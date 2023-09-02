@@ -11,22 +11,18 @@ import useValidate from '@vuelidate/core';
 import { useToast } from 'vue-toastification';
 import { useRoute, useRouter } from 'vue-router';
 import projectsService from '@/services/projects.service'
-import membersServices from '@/services/member.service'
 import bussinesUnitService from '@/services/bussinesUnit.service'
 import clientService from '@/services/clients.srvice'
 import personalService from '@/services/personal.service'
 import breanchesService from '@/services/branches.service'
 import activitiesService from '@/services/activities.service'
-import VueTailwindDatepicker from 'vue-tailwind-datepicker';
 import moment from 'moment';
-import { format } from 'date-fns'
 
 const { t } = useI18n();
 const toast = useToast();
 const route = useRoute();
 const router = useRouter();
 const isReadonly = ref(true);
-let miembroList = ref([]);
 let unidadNegocioList = ref([]);
 let clienteList = ref([]);
 let socioList = ref([]);
@@ -67,11 +63,10 @@ const project = ref({
   descripcionServicio: "",
   creadoName: "",
   estado: selectOptions[0],
-  membresia: miembroList.value,
 });
 
 const action = (project) => {
-  const { _id, codigo, fecha, creado, cliente, socio, gerente, sucursal, unidadNegocio, tipoServicio, descripcionServicio, estado, membresia } = project.value;
+  const { _id, codigo, fecha, creado, cliente, socio, gerente, sucursal, unidadNegocio, tipoServicio, descripcionServicio, estado } = project.value;
   const data = {
     _id,
     codigo,
@@ -85,7 +80,6 @@ const action = (project) => {
     tipoServicio: tipoServicio.id,
     descripcionServicio,
     estado: estado.id,
-    membresia: membresia.id
   }
   if (props.path === 'create') {
     return projectsService.create(data)
@@ -95,10 +89,6 @@ const action = (project) => {
 }
 
 onMounted(async () => {
-  let listarMiembros = await membersServices.allMiembrosGet()
-  const dataMiembros = listarMiembros?.data.miembros;
-  miembroList.value = dataMiembros.map((miembro) => ({ id: miembro._id, label: miembro.nombre }));
-
   let listarClientes = await clientService.allClientes()
   const dataClientes = listarClientes?.data.cliente;
   clienteList.value = dataClientes.map((client) => ({ id: client._id, label: client.nombre }));
@@ -144,7 +134,6 @@ onMounted(async () => {
     project.value.unidadNegocio = _asignarOpcionesAlSelect(res.data?.unidadNegocio)
     project.value.tipoServicio = _asignarOpcionesAlSelect(res.data?.tipoServicio)
     project.value.estado = selectOptions.filter(status => status.id === res.data.estado)[0]
-    project.value.membresia = _asignarOpcionesAlSelect(res.data?.membresia)
   }
 })
 
@@ -218,17 +207,12 @@ const goTo = () => router.push('/setup/projects')
         <FormControl v-model="project.sucursal" :icon="mdiListStatus" :options="sucursalList" />
       </FormField>      
     </div>
-    <div class="grid md:grid-cols-2 gap-2">
+    <div class="grid md:grid-cols-3 gap-3">
       <FormField :label="$t('message.project.bussinesUnit')">
         <FormControl v-model="project.unidadNegocio" :icon="mdiListStatus" :options="unidadNegocioList" />
       </FormField>
       <FormField :label="$t('message.project.typeOfService')">
         <FormControl v-model="project.tipoServicio" :icon="mdiListStatus" :options="tipoServicioList" />
-      </FormField>
-    </div>
-    <div class="grid md:grid-cols-2 gap-2">
-      <FormField :label="$t('message.project.membership')">
-        <FormControl v-model="project.membresia" :icon="mdiListStatus" :options="miembroList" />
       </FormField>
       <FormField :label="$t('message.project.status')" :help="v$?.estado?.$errors[0]?.$message">
         <FormControl v-model="project.estado" :icon="mdiListStatus" :options="selectOptions" />

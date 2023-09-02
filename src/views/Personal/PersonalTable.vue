@@ -141,6 +141,9 @@ const activateItem = () => {
       <tr>
         <th @click="sort('nombres')">{{ $t('message.personal.names') }}</th>
         <th @click="sort('apellidos')">{{ $t('message.personal.surnames') }}</th>
+        <th @click="sort('categoria')">{{ $t('message.personal.category') }}</th>
+        <th @click="sort('unidadNegocio')">{{ $t('message.personal.businessUnit') }}</th>
+        <th @click="sort('sucursal')">{{ $t('message.personal.branch') }}</th>
         <th @click="sort('estado')">{{ $t('message.personal.status') }}</th>
       </tr>
     </thead>
@@ -153,9 +156,18 @@ const activateItem = () => {
         <td :data-label="$t('message.personal.surnames')">
           {{ persona.apellidos }}
         </td>
+        <td :data-label="$t('message.personal.category')">
+          {{ persona?.categoria?.nombre }}
+        </td>
+        <td :data-label="$t('message.personal.businessUnit')">
+          {{ persona?.unidadNegocio?.nombre }}
+        </td>
+        <td :data-label="$t('message.personal.branch')">
+          {{ persona?.sucursal?.nombre }}
+        </td>
         <td :data-label="$t('message.personal.status')">
           {{ $t(`message.personal.statuses.${listStatusOption(persona.estado)}`) }}
-        </td>        
+        </td>                
         <td class="before:hidden lg:w-1 whitespace-nowrap">
           <BaseButtons type="justify-start lg:justify-end" no-wrap>
             <BaseButton

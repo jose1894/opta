@@ -152,7 +152,7 @@ const activateItem = () => {
       <tr>
         <th @click="sort('codigo')">{{ $t('message.client.code') }}</th>        
         <th @click="sort('nombre')">{{ $t('message.client.name') }}</th>
-        <th @click="sort('idFiscal')">{{ $t('message.client.id') }}</th>
+        <th @click="sort('iDFiscal')">{{ $t('message.client.id') }}</th>
         <th @click="sort('estado')">{{ $t('message.client.status') }}</th>
         <th />
       </tr>

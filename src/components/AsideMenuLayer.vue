@@ -31,6 +31,11 @@ const menuClick = (event, item) => {
 const asideLgCloseClick = (event) => {
   emit("aside-lg-close-click", event);
 };
+
+const setMemebresia  = () => {
+  const user = JSON.parse(localStorage.getItem('user'))
+  return user?.userData.membresia?.nombre 
+};
 </script>
 
 <template>
@@ -49,7 +54,7 @@ const asideLgCloseClick = (event) => {
         <div
           class="text-center flex-1 lg:text-left lg:pl-6 xl:text-center xl:pl-0"
         >
-          <b class="font-black">One</b>
+          <b class="font-black">{{setMemebresia()}}</b>
         </div>
         <button
           class="hidden lg:inline-block xl:hidden p-3"

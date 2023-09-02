@@ -39,7 +39,7 @@ const onChangePage = (page) => {
 }
 
 const onSortPage = (sortBy,sortDesc) => {
-    endPointUseSort({sortBy,sortDesc});
+    endPointUseSort({ sortBy, sortDesc });
 }
 
 const getRatesDelete = (data) => {
@@ -54,10 +54,11 @@ const endPointUse = (page) => {
     getRatesDelete({ page })
 }
 
-const endPointUseSort = (sortBy, sortDesc) => {
-    customElementsForm.switch.length === 0 ? getRates({ sortBy, sortDesc }) :
-    getRatesDelete({ sortBy, sortDesc })
-} 
+const endPointUseSort = (sort) => {
+    customElementsForm.switch.length === 0 
+    ? getRates(sort) 
+    : getRatesDelete(sort)
+}
 
 </script>
 <template>

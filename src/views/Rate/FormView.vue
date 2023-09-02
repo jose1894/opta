@@ -54,7 +54,7 @@ const selectOptions = [
 const rate = ref({
     _id: '',
     codigo: "00",
-    fecha: new Date(),
+    fecha: moment(new Date(), 'DD-MM-YYYY').format('DD-MM-YYYY'),
     siglas: "",
     categoria: categoriasList.value,
     unidadNegocio: bussinessUnitList.value,
@@ -134,6 +134,7 @@ const action = (rate) => {
         estado: estado.id
     }
     if (props.path === 'create') {
+        data.fecha = moment(new Date(), 'DD-MM-YYYY').format('DD-MM-YYYY')
         return ratesService.create(data)
     }
     return ratesService.update(data);
@@ -160,8 +161,14 @@ const submit = async () => {
                     const errors = err.response.data.errors;
                     let errorStr = '';
                     
-                    for (let attr of errors) {
+                    // for (let attr of errors) {
+                    // }
+                    for (let value of Object.values(errors)) {
+                        value.forEach(function(value, index) {
+                            errorStr+= value;
+                        });                        
                     }
+                    toast.error(`${errorStr}`)                    
                 }
             })
     } else {

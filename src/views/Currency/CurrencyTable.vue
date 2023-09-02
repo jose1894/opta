@@ -49,8 +49,8 @@ const currentSort = 'nombre';
 const sortDesc = ref(false);
 
 const sort = (s) => {
-  sortDesc.value = true;
-  emit('sort', s, sortDesc.value);
+  sortDesc.value = !sortDesc.value;
+  emit('sort',s, sortDesc.value);
 }
 
 /* Sorting */

@@ -43,7 +43,7 @@ const onChangePage = (page) => {
 }
 
 const onSortPage = (sortBy,sortDesc) => {
-  endPointUseSort({ sortBy, sortDesc });
+  endPointUseSort({ sortBy, sortDesc }); 
 }
 
 const onChangeSwtch = () => { 

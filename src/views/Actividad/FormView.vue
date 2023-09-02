@@ -18,7 +18,6 @@ const { t } = useI18n();
 const toast = useToast();
 const route = useRoute();
 const router = useRouter();
-let miembroList = ref([]);
 let unidadNegocioList = ref([]);
 
 const props = defineProps({
@@ -43,18 +42,16 @@ const activity = ref({
   siglas: "",
   nombre: "",
   cargable: selectOptionsCargable[0],
-  miembro: miembroList.value,
   estado: selectOptions[0],
 });
 
 const action = (activity) => {
-  const { _id, unidadNegocio, siglas, nombre, cargable, miembro, estado } = activity.value;
+  const { _id, unidadNegocio, siglas, nombre, cargable,  estado } = activity.value;
   const data = {
     _id,
     unidadNegocio: unidadNegocio.id,
     siglas, nombre,
     cargable: cargable.id,
-    miembro: miembro.id,
     estado: estado.id
   }
   if (props.path === 'create') {
@@ -65,9 +62,6 @@ const action = (activity) => {
 }
 
 onMounted(async () => {
-  let listarMiembros = await membersServices.allMiembrosGet()
-  const dataMiembros = listarMiembros?.data.miembros;
-  miembroList.value = dataMiembros.map((miembro) => ({ id: miembro._id, label: miembro.nombre }));
 
   let listarUnidadNegocio = await bussinesUnitService.allBussinesUnitGet()
   const dataUnidadNegocio = listarUnidadNegocio?.data.unidadesNegocio;
@@ -76,7 +70,6 @@ onMounted(async () => {
     const res = await activitiesService.read(route.params);
     activity.value = res.data
     activity.value.unidadNegocio = _asignarOpcionesAlSelect(res.data?.unidadNegocio)
-    activity.value.miembro = _asignarOpcionesAlSelect(res.data?.miembro)
     activity.value.cargable = selectOptionsCargable.filter(cargable => cargable.id === res.data.cargable)[0]
     activity.value.estado = selectOptions.filter(status => status.id === res.data.estado)[0]
   }
@@ -138,13 +131,10 @@ const goTo = () => router.push('/setup/activities')
         <FormControl v-model="activity.nombre" :icon="mdiRenameBox" />
       </FormField>     
     </div>
-    <div class="grid md:grid-cols-3 gap-3">
+    <div class="grid md:grid-cols-2 gap-2">
         <FormField :label="$t('message.activity.chargeable')">
           <FormControl v-model="activity.cargable" :icon="mdiListStatus" :options="selectOptionsCargable" />
         </FormField>
-        <FormField :label="$t('message.activity.membership')">
-        <FormControl v-model="activity.miembro" :icon="mdiListStatus" :options="miembroList" />
-      </FormField>
         <FormField :label="$t('message.activity.status')" :help="v$?.estado?.$errors[0]?.$message">
           <FormControl v-model="activity.estado" :icon="mdiListStatus" :options="selectOptions" />
         </FormField>

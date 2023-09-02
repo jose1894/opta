@@ -43,7 +43,6 @@ let statesList = ref([]);
 let citiesList = ref([]);
 let cargosList = ref([]);
 let industriesList = ref([]);
-let miembroList = ref([]);
 let clientId = '';
 
 const tab = ref(0)
@@ -95,7 +94,6 @@ const client = ref({
     calle: "",
     paginaWeb: "",
     direccion: "",
-    miembro: miembroList.value,
     estado: selectOptions[0],
     contactos: contacts.value
 });
@@ -124,9 +122,6 @@ onMounted(async () => {
     const dataIndustrias = listarIndustrias?.data.industrias;
     industriesList.value = dataIndustrias.map((industria) => ({ id: industria._id, label: industria.nombre }));
 
-    let listarMiembros = await membersServices.allMiembrosGet()
-    const dataMiembros = listarMiembros?.data.miembros;
-    miembroList.value = dataMiembros.map((miembro) => ({ id: miembro._id, label: miembro.nombre }));
     if (props.path === 'update') {
         const res = await clientsService.read(route.params);
         client.value = res.data.cliente
@@ -143,7 +138,6 @@ onMounted(async () => {
         client.value.estado = selectOptions.filter(status => status.id === estado)[0]
         client.value.companiaListada = option.filter(company => company.id === companiaListada)[0]
         client.value.companiaRegulada = option.filter(company => company.id === companiaRegulada)[0]
-        client.value.miembro = _asignarOpcionesAlSelect(res.data.cliente?.miembro)
         selectedPais(client.value.pais, res.data.cliente)
     }
 });
@@ -206,7 +200,6 @@ const action = (client) => {
         calle,
         paginaWeb,
         direccion,
-        miembro,
         estado,
         contactos } = client.value;
 
@@ -241,7 +234,6 @@ const action = (client) => {
         calle,
         paginaWeb,        
         direccion,
-        miembro: miembro.id,
         estado: estado.id,
         contactos: saveDataContact
 
@@ -261,7 +253,7 @@ const addItem = async (i) => {
     contacts.value.contact.push ({
         nombre: "",
         apellido: "",
-        cargo: miembroList.value,
+        cargo: cargosList.value,
         telefonoOfic: "",
         telefonoCelu: "",
         correo: "",
@@ -352,13 +344,9 @@ const goTo = () => router.push('/setup/clients')
                                     <FormControl v-model="client.paginaWeb" :icon="mdiRenameBox" />
                                 </FormField>
                             </div>
-                            <div class="grid md:grid-cols-3 gap-3">
+                            <div class="grid md:grid-cols-2 gap-2">
                                 <FormField :label="$t('message.client.address')">
                                     <FormControl v-model="client.direccion" :icon="mdiRenameBox" />
-                                </FormField>
-
-                                <FormField :label="$t('message.client.membership')">
-                                    <FormControl v-model="client.miembro" :icon="mdiListStatus" :options="miembroList"/>
                                 </FormField>
 
                                 <FormField :label="$t('message.client.status')">

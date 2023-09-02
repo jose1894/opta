@@ -40,7 +40,7 @@
     }
 
     const onSortPage = (sortBy,sortDesc) => {
-        endPointUseSort({sortBy,sortDesc});
+        endPointUseSort({ sortBy, sortDesc });
     }
 
     const getProjectsDelete = (data) => {
@@ -54,11 +54,13 @@
         customElementsForm.switch.length === 0 ? getProjects({ page }) :
         getProjectsDelete({ page })
     }
+    
+    const endPointUseSort = (sort) => {
+        customElementsForm.switch.length === 0 
+        ? getProjects(sort) 
+        : getProjectsDelete(sort)
+    }
 
-    const endPointUseSort = (sortBy, sortDesc) => {
-        customElementsForm.switch.length === 0 ? getProjects({ sortBy, sortDesc }) :
-        getProjectsDelete({ sortBy, sortDesc })
-    }    
 </script>
 <template>
   <LayoutAuthenticated>

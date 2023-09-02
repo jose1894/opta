@@ -45,14 +45,16 @@ const listStatusOption = (status = '') => {
   const statuses = {0: 'inactive',1: 'active',2: 'deleted'};
   return statuses[status];
 }
+
 /* Sorting */
-const currentSort = 'name';
+const currentSort = 'siglas';
 const sortDesc = ref(false);
 
 const sort = (s) => {
   sortDesc.value = !sortDesc.value;
   emit('sort',s, sortDesc.value);
 }
+
 /* Sorting */
 
 const numPages = computed(() => Math.ceil(total.value / perPage.value));
@@ -119,8 +121,8 @@ const action = () => {
     <thead>
       <tr>
         <th @click="sort('siglas')">{{ $t('message.rate.acronyms') }}</th>
-        <th @click="sort('nombre')">{{ $t('message.rate.category') }}</th>
-        <th @click="sort('estado')">{{ $t('message.rate.businessUnit') }}</th>
+        <th @click="sort('categoria')">{{ $t('message.rate.category') }}</th>
+        <th @click="sort('unidadNegocio')">{{ $t('message.rate.businessUnit') }}</th>
         <th @click="sort('estado')">{{ $t('message.rate.status') }}</th>
       </tr>
     </thead>

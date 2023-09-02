@@ -49,7 +49,6 @@ let unidadNegocioList = ref([])
 let categoriaList = ref([])
 let sucursalList = ref([])
 let perfilList = ref([])
-let miembroList = ref([])
 
 const persona = ref({
   _id: '',
@@ -69,7 +68,6 @@ const persona = ref({
   perfil: perfilList.value, 
   usuarioAcceso: '', 
   claveAcceso: '', 
-  miembro: miembroList.value, 
   estado: selectOptions[0],
   tipoPersonal: selectOptionsTypePersonal[0]
 });
@@ -92,7 +90,6 @@ const action = (cargo) =>{
     perfil, 
     usuarioAcceso, 
     claveAcceso, 
-    miembro,
     tipoPersonal, 
     estado
    } = cargo.value;
@@ -112,7 +109,6 @@ const action = (cargo) =>{
     perfil: perfil.id, 
     usuarioAcceso, 
     claveAcceso, 
-    miembro: miembro.id, 
     tipoPersonal: tipoPersonal.id,
     estado: estado.id,  }
   if (props.path === 'create'){
@@ -147,9 +143,6 @@ onMounted(async () => {
   const dataPerfil = listarPerfil?.data.perfiles;
   perfilList.value = dataPerfil.map((perfil) => ({ id: perfil._id, label: perfil.descripcion }));
 
-  let listarMiembros = await membersService.allMiembrosGet()
-  const dataMiembros = listarMiembros?.data.miembros;
-  miembroList.value = dataMiembros.map((miembro) => ({ id: miembro._id, label: miembro.nombre }));
   if (props.path === 'update'){
     const res = await personalService.read(route.params);
     persona.value = res.data
@@ -161,7 +154,6 @@ onMounted(async () => {
     persona.value.categoria = _asignarOpcionesAlSelect(res.data?.categoria)
     persona.value.sucursal = _asignarOpcionesAlSelect(res.data?.sucursal)
     persona.value.perfil = _asignarOpcionesAlSelect(res.data?.perfil)
-    persona.value.miembro = _asignarOpcionesAlSelect(res.data?.miembro)
   }
 })
 
@@ -258,10 +250,7 @@ const goTo = () => router.push('/setup/personal')
         <FormControl v-model="persona.estado" :icon="mdiListStatus" :options="selectOptions" />
       </FormField>
     </div>
-    <div class="grid md:grid-cols-2 gap-2">
-      <FormField :label="$t('message.personal.membership')">
-          <FormControl v-model="persona.miembro" :icon="mdiListStatus" :options="miembroList"/>
-      </FormField>
+    <div class="grid md:grid-cols-1 gap-1">
       <FormField :label="$t('message.personal.typePersonnel')">
         <FormControl v-model="persona.tipoPersonal" :icon="mdiListStatus" :options="selectOptionsTypePersonal" />
       </FormField>
