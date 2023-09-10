@@ -174,8 +174,8 @@ const btnAddRiesgo = (approache) => {
     isModalActive.value = true
   }, 10);
 }
-const successMessage = props.path === 'create' ? t("message.audit.created.success") : t("message.audit.updated.success")
-const errorMessage = props.path === 'create' ? t("message.audit.created.error") : t("message.audit.updated.error")
+const successMessage = props.path === 'create' ? t("message.risk.created.success") : t("message.risk.updated.success")
+const errorMessage = props.path === 'create' ? t("message.risk.created.error") : t("message.risk.updated.error")
 const submit = async () => {
   action(unidadRiesgo)
     .then(() => {
@@ -186,7 +186,7 @@ const submit = async () => {
     .catch(err => {
       console.log(err)
       if (err.response?.data?.msg) {
-        toast.error(`${t("message.audit.created.error")} ${err.response.data.msg}`)
+        toast.error(`${t("message.risk.created.error")} ${err.response.data.msg}`)
         return
       }
 
@@ -293,7 +293,7 @@ const tituloProjectClientModal = () => {
           <FormControl :name="'indice'" v-model="unidadRiesgo.titulo" :icon="mdiCodeBraces" />
         </FormField>
         <FormField :label="$t('message.audit.description')">
-          <FormControl :name="'descripcion'" v-model="unidadRiesgo.descripcion" :icon="mdiCodeBraces" />
+          <FormControl type="textarea" :name="'descripcion'" v-model="unidadRiesgo.descripcion" :icon="mdiCodeBraces" />
         </FormField>
       </div>
       <template #footer>
@@ -316,22 +316,25 @@ const tituloProjectClientModal = () => {
           {{ approache.indice }}
         </td>
         <td :data-label="$t('message.audit.description')">
-          {{ approache.nombre }}
+          {{ approache.nombre }} {{ approache.rcr }}
         </td>
         <td class="before:hidden lg:w-1 whitespace-nowrap">
           <BaseButtons type="justify-start lg:justify-end" no-wrap>
-            <BaseButton 
+            <BaseButton
+              v-if="approache.rcr === 1" 
               color="info" 
               :icon="mdiFire"
               :messageTooltip="t('message.addRisk')" 
               small 
               @click="btnAddRiesgo(approache)" />
 
-            <BaseButton color="info" 
-            :icon="mdiUpload"
-            :messageTooltip="t('message.upload')" 
-            small 
-            @click="btnFormUploadFile(approache)" />
+            <BaseButton 
+              v-if="approache.visible !== 1"
+              color="info" 
+              :icon="mdiUpload"
+              :messageTooltip="t('message.upload')" 
+              small 
+              @click="btnFormUploadFile(approache)" />
 
             <!-- <BaseButton color="info" :icon="mdiDelete" small /> -->
 

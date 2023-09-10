@@ -1,5 +1,6 @@
 {
   "message": {
+    "cancel": "Cancel",
     "sign_in_to_your_account": "¡Ingresa a tu cuenta!",
     "sign_up": "¡Regístrate!",
     "your_email": "Tu correo",
@@ -36,6 +37,15 @@
     "back": "Atras",
     "list": "Lista",
     "menu": "Menu",
+    "user": {
+      "firstname": "Nombres",
+      "lastname": "Apellidos",
+      "username": "Nombre de usuario",
+      "email": "Correo",
+      "password": "Contraseña",
+      "role": "Rol",
+      "google": "Google"
+    },
     "profile": {
       "profile": "Perfil",
       "personal_information": "Información personal",
@@ -293,6 +303,9 @@
       "membership": "Membresia",
       "ally": "Aliado",
       "id": "ID Fiscal",
+      "user": "Usuario",
+      "profile": "Perfil",
+      "password": "Contraseña",
       "statuses": {
         "deleted": "Eliminado",
         "active": "Activo",
@@ -794,7 +807,7 @@
       "parentArea": "Area padre",
       "route": "Ruta",
       "visible": "Visible",
-      "rcr": "Rcr",
+      "rcr": "Risks to Identify",
       "editable": "Editable",
       "membership": "Membresia",
       "selectedNode": "Debe seleccionar un item",

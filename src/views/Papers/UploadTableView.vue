@@ -2,7 +2,7 @@
 import { computed, ref, reactive, defineEmits, onMounted, } from "vue";
 import { useRouter } from "vue-router";
 import { useMainStore } from "@/stores/main";
-import { mdiDelete, mdiUpload, mdiFire } from "@mdi/js";
+import { mdiDelete, mdiUpload, mdiDownload } from "@mdi/js";
 import { useI18n } from "vue-i18n";
 import { useToast } from 'vue-toastification';
 import BaseLevel from "@/components/BaseLevel.vue";
@@ -103,7 +103,7 @@ const actionDelete = () => {
 
             <BaseButton 
               color="info" 
-              :icon="mdiUpload"
+              :icon="mdiDownload"
               :messageTooltip="t('message.dolownd')" 
               small 
               @click="btnDolownd(file)"/>

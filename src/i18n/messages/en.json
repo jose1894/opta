@@ -2,6 +2,7 @@
   "message": {
     "sign_in_to_your_account": "Sign in to your account!",
     "sign_up": "Sign up!",
+    "cancel": "Cancelar",
     "your_email": "Your email",
     "password": "Password",
     "remember_me": "Remember me",
@@ -36,6 +37,15 @@
     "menu": "Menu",
     "next": "Next",
     "back": "Back",
+    "user": {
+      "firstname": "Firstname",
+      "lastname": "Lastnam",
+      "username": "Username",
+      "email": "Email",
+      "password": "Password",
+      "role": "Role",
+      "google": "Google"
+    },
     "profile": {
       "profile": "Profile",
       "personal_information": "Personal information",
@@ -359,6 +369,9 @@
     "members": "Members",
     "member": "Member",
     "ally": "Ally",
+    "user": "User",
+    "profile": "Profile",
+    "password": "Password",
     "statuses": {
       "deleted": "Deleted",
       "active": "Active",
@@ -797,7 +810,7 @@
     "parentArea": "Parent node",
     "route": "Route",  
     "visible": "Visible",  
-    "rcr": "Rcr",  
+    "rcr": "Riesgos a Identificar",  
     "editable": "Editable",
     "membership": "Membership",
     "selectedNode": "You must select an item",  

@@ -25,8 +25,7 @@ import SectionTitleLineWithButton from '@/components/SectionTitleLineWithButton.
 
 const { t } = useI18n();
 const toast = useToast();
-let miembroList = ref([]);
-const isReadOnly = ref(true);
+const isSelectedItemEnfoque = ref(false);
 const isModalActive = ref(false);
 const hasModalValue = false;
 const selectedItemEnfoque = ref({});
@@ -64,7 +63,6 @@ const dataInitial = {
     rcr: option[0],
     editable: option[0],
     estado: selectOptions[0],
-    miembro: miembroList.value,
     tipoNodo: 2,
 }
 const enfoque = ref(dataInitial);
@@ -78,7 +76,7 @@ const treeData = ref()
 
 const chilItem = (data, enfoques=[]) => {
     const menu1 = data.map((item) => { 
-    const child =  enfoques.filter((itemEnfo) => itemEnfo?.areaPadre === item._id)
+    const child =  enfoques.filter((itemEnfo) => itemEnfo?.areaPadre?._id === item._id)
         if(child.length > 0) {
             item.children = child 
             chilItem(child, enfoques)
@@ -90,9 +88,6 @@ const chilItem = (data, enfoques=[]) => {
 }
 
 onMounted(async () => {
-    let listarMiembros = await membersServices.allMiembrosGet()
-    const dataMiembros = listarMiembros?.data.miembros;
-    miembroList.value = dataMiembros.map((miembro) => ({ id: miembro._id, label: miembro.nombre }));
     getEnfoques()
     if (props.path === 'update') {
         console.log(props.path)
@@ -105,6 +100,7 @@ const getEnfoques = (async () => {
     const nodeFirst = enfoques.filter((item) => item.tipoNodo === 0);
     const dataEnfoques = enfoques.filter((item) => item.tipoNodo !== 0);
     const menu11= chilItem(nodeFirst, dataEnfoques)
+    nodeFirst[0].collapsed = true
     treeData.value = nodeFirst
 });
 const successMessage = props.path === 'create' ? t("message.approach.created.success") : t("message.approach.updated.success")
@@ -116,9 +112,11 @@ const submit = async () => {
             const m = selectedItemEnfoque.value
             enfoqueChildren(m)
             //getEnfoques()
-            isModalActive.value = false
-            enfoque.value = dataInitial
-            toast.success(successMessage);
+            setTimeout(() => {
+                isModalActive.value = false
+                enfoque.value = dataInitial
+                toast.success(successMessage);                
+            }, 500);           
         })
         .catch(err => {
             console.log(err) 
@@ -150,8 +148,7 @@ const action = async (enfoque) => {
         rcr,
         editable,
         estado,
-        tipoNodo,
-        miembro } = enfoque.value;
+        tipoNodo } = enfoque.value;
 
     const data = {
         _id,
@@ -165,8 +162,7 @@ const action = async (enfoque) => {
         rcr: rcr.id,
         editable: editable.id,
         estado: estado.id,
-        tipoNodo,
-        miembro: miembro.id
+        tipoNodo
     }
     if (path === 'create') {
         const fechaNew =moment(data.fecha, 'YYYY-MM-DD').format('YYYY-MM-DD');
@@ -180,28 +176,44 @@ const successMessageSelectNode = t("message.approach.selectedNode")
 const btnAgregarEnfoque = () => {
     enfoque.value = dataInitial
     path = "create";
+    isSelectedItemEnfoque.value = false
     if (Object.keys(selectedItemEnfoque.value).length === 0) {
-        toast.error(successMessageSelectNode)
-    } else {
+        //toast.error(successMessageSelectNode)
+        isSelectedItemEnfoque.value = true
+        const dataNew = Object.assign({}, treeData.value[0]);
+        enfoque.value = dataNew
+        enfoque.value.areaPadreNombre = dataNew.nombre
+        enfoque.value.nombre = "",
+        enfoque.value.rutaPadre = "/",
+        enfoque.value.areaPadre = dataNew._id        
+        enfoque.value.estado = selectOptions.filter(status => status.id === dataNew.estado)[0]
+        enfoque.value.visible = optionVisible.filter(item => item.id === dataNew.visible)[0]
+        enfoque.value.rcr = option.filter(item => item.id === dataNew.rcr)[0]
+        enfoque.value.editable = option.filter(item => item.id === dataNew.editable)[0]
+        enfoque.value.tipoNodo = 1
+        selectedItemEnfoque.value = enfoque.value
+    } /*else {
         isModalActive.value = true
-    }
+    }*/
+    isModalActive.value = true
 }
 
 const btnEditarEnfoque = async () => {
     path = "update";
     enfoque.value = selectedItemEnfoque.value
-    const { visible, estado, rcr, editable, miembro, areaPadre, areaPadreNombre, rutaPadre }  = selectedItemEnfoque.value
+    const { visible, estado, rcr, editable, areaPadre, areaPadreNombre, rutaPadre }  = selectedItemEnfoque.value
+    console.log(selectedItemEnfoque.value)
     if(areaPadre) {
         //const res = await enfoquesServices.read(areaPadre);
         enfoque.value.areaPadre = (typeof areaPadre === "object") ? areaPadre._id : areaPadre
         enfoque.value.areaPadreNombre = (typeof areaPadre === "object") ? areaPadre.nombre : areaPadreNombre 
-        enfoque.value.rutaPadre = (typeof areaPadre === "object") ? areaPadre.ruta : rutaPadre  
+        const APN = (typeof areaPadre === "object") ? areaPadre.ruta : rutaPadre 
+        enfoque.value.rutaPadre = APN !== undefined ? APN : rutaPadre    
     }    
     enfoque.value.estado = selectOptions.filter(status => status.id === _isObject(estado))[0]
     enfoque.value.visible = optionVisible.filter(item => item.id === _isObject(visible))[0]
     enfoque.value.rcr = option.filter(item => item.id === _isObject(rcr))[0]
     enfoque.value.editable = option.filter(item => item.id === _isObject(editable))[0]
-    enfoque.value.miembro = _asignarOpcionesAlSelect(miembro)
     isModalActive.value = true
 }
 
@@ -228,10 +240,14 @@ const addChild = async (i, m) => {
 }
 
 const enfoqueChildren = async (m) => {
-   m.children = []
-   const child = await enfoquesServices.getChildren(m._id)
-   const itemsEnfoque = child?.data?.children || [];
-   m.children = itemsEnfoque
+    if(!isSelectedItemEnfoque.value){
+        m.children = []
+        const child = await enfoquesServices.getChildren(m._id)
+        const itemsEnfoque = child?.data?.children || [];
+        m.children = itemsEnfoque
+    } else {
+        getEnfoques()       
+    }
 }
 
 const asignarNodoPadre = (selectedEnfoque) => {
@@ -253,16 +269,15 @@ const dataName = () => {
 const successMessageError = t("message.approach.deleted.success")
 const deleteItem = async () => {
     deleteEnfoqueById()
-    .then(async () => {     
-        console.log(treeData.value) 
-        const dataT = treeData.value
+    .then(async () => {
+        /*const dataT = treeData.value
         const dataDeleteId = selectedItemEnfoque.value.areaPadre
-
         const menu1 = dataT.map((item) => { 
             console.log(item)
    
         })
-
+        console.log(menu1) */
+        getEnfoques() 
         toast.success(successMessageError);
     })
     .catch(err => {
@@ -274,6 +289,8 @@ const deleteEnfoqueById = () => {
     const { _id } = selectedItemEnfoque.value
     return enfoquesServices.delete(_id);
 };
+
+const btnCerrarModalEnfoque  = () => isModalActive.value = false;
 
 
 </script>
@@ -313,16 +330,16 @@ const deleteEnfoqueById = () => {
                 </FormField>
                 <FormField :label="$t('message.approach.editable')">
                     <FormControl v-model="enfoque.editable" :icon="mdiListStatus" :options="option" />
-                </FormField>
-                <FormField :label="$t('message.approach.membership')">
-                    <FormControl v-model="enfoque.miembro" :icon="mdiListStatus" :options="miembroList" :readonly="isReadOnly"/>
-                </FormField>
+                </FormField>                
+            </div>
+            <div class="grid md:grid-cols-1 gap-1">
                 <FormField :label="$t('message.approach.status')">
                     <FormControl v-model="enfoque.estado" :icon="mdiListStatus" :options="selectOptions" />
                 </FormField>
             </div>
             <template #footer>
                 <BaseButton :label="$t(`message.submit`)" type="submit" color="success" />
+                <BaseButton :label="$t(`message.cancel`)" color="info" style="margin-left: 5px;" @click="btnCerrarModalEnfoque"/>
             </template>
         </CardBox>
     </CardBoxModal>

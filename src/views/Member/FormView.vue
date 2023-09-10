@@ -56,7 +56,7 @@ const activeTab = (i) => {
 const listTabs = [
     { title: 'Membresia' },
     { title: 'Contacto' },
-    // { title: 'Datos del softwere y  presupuesto' }
+    { title: 'Users' }
 ]
 
 const selectOptions = [
@@ -79,6 +79,18 @@ const formatter = ref({
     month: 'MMM'
 })
 
+const userMembresia = ref({ 
+    _id: '',
+    firstname: "",
+    lastname: "",
+    username: "",
+    email: "",
+    password: "", 
+    avatar: "",
+    role: 'ADMIN_ROLE',
+    estadoMembresia: 1,
+    google: false,
+});
 const member = ref({
     _id: '',
     aliado: aliadosList.value,
@@ -146,8 +158,9 @@ onMounted(async () => {
         member.value.pais = _asignarOpcionesAlSelect(res.data?.pais)
         member.value.estado = selectOptions.filter(status => status.id === estado)[0]
         member.value.tipoContacto = typeContactOptions.filter(typeContact => typeContact.id === tipoContacto)[0]
-        member.value.creacion = creationOptions.filter(typeContact => typeContact.id === creacion)[0]        
+        member.value.creacion = creationOptions.filter(typeContact => typeContact.id === creacion)[0]          
         selectedPais(member.value.pais, res.data)
+        
     }
 });
 
@@ -222,7 +235,7 @@ const action = (member) => {
         requiereAprobacion,*/
         estado
     } = member.value;
-
+console.log(userMembresia.value)
 const data = {
     _id,
     aliado: aliado.id,
@@ -242,6 +255,7 @@ const data = {
     telefonoOfic,
     telefonoCelu,
     correoContact,
+    membresiaUsuario: userMembresia.value,
     /*codigoActivacion,
     licencias,
     vigencia: vigencia.undefined,
@@ -253,6 +267,7 @@ const data = {
     requiereAprobacion,*/
     estado: estado.id
 }
+console.log(data)
 if (props.path === 'create') {
     return membersService.create(data)
 }
@@ -367,6 +382,29 @@ const goTo = () => router.push('/setup/memberships')
                                 </FormField>
                             </div>
                         </div>
+                        <div v-show="tab === 2">
+                            <div class="grid md:grid-cols-3 gap-3">
+                                <FormField :label="$t('message.user.firstname')">
+                                    <FormControl v-model="userMembresia.firstname" :icon="mdiRenameBox" />
+                                </FormField>   
+                                <FormField :label="$t('message.user.lastname')">
+                                    <FormControl v-model="userMembresia.lastname" :icon="mdiRenameBox" />
+                                </FormField> 
+                                <FormField :label="$t('message.user.username')">
+                                    <FormControl v-model="userMembresia.username" :icon="mdiRenameBox"/>
+                                </FormField>
+                                <FormField :label="$t('message.user.email')">
+                                    <FormControl v-model="userMembresia.email" :icon="mdiRenameBox"/>
+                                </FormField> 
+                                <FormField :label="$t('message.user.password')">
+                                    <FormControl v-model="userMembresia.password" :icon="mdiRenameBox"/>
+                                </FormField>
+                                <FormField :label="$t('message.user.role')">
+                                    <FormControl v-model="userMembresia.role" :icon="mdiRenameBox" readonly="true"/>
+                                </FormField>                             
+                            </div>
+                        
+                        </div>
                         <!-- <div v-show="tab === 2">
                             <h2 class="h2-tittle">Softwere</h2>
                             <div class="grid md:grid-cols-3 gap-3">
@@ -465,7 +503,7 @@ const goTo = () => router.push('/setup/memberships')
         <template #footer>
            
             <div style="display: flex; justify-content: space-between;">
-                <BaseButton v-show="tab === 1" :label="$t(`message.${props.saveLabel}`)" type="submit" color="success" />
+                <BaseButton v-show="tab === 2" :label="$t(`message.${props.saveLabel}`)" type="submit" color="success" />
                 <BaseButton :label="$t('message.return')"  color="info" @click="goTo()"/>
             </div>  
         </template>

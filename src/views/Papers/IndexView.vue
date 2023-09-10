@@ -200,8 +200,8 @@ const enviarParametros = () => {
                         <FormControl :name="'codigo'" v-model="params.codigo" :icon="mdiCodeBraces" />
                     </FormField>
 
-                    <FormField :label="$t('message.project.date')" style="padding-top: 0.5rem;padding-bottom: 0.5rem;">
-                        <VueDatePicker v-model="params.fecha" :enable-time-picker="false" :format="format" />
+                    <FormField :label="$t('message.project.date')" style="padding-top: 0.5rem;padding-bottom: 0.5rem;height: 3rem;background: rgb(12, 4, 56)(38, 0, 255);" class="border-width: 1px;">
+                        <VueDatePicker v-model="params.fecha" :enable-time-picker="false" :format="format" style="height: 3rem;"/>
                     </FormField>
 
                     <FormField :label="$t('message.project.partner')" v-if="showFormFieldPesona" style="padding-top: 0.5rem;padding-bottom: 0.5rem;">
@@ -234,3 +234,8 @@ const enviarParametros = () => {
         </SectionMain>
     </LayoutAuthenticated>
 </template>
+<style scoped>
+.dp__pointer {
+    height: 3rem!important;
+}
+</style>

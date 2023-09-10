@@ -1,13 +1,9 @@
 <script setup>
 import {
-  computed,
   defineProps,
-  onMounted,
   reactive,
   ref
 } from 'vue';
-import { mdiFolder, mdiFolderOpen, mdiPlus } from '@mdi/js'
-import BaseIcon from './BaseIcon.vue';
 const props = defineProps({
   nodes: {
     type: Array,
@@ -37,7 +33,7 @@ const toggleCollapse = (nodeId, option) => {
   })
   if (node) {
     node.collapsed = !node.collapsed;
-  }
+  } 
   emit('nodeSelected', node);
   activeIndex.value = nodeId
 };
@@ -65,18 +61,14 @@ const addIconPlus = (node) => {
 <template>
   <div v-if="treeView">
     <ul>
-      <li v-for="node in nodes" :key="node._id">
-        <span :class="activeIndex === node._id ? 'selected' : ''" @click="toggleCollapse(node._id, 1)">
-          <i v-if="node.children.leng" :class="node.collapsed ? 'fa fa-folder-open' : 'fa fa-folder'"></i>
-          {{ node.indice }} - {{ node.nombre }} - {{ node.visible }}
+      <li v-for="node in nodes" :key="node._id" class="pli">
+        <span :class="activeIndex === node._id ? 'selected' : ''" 
+          @click="toggleCollapse(node._id, 1)">
+          <i v-if="node.children.length" :class="node.collapsed ? 'fa fa-minus' : 'fa fa-plus'"></i>
+          <span :class="node.children.length > 0 ? 'ml2' : 'ml1'"> 
+            {{ node.indice }} - {{ node.nombre }} 
+          </span>          
         </span>
-
-        <!-- <BaseIcon
-          :path="mdiFolderOpen"
-          class="flex-none"
-          w="w-16"
-          :size="18"
-        /> -->
         <TreeItem :nodes="node.children" v-if="node.children.length > 0 && node.collapsed"
           @nodeSelected="handleNodeSelected"/>
       </li>
@@ -105,6 +97,9 @@ const addIconPlus = (node) => {
 }
 .dropdown:hover{
     display: block;
+}
+.pli:hover{
+    cursor: pointer;
 }
 .item {
   cursor: pointer;
@@ -143,5 +138,17 @@ ul {
 .plus-icon {
   color: rgb(2 46 119);
   padding: 5px;
-}    
+} 
+
+.ml1 {
+  margin-left: 26px;
+}
+
+.ml2 {
+  margin-left: 10px;
+}
+
+.pli {
+    padding: 5px 0px;
+}
 </style>

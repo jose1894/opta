@@ -104,7 +104,7 @@ onMounted(async () => {
 
 const chilItem = (data, enfoques = []) => {
     return data.map((item) => {
-        const child = enfoques.filter((itemEnfo) => itemEnfo?.areaPadre === item._id)
+        const child = enfoques.filter((itemEnfo) => itemEnfo?.areaPadre?._id === item._id)
         if (child.length > 0) {
             item.children = child
             chilItem(child, enfoques)
