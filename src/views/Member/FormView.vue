@@ -151,16 +151,20 @@ onMounted(async () => {
     console.log(dataAliados)
     if (props.path === 'update') {
         const res = await membersService.read(route.params);
-        member.value = res.data
-        const { cargo, aliado, moneda, estado, tipoContacto, creacion } = res.data
+        member.value = res.data.miembro
+        const { cargo, aliado, moneda, estado, tipoContacto, creacion } = res.data.miembro
         member.value.cargo = { id: cargo._id, label: cargo.nombre }
         member.value.aliado = { id: aliado._id, label: aliado.nombre }
-        member.value.pais = _asignarOpcionesAlSelect(res.data?.pais)
+        member.value.pais = _asignarOpcionesAlSelect(res.data?.miembro.pais)
         member.value.estado = selectOptions.filter(status => status.id === estado)[0]
         member.value.tipoContacto = typeContactOptions.filter(typeContact => typeContact.id === tipoContacto)[0]
         member.value.creacion = creationOptions.filter(typeContact => typeContact.id === creacion)[0]          
-        selectedPais(member.value.pais, res.data)
-        
+        selectedPais(member.value.pais, res.data.miembro)
+        if(res.data.userMiembro) {
+            console.log(res.data.userMiembro )
+            userMembresia.value = res.data.userMiembro
+            userMembresia.value.password = res.data.password
+        }        
     }
 });
 
