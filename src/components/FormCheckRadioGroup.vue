@@ -25,6 +25,10 @@ const props = defineProps({
     type: [Array, String, Number, Boolean],
     default: null,
   },
+  messageTooltip: {
+    type: String,
+    default: "",
+  },
 });
 
 const emit = defineEmits(["update:modelValue"]);
@@ -52,6 +56,7 @@ const computedValue = computed({
       :label="value"
       :class="componentClass"
       class="mr-6 mb-3 last:mr-0"
+      v-tippy="{ content: messageTooltip }"
     />
   </div>
 </template>

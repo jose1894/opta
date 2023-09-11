@@ -872,8 +872,8 @@
   },
   "audit": {
     "index": "Index",
-    "description": "Description",
-    "title": "Title",
+    "description": "Description of Risk",
+    "title": "Risk Title",
     "status": "Status",
     "addRisk": "Add Risk",
     "uploadFile": "Upload File",
@@ -949,12 +949,13 @@
     "causativeSourceOfRisk": "Causative Source of Risk",
     "impactOnTheFinancialStatementsAndAccountsConcerned": "Impact on the Financial Statements and Accounts Concerned",
     "associatedAssertions": "Associated Assertions",
-    "assertionsAboutTransactionClassesAndEvents": "Aseveraciones sobre las Clases de Transacciones y Eventos",
+    "assertionsAboutTransactionClassesAndEvents": "Statements about the types of transactions and related events and disclosures in the audited period affected by risk",
     "iOccurrence(O)": "I. Occurrence (O)",
     "iiIntegrity(I)": "II. Integrity (I)",
     "iiiAccuracy(A)": "III. Accuracy (A)",
     "iVCourt(CO)": "IV. Court (CO)",
     "vClassification(CL)": "V. Classification (CL)",
+    "viPresentation(PR)": "VI. Presentation (PR)",
     "aseveracionesSobreLosSaldosContables": "Statements on Balancing Items",
     "iExistence(E)": "I. Existence (E)",
     "iiRightsAndObligations(RO)": "II Rights and Obligations (RO)",
@@ -983,6 +984,14 @@
     "recommendationForProcessImprovementprocess": "Recommendation for Process Improvementprocess",
     "residualAuditRisk": "Residual AuditRisk",
     "effectOnTheAuditOpinion": "Effect on the Audit Opinion",
+    "ocurrence": "Transactions and events have occurred that have been recorded or disclosed, and said Transactions and events belong to the entityTransactions and events belong to the entity.",
+    "integrity": "All transactions and events that should have been recorded have been recorded, and all related disclosures that should have been included in the financial statements have been included.",
+    "precision": "Amounts and other data relating to recorded transactions and events have been properly recorded and related disclosures have been properly measured and described.",
+    "court": "Transactions and events have been recorded in the correct accounting period.",
+    "classification": "Transactions and events have been recorded in the appropriate accounts.",
+    "presentation": "",
+
+
 
 
     "created": {
