@@ -90,6 +90,14 @@ const customElementsForm = reactive({
     switch: []
 });
 
+const customTypeRisk1Form = reactive({
+    checkbox: []
+});
+
+const customTypeRisk2Form = reactive({
+    checkbox: []
+});
+
 const customElementsFormNo = reactive({
     switch: []
 });
@@ -134,7 +142,15 @@ const customChekSB4Form = reactive({
     checkbox: []
 });
 
-const customChekSC1Form = reactive({
+const customChekSB5Form = reactive({
+    checkbox: []
+});
+
+const customChekSB6Form = reactive({
+    checkbox: []
+});
+
+/*const customChekSC1Form = reactive({
     checkbox: []
 });
 
@@ -148,7 +164,7 @@ const customChekSC3Form = reactive({
 
 const customChekSC4Form = reactive({
     checkbox: []
-});
+});*/
 
 const props = defineProps({
     path: '',
@@ -159,6 +175,8 @@ const dataInitial = {
     _id: '',
     titulo: "",
     descripcion: "",
+    type_r1: "",
+    type_r2: "",
     ref: "",
     riesgoProveniente: risksFrom[0],
     cuadrante: quadrantOption[0],
@@ -182,10 +200,8 @@ const dataInitial = {
     ase_b2: "",
     ase_b3: "",
     ase_b4: "",
-    ase_c1: "",
-    ase_c2: "",
-    ase_c3: "",
-    ase_c4: "",
+    ase_b5: "",
+    ase_b6: "",
     sel_mon: additionalSelectOptions[0],
     sel_mon2: additionalSelectOptions[0],
     sel_gen: additionalSelectOptions[0],
@@ -251,12 +267,12 @@ const changePage = (page) => {
 }
 
 const openModalForm = (riskData) => {
-    const { indice, titulo, descripcion, _id, riesgoProveniente,
+    const { indice, titulo, descripcion,type_r1, type_r2, _id, riesgoProveniente,
         cuadrante, areaRiesgo, expectativasNegocio, procedimientosAdicionales,
         inherente, control, analitico, factorRiesgo, procesosInvolucrados,
         fuentesCausantes, consecuenciaEF, ase_a1, ase_a2, ase_a3, ase_a4,
-        ase_a5,ase_a6, ase_b1, ase_b2, ase_b3, ase_b4, ase_c1, ase_c2, ase_c3,
-        ase_c4, sel_mon, sel_mon2, sel_gen, sel_gen2, sel_esp, sel_esp2,
+        ase_a5,ase_a6, ase_b1, ase_b2, ase_b3, ase_b4, ase_b5, ase_b6, sel_mon, sel_mon2, 
+        sel_gen, sel_gen2, sel_esp, sel_esp2,
         sel2_ini, padc_enf, padc_res, referencia, pfo_mpro, rda_resi,
         conclusion } = riskData
     riskDataSave.value.ref = `${indice.indice} - ${indice.nombre}`
@@ -288,11 +304,10 @@ const openModalForm = (riskData) => {
     customChekSB2Form.checkbox = ase_b2 !== '' ? [ase_b2] : []
     customChekSB3Form.checkbox = ase_b3 !== '' ? [ase_b3] : []
     customChekSB4Form.checkbox = ase_b4 !== '' ? [ase_b4] : []
-
-    customChekSC1Form.checkbox = ase_c1 !== '' ? [ase_c1] : []
-    customChekSC2Form.checkbox = ase_c2 !== '' ? [ase_c2] : []
-    customChekSC3Form.checkbox = ase_c3 !== '' ? [ase_c3] : []
-    customChekSC4Form.checkbox = ase_c4 !== '' ? [ase_c4] : []
+    customChekSB5Form.checkbox = ase_b5 !== '' ? [ase_b5] : []
+    customChekSB6Form.checkbox = ase_b6 !== '' ? [ase_b6] : []
+    customTypeRisk1Form.checkbox = type_r1 !== '' ? [type_r1] : []
+    customTypeRisk2Form.checkbox = type_r2 !== '' ? [type_r2] : []
 
     riskDataSave.value.sel_mon = additionalSelectOptions.filter(item => item.id === sel_mon)[0]
     riskDataSave.value.sel_mon2 = additionalSelectOptions.filter(item => item.id === sel_mon2)[0]
@@ -337,11 +352,8 @@ const clearFormValue = () => {
     customChekSB2Form.checkbox = []
     customChekSB3Form.checkbox = []
     customChekSB4Form.checkbox = []
-
-    customChekSC1Form.checkbox = []
-    customChekSC2Form.checkbox = []
-    customChekSC3Form.checkbox = []
-    customChekSC4Form.checkbox = []
+    customChekSB5Form.checkbox = []
+    customChekSB6Form.checkbox = []
 
     riskDataSave.value.sel_mon = additionalSelectOptions[0]
     riskDataSave.value.sel_mon2 = additionalSelectOptions[0]
@@ -423,10 +435,8 @@ const action = async (riskDatae) => {
         ase_b2,
         ase_b3,
         ase_b4,
-        ase_c1,
-        ase_c2,
-        ase_c3,
-        ase_c4,
+        ase_b5,
+        ase_b6,
         sel_mon,
         sel_mon2,
         sel_gen,
@@ -469,10 +479,8 @@ const action = async (riskDatae) => {
         ase_b2,
         ase_b3,
         ase_b4,
-        ase_c1,
-        ase_c2,
-        ase_c3,
-        ase_c4,
+        ase_b5,
+        ase_b6,
         sel_mon: sel_mon.id,
         sel_mon2: sel_mon2.id,
         sel_gen: sel_gen.id,
@@ -556,18 +564,18 @@ const onChangeCustomCheckbox = (key) => {
         case 'ase_b4':
             valueId = customChekSB4Form.checkbox
             break;
-        case 'ase_c1':
-            valueId = customChekSC1Form.checkbox
+        case 'ase_b5':
+            valueId = customChekSB5Form.checkbox
             break;
-        case 'ase_c2':
-            valueId = customChekSC2Form.checkbox
+        case 'ase_b6':
+            valueId = customChekSB6Form.checkbox
             break;
-        case 'ase_c3':
-            valueId = customChekSC3Form.checkbox
+        case 'type_r1':
+            valueId = customTypeRisk1Form.checkbox
             break;
-        case 'ase_c4':
-            valueId = customChekSC4Form.checkbox
-            break;
+        case 'type_r2':
+            valueId = customTypeRisk2Form.checkbox
+            break;            
         default:
             valueId = ''
             break;
@@ -602,6 +610,24 @@ const onChangeCustomCheckbox = (key) => {
                         </FormField>
                     </div>
 
+                    <div class="grid lg:grid-cols-1 gap-1">
+                        <h1 style="margin-bottom: 1.5rem; font-weight: 700;">
+                            {{ $t('message.risk.typeOfRisk') }}
+                        </h1>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-2">
+                        <FormField label="">
+                            <FormCheckRadioGroup v-model="customTypeRisk1Form.checkbox" name="sample-checkbox"
+                                :options="{ 'A nivel de estados financieros': t('message.risk.atTheLevelOfFinancialStatements') }"
+                                @change="onChangeCustomCheckbox('type_r1')" />
+                        </FormField>
+                        <FormField label="">
+                            <FormCheckRadioGroup v-model="customTypeRisk2Form.checkbox" name="sample-checkbox"
+                                :options="{ 'A nivel de aseveraciones': t('message.risk.atTheLevelOfAssertions') }"
+                                @change="onChangeCustomCheckbox('type_r2')" />
+                        </FormField>
+                    </div>
+
                     <div class="grid lg:grid-cols-3 gap-3" style="margin-bottom: 1.5rem;">
                         <div class="c-card">
                             <div class="c-card-header">
@@ -628,7 +654,7 @@ const onChangeCustomCheckbox = (key) => {
 
                         <div class="c-card">
                             <div class="c-card-header">
-                                {{ $t('message.risk.riskArea') }}
+                                {{ $t('message.risk.affectedProcess') }}
                             </div>
                             <div class="c-card-content">
                                 <FormField>
@@ -804,8 +830,8 @@ const onChangeCustomCheckbox = (key) => {
                             </FormField>
                         </div>
 
-                        <div class="grid lg:grid-cols-1 gap-1 card-header" style="margin-bottom: 1.5rem;">
-                            <h1 style="margin-bottom: 1.5rem; font-weight: 700;" class="card-header-h1">
+                        <div class="grid lg:grid-cols-1 gap-1">
+                            <h1 style="margin-bottom: 1.5rem; font-weight: 700;">
                                 {{ $t('message.risk.statementsOnBalancingItems') }}
                             </h1>
                         </div>
@@ -814,29 +840,47 @@ const onChangeCustomCheckbox = (key) => {
                             <FormField label="">
                                 <FormCheckRadioGroup v-model="customChekSB1Form.checkbox" name="sample-checkbox"
                                     :options="{ 'I. Existencia (E)': $t('message.risk.iExistence(E)') }"
+                                    :messageTooltip="t('message.risk.existence')"
                                     @change="onChangeCustomCheckbox('ase_b1')" />
                             </FormField>
 
                             <FormField label="">
                                 <FormCheckRadioGroup v-model="customChekSB2Form.checkbox" name="sample-checkbox"
                                     :options="{ 'II. Derechos y Obligaciones (DO)': $t('message.risk.iiRightsAndObligations(RO)') }"
+                                    :messageTooltip="t('message.risk.rightsAndObligations')"
                                     @change="onChangeCustomCheckbox('ase_b2')" />
                             </FormField>
 
                             <FormField label="">
                                 <FormCheckRadioGroup v-model="customChekSB3Form.checkbox" name="sample-checkbox"
                                     :options="{ 'III. Integrity (I)': $t('message.risk.iiiIntegrity(I)') }"
+                                    :messageTooltip="t('message.risk.integrity1')"
                                     @change="onChangeCustomCheckbox('ase_b3')" />
                             </FormField>
 
                             <FormField label="">
                                 <FormCheckRadioGroup v-model="customChekSB4Form.checkbox" name="sample-checkbox"
-                                    :options="{ 'IV. Evaluación y Asignación (VA)': $t('message.risk.ivEvaluationAndAssignment(EA)') }"
+                                    :options="{ 'IV. Precisión, valoración y asignación (PVA)': $t('message.risk.ivAccuracyValuationAndAssignment(PVA)') }"
+                                    :messageTooltip="t('message.risk.accuracyValuationAndAllocation')"
                                     @change="onChangeCustomCheckbox('ase_b4')" />
+                            </FormField>
+
+                            <FormField label="">
+                                <FormCheckRadioGroup v-model="customChekSB5Form.checkbox" name="sample-checkbox"
+                                    :options="{ 'V. Clasificación (CL)': $t('message.risk.vClassification(CL)') }"
+                                    :messageTooltip="t('message.risk.clasification1')"
+                                    @change="onChangeCustomCheckbox('ase_b5')" />
+                            </FormField>
+
+                            <FormField label="">
+                                <FormCheckRadioGroup v-model="customChekSB6Form.checkbox" name="sample-checkbox"
+                                    :options="{ 'VI. Presentación (PR)': $t('message.risk.viPresentation(PR)') }"
+                                    :messageTooltip="t('message.risk.presentation1')"
+                                    @change="onChangeCustomCheckbox('ase_b6')" />
                             </FormField>
                         </div>
 
-                        <div class="grid lg:grid-cols-1 gap-1">
+                        <!-- <div class="grid lg:grid-cols-1 gap-1">
                             <h1 style="margin-bottom: 1.5rem; font-weight: 700;">
                                 {{ $t('message.risk.assertionsAboutPresentationAndDisclosure') }}
                             </h1>
@@ -866,7 +910,7 @@ const onChangeCustomCheckbox = (key) => {
                                     :options="{ 'IV. Precisión y Valuación (PV)': $t('message.risk.ivAccuracyAndValuation(AV)') }"
                                     @change="onChangeCustomCheckbox('ase_c4')" />
                             </FormField>
-                        </div>
+                        </div> -->
 
                         <div class="grid lg:grid-cols-1 gap-1 card-header" style="margin-bottom: 1.5rem;">
                             <h1 style="margin-bottom: 1.5rem; font-weight: 700;" class="card-header-h1">

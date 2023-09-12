@@ -914,6 +914,9 @@
   "risk": {
     "index": "Index",
     "description": "Description",
+    "typeOfRisk": "Type of Risk",
+    "atTheLevelOfFinancialStatements": "At the Level of Financial Statements",
+    "atTheLevelOfAssertions": "At the level of assertions",
     "title": "Title",
     "ref": "Ref",
     "riskFrom": "Risk from",
@@ -927,7 +930,7 @@
     "nonRecurringTransactions": "Non Recurring Transactions",
     "judgmentsAndEstimates": "Judgments and Estimates",
     "accountingClosingEntries": "Accounting Closing Entries",
-    "riskArea": "Risk Area",
+    "affectedProcess": "Affected Process",
     "critical": "Critical",
     "strategic": "Strategic",
     "support": "Suppor",
@@ -956,11 +959,11 @@
     "iVCourt(CO)": "IV. Court (CO)",
     "vClassification(CL)": "V. Classification (CL)",
     "viPresentation(PR)": "VI. Presentation (PR)",
-    "aseveracionesSobreLosSaldosContables": "Statements on Balancing Items",
+    "statementsOnBalancingItems": "Assertions on account balances and related disclosures at the end of the period affected by the risk.",
     "iExistence(E)": "I. Existence (E)",
     "iiRightsAndObligations(RO)": "II Rights and Obligations (RO)",
     "iiiIntegrity(I)": "III. Integrity (I)",
-    "ivEvaluationAndAssignment(EA)": "IV. Evaluation and Assignmenn (EA)",
+    "ivAccuracyValuationAndAssignment(PVA)": "IV. Accuracy, Valuation and Assignment (AVA)",
     "assertionsAboutPresentationAndDisclosure": "Assertions About Presentation and Disclosure",
     "iTheOccurrenceAndRightsAndOblications(ORO)": "I. The Occurrence and Rights and Oblications (ORO)",
     "iiiClassificationAndComprehension(CC)": "III. Classification and Comprehension (CC)",
@@ -989,8 +992,13 @@
     "precision": "Amounts and other data relating to recorded transactions and events have been properly recorded and related disclosures have been properly measured and described.",
     "court": "Transactions and events have been recorded in the correct accounting period.",
     "classification": "Transactions and events have been recorded in the appropriate accounts.",
-    "presentation": "",
-
+    "presentation": "Transactions and events are appropriately aggregated or disaggregated and clearly described, and related disclosures are relevant and understandable in the context of the requirements of the applicable financial reporting framework.",
+    "existence": "Assets, liabilities and patrimonial interests exist.",
+    "rightsAndObligations": "The entity owns or controls the rights to the assets and liabilities are obligations of the entity.",
+    "integrity1": "All assets, liabilities and capital interests that should have been recorded have been recorded, and including all related disclosures that should have been included in the financial statements.",
+    "accuracyValuationAndAllocation": "Assets, liabilities and capital interests have been included in the financial statements in appropriate amounts and any resulting valuation adjustments or allocations have been properly recorded, and Related disclosures have been adequately measured and described.",
+    "clasification1": "Assets, liabilities and equity interests have been recorded in the appropriate accounts.",
+    "presentation1": "Assets, liabilities and equity interests are appropriately aggregated or disaggregated and clearly describe, and related disclosures are relevant and understandable in the context of the requirements of the Applicable financial reporting framework.",
 
 
 
