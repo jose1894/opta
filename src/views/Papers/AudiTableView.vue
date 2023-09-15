@@ -321,7 +321,7 @@ const tituloProjectClientModal = () => {
         <td class="before:hidden lg:w-1 whitespace-nowrap">
           <BaseButtons type="justify-start lg:justify-end" no-wrap>
             <BaseButton
-              v-if="approache.rcr === 1" 
+              v-if="approache.rcr === 1 && approache.visible !== 1" 
               color="info" 
               :icon="mdiFire"
               :messageTooltip="t('message.addRisk')" 

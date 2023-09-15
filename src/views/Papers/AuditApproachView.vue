@@ -241,7 +241,7 @@ getRisk({ page: pageRisk.value })
 }
 
 .container-table {
-    background: #d8dde5;
+    background: #fff;
     border-radius: 24px;
     padding: 20px;
 }

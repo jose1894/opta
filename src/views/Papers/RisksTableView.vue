@@ -48,10 +48,15 @@ const riskAreaOption = [
 ];
 
 const radioOptions = [
-    { 'Intencionales': t('message.risk.intentional') },
+    { 'Intencional (Fraude)': t('message.risk.intentional') },
     { 'No Intencionales': t('message.risk.unintentional') },
     { 'Viabilidad del negocio': t('message.risk.businessViability') },
     { 'Expectativas del cliente': t('message.risk.customerExpectations') }
+];
+
+const radioTypeRiskOptions = [
+    { 'A nivel de estados financieros': t('message.risk.atTheLevelOfFinancialStatements') },
+    { 'A nivel de aseveraciones': t('message.risk.atTheLevelOfAssertions') }
 ];
 
 const additionalProceduresOptions = [
@@ -73,10 +78,19 @@ const additionalSelect2Options = [
 ];
 
 const generalOptions = [
-    { id: 'Medio', label: t('message.risk.middle') },
-    { id: 'Largo', label: t('message.risk.low') },
     { id: 'Alto', label: t('message.risk.high') },
+    { id: 'Medio', label: t('message.risk.middle') },
+    { id: 'Bajo', label: t('message.risk.low') },
+   
 ];
+
+const customChekSTR1Form = reactive({
+    checkbox: []
+});
+
+const customChekSTR2Form = reactive({
+    checkbox: []
+});
 
 const customElementsENForm = reactive({
     radio: [],
@@ -90,16 +104,8 @@ const customElementsForm = reactive({
     switch: []
 });
 
-const customTypeRisk1Form = reactive({
-    checkbox: []
-});
-
-const customTypeRisk2Form = reactive({
-    checkbox: []
-});
-
-const customElementsFormNo = reactive({
-    switch: []
+const customTypeRiskForm = reactive({
+    radio: [],
 });
 
 const customChekS1Form = reactive({
@@ -175,8 +181,7 @@ const dataInitial = {
     _id: '',
     titulo: "",
     descripcion: "",
-    type_r1: "",
-    type_r2: "",
+    typeRisk: "",
     ref: "",
     riesgoProveniente: risksFrom[0],
     cuadrante: quadrantOption[0],
@@ -267,7 +272,7 @@ const changePage = (page) => {
 }
 
 const openModalForm = (riskData) => {
-    const { indice, titulo, descripcion,type_r1, type_r2, _id, riesgoProveniente,
+    const { indice, titulo, descripcion,typeRisk,  _id, riesgoProveniente,
         cuadrante, areaRiesgo, expectativasNegocio, procedimientosAdicionales,
         inherente, control, analitico, factorRiesgo, procesosInvolucrados,
         fuentesCausantes, consecuenciaEF, ase_a1, ase_a2, ase_a3, ase_a4,
@@ -279,12 +284,19 @@ const openModalForm = (riskData) => {
     riskDataSave.value.titulo = titulo
     riskDataSave.value.descripcion = descripcion
     riskDataSave.value._id = _id
+    if(typeRisk === 'Seleccione') {
+        customChekSTR2Form.checkbox = []
+        customChekSTR1Form.checkbox = []  
+    } else {
+        customChekSTR1Form.checkbox = typeRisk === 'A nivel de estados financieros' ? [typeRisk] : [] 
+        customChekSTR2Form.checkbox = typeRisk !== 'A nivel de estados financieros' ? [typeRisk] : []  
+    }
     riskDataSave.value.riesgoProveniente = risksFrom.filter(riskItem => riskItem.id === riesgoProveniente)[0]
     riskDataSave.value.cuadrante = quadrantOption.filter(item => item.id === cuadrante)[0]
     riskDataSave.value.areaRiesgo = riskAreaOption.filter(item => item.id === areaRiesgo)[0]
     customElementsENForm.radio = expectativasNegocio
+    customTypeRiskForm.radio = typeRisk
     customElementsForm.switch = procedimientosAdicionales === 'Si' ? [procedimientosAdicionales] : []
-    customElementsFormNo.switch = procedimientosAdicionales === 'No' ? [procedimientosAdicionales] : []
     showFormPA.value = procedimientosAdicionales === 'Si' ? true : false
     riskDataSave.value.inherente = generalOptions.filter(item => item.id === inherente)[0]
     riskDataSave.value.control = generalOptions.filter(item => item.id === control)[0]
@@ -306,8 +318,6 @@ const openModalForm = (riskData) => {
     customChekSB4Form.checkbox = ase_b4 !== '' ? [ase_b4] : []
     customChekSB5Form.checkbox = ase_b5 !== '' ? [ase_b5] : []
     customChekSB6Form.checkbox = ase_b6 !== '' ? [ase_b6] : []
-    customTypeRisk1Form.checkbox = type_r1 !== '' ? [type_r1] : []
-    customTypeRisk2Form.checkbox = type_r2 !== '' ? [type_r2] : []
 
     riskDataSave.value.sel_mon = additionalSelectOptions.filter(item => item.id === sel_mon)[0]
     riskDataSave.value.sel_mon2 = additionalSelectOptions.filter(item => item.id === sel_mon2)[0]
@@ -341,6 +351,8 @@ const clearFormValue = () => {
     riskDataSave.value.procesosInvolucrados = ""
     riskDataSave.value.fuentesCausantes = ""
     riskDataSave.value.consecuenciaEF = ""
+    customChekSTR1Form.checkbox = []
+    customChekSTR2Form.checkbox = []
     customChekS1Form.checkbox = []
     customChekS2Form.checkbox = []
     customChekS3Form.checkbox = []
@@ -411,6 +423,7 @@ const action = async (riskDatae) => {
     const {
         _id,
         titulo,
+        typeRisk,
         descripcion,
         ref,
         riesgoProveniente,
@@ -455,6 +468,7 @@ const action = async (riskDatae) => {
     const data = {
         _id,
         titulo,
+        typeRisk,
         descripcion,
         ref,
         riesgoProveniente: riesgoProveniente.id,
@@ -503,32 +517,14 @@ const onChangeENCheckbox = (option) => {
     let valueId = customElementsENForm.radio
     valueId[0] === undefined ? '' : valueId[0]
     riskDataSave.value.expectativasNegocio = valueId
-    console.log(riskDataSave)
-    /*personaProyecto.value = personaProyecto.value.map((item) => {
-      item.encargado = (valueId === item.personaId) ? true : false
-      return item
-    })*/
 }
 
 const onChangeCheckboxPA = (option) => {
-    let valueId = ''
-    switch (option) {
-        case 0:
-             valueId = customElementsFormNo.switch  
-             customElementsForm.switch =  []
-             showFormPA.value = false         
-            break;
-        case 1:
-             valueId = customElementsForm.switch
-             customElementsFormNo.switch =  []
-             showFormPA.value = true 
-            break;    
-        default:
-            valueId = ''
-            break;
-    }  
+    let valueId = ''    
+    valueId = customElementsForm.switch
     clearFormValue()  
     riskDataSave.value.procedimientosAdicionales = valueId[0] === undefined ? '' : valueId[0]
+    showFormPA.value = !showFormPA.value
 }
 
 const onChangeCustomCheckbox = (key) => {
@@ -570,22 +566,31 @@ const onChangeCustomCheckbox = (key) => {
         case 'ase_b6':
             valueId = customChekSB6Form.checkbox
             break;
-        case 'type_r1':
-            valueId = customTypeRisk1Form.checkbox
-            break;
-        case 'type_r2':
-            valueId = customTypeRisk2Form.checkbox
-            break;            
         default:
             valueId = ''
             break;
     }
     riskDataSave["value"][key] = valueId[0] === undefined ? '' : valueId[0]
-    console.log(riskDataSave)
-    /*personaProyecto.value = personaProyecto.value.map((item) => {
-      item.encargado = (valueId === item.personaId) ? true : false
-      return item
-    })*/
+}
+
+const onChangeTypeRiskCustomCheckbox = (key) => {
+    let valueId = ''
+    switch (key) {
+        case 'TR1':
+            valueId = customChekSTR1Form.checkbox
+            customChekSTR2Form.checkbox = [] 
+            break;
+        case 'TR2':
+            valueId = customChekSTR2Form.checkbox
+            customChekSTR1Form.checkbox = []
+            break;
+        default:
+            valueId = ''
+            customChekSTR2Form.checkbox = [] 
+            customChekSTR1Form.checkbox = []  
+            break;
+    }
+    riskDataSave.value.typeRisk = valueId[0] === undefined ? '' : valueId[0]
 }
 </script>
 
@@ -616,16 +621,23 @@ const onChangeCustomCheckbox = (key) => {
                         </h1>
                     </div>
                     <div class="grid md:grid-cols-2 gap-2">
+
                         <FormField label="">
-                            <FormCheckRadioGroup v-model="customTypeRisk1Form.checkbox" name="sample-checkbox"
-                                :options="{ 'A nivel de estados financieros': t('message.risk.atTheLevelOfFinancialStatements') }"
-                                @change="onChangeCustomCheckbox('type_r1')" />
-                        </FormField>
-                        <FormField label="">
-                            <FormCheckRadioGroup v-model="customTypeRisk2Form.checkbox" name="sample-checkbox"
-                                :options="{ 'A nivel de aseveraciones': t('message.risk.atTheLevelOfAssertions') }"
-                                @change="onChangeCustomCheckbox('type_r2')" />
-                        </FormField>
+                                <FormCheckRadioGroup v-model="customChekSTR1Form.checkbox" name="sample-checkbox"
+                                    :options="{ 'A nivel de estados financieros': t('message.risk.atTheLevelOfFinancialStatements') }"
+                                    @change="onChangeTypeRiskCustomCheckbox('TR1')" />
+                            </FormField>
+
+                            <FormField label="">
+                                <FormCheckRadioGroup v-model="customChekSTR2Form.checkbox" name="sample-checkbox"
+                                    :options="{ 'A nivel de aseveraciones': t('message.risk.atTheLevelOfAssertions') }"
+                                    @change="onChangeTypeRiskCustomCheckbox('TR2')" />
+                            </FormField>
+
+                        <!-- <FormField label="" v-for="(opions, i) in radioTypeRiskOptions">
+                            <FormCheckRadioGroup v-model="customTypeRiskForm.radio" name="sample-radio" type="radio"
+                                :options="radioTypeRiskOptions[i]" @change="onChangeTypeRiskCheckbox(radioTypeRiskOptions[i])" />
+                        </FormField> -->
                     </div>
 
                     <div class="grid lg:grid-cols-3 gap-3" style="margin-bottom: 1.5rem;">
@@ -673,7 +685,7 @@ const onChangeCustomCheckbox = (key) => {
 
                     <div class="grid lg:grid-cols-1 gap-1">
                         <h1 style="font-weight: 700;">Riesgo de error en los estados financieros</h1>
-                        <h1 style=" font-weight: 700;">Expectativas del cliente</h1>
+                        <!-- <h1 style=" font-weight: 700;">Expectativas del cliente</h1> -->
                         <div class="grid md:grid-cols-2 gap-2">
                             <FormField label="" v-for="(opions, i) in radioOptions">
                                 <FormCheckRadioGroup v-model="customElementsENForm.radio" name="sample-radio" type="radio"
@@ -685,7 +697,7 @@ const onChangeCustomCheckbox = (key) => {
                     <div class="grid lg:grid-cols-1 gap-1">
                         <h1 style="margin-bottom: 1.5rem; font-weight: 700;">{{ $t('message.risk.additionalProcedures') }}
                         </h1>
-                        <div class="grid md:grid-cols-2 gap-2">
+                        <div class="grid md:grid-cols-2 gap-2" style="padding-bottom: 20px;">
                             <FormField label="">
                                 <FormCheckRadioGroup 
                                     v-model="customElementsForm.switch" 
@@ -694,16 +706,6 @@ const onChangeCustomCheckbox = (key) => {
                                     :options="{ 'Si': t('message.yes')}" 
                                     @change="onChangeCheckboxPA(1)"/>
                             </FormField>
-
-                            <FormField label="">
-                                <FormCheckRadioGroup 
-                                    v-model="customElementsFormNo.switch" 
-                                    name="sample-switch" 
-                                    type="switch"
-                                    :options="{'No': t('message.no') }" 
-                                    @change="onChangeCheckboxPA(0)"/>
-                            </FormField>
-
                         </div>
                     </div>
 
@@ -741,7 +743,7 @@ const onChangeCustomCheckbox = (key) => {
 
                             <div class="c-card">
                                 <div class="c-card-header">
-                                    {{ $t('message.risk.analytic') }}
+                                    {{ $t('message.risk.detection') }}
                                 </div>
                                 <div class="c-card-content">
                                     <FormField>
