@@ -131,7 +131,9 @@ const dataCodigo = (modal = false) => {
   const { codigo } = selectedProject.value
   return (!modal) ? codigo : `${t("message.project.project")} ${codigo}`
 }
-const successMessage = t("message.project.deleted.success")
+const successMessage = t("message.projectPerson.deleted.success")
+
+const successMsg = t("message.projectPerson.created.success")
 
 const deleteItem = async () => {
   action()
@@ -140,18 +142,19 @@ const deleteItem = async () => {
       emit('changePage', currentPage.value)
     })
     .catch(err => {
-      toast.error(`${t("message.project.deleted.error")} ${err?.response?.data.msg}`)
+      toast.error(`${t("message.projectPerson.deleted.error")} ${err?.response?.data.msg}`)
     })
 };
 
 const guardarPersonaProyeto = async () => {
+  console.log('pasoooo')
   actionPersonaProyecto()
     .then(() => {
-      toast.success(successMessage);
+      toast.success(successMsg);
       emit('changePage', currentPage.value)
     })
     .catch(err => {
-      toast.error(`${t("message.project.deleted.error")} ${err?.response?.data.msg}`)
+      toast.error(`${t("message.projectPerson.created.error")} ${err?.response?.data.msg}`)
     })
 };
 

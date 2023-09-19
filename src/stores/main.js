@@ -3,8 +3,6 @@ import axios from "axios";
 import AuthService from '../services/auth.service'
 const user = JSON.parse(localStorage.getItem('user'))
 const initialState = user ? { isLoggedIn: true , ...user } : {  isLoggedIn: false, user: null }
-console.log(initialState)
-
 
 export const useMainStore = defineStore("main", {
   state: () => ({
@@ -92,7 +90,6 @@ export const useMainStore = defineStore("main", {
     },
     async logout(user) {
       const self = this
-      console.log('logout')
       await new Promise((resolve, reject) => {
         AuthService.logout(user)
           .then(response => {

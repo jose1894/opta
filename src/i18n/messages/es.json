@@ -1037,6 +1037,17 @@
         "question": "Desea restaurar el archivo "
       }
     },
+    "projectPerson": {
+      "created": {
+        "success": "¡Personas asignadas al proyecto con éxito!",
+        "error": "¡No se pudo asignar personas al proyecto!"
+      },
+      "deleted": {
+        "success": "¡La persona fue eliminada con éxito!",
+        "error": "¡La persona no fue eliminada exitosamente!",
+        "question": "Desea eliminar el enfoque "
+      }
+    },
     "project": {
       "project": "Proyecto",
       "projects": "Proyectos",

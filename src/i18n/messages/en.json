@@ -1044,6 +1044,17 @@
         "question": "Do you want to restore "
     }
   },
+  "projectPerson": {
+    "created": {
+      "success": "¡People successfully assigned to the project!",
+      "error": "¡Failed to assign people to the project!"
+    },
+    "deleted": {
+      "success": "¡The person was successfully eliminated!",
+      "error": "¡The person was not successfully eliminated!",
+      "question": "Desea eliminar el enfoque "
+    }
+  },
   "project": {
     "project": "Project",
     "projects": "Projects",
