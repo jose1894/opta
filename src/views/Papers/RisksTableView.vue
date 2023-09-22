@@ -2,7 +2,7 @@
 import { computed, ref, defineEmits, defineProps, reactive } from "vue";
 import { useRouter } from "vue-router";
 import { useMainStore } from "@/stores/main";
-import { mdiDelete, mdiPencilOutline, mdiPrinter, mdiRenameBox, mdiListStatus } from "@mdi/js";
+import { mdiDelete, mdiPencilOutline, mdiPrinter, mdiRenameBox, mdiListStatus, mdiPlus } from "@mdi/js";
 import { required } from '@/utils/i18n-validators';
 import { useI18n } from "vue-i18n";
 import { useToast } from 'vue-toastification';
@@ -81,7 +81,7 @@ const generalOptions = [
     { id: 'Alto', label: t('message.risk.high') },
     { id: 'Medio', label: t('message.risk.middle') },
     { id: 'Bajo', label: t('message.risk.low') },
-   
+
 ];
 
 const customChekSTR1Form = reactive({
@@ -177,6 +177,14 @@ const props = defineProps({
     saveLabel: ''
 })
 
+const tableData = ref({
+    rows: [],
+});
+
+const refDesTableData = ref({
+    rows: [],
+});
+
 const dataInitial = {
     _id: '',
     titulo: "",
@@ -194,6 +202,7 @@ const dataInitial = {
     factorRiesgo: "",
     procesosInvolucrados: "",
     fuentesCausantes: "",
+    ctaFA: tableData,
     consecuenciaEF: "",
     ase_a1: "",
     ase_a2: "",
@@ -214,13 +223,15 @@ const dataInitial = {
     sel_esp: additionalSelectOptions[0],
     sel_esp2: additionalSelectOptions[0],
     sel2_ini: additionalSelect2Options[0],
+    refDes: refDesTableData,
     padc_enf: "",
     padc_res: "",
-    referencia: "",
     pfo_mpro: "",
     rda_resi: "",
     conclusion: "",
 }
+
+
 
 const riskDataSave = ref(dataInitial);
 
@@ -272,24 +283,32 @@ const changePage = (page) => {
 }
 
 const openModalForm = (riskData) => {
-    const { indice, titulo, descripcion,typeRisk,  _id, riesgoProveniente,
+    const { indice, titulo, descripcion, typeRisk, _id, riesgoProveniente,
         cuadrante, areaRiesgo, expectativasNegocio, procedimientosAdicionales,
         inherente, control, analitico, factorRiesgo, procesosInvolucrados,
-        fuentesCausantes, consecuenciaEF, ase_a1, ase_a2, ase_a3, ase_a4,
-        ase_a5,ase_a6, ase_b1, ase_b2, ase_b3, ase_b4, ase_b5, ase_b6, sel_mon, sel_mon2, 
+        fuentesCausantes, ctaFA, consecuenciaEF, ase_a1, ase_a2, ase_a3, ase_a4,
+        ase_a5, ase_a6, ase_b1, ase_b2, ase_b3, ase_b4, ase_b5, ase_b6, sel_mon, sel_mon2,
         sel_gen, sel_gen2, sel_esp, sel_esp2,
-        sel2_ini, padc_enf, padc_res, referencia, pfo_mpro, rda_resi,
+        sel2_ini, refDes, padc_enf, padc_res, pfo_mpro, rda_resi,
         conclusion } = riskData
+        
     riskDataSave.value.ref = `${indice.indice} - ${indice.nombre}`
     riskDataSave.value.titulo = titulo
     riskDataSave.value.descripcion = descripcion
     riskDataSave.value._id = _id
-    if(typeRisk === 'Seleccione') {
+    
+    tableData.value.rows =  ctaFA !== null ? ctaFA?.rows : []
+    riskDataSave.value.ctaFA = tableData
+
+    refDesTableData.value.rows =  refDes !== null ? refDes?.rows : []
+    riskDataSave.value.refDes = refDesTableData
+
+    if (typeRisk === 'Seleccione') {
         customChekSTR2Form.checkbox = []
-        customChekSTR1Form.checkbox = []  
+        customChekSTR1Form.checkbox = []
     } else {
-        customChekSTR1Form.checkbox = typeRisk === 'A nivel de estados financieros' ? [typeRisk] : [] 
-        customChekSTR2Form.checkbox = typeRisk !== 'A nivel de estados financieros' ? [typeRisk] : []  
+        customChekSTR1Form.checkbox = typeRisk === 'A nivel de estados financieros' ? [typeRisk] : []
+        customChekSTR2Form.checkbox = typeRisk !== 'A nivel de estados financieros' ? [typeRisk] : []
     }
     riskDataSave.value.riesgoProveniente = risksFrom.filter(riskItem => riskItem.id === riesgoProveniente)[0]
     riskDataSave.value.cuadrante = quadrantOption.filter(item => item.id === cuadrante)[0]
@@ -328,11 +347,10 @@ const openModalForm = (riskData) => {
     riskDataSave.value.sel2_ini = additionalSelect2Options.filter(item => item.id === sel2_ini)[0]
 
     riskDataSave.value.padc_enf = padc_enf,
-    riskDataSave.value.padc_res = padc_res,
-    riskDataSave.value.referencia = referencia,
-    riskDataSave.value.pfo_mpro = pfo_mpro,
-    riskDataSave.value.rda_resi = rda_resi,
-    riskDataSave.value.conclusion = conclusion
+        riskDataSave.value.padc_res = padc_res,
+        riskDataSave.value.pfo_mpro = pfo_mpro,
+        riskDataSave.value.rda_resi = rda_resi,
+        riskDataSave.value.conclusion = conclusion
 
     console.log(ase_a1)
 
@@ -377,7 +395,6 @@ const clearFormValue = () => {
 
     riskDataSave.value.padc_enf = ""
     riskDataSave.value.padc_res = ""
-    riskDataSave.value.referencia = ""
     riskDataSave.value.pfo_mpro = ""
     riskDataSave.value.rda_resi = ""
     riskDataSave.value.conclusion = ""
@@ -397,7 +414,6 @@ const submit = async () => {
             .then(() => {
                 isModalFormRisk.value = false
                 changePage(currentPageHuman.value)
-                //enfoque.value = dataInitial
                 toast.success(successMessage);
             })
             .catch(err => {
@@ -437,6 +453,7 @@ const action = async (riskDatae) => {
         factorRiesgo,
         procesosInvolucrados,
         fuentesCausantes,
+        ctaFA,
         consecuenciaEF,
         ase_a1,
         ase_a2,
@@ -457,9 +474,9 @@ const action = async (riskDatae) => {
         sel_esp,
         sel_esp2,
         sel2_ini,
+        refDes,
         padc_enf,
         padc_res,
-        referencia,
         pfo_mpro,
         rda_resi,
         conclusion
@@ -482,6 +499,7 @@ const action = async (riskDatae) => {
         factorRiesgo,
         procesosInvolucrados,
         fuentesCausantes,
+        ctaFA,
         consecuenciaEF,
         ase_a1,
         ase_a2,
@@ -502,14 +520,14 @@ const action = async (riskDatae) => {
         sel_esp: sel_esp.id,
         sel_esp2: sel_esp2.id,
         sel2_ini: sel2_ini.id,
+        refDes,
         padc_enf,
         padc_res,
-        referencia,
         pfo_mpro,
         rda_resi,
         conclusion
-
     }
+    console.log(data)
     return riesgosServices.update(data);
 }
 
@@ -520,9 +538,9 @@ const onChangeENCheckbox = (option) => {
 }
 
 const onChangeCheckboxPA = (option) => {
-    let valueId = ''    
+    let valueId = ''
     valueId = customElementsForm.switch
-    clearFormValue()  
+    clearFormValue()
     riskDataSave.value.procedimientosAdicionales = valueId[0] === undefined ? '' : valueId[0]
     showFormPA.value = !showFormPA.value
 }
@@ -578,7 +596,7 @@ const onChangeTypeRiskCustomCheckbox = (key) => {
     switch (key) {
         case 'TR1':
             valueId = customChekSTR1Form.checkbox
-            customChekSTR2Form.checkbox = [] 
+            customChekSTR2Form.checkbox = []
             break;
         case 'TR2':
             valueId = customChekSTR2Form.checkbox
@@ -586,12 +604,38 @@ const onChangeTypeRiskCustomCheckbox = (key) => {
             break;
         default:
             valueId = ''
-            customChekSTR2Form.checkbox = [] 
-            customChekSTR1Form.checkbox = []  
+            customChekSTR2Form.checkbox = []
+            customChekSTR1Form.checkbox = []
             break;
     }
     riskDataSave.value.typeRisk = valueId[0] === undefined ? '' : valueId[0]
 }
+
+const addRow = () => {
+    const newRow = ['', '', '', '', ''] 
+    tableData.value.rows.push(newRow);
+};
+
+const addRowRefDes = () => {
+    const newRow = ['', ''] 
+    refDesTableData.value.rows.push(newRow);
+};
+
+const getStyle = (i) => {
+    if (i === 0) {
+        return {
+            width: `8%`,
+        }
+    }
+};
+
+const getTypeInput = (i) => {
+    const indice = [2,3]
+    if (indice.includes(i)) {
+        return `number`
+    }
+    return `text`
+};
 </script>
 
 <template>
@@ -602,11 +646,12 @@ const onChangeTypeRiskCustomCheckbox = (key) => {
                 <div class="container mx-auto">
                     <div class="grid md:grid-cols-1 gap-1">
                         <FormField :label="$t('message.risk.ref')">
-                            <FormControl :name="'ref'" v-model="riskDataSave.ref" :icon="mdiRenameBox" :readonly="true"/>
+                            <FormControl :name="'ref'" v-model="riskDataSave.ref" :icon="mdiRenameBox" :readonly="true" />
                         </FormField>
 
                         <FormField :label="$t('message.risk.title')" :help="v$?.titulo?.$errors[0]?.$message">
-                            <FormControl :name="'titulo'" v-model="riskDataSave.titulo" :icon="mdiRenameBox" :readonly="true"/>
+                            <FormControl :name="'titulo'" v-model="riskDataSave.titulo" :icon="mdiRenameBox"
+                                :readonly="true" />
                         </FormField>
 
                         <FormField :label="$t('message.risk.description')" :help="v$?.descripcion?.$errors[0]?.$message"
@@ -623,16 +668,16 @@ const onChangeTypeRiskCustomCheckbox = (key) => {
                     <div class="grid md:grid-cols-2 gap-2">
 
                         <FormField label="">
-                                <FormCheckRadioGroup v-model="customChekSTR1Form.checkbox" name="sample-checkbox"
-                                    :options="{ 'A nivel de estados financieros': t('message.risk.atTheLevelOfFinancialStatements') }"
-                                    @change="onChangeTypeRiskCustomCheckbox('TR1')" />
-                            </FormField>
+                            <FormCheckRadioGroup v-model="customChekSTR1Form.checkbox" name="sample-checkbox"
+                                :options="{ 'A nivel de estados financieros': t('message.risk.atTheLevelOfFinancialStatements') }"
+                                @change="onChangeTypeRiskCustomCheckbox('TR1')" />
+                        </FormField>
 
-                            <FormField label="">
-                                <FormCheckRadioGroup v-model="customChekSTR2Form.checkbox" name="sample-checkbox"
-                                    :options="{ 'A nivel de aseveraciones': t('message.risk.atTheLevelOfAssertions') }"
-                                    @change="onChangeTypeRiskCustomCheckbox('TR2')" />
-                            </FormField>
+                        <FormField label="">
+                            <FormCheckRadioGroup v-model="customChekSTR2Form.checkbox" name="sample-checkbox"
+                                :options="{ 'A nivel de aseveraciones': t('message.risk.atTheLevelOfAssertions') }"
+                                @change="onChangeTypeRiskCustomCheckbox('TR2')" />
+                        </FormField>
 
                         <!-- <FormField label="" v-for="(opions, i) in radioTypeRiskOptions">
                             <FormCheckRadioGroup v-model="customTypeRiskForm.radio" name="sample-radio" type="radio"
@@ -699,12 +744,8 @@ const onChangeTypeRiskCustomCheckbox = (key) => {
                         </h1>
                         <div class="grid md:grid-cols-2 gap-2" style="padding-bottom: 20px;">
                             <FormField label="">
-                                <FormCheckRadioGroup 
-                                    v-model="customElementsForm.switch" 
-                                    name="sample-switch" 
-                                    type="switch"
-                                    :options="{ 'Si': t('message.yes')}" 
-                                    @change="onChangeCheckboxPA(1)"/>
+                                <FormCheckRadioGroup v-model="customElementsForm.switch" name="sample-switch" type="switch"
+                                    :options="{ 'Si': t('message.yes') }" @change="onChangeCheckboxPA(1)" />
                             </FormField>
                         </div>
                     </div>
@@ -769,7 +810,7 @@ const onChangeTypeRiskCustomCheckbox = (key) => {
                             <FormField :label="$t('message.risk.causativeSourceOfRisk')">
                                 <FormControl type="textarea" v-model="riskDataSave.fuentesCausantes" :icon="mdiRenameBox" />
                             </FormField>
-                        </div>
+                        </div>                        
 
                         <div class="grid lg:grid-cols-1 gap-1">
                             <FormField :label="$t('message.risk.impactOnTheFinancialStatementsAndAccountsConcerned')">
@@ -813,8 +854,7 @@ const onChangeTypeRiskCustomCheckbox = (key) => {
                             <FormField label="">
                                 <FormCheckRadioGroup v-model="customChekS4Form.checkbox" name="sample-checkbox"
                                     :options="{ 'IV. Corte (CO)': $t('message.risk.iVCourt(CO)') }"
-                                    :messageTooltip="t('message.risk.court')"
-                                    @change="onChangeCustomCheckbox('ase_a4')" />
+                                    :messageTooltip="t('message.risk.court')" @change="onChangeCustomCheckbox('ase_a4')" />
                             </FormField>
 
                             <FormField label="">
@@ -913,6 +953,42 @@ const onChangeTypeRiskCustomCheckbox = (key) => {
                                     @change="onChangeCustomCheckbox('ase_c4')" />
                             </FormField>
                         </div> -->
+
+                        <div class="grid lg:grid-cols-1 gap-1 card-header" style="margin-bottom: 1.5rem;">
+                            <h1 style="margin-bottom: 1.5rem; font-weight: 700;" class="card-header-h1">
+                                {{ $t('message.risk.accountOfAffectedFinancialStatementsAndStatements') }}
+                            </h1>
+                        </div>
+
+                        <div class="grid lg:grid-cols-1 gap-1 mb-4">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>{{ $t('message.risk.ref') }}</th>
+                                        <th>{{ $t('message.risk.accountName') }}</th>
+                                        <th>{{ $t('message.risk.preliminary') }}</th>
+                                        <th>{{ $t('message.risk.final') }}</th>
+                                        <th>{{ $t('message.risk.affectedClaims') }}</th>
+                                        <th>
+
+                                            <BaseButton @click.prevent="addRow" :icon="mdiPlus" label="" color="success"
+                                                small />
+                                        </th>
+
+
+                                        <th />
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="(row, rowIndex) in tableData.rows" :key="rowIndex">
+                                        <td v-for="(cell, cellIndex) in row" :key="cellIndex" :style="getStyle(cellIndex)">
+                                            <input :type="getTypeInput(cellIndex)" v-model="tableData.rows[rowIndex][cellIndex]"
+                                                style="width: 100%" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
 
                         <div class="grid lg:grid-cols-1 gap-1 card-header" style="margin-bottom: 1.5rem;">
                             <h1 style="margin-bottom: 1.5rem; font-weight: 700;" class="card-header-h1">
@@ -1067,16 +1143,37 @@ const onChangeTypeRiskCustomCheckbox = (key) => {
                             </FormField>
                         </div>
 
-                        <div class="grid lg:grid-cols-1 gap-1">
-                            <h1 style="margin-bottom: 1.5rem; font-weight: 700;">
+                        <div class="grid lg:grid-cols-1 gap-1 card-header" style="margin-bottom: 1.5rem;">
+                            <h1 style="margin-bottom: 1.5rem; font-weight: 700;" class="card-header-h1">
                                 {{ $t('message.risk.reference(s)ToWorkingPapers') }}
                             </h1>
                         </div>
 
-                        <div class="grid lg:grid-cols-1 gap-1" style="margin-bottom: 1.5rem;">
-                            <FormField label="">
-                                <FormControl type="textarea" v-model="riskDataSave.referencia" :icon="mdiRenameBox" />
-                            </FormField>
+                        <div class="grid lg:grid-cols-1 gap-1 mb-4">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>{{ $t('message.risk.ref') }}</th>
+                                        <th>{{ $t('message.risk.description') }}</th>
+                                        <th>
+
+                                            <BaseButton @click.prevent="addRowRefDes" :icon="mdiPlus" label="" color="success"
+                                                small />
+                                        </th>
+
+
+                                        <th />
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="(row, rowIndex) in refDesTableData.rows" :key="rowIndex">
+                                        <td v-for="(cell, cellIndex) in row" :key="cellIndex" :style="getStyle(cellIndex)">
+                                            <input type="text" v-model="refDesTableData.rows[rowIndex][cellIndex]"
+                                                style="width: 100%" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
 
                         <div class="grid lg:grid-cols-1 gap-1 card-header" style="margin-bottom: 1.5rem;">
@@ -1153,24 +1250,12 @@ const onChangeTypeRiskCustomCheckbox = (key) => {
                 <td class="before:hidden lg:w-1 whitespace-nowrap">
                     <BaseButtons type="justify-start lg:justify-end" no-wrap>
 
-                        <BaseButton 
-                            color="info" 
-                            :icon="mdiPencilOutline" 
-                            :messageTooltip="t('message.edit')"
-                            small 
+                        <BaseButton color="info" :icon="mdiPencilOutline" :messageTooltip="t('message.edit')" small
                             @click="openModalForm(risk)" />
 
-                        <BaseButton 
-                            color="info" 
-                            :icon="mdiPrinter" 
-                            :messageTooltip="t('message.print')"
-                            small />
+                        <BaseButton color="info" :icon="mdiPrinter" :messageTooltip="t('message.print')" small />
 
-                        <BaseButton 
-                            color="info" 
-                            :icon="mdiDelete" 
-                            :messageTooltip="t('message.delete')" 
-                            small />
+                        <BaseButton color="info" :icon="mdiDelete" :messageTooltip="t('message.delete')" small />
 
                     </BaseButtons>
                 </td>
