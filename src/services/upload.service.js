@@ -21,7 +21,7 @@ export default {
 
     downloadFiled(id) {
         return new Promise((resolve, reject) => {
-            Service.get(`${resource}download/${id}`,  { headers: authHeader() })
+            Service.get(`${resource}download/${id}`,  { headers: authHeader(), responseType: 'blob' })
             .then((response) => resolve(response))
             .catch((err) => reject(err))
         })

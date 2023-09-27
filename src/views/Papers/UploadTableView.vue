@@ -15,7 +15,7 @@ const toast = useToast()
 const router = useRouter();
 const mainStore = useMainStore();
 const selectedFile = ref([]);
-
+const pdfUrl = ref('');
 const items = computed(() => mainStore.filesProjectApproaches.Uploads);
 const total = computed(() => mainStore.filesProjectApproaches.total)
 
@@ -57,8 +57,15 @@ const changePage = (page) => {
   emit('changePage', page)
 }
 
-const btnDolownd = (file) => {
- uploadService.downloadFiled(file._id) 
+const btnDolownd = async(file) => {
+  const response = await uploadService.downloadFiled(file._id) 
+  const blob = new Blob([response.data], { type: file.type });
+  pdfUrl.value = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = pdfUrl.value;
+  link.download = file.nombreBinario;
+  link.click();
+  
 }
 
 const selectedItem = (file) => selectedFile.value = file
@@ -85,6 +92,9 @@ const actionDelete = () => {
 </script>
 
 <template>
+  <!-- <div>
+    <embed :src="pdfUrl" type="application/pdf" width="100%" height="60px" />
+  </div> -->
   <table>
     <thead>
       <tr>
