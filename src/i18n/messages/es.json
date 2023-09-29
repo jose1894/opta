@@ -909,13 +909,14 @@
       }
     },
     "risk": {
+      "balance": "Saldo",
       "index": "Indice",
-      "description": "Descripción",
+      "description": "Descripción del Riesgo",
       "typeOfRisk": "Tipo de Riesgo",
       "atTheLevelOfFinancialStatements": "A nivel de estados financieros",
       "atTheLevelOfAssertions": "A nivel de aseveraciones",
       "accountOfAffectedFinancialStatementsAndStatements": "Cuenta de los estados financieros y aseveraciones afectadas",
-      "title": "Titulo",
+      "title": "Titulo del Riesgo",
       "ref": "Ref",
       "accountName": "Nombre de la cuenta",
       "preliminary": "Preliminar",

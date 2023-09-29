@@ -31,6 +31,10 @@ const hasModalValue = false;
 const pageRisk = ref(1);
 const perPageRisk = ref(10);
 
+const params = ref({
+    cuadrante: 0
+});
+
 const state = reactive({
     selectedNodeId: null,
 });
@@ -149,6 +153,20 @@ const getRisk = (data) => {
 
 getRisk({ page: pageRisk.value })
 
+const enviarParametros = (idCuadrante) => {
+    const { cuadrante } = params.value 
+    if (idCuadrante === 0) {
+        getRisk({ page: page.value })
+    } else {
+        const data = [
+            {
+                cuadrante:idCuadrante
+            }
+        ]
+        getRisk({ page: page.value, q: data })
+    }
+} 
+
 </script>
 <template>
     <CardBoxModal 
@@ -162,22 +180,22 @@ getRisk({ page: pageRisk.value })
                     <div class="c-padding-items">
                         <span>{{ $t('message.audit.RiskMatrix') }}</span>
                     </div>
-                    <div class="c-padding-items">
+                    <div class="c-padding-items" @click="enviarParametros(0)">
                         <span>{{ $t('message.audit.allRisks') }}</span>
                     </div>
-                    <div class="c-padding-items">
+                    <div class="c-padding-items" @click="enviarParametros(1)">
                         <span>{{ $t('message.audit.quadrantI') }}</span>
                     </div>
-                    <div class="c-padding-items">
+                    <div class="c-padding-items" @click="enviarParametros(2)">
                         <span>{{ $t('message.audit.quadrantII') }}</span>
                     </div>
-                    <div class="c-padding-items">
+                    <div class="c-padding-items" @click="enviarParametros(3)">
                         <span>{{ $t('message.audit.quadrantIII') }}</span>
                     </div>
-                    <div class="c-padding-items">
+                    <div class="c-padding-items" @click="enviarParametros(4)">
                         <span>{{ $t('message.audit.quadrantIV') }}</span>
                     </div>
-                    <div class="c-padding-items">
+                    <div class="c-padding-items" @click="enviarParametros(0)">
                         <span>{{ $t('message.audit.customerExpectations') }}</span>
                     </div>
                 </div>

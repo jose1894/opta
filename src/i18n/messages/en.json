@@ -912,8 +912,9 @@
     }
   },
   "risk": {
+    "balance": "Balance",
     "index": "Index",
-    "description": "Description",
+    "description": "Description of Risk",
     "typeOfRisk": "Type of Risk",
     "atTheLevelOfFinancialStatements": "At the Level of Financial Statements",
     "atTheLevelOfAssertions": "At the level of assertions",
@@ -922,7 +923,7 @@
     "preliminary": "Preliminary",
     "affectedClaims": "Affected Claims",
     "final": "Final",
-    "title": "Title",
+    "title": "Risk Title",
     "ref": "Ref",
     "riskFrom": "Risk from",
     "quadrant": "Quadrant",

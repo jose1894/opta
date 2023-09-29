@@ -2,7 +2,7 @@
 import { computed, ref, defineEmits, defineProps, reactive } from "vue";
 import { useRouter } from "vue-router";
 import { useMainStore } from "@/stores/main";
-import { mdiDelete, mdiPencilOutline, mdiPrinter, mdiRenameBox, mdiListStatus, mdiPlus } from "@mdi/js";
+import { mdiDelete, mdiPencilOutline, mdiPrinter, mdiRenameBox, mdiListStatus, mdiPlus, mdiMinus } from "@mdi/js";
 import { required } from '@/utils/i18n-validators';
 import { useI18n } from "vue-i18n";
 import { useToast } from 'vue-toastification';
@@ -23,8 +23,10 @@ const router = useRouter();
 const isModalFormRisk = ref(false);
 const mainStore = useMainStore();
 const selectedRisk = ref([]);
-const hasModalValue = false;
+const hasModalValue = ref(true);
 const showFormPA = ref(false);
+const overlayModal = ref(false);
+const btnCloseModal = ref(true);
 
 const risksFrom = [
     { id: 'Transacciones Recurrentes', label: t('message.risk.recurringTransactions') },
@@ -203,7 +205,6 @@ const dataInitial = {
     procesosInvolucrados: "",
     fuentesCausantes: "",
     ctaFA: tableData,
-    consecuenciaEF: "",
     ase_a1: "",
     ase_a2: "",
     ase_a3: "",
@@ -230,8 +231,6 @@ const dataInitial = {
     rda_resi: "",
     conclusion: "",
 }
-
-
 
 const riskDataSave = ref(dataInitial);
 
@@ -276,6 +275,7 @@ const rules = computed(() => ({
     titulo: { required, },
     descripcion: { required },
 }));
+
 const v$ = useValidate(rules, riskDataSave);
 
 const changePage = (page) => {
@@ -286,7 +286,7 @@ const openModalForm = (riskData) => {
     const { indice, titulo, descripcion, typeRisk, _id, riesgoProveniente,
         cuadrante, areaRiesgo, expectativasNegocio, procedimientosAdicionales,
         inherente, control, analitico, factorRiesgo, procesosInvolucrados,
-        fuentesCausantes, ctaFA, consecuenciaEF, ase_a1, ase_a2, ase_a3, ase_a4,
+        fuentesCausantes, ctaFA,  ase_a1, ase_a2, ase_a3, ase_a4,
         ase_a5, ase_a6, ase_b1, ase_b2, ase_b3, ase_b4, ase_b5, ase_b6, sel_mon, sel_mon2,
         sel_gen, sel_gen2, sel_esp, sel_esp2,
         sel2_ini, refDes, padc_enf, padc_res, pfo_mpro, rda_resi,
@@ -323,7 +323,6 @@ const openModalForm = (riskData) => {
     riskDataSave.value.factorRiesgo = factorRiesgo
     riskDataSave.value.procesosInvolucrados = procesosInvolucrados
     riskDataSave.value.fuentesCausantes = fuentesCausantes
-    riskDataSave.value.consecuenciaEF = consecuenciaEF
     customChekS1Form.checkbox = ase_a1 !== '' ? [ase_a1] : []
     customChekS2Form.checkbox = ase_a2 !== '' ? [ase_a2] : []
     customChekS3Form.checkbox = ase_a3 !== '' ? [ase_a3] : []
@@ -347,28 +346,20 @@ const openModalForm = (riskData) => {
     riskDataSave.value.sel2_ini = additionalSelect2Options.filter(item => item.id === sel2_ini)[0]
 
     riskDataSave.value.padc_enf = padc_enf,
-        riskDataSave.value.padc_res = padc_res,
-        riskDataSave.value.pfo_mpro = pfo_mpro,
-        riskDataSave.value.rda_resi = rda_resi,
-        riskDataSave.value.conclusion = conclusion
-
-    console.log(ase_a1)
-
-
-
+    riskDataSave.value.padc_res = padc_res,
+    riskDataSave.value.pfo_mpro = pfo_mpro,
+    riskDataSave.value.rda_resi = rda_resi,
+    riskDataSave.value.conclusion = conclusion
     isModalFormRisk.value = true
-
 }
 
 const clearFormValue = () => {
-
     riskDataSave.value.inherente = generalOptions[0]
     riskDataSave.value.control = generalOptions[0]
     riskDataSave.value.analitico = generalOptions[0]
     riskDataSave.value.factorRiesgo = ""
     riskDataSave.value.procesosInvolucrados = ""
     riskDataSave.value.fuentesCausantes = ""
-    riskDataSave.value.consecuenciaEF = ""
     customChekSTR1Form.checkbox = []
     customChekSTR2Form.checkbox = []
     customChekS1Form.checkbox = []
@@ -454,7 +445,6 @@ const action = async (riskDatae) => {
         procesosInvolucrados,
         fuentesCausantes,
         ctaFA,
-        consecuenciaEF,
         ase_a1,
         ase_a2,
         ase_a3,
@@ -500,7 +490,6 @@ const action = async (riskDatae) => {
         procesosInvolucrados,
         fuentesCausantes,
         ctaFA,
-        consecuenciaEF,
         ase_a1,
         ase_a2,
         ase_a3,
@@ -616,15 +605,50 @@ const addRow = () => {
     tableData.value.rows.push(newRow);
 };
 
+const deleteRow = (item) => {
+    let dataNew = tableData.value.rows
+    dataNew.splice(item.rowIndex, 1);
+    tableData.value.rows = dataNew
+};
+
+
+
 const addRowRefDes = () => {
     const newRow = ['', ''] 
     refDesTableData.value.rows.push(newRow);
 };
 
+const deleteRowRefDes = (item) => {
+    let dataNew = refDesTableData.value.rows
+    dataNew.splice(item.rowIndex, 1);
+    refDesTableData.value.rows = dataNew
+};
+
+const getStyleRefDes = (i) => {
+    if (i === 0) {
+        return {
+            width: `8%`,
+        }
+    }
+
+    return {
+        width: `84%`,
+    }
+
+}
 const getStyle = (i) => {
     if (i === 0) {
         return {
             width: `8%`,
+        }
+    }
+
+    if (i === 2 || i === 3 ) {
+        return {
+            width: `10%`,
+            'text-align': `right`,
+            'padding-left': '0px',
+            'padding-righ': '0px'
         }
     }
 };
@@ -636,11 +660,34 @@ const getTypeInput = (i) => {
     }
     return `text`
 };
+
+const confirmModal = () => {
+    submit()
+};
+
+const cancelModal = () => {
+    clearFormValue()
+};
+
+const descriptionCuadrante = (option) => {
+    if(option === 1) {
+        return t('message.audit.quadrantI')
+    } else if(option === 2) {
+        return t('message.audit.quadrantII')
+    } else if(option === 3) {
+        return t('message.audit.quadrantIII')
+    } else if(option === 4) {
+        return t('message.audit.quadrantIV')
+    } else {        
+        return t('message.audit.quadrant')
+    }  
+};
 </script>
 
 <template>
-    <CardBoxModal v-model="isModalFormRisk" :title="addTitle()" :hasDone="hasModalValue"
-        claseModal="shadow-lg max-h-modal w-11/12 md:w-3/5 lg:w-8/12 xl:w-8/12 z-50" style="height: 100%;">
+    <CardBoxModal v-model="isModalFormRisk" :hasCancel="btnCloseModal" :title="addTitle()" :hasDone="hasModalValue"
+        claseModal="shadow-lg max-h-modal w-11/12 md:w-11/12 lg:w-11/12 xl:w-11/12 z-50" style="height: 100%;"
+        :overlayClick="overlayModal" @confirm="confirmModal" @cancel="cancelModal">
         <CardBox isForm @submit.prevent="submit" style="height: 600px; overflow-y: auto;">
             <div>
                 <div class="container mx-auto">
@@ -812,11 +859,11 @@ const getTypeInput = (i) => {
                             </FormField>
                         </div>                        
 
-                        <div class="grid lg:grid-cols-1 gap-1">
+                        <!-- <div class="grid lg:grid-cols-1 gap-1">
                             <FormField :label="$t('message.risk.impactOnTheFinancialStatementsAndAccountsConcerned')">
                                 <FormControl type="textarea" v-model="riskDataSave.consecuenciaEF" :icon="mdiRenameBox" />
                             </FormField>
-                        </div>
+                        </div> -->
 
                         <div class="grid lg:grid-cols-1 gap-1 card-header" style="margin-bottom: 1.5rem;">
                             <h1 style="margin-bottom: 1.5rem; font-weight: 700;" class="card-header-h1">
@@ -963,20 +1010,22 @@ const getTypeInput = (i) => {
                         <div class="grid lg:grid-cols-1 gap-1 mb-4">
                             <table>
                                 <thead>
-                                    <tr>
-                                        <th>{{ $t('message.risk.ref') }}</th>
-                                        <th>{{ $t('message.risk.accountName') }}</th>
-                                        <th>{{ $t('message.risk.preliminary') }}</th>
-                                        <th>{{ $t('message.risk.final') }}</th>
-                                        <th>{{ $t('message.risk.affectedClaims') }}</th>
-                                        <th>
-
+                                    <tr class="trHeader">
+                                        <th></th>
+                                        <th></th>
+                                        <th colspan="2" class="trHeader2">{{ $t('message.risk.balance') }}</th>
+                                        <th colspan="2"></th>
+                                    </tr>
+                                    <tr style="background: #2563eb;color: white;">
+                                        <th class="c-center">{{ $t('message.risk.ref') }}</th>
+                                        <th class="c-center">{{ $t('message.risk.accountName') }}</th>
+                                        <th class="c-center">{{ $t('message.risk.preliminary') }}</th>
+                                        <th class="c-center">{{ $t('message.risk.final') }}</th>
+                                        <th class="c-center">{{ $t('message.risk.affectedClaims') }}</th>
+                                        <th class="c-center">
                                             <BaseButton @click.prevent="addRow" :icon="mdiPlus" label="" color="success"
                                                 small />
                                         </th>
-
-
-                                        <th />
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -984,6 +1033,10 @@ const getTypeInput = (i) => {
                                         <td v-for="(cell, cellIndex) in row" :key="cellIndex" :style="getStyle(cellIndex)">
                                             <input :type="getTypeInput(cellIndex)" v-model="tableData.rows[rowIndex][cellIndex]"
                                                 style="width: 100%" />
+                                        </td>
+                                        <td class="c-center"> 
+                                            <BaseButton @click.prevent="deleteRow({rowIndex,row})" :icon="mdiMinus" label="" color="danger"
+                                                small />
                                         </td>
                                     </tr>
                                 </tbody>
@@ -1155,21 +1208,22 @@ const getTypeInput = (i) => {
                                     <tr>
                                         <th>{{ $t('message.risk.ref') }}</th>
                                         <th>{{ $t('message.risk.description') }}</th>
-                                        <th>
+                                        <th class="c-center">
 
                                             <BaseButton @click.prevent="addRowRefDes" :icon="mdiPlus" label="" color="success"
                                                 small />
                                         </th>
-
-
-                                        <th />
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr v-for="(row, rowIndex) in refDesTableData.rows" :key="rowIndex">
-                                        <td v-for="(cell, cellIndex) in row" :key="cellIndex" :style="getStyle(cellIndex)">
+                                        <td v-for="(cell, cellIndex) in row" :key="cellIndex" :style="getStyleRefDes(cellIndex)">
                                             <input type="text" v-model="refDesTableData.rows[rowIndex][cellIndex]"
                                                 style="width: 100%" />
+                                        </td>
+                                        <td class="c-center"> 
+                                            <BaseButton @click.prevent="deleteRowRefDes({rowIndex,row})" :icon="mdiMinus" label="" color="danger"
+                                                small />
                                         </td>
                                     </tr>
                                 </tbody>
@@ -1214,9 +1268,6 @@ const getTypeInput = (i) => {
                     </div>
                 </div>
             </div>
-            <template #footer>
-                <BaseButton :label="$t(`message.submit`)" type="submit" color="success" />
-            </template>
         </CardBox>
     </CardBoxModal>
     <table>
@@ -1242,7 +1293,7 @@ const getTypeInput = (i) => {
                     {{ risk.usuario.lastname }} {{ risk.usuario.firstname }}
                 </td>
                 <td :data-label="$t('message.audit.quadrant')">
-                    cuadrante
+                    {{ descriptionCuadrante(risk.cuadrante) }}
                 </td>
                 <td :data-label="$t('message.audit.date')">
                     16-08-2023
@@ -1315,5 +1366,25 @@ const getTypeInput = (i) => {
     height: 100%;
     display: grid;
     place-content: center;
+}
+.trHeader {
+    background: rgb(221, 221, 228);
+    color: rgb(0, 0, 0);
+    border: 1px solid rgb(248, 239, 239);
+}
+
+.trHeader2 {
+    text-align: center;
+    border: 1px solid rgb(248, 239, 239);
+}
+
+.inputNumber{
+    text-align: right;
+    width: 100%;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+.c-center{
+    text-align: center;
 }
 </style>

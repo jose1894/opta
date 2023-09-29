@@ -176,7 +176,7 @@ const enviarParametros = () => {
         ]
         getProjects({ page: page.value, q: data })
     }
-}
+} 
 </script>
 <template>
     <LayoutAuthenticated>

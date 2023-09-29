@@ -12,6 +12,10 @@ const props = defineProps({
     type: String,
     required: true,
   },
+  overlayClick: {
+    type: Boolean,
+    default: true,
+  },
   button: {
     type: String,
     default: "info",
@@ -55,15 +59,23 @@ const confirm = () => confirmCancel("confirm");
 
 const cancel = () => confirmCancel("cancel");
 
+const overlayClose = () => {
+  if(props.overlayClick) {
+    value.value = false;
+    emit("cancel");
+  }
+};
+
 window.addEventListener("keydown", (e) => {
-  if (e.key === "Escape" && value.value) {
+  console.log('hdhddhdh')
+  if (e.key === "Escape" && value.value) {    
     cancel();
   }
 });
 </script>
 
 <template>
-  <OverlayLayer v-show="value" @overlay-click="cancel">
+  <OverlayLayer v-show="value" @overlay-click="overlayClose">
     <CardBox
       v-show="value"
       :class="claseModal"
