@@ -28,7 +28,7 @@ import PapersRoutes from "./PapersRoutes.js";
 export default [
   {
     meta: {
-      title: "Select style",
+      title: "Select style", requiresAuth: true
     },
     path: "/",
     name: "style",
