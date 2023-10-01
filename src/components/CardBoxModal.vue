@@ -25,6 +25,7 @@ const props = defineProps({
     default: "Done",
   },
   hasCancel: Boolean,
+  hasClose: Boolean,
   hasDone: {
     type: Boolean,
     default: true,
@@ -39,7 +40,7 @@ const props = defineProps({
   },
   claseModal: {
     type: String,
-    default: "shadow-lg max-h-modal w-11/12 md:w-3/5 lg:w-2/5 xl:w-4/12 z-50",
+    default: "shadow-lg max-h-modal w-11/12 md:w-3/5 lg:w-2/5 xl:w-4/12 z-50 custom-modal",
   },
 });
 
@@ -67,7 +68,6 @@ const overlayClose = () => {
 };
 
 window.addEventListener("keydown", (e) => {
-  console.log('hdhddhdh')
   if (e.key === "Escape" && value.value) {    
     cancel();
   }
@@ -83,7 +83,7 @@ window.addEventListener("keydown", (e) => {
     >
       <CardBoxComponentTitle :title="title">
         <BaseButton
-          v-if="hasCancel"
+          v-if="hasClose"
           :icon="mdiClose"
           color="whiteDark"
           small
@@ -117,3 +117,8 @@ window.addEventListener("keydown", (e) => {
     </CardBox>
   </OverlayLayer>
 </template>
+<style scoped>
+footer .footer{
+  background: white!important;
+}
+</style>

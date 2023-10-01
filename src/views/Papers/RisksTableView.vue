@@ -23,7 +23,7 @@ const router = useRouter();
 const isModalFormRisk = ref(false);
 const mainStore = useMainStore();
 const selectedRisk = ref([]);
-const hasModalValue = ref(true);
+const hasDoneValue = ref(false);
 const showFormPA = ref(false);
 const overlayModal = ref(false);
 const btnCloseModal = ref(true);
@@ -667,6 +667,7 @@ const confirmModal = () => {
 
 const cancelModal = () => {
     clearFormValue()
+    isModalFormRisk.value = false
 };
 
 const descriptionCuadrante = (option) => {
@@ -685,9 +686,9 @@ const descriptionCuadrante = (option) => {
 </script>
 
 <template>
-    <CardBoxModal v-model="isModalFormRisk" :hasCancel="btnCloseModal" :title="addTitle()" :hasDone="hasModalValue"
-        claseModal="shadow-lg max-h-modal w-11/12 md:w-11/12 lg:w-11/12 xl:w-11/12 z-50" style="height: 100%;"
-        :overlayClick="overlayModal" @confirm="confirmModal" @cancel="cancelModal">
+    <CardBoxModal v-model="isModalFormRisk" :hasClose="btnCloseModal" :hasDone="hasDoneValue" :title="addTitle()"
+        claseModal="shadow-lg max-h-modal w-11/12 md:w-11/12 lg:w-11/12 xl:w-11/12 z-50 form-risk" style="height: 100%;"
+        :overlayClick="overlayModal">
         <CardBox isForm @submit.prevent="submit" style="height: 600px; overflow-y: auto;">
             <div>
                 <div class="container mx-auto">
@@ -1268,6 +1269,10 @@ const descriptionCuadrante = (option) => {
                     </div>
                 </div>
             </div>
+            <template #footer>
+                <BaseButton :label="$t(`message.submit`)" type="submit" color="success" />
+                <BaseButton :label="$t(`message.cancel`)" color="danger" style="margin-left: 5px;" @click="cancelModal"/>
+            </template>
         </CardBox>
     </CardBoxModal>
     <table>
@@ -1301,12 +1306,12 @@ const descriptionCuadrante = (option) => {
                 <td class="before:hidden lg:w-1 whitespace-nowrap">
                     <BaseButtons type="justify-start lg:justify-end" no-wrap>
 
-                        <BaseButton color="info" :icon="mdiPencilOutline" :messageTooltip="t('message.edit')" small
+                        <BaseButton color="success" :icon="mdiPencilOutline" :messageTooltip="t('message.edit')" small
                             @click="openModalForm(risk)" />
 
                         <BaseButton color="info" :icon="mdiPrinter" :messageTooltip="t('message.print')" small />
 
-                        <BaseButton color="info" :icon="mdiDelete" :messageTooltip="t('message.delete')" small />
+                        <BaseButton color="danger" :icon="mdiDelete" :messageTooltip="t('message.delete')" small />
 
                     </BaseButtons>
                 </td>

@@ -17,6 +17,7 @@ import FormField from "@/components/FormField.vue";
 import FormControl from "@/components/FormControl.vue";
 import FormCheckRadioGroup from "@/components/FormCheckRadioGroup.vue";
 import personProjectService from '@/services/personProject.service'
+import TableCheckboxCell from "@/components/TableCheckboxCell.vue";
 
 
 
@@ -27,6 +28,7 @@ defineProps({
 let personasList = ref([]);
 
 
+
 const customElementsForm = reactive({
   radio: [],
 });
@@ -35,9 +37,8 @@ const listarPersonas = computed(() =>
   personasList.value
 );
 
-
 const personaProyecto = ref([]);
-
+const checkedRows = ref([]);
 const { t } = useI18n();
 const toast = useToast()
 const router = useRouter();
@@ -57,8 +58,6 @@ const isModalDangerActive = ref(false);
 const perPage = computed(() => mainStore.projects.perPage);
 
 const currentPage = computed(() => mainStore.projects.page);
-
-const checkedRows = ref([]);
 
 const selectedProject = ref([]);
 
@@ -254,6 +253,18 @@ const deletePersonaProyecto = async (accionData) => {
   }).filter(val => val !== undefined);*/
 }
 
+const checked = (isChecked, project) => {
+  if (isChecked) {
+    checkedRows.value.push(project);
+    console.log(checkedRows)
+  } else {
+    checkedRows.value = remove(
+      checkedRows.value,
+      (row) => row.id === project._id
+    );
+  }
+};
+
 </script>
 
 <template>
@@ -296,6 +307,7 @@ const deletePersonaProyecto = async (accionData) => {
   <table>
     <thead>
       <tr>
+        <th />
         <th @click="sort('codigo')">{{ $t('message.project.code') }}</th>
         <th @click="sort('cliente')">{{ $t('message.project.client') }}</th>
         <th @click="sort('socio')">{{ $t('message.project.partner') }}</th>
@@ -305,6 +317,9 @@ const deletePersonaProyecto = async (accionData) => {
     </thead>
     <tbody>
       <tr v-for="(project, index) in itemsPaginated" :key="project._id" @click="selectedItem(project)">
+        <TableCheckboxCell
+          @checked="checked($event, project)"
+        />
         <td :data-label="$t('message.project.code')">
           {{ project.codigo }}
         </td>

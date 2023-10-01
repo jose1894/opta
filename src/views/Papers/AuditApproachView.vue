@@ -30,6 +30,8 @@ const isModalListRik = ref(false);
 const hasModalValue = false;
 const pageRisk = ref(1);
 const perPageRisk = ref(10);
+const overlayModal = ref(false);
+const btnCloseModal = ref(true);
 
 const params = ref({
     cuadrante: 0
@@ -173,8 +175,10 @@ const enviarParametros = (idCuadrante) => {
         v-model="isModalListRik" 
         :title="titleModal()" 
         :hasDone="hasModalValue"
+        :hasClose="btnCloseModal"
+        :overlayClick="overlayModal"
         claseModal="shadow-lg max-h-modal w-11/12 md:w-3/5 lg:w-8/12 xl:w-8/12 z-50">
-        <CardBox>
+        <CardBox >
             <div class="c-header">
                 <div class="c-body">
                     <div class="c-padding-items">
@@ -203,7 +207,7 @@ const enviarParametros = (idCuadrante) => {
         </CardBox>
         <CardBox style="padding-left: 0px; padding-right: 0px;">
             <div class="container-table col-span-4">                   
-                <CardBox v-if="mainStore?.listRisk?.riesgos?.length" class="mb-6" has-table>
+                <CardBox v-if="mainStore?.listRisk?.riesgos?.length"  has-table>
                     <RisksTableView @changePage="onChangePageRisk" @sort="onSortPageRisk" />
                  </CardBox>
                 <CardBox v-else>

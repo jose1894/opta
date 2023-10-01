@@ -82,13 +82,12 @@ const goToAudit = (project) => {
   localStorage.setItem('selectedProject', JSON.stringify(project))
   router.push({name: 'AuditApproach', params: {codigo, nombre, _id}})
 }
-
 </script>
 
 <template>
   <table>
     <thead>
-      <tr>
+      <tr>        
         <th @click="sort('codigo')">{{ $t('message.project.code') }}</th>
         <th @click="sort('cliente')">{{ $t('message.project.client') }}</th>
         <th @click="sort('socio')">{{ $t('message.project.partner') }}</th>
@@ -98,7 +97,7 @@ const goToAudit = (project) => {
       </tr>
     </thead>
     <tbody>
-      <tr v-for="(project, index) in itemsPaginated" :key="project._id" @click="selectedItem(project)">
+      <tr v-for="(project, index) in itemsPaginated" :key="project._id" @click="selectedItem(project)">        
         <td :data-label="$t('message.project.code')">
           {{ project.codigo }}
         </td>
