@@ -2,22 +2,21 @@
 import { computed, ref, reactive, defineEmits } from "vue";
 import { useRouter } from "vue-router";
 import { useMainStore } from "@/stores/main";
-import { mdiFileEdit, mdiTrashCan, mdiPlus } from "@mdi/js";
+import { mdiFileEdit, mdiTrashCan, mdiPlus, mdiFolderZip } from "@mdi/js";
 import personalService from '@/services/personal.service'
 import { useI18n } from "vue-i18n";
 import { useToast } from 'vue-toastification';
 import CardBoxModal from "@/components/CardBoxModal.vue";
 import Autocomplete from "@/components/Autocomplete.vue";
-import CardBox from "@/components/CardBoxModal.vue";
 import BaseLevel from "@/components/BaseLevel.vue";
 import BaseButtons from "@/components/BaseButtons.vue";
 import BaseButton from "@/components/BaseButton.vue";
 import projectsService from '@/services/projects.service';
 import FormField from "@/components/FormField.vue";
-import FormControl from "@/components/FormControl.vue";
 import FormCheckRadioGroup from "@/components/FormCheckRadioGroup.vue";
 import personProjectService from '@/services/personProject.service'
 import TableCheckboxCell from "@/components/TableCheckboxCell.vue";
+import uploadService from '@/services/upload.service';
 
 
 
@@ -231,10 +230,10 @@ const onChangeCheckbox = (accionData) => {
 
 const deletePersonaProyecto = async (accionData) => {
   const { _id } = selectedProject.value
-  const data =  {
-      personaId : Object.keys(accionData)[0],
-      id : _id
-    }
+  const data = {
+    personaId: Object.keys(accionData)[0],
+    id: _id
+  }
   const result = await personProjectService.delete(data)
   personaProyecto.value = []
   personasList.value = []
@@ -260,10 +259,28 @@ const checked = (isChecked, project) => {
   } else {
     checkedRows.value = remove(
       checkedRows.value,
-      (row) => row.id === project._id
+      (row) => row._id === project._id
     );
+    console.log(checkedRows)
   }
 };
+
+const downloadZipFile = async (project) => {
+  const existFile = await uploadService.veryfayFile(project.codigo)
+  if (existFile?.succes) {
+    const response = await uploadService.downloadFileZip(project.codigo)
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement('a');
+    link.href = url;
+    const nameFile = `${project.codigo}.zip`
+    link.setAttribute('download', nameFile);
+    document.body.appendChild(link);
+    link.click();
+  } else {
+    toast.error(`La carpete del proyecto ${project.codigo} no existe`);
+  }
+
+}
 
 </script>
 
@@ -303,11 +320,24 @@ const checked = (isChecked, project) => {
     </template>
   </CardBoxModal>
 
+  <!-- <div v-if="checkedRows.length" class="p-3 bg-gray-100/50 dark:bg-slate-800">
+    <BaseButtons type="justify-start lg:justify-end" no-wrap>
+      <BaseButton 
+        color="info" 
+        :label="t('message.downloadZipFile')"
+        :icon="mdiFolderZip" 
+        :messageTooltip="t('message.downloadZipFile')"
+        small
+        @click="downloadZipFile()"/>
+    </BaseButtons>
+    
+  </div> -->
+
 
   <table>
     <thead>
       <tr>
-        <th />
+        <!-- <th /> -->
         <th @click="sort('codigo')">{{ $t('message.project.code') }}</th>
         <th @click="sort('cliente')">{{ $t('message.project.client') }}</th>
         <th @click="sort('socio')">{{ $t('message.project.partner') }}</th>
@@ -317,9 +347,9 @@ const checked = (isChecked, project) => {
     </thead>
     <tbody>
       <tr v-for="(project, index) in itemsPaginated" :key="project._id" @click="selectedItem(project)">
-        <TableCheckboxCell
+        <!-- <TableCheckboxCell
           @checked="checked($event, project)"
-        />
+        /> -->
         <td :data-label="$t('message.project.code')">
           {{ project.codigo }}
         </td>
@@ -334,27 +364,17 @@ const checked = (isChecked, project) => {
         </td>
         <td class="before:hidden lg:w-1 whitespace-nowrap">
           <BaseButtons type="justify-start lg:justify-end" no-wrap>
-            <BaseButton 
-              color="success" 
-              :icon="mdiPlus" 
-              :messageTooltip="t('message.assignPerson')"
-              small
-              @click="buscarPersonaProject(project), 
+            <BaseButton color="success" :icon="mdiPlus" :messageTooltip="t('message.assignPerson')" small @click="buscarPersonaProject(project),
               isModalAddUserProject = true" />
 
-            <BaseButton 
-              color="info" 
-              :icon="mdiFileEdit" 
-              :messageTooltip="t('message.edit')"
-              small 
+            <BaseButton color="info" :icon="mdiFileEdit" :messageTooltip="t('message.edit')" small
               @click="edit(project._id)" />
 
-            <BaseButton 
-              color="danger" 
-              :icon="mdiTrashCan" 
-              :messageTooltip="t('message.delete')"
-              small @click="isModalDangerActive = true"
-              v-show="project.estado !== 2" />
+            <BaseButton color="danger" :icon="mdiTrashCan" :messageTooltip="t('message.delete')" small
+              @click="isModalDangerActive = true" v-show="project.estado !== 2" />
+
+            <BaseButton class="btn-comprimir" :icon="mdiFolderZip" :messageTooltip="t('message.downloadZipFile')" small
+              @click="downloadZipFile(project)" />
           </BaseButtons>
         </td>
       </tr>
@@ -370,3 +390,17 @@ const checked = (isChecked, project) => {
     </BaseLevel>
   </div>
 </template>
+<style scoped>
+  .btn-comprimir {
+    background: #e5e7eb;
+    border-color: #e5e7eb;
+    color: black;
+  }
+
+  .btn-comprimir:hover {
+    background: #01153b;
+    border-color: #01153b;
+    color: white;
+  }
+</style>
+

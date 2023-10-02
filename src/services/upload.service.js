@@ -34,4 +34,20 @@ export default {
                 .catch((err) => reject(err))
         })
     },
+
+    downloadFileZip(codigo) {
+        return new Promise((resolve, reject) => {
+            Service.get(`${resource}zipFile/${codigo}`,  { headers: authHeader(), responseType: 'blob' })
+            .then((response) => resolve(response))
+            .catch((err) => reject(err))
+        })
+    },
+
+    veryfayFile(name) {
+        return new Promise((resolve, reject) => {
+            Service.get(`${resource}verificarExisteCarpeta/${name}`,  { headers: authHeader() })
+            .then((response) => resolve(response.data))
+            .catch((err) => reject(err))
+        })
+    }
 }

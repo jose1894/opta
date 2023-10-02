@@ -131,6 +131,6 @@ const msjToolTip = () =>  {
     v-tippy="{ content: messageTooltip }"
   >
     <BaseIcon v-if="icon" :path="icon" :size="iconSize" />
-    <span v-if="label" :class="labelClass">{{ label }} {{  messageTooltip }}</span>
+    <span v-if="label" :class="labelClass">{{ label }}</span>
   </component>
 </template>
