@@ -53,7 +53,7 @@ export default {
 
     delete(riesgoId) {
         return new Promise((resolve, reject) => {
-            Service.delete(`${resource}${riesgoId}`, { headers: authHeader() })
+            Service.delete(`${resource}/${riesgoId}`, { headers: authHeader() })
                 .then((response) => resolve(response.data))
                 .catch((err) => reject(err))
         })

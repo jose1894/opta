@@ -16,6 +16,7 @@ import CardBox from '@/components/CardBox.vue';
 import useValidate from '@vuelidate/core';
 import FormCheckRadioGroup from "@/components/FormCheckRadioGroup.vue";
 import riesgosServices from '@/services/riesgos.service';
+import { jsPDF } from "jspdf";
 
 const { t } = useI18n();
 const toast = useToast()
@@ -683,6 +684,33 @@ const descriptionCuadrante = (option) => {
         return t('message.audit.quadrant')
     }  
 };
+
+const successMessageDelete = t("message.audit.deleted.success")
+const deleteRisk = (id) => {
+    actionDelete(id)
+    .then(() => {
+      toast.success(successMessageDelete);
+      emit('changePage', currentPage.value)
+    })
+    .catch(err => {
+      toast.error(`${t("message.audit.deleted.error")} ${err?.response?.data.msg}`)
+    })
+};
+
+const printRisk = (risk) => {
+    console.log(risk)
+    let fileName = risk.titulo
+    let fileNamePdf = fileName.replace(/_/g,'');
+    const doc = new jsPDF();
+    doc.text(fileName, 10, 10);
+    doc.text(risk.descripcion, 15, 15)
+    doc.save(`${fileNamePdf}.pdf`);
+
+};
+
+const actionDelete = (id) => {
+  return riesgosServices.delete(id);
+}
 </script>
 
 <template>
@@ -1306,12 +1334,26 @@ const descriptionCuadrante = (option) => {
                 <td class="before:hidden lg:w-1 whitespace-nowrap">
                     <BaseButtons type="justify-start lg:justify-end" no-wrap>
 
-                        <BaseButton color="success" :icon="mdiPencilOutline" :messageTooltip="t('message.edit')" small
+                        <BaseButton 
+                            color="success" 
+                            :icon="mdiPencilOutline" 
+                            :messageTooltip="t('message.edit')" 
+                            small
                             @click="openModalForm(risk)" />
 
-                        <BaseButton color="info" :icon="mdiPrinter" :messageTooltip="t('message.print')" small />
+                        <BaseButton 
+                            color="info" 
+                            :icon="mdiPrinter" 
+                            :messageTooltip="t('message.print')" 
+                            small 
+                            @click="printRisk(risk)"/>
 
-                        <BaseButton color="danger" :icon="mdiDelete" :messageTooltip="t('message.delete')" small />
+                        <BaseButton 
+                            color="danger" 
+                            :icon="mdiDelete" 
+                            :messageTooltip="t('message.delete')" 
+                            small 
+                            @click="deleteRisk(risk._id)"/>
 
                     </BaseButtons>
                 </td>
