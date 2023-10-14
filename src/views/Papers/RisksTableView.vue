@@ -16,6 +16,10 @@ import CardBox from '@/components/CardBox.vue';
 import useValidate from '@vuelidate/core';
 import FormCheckRadioGroup from "@/components/FormCheckRadioGroup.vue";
 import riesgosServices from '@/services/riesgos.service';
+import FileSaver from 'file-saver';
+import VueHtml2pdf from 'vue3-html2pdf';
+import SectionReportPDF from '@/components/SectionReportPDF.vue'
+import PdfRisk from './PdfRisk.vue'
 import { jsPDF } from "jspdf";
 
 const { t } = useI18n();
@@ -28,6 +32,10 @@ const hasDoneValue = ref(false);
 const showFormPA = ref(false);
 const overlayModal = ref(false);
 const btnCloseModal = ref(true);
+const html2Pdf = ref(null);
+const pdfFormat = 'a4';
+const pdfOrientation = 'portrait';
+const pdfContentWidth = '800px';
 
 const risksFrom = [
     { id: 'Transacciones Recurrentes', label: t('message.risk.recurringTransactions') },
@@ -39,7 +47,7 @@ const risksFrom = [
 const quadrantOption = [
     { id: 0, label: t('message.risk.quadrantI') },
     { id: 1, label: t('message.risk.quadrantII') },
-    { id: 2, label: t('message.risk.quadrantII') },
+    { id: 2, label: t('message.risk.quadrantIII') },
     { id: 3, label: t('message.risk.quadrantIV') },
     { id: 4, label: t('message.risk.othersRisk') }
 ];
@@ -206,6 +214,7 @@ const dataInitial = {
     procesosInvolucrados: "",
     fuentesCausantes: "",
     ctaFA: tableData,
+    analitico: "",
     ase_a1: "",
     ase_a2: "",
     ase_a3: "",
@@ -287,24 +296,24 @@ const openModalForm = (riskData) => {
     const { indice, titulo, descripcion, typeRisk, _id, riesgoProveniente,
         cuadrante, areaRiesgo, expectativasNegocio, procedimientosAdicionales,
         inherente, control, analitico, factorRiesgo, procesosInvolucrados,
-        fuentesCausantes, ctaFA,  ase_a1, ase_a2, ase_a3, ase_a4,
+        fuentesCausantes, ctaFA, ase_a1, ase_a2, ase_a3, ase_a4,
         ase_a5, ase_a6, ase_b1, ase_b2, ase_b3, ase_b4, ase_b5, ase_b6, sel_mon, sel_mon2,
         sel_gen, sel_gen2, sel_esp, sel_esp2,
         sel2_ini, refDes, padc_enf, padc_res, pfo_mpro, rda_resi,
         conclusion } = riskData
-        
+
     riskDataSave.value.ref = `${indice.indice} - ${indice.nombre}`
     riskDataSave.value.titulo = titulo
     riskDataSave.value.descripcion = descripcion
     riskDataSave.value._id = _id
-    
-    tableData.value.rows =  ctaFA !== null ? ctaFA?.rows : []
+
+    tableData.value.rows = ctaFA !== null ? ctaFA?.rows : []
     riskDataSave.value.ctaFA = tableData
 
-    refDesTableData.value.rows =  refDes !== null ? refDes?.rows : []
+    refDesTableData.value.rows = refDes !== null ? refDes?.rows : []
     riskDataSave.value.refDes = refDesTableData
 
-    if (typeRisk === 'Seleccione') {
+    if (typeRisk === 'Seleccione' || typeRisk === '') {
         customChekSTR2Form.checkbox = []
         customChekSTR1Form.checkbox = []
     } else {
@@ -441,7 +450,7 @@ const action = async (riskDatae) => {
         procedimientosAdicionales,
         inherente,
         control,
-        analítico,
+        analitico,
         factorRiesgo,
         procesosInvolucrados,
         fuentesCausantes,
@@ -473,6 +482,8 @@ const action = async (riskDatae) => {
         conclusion
     } = riskDataSave.value;
 
+    console.log(riskDataSave.value)
+
     const data = {
         _id,
         titulo,
@@ -486,7 +497,7 @@ const action = async (riskDatae) => {
         procedimientosAdicionales,
         inherente: inherente.id,
         control: control.id,
-        analítico: analítico.id,
+        analitico: analitico.id,
         factorRiesgo,
         procesosInvolucrados,
         fuentesCausantes,
@@ -602,7 +613,7 @@ const onChangeTypeRiskCustomCheckbox = (key) => {
 }
 
 const addRow = () => {
-    const newRow = ['', '', '', '', ''] 
+    const newRow = ['', '', '', '', '']
     tableData.value.rows.push(newRow);
 };
 
@@ -615,7 +626,7 @@ const deleteRow = (item) => {
 
 
 const addRowRefDes = () => {
-    const newRow = ['', ''] 
+    const newRow = ['', '']
     refDesTableData.value.rows.push(newRow);
 };
 
@@ -628,7 +639,7 @@ const deleteRowRefDes = (item) => {
 const getStyleRefDes = (i) => {
     if (i === 0) {
         return {
-            width: `8%`,
+            width: `10%`,
         }
     }
 
@@ -644,9 +655,9 @@ const getStyle = (i) => {
         }
     }
 
-    if (i === 2 || i === 3 ) {
+    if (i === 2 || i === 3) {
         return {
-            width: `10%`,
+            width: `12%`,
             'text-align': `right`,
             'padding-left': '0px',
             'padding-righ': '0px'
@@ -655,7 +666,7 @@ const getStyle = (i) => {
 };
 
 const getTypeInput = (i) => {
-    const indice = [2,3]
+    const indice = [2, 3]
     if (indice.includes(i)) {
         return `number`
     }
@@ -672,44 +683,68 @@ const cancelModal = () => {
 };
 
 const descriptionCuadrante = (option) => {
-    if(option === 1) {
+    if (option === 1) {
         return t('message.audit.quadrantI')
-    } else if(option === 2) {
+    } else if (option === 2) {
         return t('message.audit.quadrantII')
-    } else if(option === 3) {
+    } else if (option === 3) {
         return t('message.audit.quadrantIII')
-    } else if(option === 4) {
+    } else if (option === 4) {
         return t('message.audit.quadrantIV')
-    } else {        
+    } else {
         return t('message.audit.quadrant')
-    }  
+    }
 };
 
 const successMessageDelete = t("message.audit.deleted.success")
 const deleteRisk = (id) => {
     actionDelete(id)
-    .then(() => {
-      toast.success(successMessageDelete);
-      emit('changePage', currentPage.value)
-    })
-    .catch(err => {
-      toast.error(`${t("message.audit.deleted.error")} ${err?.response?.data.msg}`)
-    })
+        .then(() => {
+            toast.success(successMessageDelete);
+            emit('changePage', currentPage.value)
+        })
+        .catch(err => {
+            toast.error(`${t("message.audit.deleted.error")} ${err?.response?.data.msg}`)
+        })
 };
 
-const printRisk = (risk) => {
-    console.log(risk)
-    let fileName = risk.titulo
-    let fileNamePdf = fileName.replace(/_/g,'');
-    const doc = new jsPDF();
-    doc.text(fileName, 10, 10);
-    doc.text(risk.descripcion, 15, 15)
-    doc.save(`${fileNamePdf}.pdf`);
+const data = [
+    { label: 'Name', value: 'John Doe' },
+    { label: 'Email', value: 'johndoe@example.com' },
+    { label: 'Phone', value: '555-555-5555' },
+    { label: 'Input', value: 'This is a long text that should wrap to multiple lines and occupy the full width of the page while respecting the margins.' },
+];
 
+const generatePdf = (item) => {
+    const content = `
+        <div>
+          <h1>PDF Content</h1>
+          <p>Column 1: ${item.titulo}</p>
+          <p>Column 2: ${item.titulo}</p>
+        </div>
+      `;
+    html2Pdf.value.generatePdf(content);
+};
+
+const onGenerated = (pdf) => {
+    const blob = pdf.output('blob');
+    FileSaver.saveAs(blob, 'document.pdf');
 };
 
 const actionDelete = (id) => {
-  return riesgosServices.delete(id);
+    return riesgosServices.delete(id);
+}
+
+const getContent = (item) => {
+    console.log(item)
+    console.log(item.titulo)
+    return `
+        <div>
+          <h1>PDF Content</h1>
+          <p>Column 1: ${item.titulo}</p>
+          <p>Column 2: ${item.titulo}</p>
+        </div>
+      `;
 }
 </script>
 
@@ -864,7 +899,7 @@ const actionDelete = (id) => {
                                 </div>
                                 <div class="c-card-content">
                                     <FormField>
-                                        <FormControl v-model="riskDataSave.analítico" :icon="mdiListStatus"
+                                        <FormControl v-model="riskDataSave.analitico" :icon="mdiListStatus"
                                             :options="generalOptions" />
                                     </FormField>
                                 </div>
@@ -886,7 +921,7 @@ const actionDelete = (id) => {
                             <FormField :label="$t('message.risk.causativeSourceOfRisk')">
                                 <FormControl type="textarea" v-model="riskDataSave.fuentesCausantes" :icon="mdiRenameBox" />
                             </FormField>
-                        </div>                        
+                        </div>
 
                         <!-- <div class="grid lg:grid-cols-1 gap-1">
                             <FormField :label="$t('message.risk.impactOnTheFinancialStatementsAndAccountsConcerned')">
@@ -1060,12 +1095,16 @@ const actionDelete = (id) => {
                                 <tbody>
                                     <tr v-for="(row, rowIndex) in tableData.rows" :key="rowIndex">
                                         <td v-for="(cell, cellIndex) in row" :key="cellIndex" :style="getStyle(cellIndex)">
-                                            <input :type="getTypeInput(cellIndex)" v-model="tableData.rows[rowIndex][cellIndex]"
-                                                style="width: 100%" />
+                                            <input v-if="cellIndex === 2 || cellIndex === 3" type="text"
+                                                v-model="tableData.rows[rowIndex][cellIndex]" 
+                                                style=" width: 100%; text-align: right;" 
+                                                v-decimal/>
+                                            <input v-else type="text"
+                                                v-model="tableData.rows[rowIndex][cellIndex]" style="width: 100%"/>
                                         </td>
-                                        <td class="c-center"> 
-                                            <BaseButton @click.prevent="deleteRow({rowIndex,row})" :icon="mdiMinus" label="" color="danger"
-                                                small />
+                                        <td class="c-center">
+                                            <BaseButton @click.prevent="deleteRow({ rowIndex, row })" :icon="mdiMinus"
+                                                label="" color="danger" small />
                                         </td>
                                     </tr>
                                 </tbody>
@@ -1239,20 +1278,21 @@ const actionDelete = (id) => {
                                         <th>{{ $t('message.risk.description') }}</th>
                                         <th class="c-center">
 
-                                            <BaseButton @click.prevent="addRowRefDes" :icon="mdiPlus" label="" color="success"
-                                                small />
+                                            <BaseButton @click.prevent="addRowRefDes" :icon="mdiPlus" label=""
+                                                color="success" small />
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr v-for="(row, rowIndex) in refDesTableData.rows" :key="rowIndex">
-                                        <td v-for="(cell, cellIndex) in row" :key="cellIndex" :style="getStyleRefDes(cellIndex)">
+                                        <td v-for="(cell, cellIndex) in row" :key="cellIndex"
+                                            :style="getStyleRefDes(cellIndex)">
                                             <input type="text" v-model="refDesTableData.rows[rowIndex][cellIndex]"
                                                 style="width: 100%" />
                                         </td>
-                                        <td class="c-center"> 
-                                            <BaseButton @click.prevent="deleteRowRefDes({rowIndex,row})" :icon="mdiMinus" label="" color="danger"
-                                                small />
+                                        <td class="c-center">
+                                            <BaseButton @click.prevent="deleteRowRefDes({ rowIndex, row })" :icon="mdiMinus"
+                                                label="" color="danger" small />
                                         </td>
                                     </tr>
                                 </tbody>
@@ -1299,7 +1339,7 @@ const actionDelete = (id) => {
             </div>
             <template #footer>
                 <BaseButton :label="$t(`message.submit`)" type="submit" color="success" />
-                <BaseButton :label="$t(`message.cancel`)" color="danger" style="margin-left: 5px;" @click="cancelModal"/>
+                <BaseButton :label="$t(`message.cancel`)" color="danger" style="margin-left: 5px;" @click="cancelModal" />
             </template>
         </CardBox>
     </CardBoxModal>
@@ -1332,30 +1372,22 @@ const actionDelete = (id) => {
                     16-08-2023
                 </td>
                 <td class="before:hidden lg:w-1 whitespace-nowrap">
-                    <BaseButtons type="justify-start lg:justify-end" no-wrap>
-
-                        <BaseButton 
-                            color="success" 
-                            :icon="mdiPencilOutline" 
-                            :messageTooltip="t('message.edit')" 
-                            small
-                            @click="openModalForm(risk)" />
-
-                        <BaseButton 
-                            color="info" 
-                            :icon="mdiPrinter" 
-                            :messageTooltip="t('message.print')" 
-                            small 
-                            @click="printRisk(risk)"/>
-
-                        <BaseButton 
-                            color="danger" 
-                            :icon="mdiDelete" 
-                            :messageTooltip="t('message.delete')" 
-                            small 
-                            @click="deleteRisk(risk._id)"/>
-
-                    </BaseButtons>
+                    <div style="display: flex;">
+                        <SectionReportPDF style="margin-right: 10px;" :pdf-format="pdfFormat"
+                            :pdf-orientation="pdfOrientation" :pdf-content-width="pdfContentWidth"
+                            :content="getContent(risk)">
+                            <template v-slot:pdf-content>
+                                <PdfRisk :risk="risk"/>
+                            </template>
+                            
+                        </SectionReportPDF>
+                        <BaseButtons type="justify-start lg:justify-end" no-wrap>
+                            <BaseButton color="success" :icon="mdiPencilOutline" :messageTooltip="t('message.edit')" small
+                                @click="openModalForm(risk)" />
+                            <BaseButton color="danger" :icon="mdiDelete" :messageTooltip="t('message.delete')" small
+                                @click="deleteRisk(risk._id)" />
+                        </BaseButtons>
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -1414,6 +1446,7 @@ const actionDelete = (id) => {
     display: grid;
     place-content: center;
 }
+
 .trHeader {
     background: rgb(221, 221, 228);
     color: rgb(0, 0, 0);
@@ -1425,13 +1458,14 @@ const actionDelete = (id) => {
     border: 1px solid rgb(248, 239, 239);
 }
 
-.inputNumber{
+.inputNumber {
     text-align: right;
     width: 100%;
     padding-left: 0px;
     padding-right: 0px;
 }
-.c-center{
+
+.c-center {
     text-align: center;
 }
 </style>

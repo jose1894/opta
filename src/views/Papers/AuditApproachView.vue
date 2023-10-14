@@ -177,7 +177,7 @@ const enviarParametros = (idCuadrante) => {
         :hasDone="hasModalValue"
         :hasClose="btnCloseModal"
         :overlayClick="overlayModal"
-        claseModal="shadow-lg max-h-modal w-11/12 md:w-3/5 lg:w-8/12 xl:w-8/12 z-50">
+        claseModal="shadow-lg max-h-modal w-11/12 md:w-11/12 lg:w-11/12 xl:w-11/12 z-50">
         <CardBox >
             <div class="c-header">
                 <div class="c-body">

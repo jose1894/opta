@@ -20,6 +20,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 import { plugin as VueTippy } from 'vue-tippy'
+import decimalDirective from './format-number.js';
 import 'tippy.js/dist/tippy.css' // optional for styling
 
 /* Init Pinia */
@@ -28,6 +29,7 @@ const pinia = createPinia();
 
 /* Create Vue app */
 const app = createApp(App)
+app.directive('decimal', decimalDirective);
 app.component('font-awesome-icon', FontAwesomeIcon);
 app.component('VueDatePicker', VueDatePicker);
 
