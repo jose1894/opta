@@ -15,8 +15,22 @@ export const addPrefix = (prefix) => (value) => {
 
 export const pipe = (...fns) => (x) => fns.reduce((v, f) => f(v), x);
 
+export const formattedNumber = (number, decimalPlaces = 2, thousandsSeparator = '.') => {
+  const value = Number(number)
+  if (isNaN(value)) {
+    return ''
+  }
+  return value.toLocaleString(undefined, {
+    minimumFractionDigits: decimalPlaces,
+    maximumFractionDigits: decimalPlaces,
+    useGrouping: true,
+    grouping: thousandsSeparator
+  })
+}
+
 export const installGlobalFilters = (app) => {
   app.config.globalProperties.$filters = {
+    formattedNumber,
     formatDate,
     formatDateTime,
     addPrefix,

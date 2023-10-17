@@ -76,7 +76,7 @@ const additionalProceduresOptions = [
 ];
 
 const additionalSelectOptions = [
-    { id: 'No aprobado', label: t('message.risk.untried') },
+    //{ id: 'No aprobado', label: t('message.risk.untried') },
     { id: 'Si', label: t('message.yes') },
     { id: 'No', label: t('message.no') },
 ];
@@ -228,17 +228,24 @@ const dataInitial = {
     ase_b5: "",
     ase_b6: "",
     sel_mon: additionalSelectOptions[0],
+    ref_sel_mon: "",
     sel_mon2: additionalSelectOptions[0],
+    ref_sel_mon2: "",
     sel_gen: additionalSelectOptions[0],
+    ref_sel_gen: "",
     sel_gen2: additionalSelectOptions[0],
+    ref_sel_gen2: "",
     sel_esp: additionalSelectOptions[0],
+    ref_sel_esp: "",
     sel_esp2: additionalSelectOptions[0],
+    ref_sel_esp2: "",
     sel2_ini: additionalSelect2Options[0],
     refDes: refDesTableData,
     padc_enf: "",
     padc_res: "",
     pfo_mpro: "",
     rda_resi: "",
+    reasons_NT_cont: "",
     conclusion: "",
 }
 
@@ -292,14 +299,38 @@ const changePage = (page) => {
     emit('changePage', page)
 }
 
+const formattedNumber = (number, decimalPlaces = 2, thousandsSeparator = '.') => {
+  const value = Number(number)
+  if (isNaN(value)) {
+    return ''
+  }
+  return value.toLocaleString(undefined, {
+    minimumFractionDigits: decimalPlaces,
+    maximumFractionDigits: decimalPlaces,
+    useGrouping: true,
+    grouping: thousandsSeparator
+  })
+}
+
+const formattedNumberReverse = (number ) => {
+  let newNumber = Number(number) 
+  if(isNaN(newNumber)) {
+    let N1 = number.replace(/\./g, '');
+    const newNumber1 = N1.replace(/\,/g, '.');
+    console.log(newNumber1)
+    return newNumber1
+  }
+  return number
+}
+
 const openModalForm = (riskData) => {
     const { indice, titulo, descripcion, typeRisk, _id, riesgoProveniente,
         cuadrante, areaRiesgo, expectativasNegocio, procedimientosAdicionales,
         inherente, control, analitico, factorRiesgo, procesosInvolucrados,
         fuentesCausantes, ctaFA, ase_a1, ase_a2, ase_a3, ase_a4,
-        ase_a5, ase_a6, ase_b1, ase_b2, ase_b3, ase_b4, ase_b5, ase_b6, sel_mon, sel_mon2,
-        sel_gen, sel_gen2, sel_esp, sel_esp2,
-        sel2_ini, refDes, padc_enf, padc_res, pfo_mpro, rda_resi,
+        ase_a5, ase_a6, ase_b1, ase_b2, ase_b3, ase_b4, ase_b5, ase_b6, sel_mon,ref_sel_mon,
+        sel_mon2, ref_sel_mon2, sel_gen, ref_sel_gen, sel_gen2, ref_sel_gen2, sel_esp, ref_sel_esp, 
+        sel_esp2, ref_sel_esp2, sel2_ini, reasons_NT_cont, refDes, padc_enf, padc_res, pfo_mpro, rda_resi,
         conclusion } = riskData
 
     riskDataSave.value.ref = `${indice.indice} - ${indice.nombre}`
@@ -307,7 +338,18 @@ const openModalForm = (riskData) => {
     riskDataSave.value.descripcion = descripcion
     riskDataSave.value._id = _id
 
-    tableData.value.rows = ctaFA !== null ? ctaFA?.rows : []
+    const tableDat = ctaFA !== null ? ctaFA?.rows : []
+
+    const transfData = tableDat.map((i) => {
+        return i.map((item,index) => {
+            if(index === 2 || index === 3) {
+                item = formattedNumber(item)
+            }
+            return item            
+        })
+    }) 
+    tableData.value.rows = transfData
+    //ctaFA !== null ? ctaFA?.rows : []
     riskDataSave.value.ctaFA = tableData
 
     refDesTableData.value.rows = refDes !== null ? refDes?.rows : []
@@ -348,12 +390,19 @@ const openModalForm = (riskData) => {
     customChekSB6Form.checkbox = ase_b6 !== '' ? [ase_b6] : []
 
     riskDataSave.value.sel_mon = additionalSelectOptions.filter(item => item.id === sel_mon)[0]
+    riskDataSave.value.ref_sel_mon = ref_sel_mon
     riskDataSave.value.sel_mon2 = additionalSelectOptions.filter(item => item.id === sel_mon2)[0]
+    riskDataSave.value.ref_sel_mon2 = ref_sel_mon2
     riskDataSave.value.sel_gen = additionalSelectOptions.filter(item => item.id === sel_gen)[0]
+    riskDataSave.value.ref_sel_gen = ref_sel_gen
     riskDataSave.value.sel_gen2 = additionalSelectOptions.filter(item => item.id === sel_gen2)[0]
+    riskDataSave.value.ref_sel_gen2 = ref_sel_gen2
     riskDataSave.value.sel_esp = additionalSelectOptions.filter(item => item.id === sel_esp)[0]
+    riskDataSave.value.ref_sel_esp = ref_sel_esp
     riskDataSave.value.sel_esp2 = additionalSelectOptions.filter(item => item.id === sel_esp2)[0]
+    riskDataSave.value.ref_sel_esp2 = ref_sel_esp2
     riskDataSave.value.sel2_ini = additionalSelect2Options.filter(item => item.id === sel2_ini)[0]
+    riskDataSave.value.reasons_NT_cont = reasons_NT_cont
 
     riskDataSave.value.padc_enf = padc_enf,
     riskDataSave.value.padc_res = padc_res,
@@ -387,12 +436,19 @@ const clearFormValue = () => {
     customChekSB6Form.checkbox = []
 
     riskDataSave.value.sel_mon = additionalSelectOptions[0]
+    riskDataSave.value.ref_sel_mon = ""
     riskDataSave.value.sel_mon2 = additionalSelectOptions[0]
+    riskDataSave.value.ref_sel_mon2 = "" 
     riskDataSave.value.sel_gen = additionalSelectOptions[0]
+    riskDataSave.value.ref_sel_gen = ""
     riskDataSave.value.sel_gen2 = additionalSelectOptions[0]
+    riskDataSave.value.ref_sel_gen2 = ""
     riskDataSave.value.sel_esp = additionalSelectOptions[0]
+    riskDataSave.value.ref_sel_esp = ""
     riskDataSave.value.sel_esp2 = additionalSelectOptions[0]
+    riskDataSave.value.ref_sel_esp2 = ""
     riskDataSave.value.sel2_ini = additionalSelect2Options[0]
+    riskDataSave.value.reasons_NT_cont = ""
 
     riskDataSave.value.padc_enf = ""
     riskDataSave.value.padc_res = ""
@@ -418,7 +474,6 @@ const submit = async () => {
                 toast.success(successMessage);
             })
             .catch(err => {
-                console.log(err)
                 if (err.response?.data?.msg) {
                     toast.error(`${t("message.ridk.created.error")} ${err.response.data.msg}`)
                     return
@@ -437,7 +492,7 @@ const submit = async () => {
 }
 
 const action = async (riskDatae) => {
-    const {
+    let {
         _id,
         titulo,
         typeRisk,
@@ -468,12 +523,19 @@ const action = async (riskDatae) => {
         ase_b5,
         ase_b6,
         sel_mon,
+        ref_sel_mon,
         sel_mon2,
+        ref_sel_mon2,
         sel_gen,
+        ref_sel_gen,
         sel_gen2,
+        ref_sel_gen2,
         sel_esp,
+        ref_sel_esp,
         sel_esp2,
+        ref_sel_esp2,
         sel2_ini,
+        reasons_NT_cont,
         refDes,
         padc_enf,
         padc_res,
@@ -482,8 +544,19 @@ const action = async (riskDatae) => {
         conclusion
     } = riskDataSave.value;
 
-    console.log(riskDataSave.value)
-
+    const tableDat = ctaFA?.rows || []
+    const transfData = tableDat.map((i) => {
+        return i.map((item,index) => {
+            if(index === 2 || index === 3) {
+                item = formattedNumberReverse(item)
+            }
+            return item            
+        })
+    })
+    const resultData = {
+        rows: transfData
+    }
+    console.log(resultData)
     const data = {
         _id,
         titulo,
@@ -501,7 +574,7 @@ const action = async (riskDatae) => {
         factorRiesgo,
         procesosInvolucrados,
         fuentesCausantes,
-        ctaFA,
+        ctaFA:resultData,
         ase_a1,
         ase_a2,
         ase_a3,
@@ -515,12 +588,19 @@ const action = async (riskDatae) => {
         ase_b5,
         ase_b6,
         sel_mon: sel_mon.id,
+        ref_sel_mon,
         sel_mon2: sel_mon2.id,
+        ref_sel_mon2,
         sel_gen: sel_gen.id,
+        ref_sel_gen,
         sel_gen2: sel_gen2.id,
+        ref_sel_gen2,
         sel_esp: sel_esp.id,
+        ref_sel_esp,
         sel_esp2: sel_esp2.id,
+        ref_sel_esp2,
         sel2_ini: sel2_ini.id,
+        reasons_NT_cont,
         refDes,
         padc_enf,
         padc_res,
@@ -657,7 +737,7 @@ const getStyle = (i) => {
 
     if (i === 2 || i === 3) {
         return {
-            width: `12%`,
+            width: `14%`,
             'text-align': `right`,
             'padding-left': '0px',
             'padding-righ': '0px'
@@ -736,8 +816,6 @@ const actionDelete = (id) => {
 }
 
 const getContent = (item) => {
-    console.log(item)
-    console.log(item.titulo)
     return `
         <div>
           <h1>PDF Content</h1>
@@ -1132,27 +1210,51 @@ const getContent = (item) => {
                                     </td>
                                     <td>
                                         <div class="c-card">
-                                            <div class="c-card-header">
-                                                {{ $t('message.risk.monitoring') }}
+                                            <div class="c-card-header-ref">
+                                                <div class="div-ref">
+                                                    {{ $t('message.risk.monitoring') }}
+                                                </div>
+                                                <div class="div-ref">
+                                                    {{ $t('message.risk.ref') }}
+                                                </div>                                                
                                             </div>
-                                            <div class="c-card-content">
-                                                <FormField>
-                                                    <FormControl v-model="riskDataSave.sel_mon" :icon="mdiListStatus"
-                                                        :options="additionalSelectOptions" />
-                                                </FormField>
+                                            <div class="c-card-content c-card-content-ref">
+                                                <div style="width: 50%;">
+                                                    <FormField>
+                                                        <FormControl v-model="riskDataSave.sel_mon" :icon="mdiListStatus"
+                                                            :options="additionalSelectOptions" />
+                                                    </FormField>                                                
+                                                </div>
+                                                <div style="width: 50%;">
+                                                    <FormField>
+                                                        <FormControl v-model="riskDataSave.ref_sel_mon" :icon="mdiRenameBox"/>
+                                                    </FormField>                                                
+                                                </div>                                                
                                             </div>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="c-card">
-                                            <div class="c-card-header">
-                                                {{ $t('message.risk.monitoring') }}
+                                            <div class="c-card-header-ref">
+                                                <div class="div-ref">
+                                                    {{ $t('message.risk.monitoring') }}
+                                                </div>
+                                                <div class="div-ref">
+                                                    {{ $t('message.risk.ref') }}
+                                                </div>
                                             </div>
-                                            <div class="c-card-content">
-                                                <FormField>
-                                                    <FormControl v-model="riskDataSave.sel_mon2" :icon="mdiListStatus"
-                                                        :options="additionalSelectOptions" />
-                                                </FormField>
+                                            <div class="c-card-content c-card-content-ref">
+                                                <div style="width: 50%;">
+                                                    <FormField>
+                                                        <FormControl v-model="riskDataSave.sel_mon2" :icon="mdiListStatus"
+                                                            :options="additionalSelectOptions" />
+                                                    </FormField>                                                
+                                                </div>
+                                                <div style="width: 50%;">
+                                                    <FormField>
+                                                        <FormControl v-model="riskDataSave.ref_sel_mon2" :icon="mdiRenameBox"/>
+                                                    </FormField>
+                                                </div>                                                
                                             </div>
                                         </div>
                                     </td>
@@ -1164,27 +1266,51 @@ const getContent = (item) => {
                                     </td>
                                     <td>
                                         <div class="c-card">
-                                            <div class="c-card-header">
-                                                {{ $t('message.risk.general') }}
+                                            <div class="c-card-header-ref">
+                                                <div class="div-ref">
+                                                    {{ $t('message.risk.general') }}
+                                                </div>
+                                                <div class="div-ref">
+                                                    {{ $t('message.risk.ref') }}
+                                                </div>                                                
                                             </div>
-                                            <div class="c-card-content">
-                                                <FormField>
-                                                    <FormControl v-model="riskDataSave.sel_gen" :icon="mdiListStatus"
-                                                        :options="additionalSelectOptions" />
-                                                </FormField>
+                                            <div class="c-card-content c-card-content-ref">
+                                                <div style="width: 50%;">
+                                                    <FormField>
+                                                        <FormControl v-model="riskDataSave.sel_gen" :icon="mdiListStatus"
+                                                            :options="additionalSelectOptions" />
+                                                    </FormField>                                                
+                                                </div>                                                
+                                                <div style="width: 50%;">
+                                                    <FormField>
+                                                        <FormControl v-model="riskDataSave.ref_sel_gen" :icon="mdiRenameBox"/>
+                                                    </FormField>                                                
+                                                </div>
                                             </div>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="c-card">
-                                            <div class="c-card-header">
-                                                {{ $t('message.risk.general') }}
+                                            <div class="c-card-header-ref">
+                                                <div class="div-ref">
+                                                    {{ $t('message.risk.general') }}
+                                                </div>
+                                                <div class="div-ref">
+                                                    {{ $t('message.risk.ref') }}
+                                                </div>                                                
                                             </div>
-                                            <div class="c-card-content">
-                                                <FormField>
-                                                    <FormControl v-model="riskDataSave.sel_gen2" :icon="mdiListStatus"
-                                                        :options="additionalSelectOptions" />
-                                                </FormField>
+                                            <div class="c-card-content c-card-content-ref">
+                                                <div style="width: 50%;">
+                                                    <FormField>
+                                                        <FormControl v-model="riskDataSave.sel_gen2" :icon="mdiListStatus"
+                                                            :options="additionalSelectOptions" />
+                                                    </FormField>                                                
+                                                </div>                                                
+                                                <div style="width: 50%;">
+                                                    <FormField>
+                                                        <FormControl v-model="riskDataSave.ref_sel_gen2" :icon="mdiRenameBox"/>
+                                                    </FormField>                                                
+                                                </div>
                                             </div>
                                         </div>
                                     </td>
@@ -1196,28 +1322,53 @@ const getContent = (item) => {
                                     </td>
                                     <td>
                                         <div class="c-card">
-                                            <div class="c-card-header">
-                                                {{ $t('message.risk.specific') }}
+                                            <div class="c-card-header-ref">
+                                                <div class="div-ref">
+                                                    {{ $t('message.risk.specific') }}
+                                                </div>
+                                                <div class="div-ref">
+                                                    {{ $t('message.risk.ref') }}
+                                                </div>
                                             </div>
-                                            <div class="c-card-content">
-                                                <FormField>
-                                                    <FormControl v-model="riskDataSave.sel_esp" :icon="mdiListStatus"
-                                                        :options="additionalSelectOptions" />
-                                                </FormField>
+                                            <div class="c-card-content c-card-content-ref">
+                                                <div style="width: 50%;">
+                                                    <FormField>
+                                                        <FormControl v-model="riskDataSave.sel_esp" :icon="mdiListStatus"
+                                                            :options="additionalSelectOptions" />
+                                                    </FormField>                                                
+                                                </div>                                                
+                                                <div style="width: 50%;">
+                                                    <FormField>
+                                                        <FormControl v-model="riskDataSave.ref_sel_esp" :icon="mdiRenameBox"/>
+                                                    </FormField>                                                
+                                                </div>
                                             </div>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="c-card">
-                                            <div class="c-card-header">
-                                                {{ $t('message.risk.specific') }}
+                                            <div class="c-card-header-ref">
+                                                <div class="div-ref">
+                                                    {{ $t('message.risk.specific') }}
+                                                </div>
+                                                <div class="div-ref">
+                                                    {{ $t('message.risk.ref') }}
+                                                </div>                                                
                                             </div>
-                                            <div class="c-card-content">
-                                                <FormField>
-                                                    <FormControl v-model="riskDataSave.sel_esp2" :icon="mdiListStatus"
-                                                        :options="additionalSelectOptions" />
-                                                </FormField>
+                                            <div class="c-card-content c-card-content-ref">
+                                                <div style="width: 50%;">
+                                                    <FormField>
+                                                        <FormControl v-model="riskDataSave.sel_esp2" :icon="mdiListStatus"
+                                                            :options="additionalSelectOptions" />
+                                                    </FormField>                                                
+                                                </div>                                                
+                                                <div style="width: 50%;">
+                                                    <FormField>
+                                                        <FormControl v-model="riskDataSave.ref_sel_esp2" :icon="mdiRenameBox"/>
+                                                    </FormField>                                                
+                                                </div>
                                             </div>
+                                            
                                         </div>
                                     </td>
                                 </tr>
@@ -1242,6 +1393,17 @@ const getContent = (item) => {
                                 </tr>
                             </tbody>
                         </table>
+
+                        <div class="grid lg:grid-cols-1 gap-1 card-header" style="margin-bottom: 1.5rem;">
+                            <h1 style="margin-bottom: 1.5rem; font-weight: 700;" class="card-header-h1">
+                                {{ $t('message.risk.reasonsForNotTestingControls') }}
+                            </h1>
+                        </div>
+                        <div class="grid lg:grid-cols-1 gap-1">
+                            <FormField>
+                                <FormControl type="textarea" v-model="riskDataSave.reasons_NT_cont" :icon="mdiRenameBox" />
+                            </FormField>
+                        </div>
 
                         <div class="grid lg:grid-cols-1 gap-1 card-header" style="margin-bottom: 1.5rem;">
                             <h1 style="margin-bottom: 1.5rem; font-weight: 700;" class="card-header-h1">
@@ -1416,6 +1578,32 @@ const getContent = (item) => {
     color: white;
     font-weight: 700;
     border-radius: 10px 10px 0px 0px;
+}
+
+.c-card-header-ref {
+    width: 100%; 
+    padding: 0 15px;
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    height: 35px;
+    background: #2563eb;
+    color: white;
+    font-weight: 700;
+    border-radius: 10px 10px 0px 0px;
+}
+
+.div-ref {
+    display: grid; 
+    place-content: center; 
+    width: 50%;
+}
+
+.c-card-content-ref {
+    display: flex; 
+    flex-direction: row; 
+    width: 100%; 
+    gap:5px
 }
 
 .c-card-content {

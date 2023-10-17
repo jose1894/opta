@@ -917,6 +917,7 @@
     "index": "Index",
     "description": "Description of Risk",
     "typeOfRisk": "Type of Risk",
+    "reasonsForNotTestingControls": "Reasons for Not Testing Controls",
     "atTheLevelOfFinancialStatements": "At the Level of Financial Statements",
     "atTheLevelOfAssertions": "At the level of assertions",
     "accountOfAffectedFinancialStatementsAndStatements": "Account of affected financial statements and statements",

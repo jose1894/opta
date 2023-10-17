@@ -11,11 +11,11 @@ const decimalDirective = {
             event.target.value = formattedValue;
         });
 
-        el.addEventListener('input', (event) => {
+        /*el.addEventListener('input', (event) => {
             const value = event.target.value;
             const newValue = value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');
             event.target.value = newValue;
-        });
+        });*/
     }
 };
 

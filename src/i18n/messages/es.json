@@ -914,6 +914,7 @@
       "index": "Indice",
       "description": "Descripción del Riesgo",
       "typeOfRisk": "Tipo de Riesgo",
+      "reasonsForNotTestingControls": "Razones de no probar los controles",
       "atTheLevelOfFinancialStatements": "A nivel de estados financieros",
       "atTheLevelOfAssertions": "A nivel de aseveraciones",
       "accountOfAffectedFinancialStatementsAndStatements": "Cuenta de los estados financieros y aseveraciones afectadas",
