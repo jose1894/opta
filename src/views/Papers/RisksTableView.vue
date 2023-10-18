@@ -32,6 +32,12 @@ const hasDoneValue = ref(false);
 const showFormPA = ref(false);
 const overlayModal = ref(false);
 const btnCloseModal = ref(true);
+const inputsel_gen = ref(true);
+const inputsel_gen2 = ref(true);
+const inputsel_mon = ref(true)
+const inputsel_mon2 = ref(true)
+const inputsel_esp = ref(true)
+const inputsel_esp2 = ref(true)
 const html2Pdf = ref(null);
 const pdfFormat = 'a4';
 const pdfOrientation = 'portrait';
@@ -76,9 +82,9 @@ const additionalProceduresOptions = [
 ];
 
 const additionalSelectOptions = [
-    //{ id: 'No aprobado', label: t('message.risk.untried') },
-    { id: 'Si', label: t('message.yes') },
-    { id: 'No', label: t('message.no') },
+    { id: 'No probado', label: t('message.risk.untried') },
+    { id: 'Probado', label: t('message.risk.tried') },
+    //{ id: 'No', label: t('message.no') },
 ];
 
 const additionalSelect2Options = [
@@ -240,6 +246,7 @@ const dataInitial = {
     sel_esp2: additionalSelectOptions[0],
     ref_sel_esp2: "",
     sel2_ini: additionalSelect2Options[0],
+    ref_sel2_ini: "",
     refDes: refDesTableData,
     padc_enf: "",
     padc_res: "",
@@ -317,7 +324,6 @@ const formattedNumberReverse = (number ) => {
   if(isNaN(newNumber)) {
     let N1 = number.replace(/\./g, '');
     const newNumber1 = N1.replace(/\,/g, '.');
-    console.log(newNumber1)
     return newNumber1
   }
   return number
@@ -330,7 +336,7 @@ const openModalForm = (riskData) => {
         fuentesCausantes, ctaFA, ase_a1, ase_a2, ase_a3, ase_a4,
         ase_a5, ase_a6, ase_b1, ase_b2, ase_b3, ase_b4, ase_b5, ase_b6, sel_mon,ref_sel_mon,
         sel_mon2, ref_sel_mon2, sel_gen, ref_sel_gen, sel_gen2, ref_sel_gen2, sel_esp, ref_sel_esp, 
-        sel_esp2, ref_sel_esp2, sel2_ini, reasons_NT_cont, refDes, padc_enf, padc_res, pfo_mpro, rda_resi,
+        sel_esp2, ref_sel_esp2, sel2_ini, ref_sel2_ini, reasons_NT_cont, refDes, padc_enf, padc_res, pfo_mpro, rda_resi,
         conclusion } = riskData
 
     riskDataSave.value.ref = `${indice.indice} - ${indice.nombre}`
@@ -402,6 +408,7 @@ const openModalForm = (riskData) => {
     riskDataSave.value.sel_esp2 = additionalSelectOptions.filter(item => item.id === sel_esp2)[0]
     riskDataSave.value.ref_sel_esp2 = ref_sel_esp2
     riskDataSave.value.sel2_ini = additionalSelect2Options.filter(item => item.id === sel2_ini)[0]
+    riskDataSave.value.ref_sel2_ini = ref_sel2_ini
     riskDataSave.value.reasons_NT_cont = reasons_NT_cont
 
     riskDataSave.value.padc_enf = padc_enf,
@@ -448,6 +455,7 @@ const clearFormValue = () => {
     riskDataSave.value.sel_esp2 = additionalSelectOptions[0]
     riskDataSave.value.ref_sel_esp2 = ""
     riskDataSave.value.sel2_ini = additionalSelect2Options[0]
+    riskDataSave.value.ref_sel2_ini = ""
     riskDataSave.value.reasons_NT_cont = ""
 
     riskDataSave.value.padc_enf = ""
@@ -535,6 +543,7 @@ const action = async (riskDatae) => {
         sel_esp2,
         ref_sel_esp2,
         sel2_ini,
+        ref_sel2_ini,
         reasons_NT_cont,
         refDes,
         padc_enf,
@@ -556,7 +565,6 @@ const action = async (riskDatae) => {
     const resultData = {
         rows: transfData
     }
-    console.log(resultData)
     const data = {
         _id,
         titulo,
@@ -600,6 +608,7 @@ const action = async (riskDatae) => {
         sel_esp2: sel_esp2.id,
         ref_sel_esp2,
         sel2_ini: sel2_ini.id,
+        ref_sel2_ini,
         reasons_NT_cont,
         refDes,
         padc_enf,
@@ -608,7 +617,6 @@ const action = async (riskDatae) => {
         rda_resi,
         conclusion
     }
-    console.log(data)
     return riesgosServices.update(data);
 }
 
@@ -745,12 +753,65 @@ const getStyle = (i) => {
     }
 };
 
-const getTypeInput = (i) => {
-    const indice = [2, 3]
-    if (indice.includes(i)) {
-        return `number`
+const activeInputRef = (i) => {
+    switch (i) {
+        case "sel_gen":
+            const valueOp = riskDataSave.value.sel_gen
+            if (valueOp.id === "Probado") {
+                inputsel_gen.value = false
+            } else {
+                riskDataSave.value.ref_sel_gen = ""
+                inputsel_gen.value = true                
+            }            
+        break;
+        case "sel_gen2":
+            const valueOp22 = riskDataSave.value.sel_gen2
+            if (valueOp22.id === "Probado") {
+                inputsel_gen2.value = false
+            } else {
+                riskDataSave.value.ref_sel_gen2 = ""
+                inputsel_gen2.value = true                
+            }            
+        break;
+        case "sel_mon":
+            const valueOp1 = riskDataSave.value.sel_mon
+            if (valueOp1.id === "Probado") {
+                inputsel_mon.value = false
+            } else {
+                riskDataSave.value.ref_sel_mon = ""
+                inputsel_mon.value = true                
+            }            
+        break;
+        case "sel_mon2":
+            const valueOp2 = riskDataSave.value.sel_mon2
+            if (valueOp2.id === "Probado") {
+                inputsel_mon2.value = false
+            } else {
+                riskDataSave.value.ref_sel_mon2 = ""
+                inputsel_mon2.value = true                
+            }            
+        break;
+        case "sel_esp":
+            const valueOp3 = riskDataSave.value.sel_esp
+            if (valueOp3.id === "Probado") {
+                inputsel_esp.value = false
+            } else {
+                riskDataSave.value.ref_sel_esp = ""
+                inputsel_esp.value = true                
+            }            
+        break;
+        case "sel_esp2":
+            const valueOp32 = riskDataSave.value.sel_esp2
+            if (valueOp32.id === "Probado") {
+                inputsel_esp2.value = false
+            } else {
+                riskDataSave.value.ref_sel_esp2 = ""
+                inputsel_esp2.value = true                
+            }            
+        break;    
+        default:
+            break;
     }
-    return `text`
 };
 
 const confirmModal = () => {
@@ -813,6 +874,11 @@ const onGenerated = (pdf) => {
 
 const actionDelete = (id) => {
     return riesgosServices.delete(id);
+}
+
+const changeFormatN = (value, rI, cI) => {
+    const numberValue = formattedNumberReverse(value)
+    tableData.value.rows[rI][cI] = formattedNumber(numberValue)
 }
 
 const getContent = (item) => {
@@ -1174,8 +1240,10 @@ const getContent = (item) => {
                                     <tr v-for="(row, rowIndex) in tableData.rows" :key="rowIndex">
                                         <td v-for="(cell, cellIndex) in row" :key="cellIndex" :style="getStyle(cellIndex)">
                                             <input v-if="cellIndex === 2 || cellIndex === 3" type="text"
+                                                :id="`${rowIndex}_${cellIndex}`"
                                                 v-model="tableData.rows[rowIndex][cellIndex]" 
                                                 style=" width: 100%; text-align: right;" 
+                                                @blur="changeFormatN(tableData.rows[rowIndex][cellIndex], rowIndex, cellIndex)"
                                                 v-decimal/>
                                             <input v-else type="text"
                                                 v-model="tableData.rows[rowIndex][cellIndex]" style="width: 100%"/>
@@ -1221,13 +1289,19 @@ const getContent = (item) => {
                                             <div class="c-card-content c-card-content-ref">
                                                 <div style="width: 50%;">
                                                     <FormField>
-                                                        <FormControl v-model="riskDataSave.sel_mon" :icon="mdiListStatus"
-                                                            :options="additionalSelectOptions" />
+                                                        <FormControl 
+                                                            v-model="riskDataSave.sel_mon" 
+                                                            :icon="mdiListStatus"
+                                                            :options="additionalSelectOptions" 
+                                                            @onSelectChange="activeInputRef('sel_mon')"/>
                                                     </FormField>                                                
                                                 </div>
                                                 <div style="width: 50%;">
                                                     <FormField>
-                                                        <FormControl v-model="riskDataSave.ref_sel_mon" :icon="mdiRenameBox"/>
+                                                        <FormControl 
+                                                            v-model="riskDataSave.ref_sel_mon" 
+                                                            :icon="mdiRenameBox"
+                                                            :readonly="inputsel_mon"/>
                                                     </FormField>                                                
                                                 </div>                                                
                                             </div>
@@ -1246,13 +1320,19 @@ const getContent = (item) => {
                                             <div class="c-card-content c-card-content-ref">
                                                 <div style="width: 50%;">
                                                     <FormField>
-                                                        <FormControl v-model="riskDataSave.sel_mon2" :icon="mdiListStatus"
-                                                            :options="additionalSelectOptions" />
+                                                        <FormControl 
+                                                            v-model="riskDataSave.sel_mon2" 
+                                                            :icon="mdiListStatus"
+                                                            :options="additionalSelectOptions" 
+                                                            @onSelectChange="activeInputRef('sel_mon2')"/>
                                                     </FormField>                                                
                                                 </div>
                                                 <div style="width: 50%;">
                                                     <FormField>
-                                                        <FormControl v-model="riskDataSave.ref_sel_mon2" :icon="mdiRenameBox"/>
+                                                        <FormControl
+                                                            v-model="riskDataSave.ref_sel_mon2" 
+                                                            :icon="mdiRenameBox"
+                                                            :readonly="inputsel_mon2"/>
                                                     </FormField>
                                                 </div>                                                
                                             </div>
@@ -1277,13 +1357,18 @@ const getContent = (item) => {
                                             <div class="c-card-content c-card-content-ref">
                                                 <div style="width: 50%;">
                                                     <FormField>
-                                                        <FormControl v-model="riskDataSave.sel_gen" :icon="mdiListStatus"
-                                                            :options="additionalSelectOptions" />
+                                                        <FormControl 
+                                                            v-model="riskDataSave.sel_gen" :icon="mdiListStatus"
+                                                            :options="additionalSelectOptions" 
+                                                            @onSelectChange="activeInputRef('sel_gen')"/>
                                                     </FormField>                                                
                                                 </div>                                                
                                                 <div style="width: 50%;">
                                                     <FormField>
-                                                        <FormControl v-model="riskDataSave.ref_sel_gen" :icon="mdiRenameBox"/>
+                                                        <FormControl 
+                                                            v-model="riskDataSave.ref_sel_gen" 
+                                                            :icon="mdiRenameBox"
+                                                            :readonly="inputsel_gen"/>
                                                     </FormField>                                                
                                                 </div>
                                             </div>
@@ -1302,13 +1387,19 @@ const getContent = (item) => {
                                             <div class="c-card-content c-card-content-ref">
                                                 <div style="width: 50%;">
                                                     <FormField>
-                                                        <FormControl v-model="riskDataSave.sel_gen2" :icon="mdiListStatus"
-                                                            :options="additionalSelectOptions" />
+                                                        <FormControl 
+                                                            v-model="riskDataSave.sel_gen2" 
+                                                            :icon="mdiListStatus"
+                                                            :options="additionalSelectOptions" 
+                                                            @onSelectChange="activeInputRef('sel_gen2')"/>
                                                     </FormField>                                                
                                                 </div>                                                
                                                 <div style="width: 50%;">
                                                     <FormField>
-                                                        <FormControl v-model="riskDataSave.ref_sel_gen2" :icon="mdiRenameBox"/>
+                                                        <FormControl 
+                                                            v-model="riskDataSave.ref_sel_gen2" 
+                                                            :icon="mdiRenameBox"
+                                                            :readonly="inputsel_gen2"/>
                                                     </FormField>                                                
                                                 </div>
                                             </div>
@@ -1333,13 +1424,19 @@ const getContent = (item) => {
                                             <div class="c-card-content c-card-content-ref">
                                                 <div style="width: 50%;">
                                                     <FormField>
-                                                        <FormControl v-model="riskDataSave.sel_esp" :icon="mdiListStatus"
-                                                            :options="additionalSelectOptions" />
+                                                        <FormControl 
+                                                            v-model="riskDataSave.sel_esp" 
+                                                            :icon="mdiListStatus"
+                                                            :options="additionalSelectOptions" 
+                                                            @onSelectChange="activeInputRef('sel_esp')"/>
                                                     </FormField>                                                
                                                 </div>                                                
                                                 <div style="width: 50%;">
                                                     <FormField>
-                                                        <FormControl v-model="riskDataSave.ref_sel_esp" :icon="mdiRenameBox"/>
+                                                        <FormControl 
+                                                            v-model="riskDataSave.ref_sel_esp" 
+                                                            :icon="mdiRenameBox"
+                                                            :readonly="inputsel_esp"/>
                                                     </FormField>                                                
                                                 </div>
                                             </div>
@@ -1358,13 +1455,19 @@ const getContent = (item) => {
                                             <div class="c-card-content c-card-content-ref">
                                                 <div style="width: 50%;">
                                                     <FormField>
-                                                        <FormControl v-model="riskDataSave.sel_esp2" :icon="mdiListStatus"
-                                                            :options="additionalSelectOptions" />
+                                                        <FormControl 
+                                                            v-model="riskDataSave.sel_esp2" 
+                                                            :icon="mdiListStatus"
+                                                            :options="additionalSelectOptions" 
+                                                            @onSelectChange="activeInputRef('sel_esp2')"/>
                                                     </FormField>                                                
                                                 </div>                                                
                                                 <div style="width: 50%;">
                                                     <FormField>
-                                                        <FormControl v-model="riskDataSave.ref_sel_esp2" :icon="mdiRenameBox"/>
+                                                        <FormControl 
+                                                            v-model="riskDataSave.ref_sel_esp2" 
+                                                            :icon="mdiRenameBox"
+                                                            :readonly="inputsel_esp2"/>
                                                     </FormField>                                                
                                                 </div>
                                             </div>
@@ -1379,14 +1482,31 @@ const getContent = (item) => {
                                     </td>
                                     <td>
                                         <div class="c-card">
-                                            <div class="c-card-header">
-                                                {{ $t('message.risk.informationIntegrity') }}
-                                            </div>
-                                            <div class="c-card-content">
-                                                <FormField>
-                                                    <FormControl v-model="riskDataSave.sel2_ini" :icon="mdiListStatus"
-                                                        :options="additionalSelect2Options" />
-                                                </FormField>
+                                            <div class="c-card-header-ref">
+                                                <div class="div-ref">
+                                                    {{ $t('message.risk.informationIntegrity') }}
+                                                </div>
+                                                <div class="div-ref">
+                                                    {{ $t('message.risk.ref') }}
+                                                </div>                                                
+                                            </div> 
+
+                                            <div class="c-card-content c-card-content-ref">
+                                                <div style="width: 50%;">
+                                                    <FormField>
+                                                        <FormControl 
+                                                            v-model="riskDataSave.sel2_ini" 
+                                                            :icon="mdiListStatus"
+                                                            :options="additionalSelect2Options" />
+                                                    </FormField>                                                
+                                                </div>                                                
+                                                <div style="width: 50%;">
+                                                    <FormField>
+                                                        <FormControl 
+                                                            v-model="riskDataSave.ref_sel2_ini" 
+                                                            :icon="mdiRenameBox"/>
+                                                    </FormField>                                                
+                                                </div>
                                             </div>
                                         </div>
                                     </td>
@@ -1437,7 +1557,7 @@ const getContent = (item) => {
                                 <thead>
                                     <tr>
                                         <th>{{ $t('message.risk.ref') }}</th>
-                                        <th>{{ $t('message.risk.description') }}</th>
+                                        <th>{{ $t('message.risk.descriptionOfAuditTests') }}</th>
                                         <th class="c-center">
 
                                             <BaseButton @click.prevent="addRowRefDes" :icon="mdiPlus" label=""
