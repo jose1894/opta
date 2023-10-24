@@ -26,8 +26,9 @@ export default {
         })
     },
     read(estado) {
+        console.log(estado)
         return new Promise((resolve, reject) => {
-            Service.get(`${resource}/${estado.id}`, { headers: authHeader() })
+            Service.get(`${resource}${estado.id}`, { headers: authHeader() })
             .then(response => { 
                 resolve(response)})
             .catch(err => reject(err))

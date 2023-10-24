@@ -5,7 +5,10 @@ import BaseButton from "@/components/BaseButton.vue";
 import BaseButtons from "@/components/BaseButtons.vue";
 import CardBox from "@/components/CardBox.vue";
 import OverlayLayer from "@/components/OverlayLayer.vue";
+import { useI18n } from "vue-i18n";
 import CardBoxComponentTitle from "@/components/CardBoxComponentTitle.vue";
+
+const { t } = useI18n();
 
 const props = defineProps({
   title: {
@@ -22,7 +25,7 @@ const props = defineProps({
   },
   buttonLabel: {
     type: String,
-    default: "Done",
+    default: "Si",
   },
   hasCancel: Boolean,
   hasClose: Boolean,
@@ -107,7 +110,7 @@ window.addEventListener("keydown", (e) => {
 
           <BaseButton
             v-if="hasCancel"
-            label="Cancel"
+            :label="$t('message.cancel')"
             :color="button"
             outline
             @click="cancel"

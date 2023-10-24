@@ -54,8 +54,10 @@ onMounted(async () => {
   let listPaises = await countriesService.index();
   const optionCountry = listPaises?.paises || [];
   countriesList.value = optionCountry.map((country) => ({id: country._id, label: country.nombre}));
+  console.log(props.path)
   if (props.path === 'update'){
     const res = await statesService.read(route.params);
+    
     const country = res.data?.pais || [];
     const countrySelected = optionCountry.filter((item) => item._id == country._id)[0];
     state.value = res.data
