@@ -29,6 +29,10 @@ const props = defineProps({
     type: String,
     default: "",
   },
+  readonly: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const emit = defineEmits(["update:modelValue"]);
@@ -57,6 +61,7 @@ const computedValue = computed({
       :class="componentClass"
       class="mr-6 mb-3 last:mr-0"
       v-tippy="{ content: messageTooltip }"
+      :isDisabled="readonly"
     />
   </div>
 </template>

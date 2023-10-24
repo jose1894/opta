@@ -2,7 +2,7 @@
 import { computed, ref, defineEmits, defineProps, reactive } from "vue";
 import { useRouter } from "vue-router";
 import { useMainStore } from "@/stores/main";
-import { mdiDelete, mdiPencilOutline, mdiPrinter, mdiRenameBox, mdiListStatus, mdiPlus, mdiMinus } from "@mdi/js";
+import { mdiDelete, mdiPencilOutline, mdiEye, mdiRenameBox, mdiListStatus, mdiPlus, mdiMinus } from "@mdi/js";
 import { required } from '@/utils/i18n-validators';
 import { useI18n } from "vue-i18n";
 import { useToast } from 'vue-toastification';
@@ -39,6 +39,7 @@ const inputsel_mon2 = ref(true)
 const inputsel_esp = ref(true)
 const inputsel_esp2 = ref(true)
 const html2Pdf = ref(null);
+const onlyReadonly = ref(true);
 const pdfFormat = 'a4';
 const pdfOrientation = 'portrait';
 const pdfContentWidth = '800px';
@@ -329,7 +330,10 @@ const formattedNumberReverse = (number ) => {
   return number
 }
 
-const openModalForm = (riskData) => {
+const openModalForm = (riskData, option) => {
+    
+    onlyReadonly.value = option === 0 ? true : false
+
     const { indice, titulo, descripcion, typeRisk, _id, riesgoProveniente,
         cuadrante, areaRiesgo, expectativasNegocio, procedimientosAdicionales,
         inherente, control, analitico, factorRiesgo, procesosInvolucrados,
@@ -911,7 +915,11 @@ const getContent = (item) => {
 
                         <FormField :label="$t('message.risk.description')" :help="v$?.descripcion?.$errors[0]?.$message"
                             style="margin-bottom: 1.5rem;">
-                            <FormControl type="textarea" v-model="riskDataSave.descripcion" :icon="mdiRenameBox" />
+                            <FormControl 
+                                type="textarea" 
+                                v-model="riskDataSave.descripcion" 
+                                :icon="mdiRenameBox" 
+                                :readonly="onlyReadonly"/>
                         </FormField>
                     </div>
 
@@ -923,13 +931,20 @@ const getContent = (item) => {
                     <div class="grid md:grid-cols-2 gap-2">
 
                         <FormField label="">
-                            <FormCheckRadioGroup v-model="customChekSTR1Form.checkbox" name="sample-checkbox"
+                            <FormCheckRadioGroup 
+                                v-model="customChekSTR1Form.checkbox" 
+                                name="sample-checkbox"
+                                :readonly="onlyReadonly"
                                 :options="{ 'A nivel de estados financieros': t('message.risk.atTheLevelOfFinancialStatements') }"
-                                @change="onChangeTypeRiskCustomCheckbox('TR1')" />
+                                @change="onChangeTypeRiskCustomCheckbox('TR1')"                                
+                                />
                         </FormField>
 
                         <FormField label="">
-                            <FormCheckRadioGroup v-model="customChekSTR2Form.checkbox" name="sample-checkbox"
+                            <FormCheckRadioGroup 
+                                v-model="customChekSTR2Form.checkbox" 
+                                name="sample-checkbox"
+                                :readonly="onlyReadonly"
                                 :options="{ 'A nivel de aseveraciones': t('message.risk.atTheLevelOfAssertions') }"
                                 @change="onChangeTypeRiskCustomCheckbox('TR2')" />
                         </FormField>
@@ -947,8 +962,11 @@ const getContent = (item) => {
                             </div>
                             <div class="c-card-content">
                                 <FormField>
-                                    <FormControl v-model="riskDataSave.riesgoProveniente" :icon="mdiListStatus"
-                                        :options="risksFrom" />
+                                    <FormControl 
+                                        v-model="riskDataSave.riesgoProveniente" 
+                                        :icon="mdiListStatus"
+                                        :options="risksFrom"
+                                        :readonly="onlyReadonly" />
                                 </FormField>
                             </div>
                         </div>
@@ -958,8 +976,11 @@ const getContent = (item) => {
                             </div>
                             <div class="c-card-content">
                                 <FormField>
-                                    <FormControl v-model="riskDataSave.cuadrante" :icon="mdiListStatus"
-                                        :options="quadrantOption" />
+                                    <FormControl 
+                                        v-model="riskDataSave.cuadrante" 
+                                        :icon="mdiListStatus"
+                                        :options="quadrantOption" 
+                                        :readonly="onlyReadonly"/>
                                 </FormField>
                             </div>
                         </div>
@@ -970,8 +991,11 @@ const getContent = (item) => {
                             </div>
                             <div class="c-card-content">
                                 <FormField>
-                                    <FormControl v-model="riskDataSave.areaRiesgo" :icon="mdiListStatus"
-                                        :options="riskAreaOption" />
+                                    <FormControl 
+                                        v-model="riskDataSave.areaRiesgo" 
+                                        :icon="mdiListStatus"
+                                        :options="riskAreaOption" 
+                                        :readonly="onlyReadonly"/>
                                 </FormField>
                             </div>
                         </div>
@@ -988,7 +1012,10 @@ const getContent = (item) => {
                         <!-- <h1 style=" font-weight: 700;">Expectativas del cliente</h1> -->
                         <div class="grid md:grid-cols-2 gap-2">
                             <FormField label="" v-for="(opions, i) in radioOptions">
-                                <FormCheckRadioGroup v-model="customElementsENForm.radio" name="sample-radio" type="radio"
+                                <FormCheckRadioGroup 
+                                    v-model="customElementsENForm.radio" 
+                                    name="sample-radio" type="radio"
+                                    :readonly="onlyReadonly"
                                     :options="radioOptions[i]" @change="onChangeENCheckbox(radioOptions[i])" />
                             </FormField>
                         </div>
@@ -999,7 +1026,11 @@ const getContent = (item) => {
                         </h1>
                         <div class="grid md:grid-cols-2 gap-2" style="padding-bottom: 20px;">
                             <FormField label="">
-                                <FormCheckRadioGroup v-model="customElementsForm.switch" name="sample-switch" type="switch"
+                                <FormCheckRadioGroup 
+                                    v-model="customElementsForm.switch" 
+                                    name="sample-switch" 
+                                    type="switch"
+                                    :readonly="onlyReadonly"
                                     :options="{ 'Si': t('message.yes') }" @change="onChangeCheckboxPA(1)" />
                             </FormField>
                         </div>
@@ -1019,8 +1050,11 @@ const getContent = (item) => {
                                 </div>
                                 <div class="c-card-content">
                                     <FormField>
-                                        <FormControl v-model="riskDataSave.inherente" :icon="mdiListStatus"
-                                            :options="generalOptions" />
+                                        <FormControl 
+                                            v-model="riskDataSave.inherente" 
+                                            :icon="mdiListStatus"
+                                            :options="generalOptions" 
+                                            :readonly="onlyReadonly"/>
                                     </FormField>
                                 </div>
                             </div>
@@ -1031,8 +1065,11 @@ const getContent = (item) => {
                                 </div>
                                 <div class="c-card-content">
                                     <FormField>
-                                        <FormControl v-model="riskDataSave.control" :icon="mdiListStatus"
-                                            :options="generalOptions" />
+                                        <FormControl 
+                                            v-model="riskDataSave.control" 
+                                            :icon="mdiListStatus"
+                                            :options="generalOptions" 
+                                            :readonly="onlyReadonly"/>
                                     </FormField>
                                 </div>
                             </div>
@@ -1043,27 +1080,41 @@ const getContent = (item) => {
                                 </div>
                                 <div class="c-card-content">
                                     <FormField>
-                                        <FormControl v-model="riskDataSave.analitico" :icon="mdiListStatus"
-                                            :options="generalOptions" />
+                                        <FormControl 
+                                            v-model="riskDataSave.analitico" 
+                                            :icon="mdiListStatus"
+                                            :options="generalOptions" 
+                                            :readonly="onlyReadonly"/>
                                     </FormField>
                                 </div>
                             </div>
                         </div>
                         <div class="grid lg:grid-cols-1 gap-1" style="margin-bottom: 1.5rem;">
                             <FormField :label="$t('message.risk.riskFactor')">
-                                <FormControl :name="'titulo'" v-model="riskDataSave.factorRiesgo" :icon="mdiRenameBox" />
+                                <FormControl 
+                                    :name="'titulo'" 
+                                    v-model="riskDataSave.factorRiesgo" 
+                                    :icon="mdiRenameBox" 
+                                    :readonly="onlyReadonly"/>
                             </FormField>
 
                         </div>
 
                         <div class="grid lg:grid-cols-2 gap-2" style="margin-bottom: 1.5rem;">
                             <FormField :label="$t('message.risk.processesWhereRiskIsInvolved')">
-                                <FormControl type="textarea" v-model="riskDataSave.procesosInvolucrados"
-                                    :icon="mdiRenameBox" />
+                                <FormControl 
+                                    type="textarea" 
+                                    v-model="riskDataSave.procesosInvolucrados"
+                                    :icon="mdiRenameBox" 
+                                    :readonly="onlyReadonly"/>
                             </FormField>
 
                             <FormField :label="$t('message.risk.causativeSourceOfRisk')">
-                                <FormControl type="textarea" v-model="riskDataSave.fuentesCausantes" :icon="mdiRenameBox" />
+                                <FormControl 
+                                    type="textarea" 
+                                    v-model="riskDataSave.fuentesCausantes" 
+                                    :icon="mdiRenameBox" 
+                                    :readonly="onlyReadonly"/>
                             </FormField>
                         </div>
 
@@ -1086,41 +1137,60 @@ const getContent = (item) => {
                         </div>
                         <div class="grid md:grid-cols-3 gap-3">
                             <FormField label="">
-                                <FormCheckRadioGroup v-model="customChekS1Form.checkbox" name="sample-checkbox"
+                                <FormCheckRadioGroup 
+                                    v-model="customChekS1Form.checkbox" 
+                                    name="sample-checkbox"
                                     :options="{ 'I. Ocurrencia (O)': $t('message.risk.iOccurrence(O)') }"
                                     :messageTooltip="t('message.risk.ocurrence')"
+                                    :readonly="onlyReadonly"
                                     @change="onChangeCustomCheckbox('ase_a1')" />
                             </FormField>
 
                             <FormField label="">
-                                <FormCheckRadioGroup v-model="customChekS2Form.checkbox" name="sample-checkbox"
+                                <FormCheckRadioGroup 
+                                    v-model="customChekS2Form.checkbox" 
+                                    name="sample-checkbox"
                                     :options="{ 'II. Integridad (I)': $t('message.risk.iiIntegrity(I)') }"
                                     :messageTooltip="t('message.risk.integrity')"
+                                    :readonly="onlyReadonly"
                                     @change="onChangeCustomCheckbox('ase_a2')" />
                             </FormField>
 
                             <FormField label="">
-                                <FormCheckRadioGroup v-model="customChekS3Form.checkbox" name="sample-checkbox"
+                                <FormCheckRadioGroup 
+                                    v-model="customChekS3Form.checkbox" 
+                                    name="sample-checkbox"
                                     :options="{ 'III. Precisión (P)': $t('message.risk.iiiAccuracy(A)') }"
                                     :messageTooltip="t('message.risk.precision')"
+                                    :readonly="onlyReadonly"
                                     @change="onChangeCustomCheckbox('ase_a3')" />
                             </FormField>
 
                             <FormField label="">
-                                <FormCheckRadioGroup v-model="customChekS4Form.checkbox" name="sample-checkbox"
+                                <FormCheckRadioGroup 
+                                    v-model="customChekS4Form.checkbox" 
+                                    name="sample-checkbox"
                                     :options="{ 'IV. Corte (CO)': $t('message.risk.iVCourt(CO)') }"
-                                    :messageTooltip="t('message.risk.court')" @change="onChangeCustomCheckbox('ase_a4')" />
+                                    :messageTooltip="t('message.risk.court')" 
+                                    :readonly="onlyReadonly"
+                                    @change="onChangeCustomCheckbox('ase_a4')" />
                             </FormField>
 
                             <FormField label="">
-                                <FormCheckRadioGroup v-model="customChekS5Form.checkbox" name="sample-checkbox"
+                                <FormCheckRadioGroup 
+                                    v-model="customChekS5Form.checkbox" 
+                                    name="sample-checkbox"
+                                    :readonly="onlyReadonly"
                                     :options="{ 'V. Clasificación (CL)': $t('message.risk.vClassification(CL)') }"
                                     :messageTooltip="t('message.risk.classification')"
                                     @change="onChangeCustomCheckbox('ase_a5')" />
                             </FormField>
 
                             <FormField label="">
-                                <FormCheckRadioGroup v-model="customChekS6Form.checkbox" name="sample-checkbox"
+                                <FormCheckRadioGroup 
+                                    v-model="customChekS6Form.checkbox" 
+                                    name="sample-checkbox"
+                                    :readonly="onlyReadonly"
                                     :options="{ 'VI. Presentación (PR)': $t('message.risk.viPresentation(PR)') }"
                                     :messageTooltip="t('message.risk.presentation')"
                                     @change="onChangeCustomCheckbox('ase_a6')" />
@@ -1135,44 +1205,62 @@ const getContent = (item) => {
 
                         <div class="grid md:grid-cols-2 gap-2">
                             <FormField label="">
-                                <FormCheckRadioGroup v-model="customChekSB1Form.checkbox" name="sample-checkbox"
+                                <FormCheckRadioGroup 
+                                    v-model="customChekSB1Form.checkbox" 
+                                    name="sample-checkbox"
                                     :options="{ 'I. Existencia (E)': $t('message.risk.iExistence(E)') }"
                                     :messageTooltip="t('message.risk.existence')"
+                                    :readonly="onlyReadonly"
                                     @change="onChangeCustomCheckbox('ase_b1')" />
                             </FormField>
 
                             <FormField label="">
-                                <FormCheckRadioGroup v-model="customChekSB2Form.checkbox" name="sample-checkbox"
+                                <FormCheckRadioGroup 
+                                    v-model="customChekSB2Form.checkbox" 
+                                    name="sample-checkbox"
                                     :options="{ 'II. Derechos y Obligaciones (DO)': $t('message.risk.iiRightsAndObligations(RO)') }"
                                     :messageTooltip="t('message.risk.rightsAndObligations')"
+                                    :readonly="onlyReadonly"
                                     @change="onChangeCustomCheckbox('ase_b2')" />
                             </FormField>
 
                             <FormField label="">
-                                <FormCheckRadioGroup v-model="customChekSB3Form.checkbox" name="sample-checkbox"
+                                <FormCheckRadioGroup 
+                                    v-model="customChekSB3Form.checkbox" 
+                                    name="sample-checkbox"
                                     :options="{ 'III. Integrity (I)': $t('message.risk.iiiIntegrity(I)') }"
                                     :messageTooltip="t('message.risk.integrity1')"
+                                    :readonly="onlyReadonly"
                                     @change="onChangeCustomCheckbox('ase_b3')" />
                             </FormField>
 
                             <FormField label="">
-                                <FormCheckRadioGroup v-model="customChekSB4Form.checkbox" name="sample-checkbox"
+                                <FormCheckRadioGroup 
+                                    v-model="customChekSB4Form.checkbox" 
+                                    name="sample-checkbox"
                                     :options="{ 'IV. Precisión, valoración y asignación (PVA)': $t('message.risk.ivAccuracyValuationAndAssignment(PVA)') }"
                                     :messageTooltip="t('message.risk.accuracyValuationAndAllocation')"
+                                    :readonly="onlyReadonly"
                                     @change="onChangeCustomCheckbox('ase_b4')" />
                             </FormField>
 
                             <FormField label="">
-                                <FormCheckRadioGroup v-model="customChekSB5Form.checkbox" name="sample-checkbox"
+                                <FormCheckRadioGroup 
+                                    v-model="customChekSB5Form.checkbox" 
+                                    name="sample-checkbox"
                                     :options="{ 'V. Clasificación (CL)': $t('message.risk.vClassification(CL)') }"
                                     :messageTooltip="t('message.risk.clasification1')"
+                                    :readonly="onlyReadonly"
                                     @change="onChangeCustomCheckbox('ase_b5')" />
                             </FormField>
 
                             <FormField label="">
-                                <FormCheckRadioGroup v-model="customChekSB6Form.checkbox" name="sample-checkbox"
+                                <FormCheckRadioGroup 
+                                    v-model="customChekSB6Form.checkbox" 
+                                    name="sample-checkbox"
                                     :options="{ 'VI. Presentación (PR)': $t('message.risk.viPresentation(PR)') }"
                                     :messageTooltip="t('message.risk.presentation1')"
+                                    :readonly="onlyReadonly"
                                     @change="onChangeCustomCheckbox('ase_b6')" />
                             </FormField>
                         </div>
@@ -1231,7 +1319,12 @@ const getContent = (item) => {
                                         <th class="c-center">{{ $t('message.risk.final') }}</th>
                                         <th class="c-center">{{ $t('message.risk.affectedClaims') }}</th>
                                         <th class="c-center">
-                                            <BaseButton @click.prevent="addRow" :icon="mdiPlus" label="" color="success"
+                                            <BaseButton 
+                                                @click.prevent="addRow" 
+                                                :icon="mdiPlus" 
+                                                label="" 
+                                                color="success"
+                                                :disabled="onlyReadonly"
                                                 small />
                                         </th>
                                     </tr>
@@ -1244,13 +1337,18 @@ const getContent = (item) => {
                                                 v-model="tableData.rows[rowIndex][cellIndex]" 
                                                 style=" width: 100%; text-align: right;" 
                                                 @blur="changeFormatN(tableData.rows[rowIndex][cellIndex], rowIndex, cellIndex)"
-                                                v-decimal/>
+                                                v-decimal :readonly="onlyReadonly"/>
                                             <input v-else type="text"
-                                                v-model="tableData.rows[rowIndex][cellIndex]" style="width: 100%"/>
+                                                v-model="tableData.rows[rowIndex][cellIndex]" style="width: 100%" :readonly="onlyReadonly"/>
                                         </td>
                                         <td class="c-center">
-                                            <BaseButton @click.prevent="deleteRow({ rowIndex, row })" :icon="mdiMinus"
-                                                label="" color="danger" small />
+                                            <BaseButton 
+                                                @click.prevent="deleteRow({ rowIndex, row })" 
+                                                :icon="mdiMinus"
+                                                label="" 
+                                                color="danger"
+                                                small 
+                                                :disabled="onlyReadonly"/>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -1292,7 +1390,8 @@ const getContent = (item) => {
                                                         <FormControl 
                                                             v-model="riskDataSave.sel_mon" 
                                                             :icon="mdiListStatus"
-                                                            :options="additionalSelectOptions" 
+                                                            :options="additionalSelectOptions"
+                                                            :readonly="onlyReadonly" 
                                                             @onSelectChange="activeInputRef('sel_mon')"/>
                                                     </FormField>                                                
                                                 </div>
@@ -1324,6 +1423,7 @@ const getContent = (item) => {
                                                             v-model="riskDataSave.sel_mon2" 
                                                             :icon="mdiListStatus"
                                                             :options="additionalSelectOptions" 
+                                                            :readonly="onlyReadonly"
                                                             @onSelectChange="activeInputRef('sel_mon2')"/>
                                                     </FormField>                                                
                                                 </div>
@@ -1358,8 +1458,10 @@ const getContent = (item) => {
                                                 <div style="width: 50%;">
                                                     <FormField>
                                                         <FormControl 
-                                                            v-model="riskDataSave.sel_gen" :icon="mdiListStatus"
+                                                            v-model="riskDataSave.sel_gen" 
+                                                            :icon="mdiListStatus"
                                                             :options="additionalSelectOptions" 
+                                                            :readonly="onlyReadonly"
                                                             @onSelectChange="activeInputRef('sel_gen')"/>
                                                     </FormField>                                                
                                                 </div>                                                
@@ -1390,7 +1492,8 @@ const getContent = (item) => {
                                                         <FormControl 
                                                             v-model="riskDataSave.sel_gen2" 
                                                             :icon="mdiListStatus"
-                                                            :options="additionalSelectOptions" 
+                                                            :options="additionalSelectOptions"
+                                                            :readonly="onlyReadonly" 
                                                             @onSelectChange="activeInputRef('sel_gen2')"/>
                                                     </FormField>                                                
                                                 </div>                                                
@@ -1428,6 +1531,7 @@ const getContent = (item) => {
                                                             v-model="riskDataSave.sel_esp" 
                                                             :icon="mdiListStatus"
                                                             :options="additionalSelectOptions" 
+                                                            :readonly="onlyReadonly"
                                                             @onSelectChange="activeInputRef('sel_esp')"/>
                                                     </FormField>                                                
                                                 </div>                                                
@@ -1458,7 +1562,8 @@ const getContent = (item) => {
                                                         <FormControl 
                                                             v-model="riskDataSave.sel_esp2" 
                                                             :icon="mdiListStatus"
-                                                            :options="additionalSelectOptions" 
+                                                            :options="additionalSelectOptions"
+                                                            :readonly="onlyReadonly" 
                                                             @onSelectChange="activeInputRef('sel_esp2')"/>
                                                     </FormField>                                                
                                                 </div>                                                
@@ -1497,6 +1602,7 @@ const getContent = (item) => {
                                                         <FormControl 
                                                             v-model="riskDataSave.sel2_ini" 
                                                             :icon="mdiListStatus"
+                                                            :readonly="onlyReadonly"
                                                             :options="additionalSelect2Options" />
                                                     </FormField>                                                
                                                 </div>                                                
@@ -1504,7 +1610,8 @@ const getContent = (item) => {
                                                     <FormField>
                                                         <FormControl 
                                                             v-model="riskDataSave.ref_sel2_ini" 
-                                                            :icon="mdiRenameBox"/>
+                                                            :icon="mdiRenameBox"
+                                                            :readonly="onlyReadonly"/>
                                                     </FormField>                                                
                                                 </div>
                                             </div>
@@ -1521,7 +1628,11 @@ const getContent = (item) => {
                         </div>
                         <div class="grid lg:grid-cols-1 gap-1">
                             <FormField>
-                                <FormControl type="textarea" v-model="riskDataSave.reasons_NT_cont" :icon="mdiRenameBox" />
+                                <FormControl 
+                                    type="textarea" 
+                                    v-model="riskDataSave.reasons_NT_cont" 
+                                    :icon="mdiRenameBox"
+                                    :readonly="onlyReadonly" />
                             </FormField>
                         </div>
 
@@ -1539,10 +1650,18 @@ const getContent = (item) => {
 
                         <div class="grid lg:grid-cols-2 gap-2">
                             <FormField :label="$t('message.risk.approach')">
-                                <FormControl type="textarea" v-model="riskDataSave.padc_enf" :icon="mdiRenameBox" />
+                                <FormControl 
+                                    type="textarea" 
+                                    v-model="riskDataSave.padc_enf" 
+                                    :icon="mdiRenameBox"
+                                    :readonly="onlyReadonly" />
                             </FormField>
                             <FormField :label="$t('message.risk.outcomeOfTheAuditProceduresApplied')">
-                                <FormControl type="textarea" v-model="riskDataSave.padc_res" :icon="mdiRenameBox" />
+                                <FormControl 
+                                    type="textarea" 
+                                    v-model="riskDataSave.padc_res" 
+                                    :icon="mdiRenameBox"
+                                    :readonly="onlyReadonly" />
                             </FormField>
                         </div>
 
@@ -1560,8 +1679,13 @@ const getContent = (item) => {
                                         <th>{{ $t('message.risk.descriptionOfAuditTests') }}</th>
                                         <th class="c-center">
 
-                                            <BaseButton @click.prevent="addRowRefDes" :icon="mdiPlus" label=""
-                                                color="success" small />
+                                            <BaseButton 
+                                                @click.prevent="addRowRefDes" 
+                                                :icon="mdiPlus" 
+                                                label=""
+                                                color="success" 
+                                                small 
+                                                :disabled="onlyReadonly"/>
                                         </th>
                                     </tr>
                                 </thead>
@@ -1569,12 +1693,20 @@ const getContent = (item) => {
                                     <tr v-for="(row, rowIndex) in refDesTableData.rows" :key="rowIndex">
                                         <td v-for="(cell, cellIndex) in row" :key="cellIndex"
                                             :style="getStyleRefDes(cellIndex)">
-                                            <input type="text" v-model="refDesTableData.rows[rowIndex][cellIndex]"
-                                                style="width: 100%" />
+                                            <input 
+                                                type="text" 
+                                                v-model="refDesTableData.rows[rowIndex][cellIndex]"
+                                                style="width: 100%" 
+                                                :readonly="onlyReadonly"/>
                                         </td>
                                         <td class="c-center">
-                                            <BaseButton @click.prevent="deleteRowRefDes({ rowIndex, row })" :icon="mdiMinus"
-                                                label="" color="danger" small />
+                                            <BaseButton 
+                                                @click.prevent="deleteRowRefDes({ rowIndex, row })" 
+                                                :icon="mdiMinus"
+                                                label="" 
+                                                color="danger" 
+                                                small 
+                                                :disabled="onlyReadonly"/>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -1589,7 +1721,11 @@ const getContent = (item) => {
 
                         <div class="grid lg:grid-cols-1 gap-1">
                             <FormField :label="$t('message.risk.recommendationForProcessImprovementprocess')">
-                                <FormControl type="textarea" v-model="riskDataSave.pfo_mpro" :icon="mdiRenameBox" />
+                                <FormControl 
+                                    type="textarea" 
+                                    v-model="riskDataSave.pfo_mpro" 
+                                    :icon="mdiRenameBox"
+                                    :readonly="onlyReadonly" />
                             </FormField>
                         </div>
 
@@ -1601,7 +1737,11 @@ const getContent = (item) => {
 
                         <div class="grid lg:grid-cols-1 gap-1">
                             <FormField label="">
-                                <FormControl type="textarea" v-model="riskDataSave.rda_resi" :icon="mdiRenameBox" />
+                                <FormControl 
+                                type="textarea" 
+                                v-model="riskDataSave.rda_resi" 
+                                :icon="mdiRenameBox"
+                                :readonly="onlyReadonly" />
                             </FormField>
                         </div>
 
@@ -1613,15 +1753,28 @@ const getContent = (item) => {
 
                         <div class="grid lg:grid-cols-1 gap-1">
                             <FormField label="">
-                                <FormControl type="textarea" v-model="riskDataSave.conclusion" :icon="mdiRenameBox" />
+                                <FormControl 
+                                type="textarea" 
+                                v-model="riskDataSave.conclusion" 
+                                :icon="mdiRenameBox"
+                                :readonly="onlyReadonly" />
                             </FormField>
                         </div>
                     </div>
                 </div>
             </div>
             <template #footer>
-                <BaseButton :label="$t(`message.submit`)" type="submit" color="success" />
-                <BaseButton :label="$t(`message.cancel`)" color="danger" style="margin-left: 5px;" @click="cancelModal" />
+                <BaseButton 
+                    :label="$t(`message.submit`)" 
+                    type="submit" 
+                    color="success" 
+                    :disabled="onlyReadonly"/>
+                <BaseButton 
+                    :label="$t(`message.cancel`)" 
+                    color="danger" 
+                    style="margin-left: 5px;" 
+                    @click="cancelModal" 
+                    :disabled="onlyReadonly"/>
             </template>
         </CardBox>
     </CardBoxModal>
@@ -1664,9 +1817,23 @@ const getContent = (item) => {
                             
                         </SectionReportPDF>
                         <BaseButtons type="justify-start lg:justify-end" no-wrap>
-                            <BaseButton color="success" :icon="mdiPencilOutline" :messageTooltip="t('message.edit')" small
-                                @click="openModalForm(risk)" />
-                            <BaseButton color="danger" :icon="mdiDelete" :messageTooltip="t('message.delete')" small
+                            <BaseButton 
+                                color="info" 
+                                :icon="mdiEye" 
+                                :messageTooltip="t('message.information')" 
+                                small
+                                @click="openModalForm(risk,0)" />
+                            <BaseButton 
+                                color="success" 
+                                :icon="mdiPencilOutline" 
+                                :messageTooltip="t('message.edit')" 
+                                small
+                                @click="openModalForm(risk,1)" />
+                            <BaseButton 
+                                color="danger" 
+                                :icon="mdiDelete" 
+                                :messageTooltip="t('message.delete')" 
+                                small
                                 @click="deleteRisk(risk._id)" />
                         </BaseButtons>
                     </div>

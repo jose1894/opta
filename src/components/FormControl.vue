@@ -138,7 +138,7 @@ if (props.ctrlKFocus) {
       v-model="computedValue" 
       :name="name" 
       :class="inputElClass"
-      :readonly="readonly"
+      :disabled="readonly"
       @change="onSelectChange($event)">
       <option v-for="option in options" :key="option.id ?? option" :value="option">
         {{ option.label ?? option }}

@@ -111,12 +111,6 @@ const componentClass = computed(() => {
 
   return base;
 });
-
-const msjToolTip = () =>  {
-  console.log(props.messageTooltip)
-  return props.messageTooltip
-}
- 
 </script>
 
 <template>
