@@ -28,10 +28,10 @@ const getRates = (data) => {
   })
 }
 
-getRates({page: page.value})
+getRates({page:page.value})
 
 const onChangeSwtch = () => {
-  endPointUse({ page: page.value })
+  endPointUse(page.value)
 }
 
 const onChangePage = (page) => {
@@ -50,8 +50,8 @@ const getRatesDelete = (data) => {
     })
 }
 const endPointUse = (page) => {
-    customElementsForm.switch.length === 0 ? getRates({ page }) :
-    getRatesDelete({ page })
+    customElementsForm.switch.length === 0 ? getRates(page) :
+    getRatesDelete(page)
 }
 
 const endPointUseSort = (sort) => {

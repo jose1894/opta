@@ -31,7 +31,7 @@ const customElementsForm = reactive({
 const customCheckDelete = ref(false);
 
 const onChangeSwtch = () => { 
-  endPointUse({ page: page.value })
+  endPointUse(page.value) 
   customCheckDelete.value = customElementsForm.switch.length === 0 ? false : true
 }
 
@@ -43,10 +43,10 @@ const getCountries = async (data) => {
   })
 }
 
-getCountries({ page: page.value })
+getCountries({page:page.value})
 
 const onChangePage = (page) => {
-  endPointUse({ page })
+  endPointUse({page})
 }
 
 const onSortPage = (sortBy, sortDesc) => {
@@ -63,8 +63,8 @@ const getCountriesDelete = async (data) => {
 
 const endPointUse = (page) => {
   customElementsForm.switch.length === 0 
-    ? getCountries({ page }) 
-    : getCountriesDelete({ page })
+    ? getCountries(page) 
+    : getCountriesDelete(page)
 }
 
 const endPointUseSort = (sort) => {

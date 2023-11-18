@@ -144,13 +144,13 @@ const activateItem = () => {
     <tbody>
       <tr v-for="(state, index) in itemsPaginated" :key="state._id" @click="selectedItem(state)">
         <td :data-label="$t('message.state.code')">
-          {{ state.codigo }} 
+          {{ state?.codigo }} 
         </td>       
         <td :data-label="$t('message.state.name')">
-          {{ state.nombre }}
+          {{ state?.nombre }}
         </td>
         <td :data-label="$t('message.state.country')">
-          {{ state.pais.nombre }} 
+          {{ state.pais?.nombre }} 
         </td>
         <td :data-label="$t('message.state.status')">
           {{ $t(`message.state.statuses.${listStatusOption(state.estado)}`) }}

@@ -32,12 +32,12 @@
         })
     }
 
-    getCities({page: page.value})
+    getCities({page:page.value})
 
     const customCheckDelete = ref(false);
 
     const onChangeSwtch = () => {
-        endPointUse({ page: page.value })
+        endPointUse(page.value)
         customCheckDelete.value = customElementsForm.switch.length === 0 ? false : true
     }
 
@@ -57,8 +57,9 @@
         })
     }
     const endPointUse = (page) => {
-        customElementsForm.switch.length === 0 ? getCities({ page }) :
-        getCitiesDelete({ page })
+        customElementsForm.switch.length === 0 ? 
+            getCities(page) :
+            getCitiesDelete(page)
     }
 
     const endPointUseSort = (sort) => {

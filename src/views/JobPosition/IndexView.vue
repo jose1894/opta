@@ -32,12 +32,12 @@ const getCargos = (data) => {
   })
 }
 
-getCargos({page: page.value})
+getCargos({page:page.value})
 
 const customCheckDelete = ref(false);
 
 const onChangeSwtch = () => {
-  endPointUse({ page: page.value })  
+  endPointUse(page.value)  
   customCheckDelete.value = customElementsForm.switch.length === 0 ? false : true
 }
 
@@ -58,8 +58,8 @@ const getCargosDelete = (data) => {
 }
 const endPointUse = (page) => {
     customElementsForm.switch.length === 0 
-      ? getCargos({ page }) 
-      : getCargosDelete({ page })
+      ? getCargos(page) 
+      : getCargosDelete(page)
 }
 
 const endPointUseSort = (sort) => {

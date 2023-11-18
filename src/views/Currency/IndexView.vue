@@ -36,7 +36,7 @@ const getCurrencies = (data) => {
   })
 }
 
-getCurrencies({page: page.value})
+getCurrencies({page:page.value})
 
 const onChangePage = (page) => {
   endPointUse({page})
@@ -47,7 +47,7 @@ const onSortPage = (sortBy,sortDesc) => {
 }
 
 const onChangeSwtch = () => { 
-  endPointUse({ page: page.value })
+  endPointUse(page.value) 
   customCheckDelete.value = customElementsForm.switch.length === 0 ? false : true
 }
 
@@ -61,8 +61,8 @@ const getCurrenciesDelete = (data) => {
 
 const endPointUse = (page) => {
   customElementsForm.switch.length === 0 
-    ? getCurrencies({ page }) 
-    : getCurrenciesDelete({ page })
+    ? getCurrencies(page) 
+    : getCurrenciesDelete(page)
   
 }
 

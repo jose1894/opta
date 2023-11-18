@@ -33,12 +33,12 @@ const getPersonal = (data) => {
   })
 }
 
-getPersonal({page: page.value})
+getPersonal({page:page.value})
 
 const customCheckDelete = ref(false);
 
 const onChangeSwtch = () => { 
-  endPointUse({ page: page.value })
+  endPointUse(page.value)
   customCheckDelete.value = customElementsForm.switch.length === 0 ? false : true
 }
 
@@ -58,8 +58,8 @@ const getPersonalDelete = (data) => {
     })
 }
 const endPointUse = (page) => {
-    customElementsForm.switch.length === 0 ? getPersonal({ page }) :
-    getPersonalDelete({ page })
+    customElementsForm.switch.length === 0 ? getPersonal(page) :
+    getPersonalDelete(page)
 }
 
 const endPointUseSort = (sort) => {

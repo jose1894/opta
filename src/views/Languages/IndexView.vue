@@ -32,12 +32,12 @@ const getLanguages = (data) => {
   })
 }
 
-getLanguages({page: page.value})
+getLanguages({page:page.value})
 
 const customCheckDelete = ref(false);
 
 const onChangeSwtch = () => { 
-  endPointUse({ page: page.value })
+  endPointUse(page.value)
   customCheckDelete.value = customElementsForm.switch.length === 0 ? false : true
 }
 
@@ -57,8 +57,8 @@ const getLanguagesDelete = (data) => {
     })
 }
 const endPointUse = (page) => {
-    customElementsForm.switch.length === 0 ? getLanguages({ page }) :
-    getLanguagesDelete({ page })
+    customElementsForm.switch.length === 0 ? getLanguages(page) :
+    getLanguagesDelete(page)
 }
 
 const endPointUseSort = (sort) => {

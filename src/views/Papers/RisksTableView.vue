@@ -268,7 +268,7 @@ const itemsPaginated = computed(() =>
 
 const perPage = computed(() => mainStore.listRisk.perPage);
 
-const currentPage = computed(() => mainStore.listRisk.page);
+const currentPage = computed(() => mainStore.listRisk.pageRisk);
 
 /* Sorting */
 const currentSort = 'name';
@@ -303,8 +303,8 @@ const rules = computed(() => ({
 
 const v$ = useValidate(rules, riskDataSave);
 
-const changePage = (page) => {
-    emit('changePage', page)
+const changePage = (pageRisk) => {
+    emit('changePage', pageRisk)
 }
 
 const formattedNumber = (number, decimalPlaces = 2, thousandsSeparator = '.') => {
@@ -1844,8 +1844,8 @@ const getContent = (item) => {
     <div class="p-3 lg:px-6 border-t border-gray-100 dark:border-slate-800">
         <BaseLevel>
             <BaseButtons>
-                <BaseButton v-for="page in pagesList" :key="page" :active="page === (currentPage - 1)" :label="page + 1"
-                    :color="page === currentPage ? 'lightDark' : 'whiteDark'" small @click="changePage(page + 1)" />
+                <BaseButton v-for="pageRisk in pagesList" :key="pageRisk" :active="pageRisk === (currentPage - 1)" :label="pageRisk + 1"
+                    :color="pageRisk === currentPage ? 'lightDark' : 'whiteDark'" small @click="changePage(pageRisk + 1)" />
             </BaseButtons>
             <small>Page {{ currentPageHuman }} of {{ numPages }}</small>
         </BaseLevel>

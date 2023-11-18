@@ -54,7 +54,6 @@ onMounted(async () => {
 })
 
 const rules = computed(() => ({
-            codigo: { required, maxLength: maxLength(3) },
             nombre: { required,  },
             estado: { required },
           }));
@@ -100,9 +99,13 @@ const goTo = () => router.push('/setup/currencies')
 </script>
 <template>
   <CardBox isForm @submit.prevent="submit">
-    <div class="grid md:grid-cols-3 gap-4">
-      <FormField :label="$t('message.currencies.code')" :help="v$?.codigo?.$errors[0]?.$message">
-        <FormControl :name="'codigo'" v-model="currency.codigo" :icon="mdiCodeBraces" />            
+    <div 
+      :class="path !== 'create' ? 'grid md:grid-cols-3 gap-4' : 
+      'grid md:grid-cols-2 gap-4'">
+      <FormField 
+        v-show="path !== 'create'"
+        :label="$t('message.currencies.code')">
+        <FormControl :name="'codigo'" v-model="currency.codigo" :icon="mdiCodeBraces" readonly="true"/>            
       </FormField>
       <FormField :label="$t('message.currencies.name')" :help="v$?.nombre?.$errors[0]?.$message">
         <FormControl v-model="currency.nombre" :icon="mdiRenameBox" />

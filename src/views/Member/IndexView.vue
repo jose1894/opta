@@ -35,10 +35,10 @@
         })
     }
 
-    getMembers({page: page.value})
+    getMembers({page:page.value})
 
     const onChangePage = (page) => {
-        endPointUse({ page })
+        endPointUse({page})
     }
 
     const onSortPage = (sortBy, sortDesc) => {
@@ -48,7 +48,7 @@
     const customCheckDelete = ref(false);
 
     const onChangeSwtch = () => {
-        endPointUse({ page: page.value })
+        endPointUse(page.value)
         customCheckDelete.value = customElementsForm.switch.length === 0 ? false : true
     }
 
@@ -62,8 +62,8 @@
 
 const endPointUse = (page) => {
   customElementsForm.switch.length === 0 
-    ? getMembers({ page }) 
-    :getMembersDelete({ page })
+    ? getMembers(page) 
+    :getMembersDelete(page)
 }
 
 const endPointUseSort = (sort) => {

@@ -28,7 +28,7 @@ const customElementsForm = reactive({
 const customCheckDelete = ref(false);
 
 const onChangeSwtch = () => { 
-  endPointUse({ page: page.value })
+  endPointUse(page.value)
   customCheckDelete.value = customElementsForm.switch.length === 0 ? false : true
 }
 
@@ -40,7 +40,7 @@ const getProfessions = (data) => {
   })
 }
 
-getProfessions({page: page.value})
+getProfessions({page:page.value})
 
 const onChangePage = (page) => {
     endPointUse({page})
@@ -58,8 +58,8 @@ const getProfessionsDelete = (data) => {
     })
 }
 const endPointUse = (page) => {
-    customElementsForm.switch.length === 0 ? getProfessions({ page }) :
-    getProfessionsDelete({ page })
+    customElementsForm.switch.length === 0 ? getProfessions(page) :
+    getProfessionsDelete(page)
 }
 
 const endPointUseSort = (sort) => {

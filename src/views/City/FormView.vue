@@ -71,7 +71,6 @@ onMounted(async () => {
 const _asignarOpcionesAlSelect = (data) => { return { id: data._id, label: data.nombre } };
 
 const rules = computed(() => ({
-            codigo: { required, maxLength: maxLength(3) },
             nombre: { required,  },
             estado: { required },
           }));
@@ -134,9 +133,12 @@ const goTo = () => router.push('/setup/cities')
 </script>
 <template>
   <CardBox isForm @submit.prevent="submit">
-    <div class="grid md:grid-cols-3 gap-4">
-      <FormField :label="$t('message.city.code')" :help="v$?.codigo?.$errors[0]?.$message">
-        <FormControl :name="'codigo'" v-model="city.codigo" :icon="mdiCodeBraces" />            
+    <div :class="path !== 'create' ? 'grid md:grid-cols-3 gap-4' : 
+      'grid md:grid-cols-2 gap-4'">
+      <FormField 
+        v-show="path !== 'create'"
+        :label="$t('message.city.code')">
+        <FormControl :name="'codigo'" v-model="city.codigo" :icon="mdiCodeBraces" readonly="true"/>            
       </FormField>
       <FormField :label="$t('message.city.country')" :help="v$?.estado?.$errors[0]?.$message">
         <FormControl v-model="city.pais" :icon="mdiListStatus" :options="countriesList" 

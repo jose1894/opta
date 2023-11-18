@@ -29,10 +29,10 @@
         })
     }
 
-    getProjects({page: page.value})
+    getProjects({page:page.value})
 
     const onChangeSwtch = () => {
-        endPointUse({ page: page.value })
+        endPointUse(page.value)
     }
 
     const onChangePage = (page) => {
@@ -51,8 +51,8 @@
         })
     }
     const endPointUse = (page) => {
-        customElementsForm.switch.length === 0 ? getProjects({ page }) :
-        getProjectsDelete({ page })
+        customElementsForm.switch.length === 0 ? getProjects(page) :
+        getProjectsDelete(page)
     }
     
     const endPointUseSort = (sort) => {

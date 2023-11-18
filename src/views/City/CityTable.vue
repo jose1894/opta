@@ -158,7 +158,7 @@ const activateItem = () => {
           {{ city.codigo }} 
         </td>
         <td :data-label="$t('message.city.state')">
-          {{ city.state.nombre }}
+          {{ city?.state?.nombre }}
         </td>
         <td :data-label="$t('message.city.name')">
           {{ city.nombre }}

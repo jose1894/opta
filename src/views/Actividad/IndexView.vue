@@ -34,12 +34,12 @@
         })
     }
 
-    getActivities({page: page.value})
+    getActivities({page:page.value})
 
     const customCheckDelete = ref(false);
 
     const onChangeSwtch = () => { 
-    endPointUse({ page: page.value })
+    endPointUse(page.value)
     customCheckDelete.value = customElementsForm.switch.length === 0 ? false : true
     }
 
@@ -59,8 +59,8 @@
         })
     }
     const endPointUse = (page) => {
-        customElementsForm.switch.length === 0 ? getActivities({ page }) :
-        getActivitiesDelete({ page })
+        customElementsForm.switch.length === 0 ? getActivities(page) :
+        getActivitiesDelete(page)
     }
 
     const endPointUseSort = (sort) => {

@@ -34,12 +34,12 @@ const getProfileActions = (data) => {
   })
 }
 
-getProfileActions({page: page.value})
+getProfileActions({page:page.value})
 
 const customCheckDelete = ref(false);
 
 const onChangeSwtch = () => { 
-  endPointUse({ page: page.value })
+  endPointUse(page.value)
   customCheckDelete.value = customElementsForm.switch.length === 0 ? false : true
 }
 
@@ -59,8 +59,8 @@ const getProfileActionsDelete = (data) => {
     })
 }
 const endPointUse = (page) => {
-    customElementsForm.switch.length === 0 ? getProfileActions({ page }) :
-    getProfileActionsDelete({ page })
+    customElementsForm.switch.length === 0 ? getProfileActions(page) :
+    getProfileActionsDelete(page)
 }
 
 const endPointUseSort = (sort) => {

@@ -55,7 +55,6 @@ onMounted(async () => {
 })
 
 const rules = computed(() => ({
-            codigo: { required, maxLength: maxLength(3) },
             nombre: { required,  },
             estado: { required },
           }));
@@ -100,8 +99,8 @@ const goTo = () => router.push('/setup/countries')
 <template>
   <CardBox isForm @submit.prevent="submit">
     <div class="grid md:grid-cols-3 gap-4">
-      <FormField :label="$t('message.country.code')" :help="v$?.codigo?.$errors[0]?.$message">
-        <FormControl :name="'codigo'" v-model="state.codigo" :icon="mdiCodeBraces" />            
+      <FormField :label="$t('message.country.code')">
+        <FormControl :name="'codigo'" v-model="state.codigo" :icon="mdiCodeBraces"/>            
       </FormField>
       <FormField :label="$t('message.country.name')" :help="v$?.nombre?.$errors[0]?.$message">
         <FormControl v-model="state.nombre" :icon="mdiRenameBox" />

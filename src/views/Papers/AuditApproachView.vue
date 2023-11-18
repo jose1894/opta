@@ -129,7 +129,8 @@ const titleModal = () => {
 }
 
 const onChangePageRisk = (pageRisk) => {
-    endPointRiskUse({ pageRisk })
+    console.log(pageRisk)
+    endPointRiskUse({pageRisk})
 }
 
 const onSortPageRisk = (sortBy, sortDesc) => {
@@ -137,7 +138,7 @@ const onSortPageRisk = (sortBy, sortDesc) => {
 }
 
 const endPointRiskUse = (pageRisk) => {
-    getRisk({ pageRisk })
+    getRisk(pageRisk)
 }
 
 const endPointRiskUseSort = (sortBy, sortDesc) => {
@@ -153,19 +154,20 @@ const getRisk = (data) => {
     })
 }
 
-getRisk({ page: pageRisk.value })
+getRisk({pageRisk: pageRisk.value})
 
 const enviarParametros = (idCuadrante) => {
     const { cuadrante } = params.value 
+    console.log(idCuadrante)
     if (idCuadrante === 0) {
-        getRisk({ page: page.value })
+        getRisk({pageRisk:pageRisk.value})
     } else {
         const data = [
             {
                 cuadrante:idCuadrante
             }
         ]
-        getRisk({ page: page.value, q: data })
+        getRisk({ pageRisk: pageRisk.value, q: data })
     }
 } 
 

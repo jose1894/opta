@@ -32,12 +32,12 @@ const getProfiles = (data) => {
   })
 }
 
-getProfiles({page: page.value})
+getProfiles({page:page.value})
 
 const customCheckDelete = ref(false);
 
 const onChangeSwtch = () => { 
-  endPointUse({ page: page.value })
+  endPointUse(page.value)
   customCheckDelete.value = customElementsForm.switch.length === 0 ? false : true
 }
 
@@ -58,8 +58,8 @@ const getProfilesDelete = (data) => {
 }
 const endPointUse = (page) => {
     customElementsForm.switch.length === 0 
-    ? getProfiles({ page }) 
-    : getProfilesDelete({ page })
+    ? getProfiles(page) 
+    : getProfilesDelete(page)
 }
 
 const endPointUseSort = (sort) => {

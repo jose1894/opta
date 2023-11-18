@@ -64,7 +64,7 @@ const ally = ref({
     pais: countriesList.value,
     state: statesList.value,
     ciudad: citiesList.value,
-    calle: "",
+    direccionAliado: "",
     paginaWeb: "",
     nombreContact: "",
     apellidoContact: "",
@@ -82,7 +82,6 @@ const router = useRouter();
 
 
 const rules = computed(() => ({
-    codigo: { required, maxLength: maxLength(3) },
     nombre: { required, },
     iDFiscal: { required },
 }));
@@ -159,7 +158,7 @@ const action = (ally) => {
         pais,
         state,
         ciudad,
-        calle,
+        direccionAliado,
         paginaWeb,
         nombreContact,
         apellidoContact,
@@ -177,7 +176,7 @@ const action = (ally) => {
         pais: pais.id,
         state: state.id,
         ciudad: ciudad.id,
-        calle,
+        direccionAliado,
         paginaWeb,
         nombreContact,
         apellidoContact,
@@ -236,16 +235,18 @@ const goTo = () => router.push('/setup/allies')
                 <TabsComponent :tabs="listTabs" @tabClick="activeTab">
                     <div class="p-1 mt-0 bg-white border">
                         <div v-show="tab === 0">
-                            <div class="grid md:grid-cols-3 gap-3">
-                                <FormField :label="$t('message.ally.code')" :help="v$?.codigo?.$errors[0]?.$message">
-                                    <FormControl :name="'codigo'" v-model="ally.codigo" :icon="mdiCodeBraces" />
+                            <div :class="path !== 'create' ? 'grid md:grid-cols-3 gap-3' : 'grid md:grid-cols-2 gap-3'">
+                                <FormField v-show="path !== 'create'" :label="$t('message.ally.code')">
+                                    <FormControl :name="'codigo'" v-model="ally.codigo" :icon="mdiCodeBraces" readonly="true"/>
                                 </FormField>
                                 <FormField :label="$t('message.ally.name')" :help="v$?.nombre?.$errors[0]?.$message">
                                     <FormControl v-model="ally.nombre" :icon="mdiRenameBox" />
                                 </FormField>
                                 <FormField :label="$t('message.ally.idFiscal')" :help="v$?.iDFiscal?.$errors[0]?.$message">
                                     <FormControl v-model="ally.iDFiscal" :icon="mdiRenameBox" />
-                                </FormField>
+                                </FormField>                                
+                            </div>
+                            <div class="grid md:grid-cols-3 gap-3">
                                 <FormField :label="$t('message.ally.country')">
                                     <FormControl v-model="ally.pais" :icon="mdiListStatus" :options="countriesList"
                                         @onSelectChange="selectedPais" />
@@ -256,7 +257,7 @@ const goTo = () => router.push('/setup/allies')
                                 </FormField>
                                 <FormField :label="$t('message.ally.city')">
                                     <FormControl v-model="ally.ciudad" :icon="mdiListStatus" :options="citiesList" />
-                                </FormField>
+                                </FormField>                            
                             </div>
                             <div class="grid md:grid-cols-2 gap-3">
                                 <FormField :label="$t('message.ally.paginaWeb')"
@@ -269,7 +270,7 @@ const goTo = () => router.push('/setup/allies')
                             </div>
                             <div class="grid gap-3">
                                 <FormField :label="$t('message.ally.address')">
-                                    <FormControl type="textarea" v-model="ally.direccion" :icon="mdiRenameBox" />
+                                    <FormControl type="textarea" v-model="ally.direccionAliado" :icon="mdiRenameBox" />
                                 </FormField>
                             </div>
                         </div>

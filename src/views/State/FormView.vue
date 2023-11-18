@@ -111,9 +111,12 @@ const goTo = () => router.push('/setup/states')
 </script>
 <template>
   <CardBox isForm @submit.prevent="submit">
-    <div class="grid md:grid-cols-4 gap-4">
-      <FormField :label="$t('message.state.code')" :help="v$?.codigo?.$errors[0]?.$message">
-        <FormControl :name="'codigo'" v-model="state.codigo" :icon="mdiCodeBraces" />            
+    <div :class="path !== 'create' ? 'grid md:grid-cols-2 gap-4' : 
+      'grid md:grid-cols-3 gap-4'">
+      <FormField 
+        v-show="path !== 'create'" 
+        :label="$t('message.state.code')">
+        <FormControl :name="'codigo'" v-model="state.codigo" :icon="mdiCodeBraces" readonly="true"/>            
       </FormField>
       <FormField :label="$t('message.state.name')" :help="v$?.nombre?.$errors[0]?.$message">
         <FormControl v-model="state.nombre" :icon="mdiRenameBox" />

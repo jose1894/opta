@@ -54,7 +54,6 @@ onMounted(async () => {
 })
 
 const rules = computed(() => ({
-            codigo: { required, maxLength: maxLength(3) },
             nombre: { required,  },
             estado: { required },
           }));
@@ -98,8 +97,9 @@ const goTo = () => router.push('/setup/jobPositions')
 </script>
 <template>
   <CardBox isForm @submit.prevent="submit">
-    <div class="grid md:grid-cols-3 gap-4">
-      <FormField :label="$t('message.cargo.code')" :help="v$?.codigo?.$errors[0]?.$message">
+    <div :class="path !== 'create' ? 'grid md:grid-cols-3 gap-4' : 
+      'grid md:grid-cols-2 gap-4'">
+      <FormField :label="$t('message.cargo.code')" v-show="path !== 'create'">
         <FormControl :name="'codigo'" v-model="cargo.codigo" :icon="mdiCodeBraces" />            
       </FormField>
       <FormField :label="$t('message.cargo.name')" :help="v$?.nombre?.$errors[0]?.$message">
