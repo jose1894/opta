@@ -11,15 +11,22 @@ import useValidate from '@vuelidate/core';
 import countriesService from '@/services/countries.service';
 import { useToast } from 'vue-toastification';
 import { useRoute, useRouter } from 'vue-router';
+import countriesList from 'i18n-iso-countries'
+import spanish from 'i18n-iso-countries/langs/es.json'
 
 const { t } = useI18n();
 const toast = useToast();
 const route = useRoute();
 const router = useRouter();
+const locale = ref('es')
+const search = ref('')
+countriesList.registerLocale(spanish)
+const allCountries = computed(() => countriesList.getNames(locale.value))
+
 
 const props = defineProps({
-  path : '',
-  saveLabel : '',
+  path: '',
+  saveLabel: '',
   country: {}
 })
 
@@ -36,18 +43,18 @@ const state = ref({
 });
 
 
-const action = (state) =>{
-  const {_id, codigo, nombre, estado } = state.value;
-  const data = {_id, codigo, nombre, estado: estado.id}
-  if (props.path === 'create'){
+const action = (state) => {
+  const { _id, codigo, nombre, estado } = state.value;
+  const data = { _id, codigo, nombre, estado: estado.id }
+  if (props.path === 'create') {
     return countriesService.create(data)
-  } 
+  }
 
   return countriesService.update(data);
 }
 
 onMounted(async () => {
-  if (props.path === 'update'){
+  if (props.path === 'update') {
     const res = await countriesService.read(route.params);
     state.value = res.data
     state.value.estado = selectOptions.filter(status => status.id === res.data.estado)[0]
@@ -55,52 +62,72 @@ onMounted(async () => {
 })
 
 const rules = computed(() => ({
-            nombre: { required,  },
-            estado: { required },
-          }));
+  nombre: { required, },
+  estado: { required },
+}));
 
 const v$ = useValidate(rules, state);
 
 const successMessage = props.path === 'create' ? t("message.country.created.success") : t("message.country.updated.success")
 
 const submit = async () => {
-    const result = await v$.value.$validate();
+  const result = await v$.value.$validate();
 
-    if(result) {
-      action(state)
+  if (result) {
+    action(state)
       .then(() => {
         toast.success(successMessage);
         router.push('/setup/countries');
       })
       .catch(err => {
-        if (err.response.data?.msg){
-          const  { estado = 1  } = err.response?.data?.data || { estado: 1  }
+        if (err.response.data?.msg) {
+          const { estado = 1 } = err.response?.data?.data || { estado: 1 }
           estado === 1 ? toast.error(`${t("message.country.created.error")} ${err.response.data.msg}`) :
-                         toast.error(`${t("message.country.created.errorStatus")}`)
+            toast.error(`${t("message.country.created.errorStatus")}`)
           return
         }
 
-        if  (err.response.data?.errors){
+        if (err.response.data?.errors) {
           const errors = err.response.data.errors;
           let errorStr = '';
-          
-          for(let attr of errors){
+
+          for (let attr of errors) {
           }
         }
       })
-    }else{
-      console.log('error')
-    }
+  } else {
+    console.log('error')
+  }
 
 };
 const goTo = () => router.push('/setup/countries')
+
+const filteredCountries = computed(() => {
+  if (search.value === '') {
+    return []
+  }
+  console.log('listar paisesss')
+  console.log(allCountries)
+
+  return Object.entries(allCountries.value)
+    .map(([code, name]) => ({ code, name }))
+    .filter(country => country.name.toLowerCase().includes(search.value.toLowerCase()))
+})
+
+const searchCountries = () => {
+  console.log('Paso ********')
+  // Aquí puedes realizar acciones adicionales cuando el usuario realiza una búsqueda
+}
 
 </script>
 <template>
   <CardBox isForm @submit.prevent="submit">
     <div class="grid md:grid-cols-3 gap-4">
       <FormField :label="$t('message.country.code')">
-        <FormControl :name="'codigo'" v-model="state.codigo" :icon="mdiCodeBraces"/>            
+        <FormControl :name="'codigo'" v-model="search" :icon="mdiCodeBraces" @input="searchCountries" />
+        <div v-for="country in filteredCountries" :key="country.code">
+          {{ country.name }}
+        </div>
       </FormField>
       <FormField :label="$t('message.country.name')" :help="v$?.nombre?.$errors[0]?.$message">
         <FormControl v-model="state.nombre" :icon="mdiRenameBox" />
@@ -109,11 +136,11 @@ const goTo = () => router.push('/setup/countries')
         <FormControl v-model="state.estado" :icon="mdiListStatus" :options="selectOptions" />
       </FormField>
     </div>
-    <template #footer>      
+    <template #footer>
       <div style="display: flex; justify-content: space-between;">
         <BaseButton :label="$t(`message.${props.saveLabel}`)" type="submit" color="success" />
-        <BaseButton :label="$t('message.return')"  color="info" @click="goTo()"/>
-      </div>  
+        <BaseButton :label="$t('message.return')" color="info" @click="goTo()" />
+      </div>
     </template>
   </CardBox>
 </template>
