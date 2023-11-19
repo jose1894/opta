@@ -79,13 +79,13 @@ const formatter = ref({
     month: 'MMM'
 })
 
-const userMembresia = ref({ 
+const userMembresia = ref({
     _id: '',
     firstname: "",
     lastname: "",
     username: "",
     email: "",
-    password: "", 
+    password: "",
     avatar: "",
     role: 'ADMIN_ROLE',
     estadoMembresia: 1,
@@ -123,7 +123,6 @@ const member = ref({
 });
 
 const rules = computed(() => ({
-    codigo: { required, maxLength: maxLength(3) },
     nombre: { required, },
     iDFiscal: { required },
 }));
@@ -134,7 +133,7 @@ onMounted(async () => {
     let listPaises = await countriesService.index();
     const optionCountry = listPaises?.paises || [];
     countriesList.value = optionCountry.map((country) => ({ id: country._id, label: country.nombre }));
-    
+
     let listCargos = await cargosService.allCargos();
     const dataCargos = listCargos?.data.cargos;
     cargosList.value = dataCargos.map((cargo) => ({ id: cargo._id, label: cargo.nombre }));
@@ -158,13 +157,13 @@ onMounted(async () => {
         member.value.pais = _asignarOpcionesAlSelect(res.data?.miembro.pais)
         member.value.estado = selectOptions.filter(status => status.id === estado)[0]
         member.value.tipoContacto = typeContactOptions.filter(typeContact => typeContact.id === tipoContacto)[0]
-        member.value.creacion = creationOptions.filter(typeContact => typeContact.id === creacion)[0]          
+        member.value.creacion = creationOptions.filter(typeContact => typeContact.id === creacion)[0]
         selectedPais(member.value.pais, res.data.miembro)
-        if(res.data.userMiembro) {
-            console.log(res.data.userMiembro )
+        if (res.data.userMiembro) {
+            console.log(res.data.userMiembro)
             userMembresia.value = res.data.userMiembro
             userMembresia.value.password = res.data.password
-        }        
+        }
     }
 });
 
@@ -239,43 +238,43 @@ const action = (member) => {
         requiereAprobacion,*/
         estado
     } = member.value;
-console.log(userMembresia.value)
-const data = {
-    _id,
-    aliado: aliado.id,
-    codigo,
-    nombre,
-    iDFiscal,
-    ejercicioFiscal,
-    pais: pais.id,
-    state: state.id,
-    ciudad: ciudad.id,
-    calle,
-    paginaWeb,
-    tipoContacto: tipoContacto.id,
-    nombreContact,
-    apellidoContact,
-    cargo: cargo.id,
-    telefonoOfic,
-    telefonoCelu,
-    correoContact,
-    membresiaUsuario: userMembresia.value,
-    /*codigoActivacion,
-    licencias,
-    vigencia: vigencia.undefined,
-    moneda: moneda.id,
-    periodoRevision: +periodoRevision,
-    creacion: creacion.id,
-    declaracionHoras: +declaracionHoras,
-    modificacionHoras: +modificacionHoras,
-    requiereAprobacion,*/
-    estado: estado.id
-}
-console.log(data)
-if (props.path === 'create') {
-    return membersService.create(data)
-}
-return membersService.update(data);
+    console.log(userMembresia.value)
+    const data = {
+        _id,
+        aliado: aliado.id,
+        codigo,
+        nombre,
+        iDFiscal,
+        ejercicioFiscal,
+        pais: pais.id,
+        state: state.id,
+        ciudad: ciudad.id,
+        calle,
+        paginaWeb,
+        tipoContacto: tipoContacto.id,
+        nombreContact,
+        apellidoContact,
+        cargo: cargo.id,
+        telefonoOfic,
+        telefonoCelu,
+        correoContact,
+        membresiaUsuario: userMembresia.value,
+        /*codigoActivacion,
+        licencias,
+        vigencia: vigencia.undefined,
+        moneda: moneda.id,
+        periodoRevision: +periodoRevision,
+        creacion: creacion.id,
+        declaracionHoras: +declaracionHoras,
+        modificacionHoras: +modificacionHoras,
+        requiereAprobacion,*/
+        estado: estado.id
+    }
+    console.log(data)
+    if (props.path === 'create') {
+        return membersService.create(data)
+    }
+    return membersService.update(data);
 }
 
 const successMessage = props.path === 'create' ? t("message.member.created.success") : t("message.member.updated.success")
@@ -298,7 +297,7 @@ const submit = async () => {
                 if (err.response.data?.errors) {
                     const errors = err.response.data.errors;
                     let errorStr = '';
-                    
+
                     for (let attr of errors) {
                     }
                 }
@@ -317,17 +316,25 @@ const goTo = () => router.push('/setup/memberships')
                 <TabsComponent :tabs="listTabs" @tabClick="activeTab">
                     <div class="p-1 mt-0 bg-white border">
                         <div v-show="tab === 0">
-                            <div class="grid md:grid-cols-3 gap-3">
-                                <FormField :label="$t('message.member.code')" :help="v$?.codigo?.$errors[0]?.$message">
-                                    <FormControl :name="'codigo'" v-model="member.codigo" :icon="mdiCodeBraces" />
+                            <div :class="path !== 'create' ? 'grid md:grid-cols-3 gap-3' : 
+                                'grid md:grid-cols-2 gap-3'">
+                                <FormField :label="$t('message.member.code')"  v-show="path !== 'create'">
+                                    <FormControl 
+                                        :name="'codigo'" 
+                                        v-model="member.codigo" 
+                                        :icon="mdiCodeBraces" 
+                                        readonly="true"/>
                                 </FormField>
                                 <FormField :label="$t('message.member.ally')">
-                                    <FormControl v-model="member.aliado" :icon="mdiListStatus" :options="aliadosList"/>
+                                    <FormControl v-model="member.aliado" :icon="mdiListStatus" :options="aliadosList" />
                                 </FormField>
                                 <FormField :label="$t('message.member.name')" :help="v$?.nombre?.$errors[0]?.$message">
                                     <FormControl v-model="member.nombre" :icon="mdiRenameBox" />
                                 </FormField>
-                                <FormField :label="$t('message.member.idFiscal')" :help="v$?.iDFiscal?.$errors[0]?.$message">
+                            </div>
+                            <div class="grid md:grid-cols-3 gap-3">
+                                <FormField :label="$t('message.member.idFiscal')"
+                                    :help="v$?.iDFiscal?.$errors[0]?.$message">
                                     <FormControl v-model="member.iDFiscal" :icon="mdiRenameBox" />
                                 </FormField>
                                 <FormField :label="$t('message.member.físcal_year')">
@@ -360,7 +367,8 @@ const goTo = () => router.push('/setup/memberships')
                         <div v-show="tab === 1">
                             <div class="grid md:grid-cols-3 gap-3">
                                 <FormField :label="$t('message.member.type_contacts')">
-                                    <FormControl v-model="member.tipoContacto" :icon="mdiListStatus" :options="typeContactOptions" />
+                                    <FormControl v-model="member.tipoContacto" :icon="mdiListStatus"
+                                        :options="typeContactOptions" />
                                 </FormField>
                                 <FormField :label="$t('message.member.name')">
                                     <FormControl v-model="member.nombreContact" :icon="mdiRenameBox" />
@@ -390,24 +398,24 @@ const goTo = () => router.push('/setup/memberships')
                             <div class="grid md:grid-cols-3 gap-3">
                                 <FormField :label="$t('message.user.firstname')">
                                     <FormControl v-model="userMembresia.firstname" :icon="mdiRenameBox" />
-                                </FormField>   
+                                </FormField>
                                 <FormField :label="$t('message.user.lastname')">
                                     <FormControl v-model="userMembresia.lastname" :icon="mdiRenameBox" />
-                                </FormField> 
+                                </FormField>
                                 <FormField :label="$t('message.user.username')">
-                                    <FormControl v-model="userMembresia.username" :icon="mdiRenameBox"/>
+                                    <FormControl v-model="userMembresia.username" :icon="mdiRenameBox" />
                                 </FormField>
                                 <FormField :label="$t('message.user.email')">
-                                    <FormControl v-model="userMembresia.email" :icon="mdiRenameBox"/>
-                                </FormField> 
+                                    <FormControl v-model="userMembresia.email" :icon="mdiRenameBox" />
+                                </FormField>
                                 <FormField :label="$t('message.user.password')">
-                                    <FormControl v-model="userMembresia.password" :icon="mdiRenameBox"/>
+                                    <FormControl v-model="userMembresia.password" :icon="mdiRenameBox" />
                                 </FormField>
                                 <FormField :label="$t('message.user.role')">
-                                    <FormControl v-model="userMembresia.role" :icon="mdiRenameBox" readonly="true"/>
-                                </FormField>                             
+                                    <FormControl v-model="userMembresia.role" :icon="mdiRenameBox" readonly="true" />
+                                </FormField>
                             </div>
-                        
+
                         </div>
                         <!-- <div v-show="tab === 2">
                             <h2 class="h2-tittle">Softwere</h2>
@@ -505,11 +513,11 @@ const goTo = () => router.push('/setup/memberships')
             </div>
         </div>
         <template #footer>
-           
+
             <div style="display: flex; justify-content: space-between;">
                 <BaseButton v-show="tab === 2" :label="$t(`message.${props.saveLabel}`)" type="submit" color="success" />
-                <BaseButton :label="$t('message.return')"  color="info" @click="goTo()"/>
-            </div>  
+                <BaseButton :label="$t('message.return')" color="info" @click="goTo()" />
+            </div>
         </template>
     </CardBox>
 </template>

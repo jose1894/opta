@@ -50,14 +50,14 @@ const activeTab = (i) => {
     tab.value = i;
 }
 
-const option  = [
+const option = [
     { id: 1, label: t('message.yes') },
     { id: 2, label: t('message.no') },
 ];
 
 let listTabs = [
     { title: t('message.client.tab.client') },
-    { title: t('message.client.tab.contacts')},
+    { title: t('message.client.tab.contacts') },
     /*{ title: 'Referidos' }*/
 ]
 
@@ -84,13 +84,13 @@ const client = ref({
     codigo: "00",
     nombre: "",
     iDFiscal: "",
-    companiaListada: option[0], 
+    companiaListada: option[0],
     companiaRegulada: option[0],
     casaMatriz: "",
     industria: industriesList.value,
     pais: countriesList.value,
     state: statesList.value,
-    ciudad: citiesList.value,    
+    ciudad: citiesList.value,
     calle: "",
     paginaWeb: "",
     direccion: "",
@@ -104,7 +104,6 @@ const router = useRouter();
 
 
 const rules = computed(() => ({
-    codigo: { required, maxLength: maxLength(3) },
     nombre: { required, },
     iDFiscal: { required },
 }));
@@ -127,12 +126,12 @@ onMounted(async () => {
         client.value = res.data.cliente
         contacts.value.contact = res.data.contactos
         const dataContactoCargo = contacts.value.contact
-        dataContactoCargo.map((contacto) => { 
+        dataContactoCargo.map((contacto) => {
             contacto.cargo = _asignarOpcionesAlSelect(contacto.cargo)
             return contacto
-         });
+        });
         client.value.contactos = contacts.value
-        const  { cargo, estado, industria, companiaListada,companiaRegulada } = res.data.cliente
+        const { cargo, estado, industria, companiaListada, companiaRegulada } = res.data.cliente
         client.value.industria = { id: industria._id, label: industria.nombre }
         client.value.pais = _asignarOpcionesAlSelect(res.data.cliente?.pais)
         client.value.estado = selectOptions.filter(status => status.id === estado)[0]
@@ -142,24 +141,24 @@ onMounted(async () => {
     }
 });
 
-const _asignarOpcionesAlSelect = (data) => { 
-    return { id: data?._id || data.id, label: data.nombre } 
+const _asignarOpcionesAlSelect = (data) => {
+    return { id: data?._id || data?.id, label: data.nombre }
 };
 
-const selectedPais = (data, response = {} ) => {
+const selectedPais = (data, response = {}) => {
     const { id } = data;
     citiesList.value = [];
     statesList.value = [];
     estadosByPais(id).then((data) => {
         const optionState = data?.estados || [];
         statesList.value = optionState.map((state) => ({ id: state._id, label: state.nombre }));
-        if (props.path === 'update'){
+        if (props.path === 'update') {
             client.value.state = _asignarOpcionesAlSelect(response?.state)
             selectedCiudad(client.value.state, response?.ciudad)
         }
     }).catch(err => {
         console.log(err)
-     })
+    })
 
 };
 
@@ -172,12 +171,12 @@ const selectedCiudad = (data, ciudadResponse = {}) => {
     ciudadesByEstados(id).then((data) => {
         const optionCity = data?.ciudades || [];
         citiesList.value = optionCity.map((city) => ({ id: city._id, label: city.nombre }));
-        if (props.path === 'update'){
+        if (props.path === 'update') {
             client.value.ciudad = _asignarOpcionesAlSelect(ciudadResponse)
         }
     }).catch(err => {
         console.log(err)
-     })
+    })
 
 };
 
@@ -193,8 +192,8 @@ const action = (client) => {
         pais,
         state,
         ciudad,
-        companiaListada, 
-        companiaRegulada, 
+        companiaListada,
+        companiaRegulada,
         casaMatriz,
         industria,
         calle,
@@ -203,9 +202,9 @@ const action = (client) => {
         estado,
         contactos } = client.value;
 
-    const contactData =  contactos.contact   
+    const contactData = contactos.contact
 
-    const saveDataContact = contactData.map(({_id,nombre,apellido,cargo,telefonoOfic,telefonoCelu,correo,cliente}) => {
+    const saveDataContact = contactData.map(({ _id, nombre, apellido, cargo, telefonoOfic, telefonoCelu, correo, cliente }) => {
         const data = {
             _id,
             nombre,
@@ -227,12 +226,12 @@ const action = (client) => {
         pais: pais.id,
         state: state.id,
         ciudad: ciudad.id,
-        companiaListada: companiaListada.id, 
-        companiaRegulada: companiaRegulada.id, 
+        companiaListada: companiaListada.id,
+        companiaRegulada: companiaRegulada.id,
         casaMatriz,
         industria: industria.id,
         calle,
-        paginaWeb,        
+        paginaWeb,
         direccion,
         estado: estado.id,
         contactos: saveDataContact
@@ -247,10 +246,10 @@ const action = (client) => {
 const successMessage = props.path === 'create' ? t("message.client.created.success") : t("message.client.updated.success")
 const errorMessage = props.path === 'create' ? t("message.client.created.error") : t("message.client.updated.error")
 
-const saveClient = async () => {}
+const saveClient = async () => { }
 
-const addItem = async (i) => { 
-    contacts.value.contact.push ({
+const addItem = async (i) => {
+    contacts.value.contact.push({
         nombre: "",
         apellido: "",
         cargo: cargosList.value,
@@ -261,9 +260,11 @@ const addItem = async (i) => {
     })
 }
 
-const removeItem = async (i) => { 
-    console.log('remove***' + i)
-
+const removeItem = async (i) => {
+    console.log(contacts.value)
+    let dataNew = contacts.value.contact
+    dataNew.splice(i, 1);
+    contacts.value.contact = dataNew
 }
 
 const submit = async () => {
@@ -279,9 +280,9 @@ const submit = async () => {
                     toast.error(`${errorMessage} ${err.response.data.msg}`)
                     return
                 }
-                if  (err?.response?.data?.errors){
-                    const errors = err.response.data.errors;          
-                    const result = Object.keys(errors).map(function(key, index) {
+                if (err?.response?.data?.errors) {
+                    const errors = err.response.data.errors;
+                    const result = Object.keys(errors).map(function (key, index) {
                         const error = errors[key]
                         return error.length > 1 ? error.map(i => error[i]).join() : error[0];
                     });
@@ -304,24 +305,31 @@ const goTo = () => router.push('/setup/clients')
                 <TabsComponent :tabs="listTabs" @tabClick="activeTab">
                     <div class="p-1 mt-0 bg-white border">
                         <div v-show="tab === 0">
-                            <div class="grid md:grid-cols-3 gap-3">
-                                <FormField :label="$t('message.client.code')" :help="v$?.codigo?.$errors[0]?.$message">
-                                    <FormControl :name="'codigo'" v-model="client.codigo" :icon="mdiCodeBraces" />
+                            <div :class="path !== 'create' ? 'grid md:grid-cols-3 gap-3' :
+                                'grid md:grid-cols-2 gap-3'">
+                                <FormField :label="$t('message.client.code')" v-show="path !== 'create'">
+                                    <FormControl :name="'codigo'" v-model="client.codigo" :icon="mdiCodeBraces"
+                                        readonly="true" />
                                 </FormField>
                                 <FormField :label="$t('message.client.name')" :help="v$?.nombre?.$errors[0]?.$message">
                                     <FormControl v-model="client.nombre" :icon="mdiRenameBox" />
                                 </FormField>
-                                <FormField :label="$t('message.client.idFiscal')" :help="v$?.iDFiscal?.$errors[0]?.$message">
+                                <FormField :label="$t('message.client.idFiscal')"
+                                    :help="v$?.iDFiscal?.$errors[0]?.$message">
                                     <FormControl v-model="client.iDFiscal" :icon="mdiRenameBox" />
                                 </FormField>
+                            </div>
+                            <div class="grid md:grid-cols-3 gap-3">
                                 <FormField :label="$t('message.client.industry')">
-                                    <FormControl v-model="client.industria" :icon="mdiListStatus" :options="industriesList"/>
+                                    <FormControl v-model="client.industria" :icon="mdiListStatus"
+                                        :options="industriesList" />
                                 </FormField>
                                 <FormField :label="$t('message.client.listedCompany')">
                                     <FormControl v-model="client.companiaListada" :icon="mdiListStatus" :options="option" />
                                 </FormField>
                                 <FormField :label="$t('message.client.regulatedCompany')">
-                                    <FormControl v-model="client.companiaRegulada" :icon="mdiListStatus" :options="option" />
+                                    <FormControl v-model="client.companiaRegulada" :icon="mdiListStatus"
+                                        :options="option" />
                                 </FormField>
                                 <FormField :label="$t('message.client.parentCompany')">
                                     <FormControl v-model="client.casaMatriz" :icon="mdiRenameBox" />
@@ -331,52 +339,59 @@ const goTo = () => router.push('/setup/clients')
                                         @onSelectChange="selectedPais" />
                                 </FormField>
                                 <FormField :label="$t('message.client.state')">
-                                    <FormControl v-model="client.state" :icon="mdiListStatus" :options="statesList" 
-                                        @onSelectChange="selectedCiudad"/>
-                                </FormField>
+                                    <FormControl v-model="client.state" :icon="mdiListStatus" :options="statesList"
+                                        @onSelectChange="selectedCiudad" />
+                                </FormField>                                
+                            </div>
+                            <div class="grid md:grid-cols-2 gap-2">
                                 <FormField :label="$t('message.client.city')">
                                     <FormControl v-model="client.ciudad" :icon="mdiListStatus" :options="citiesList" />
                                 </FormField>
                                 <FormField :label="$t('message.client.street')">
                                     <FormControl v-model="client.calle" :icon="mdiRenameBox" />
                                 </FormField>
-                                <FormField :label="$t('message.client.paginaWeb')">
-                                    <FormControl v-model="client.paginaWeb" :icon="mdiRenameBox" />
-                                </FormField>
                             </div>
                             <div class="grid md:grid-cols-2 gap-2">
-                                <FormField :label="$t('message.client.address')">
-                                    <FormControl v-model="client.direccion" :icon="mdiRenameBox" />
+                                <FormField :label="$t('message.client.paginaWeb')">
+                                    <FormControl v-model="client.paginaWeb" :icon="mdiRenameBox" />
                                 </FormField>
 
                                 <FormField :label="$t('message.client.status')">
                                     <FormControl v-model="client.estado" :icon="mdiListStatus" :options="selectOptions" />
                                 </FormField>
                             </div>
+                            <div class="grid gap-1">
+                                <FormField :label="$t('message.client.address')">
+                                    <FormControl type="textarea" v-model="client.direccion" :icon="mdiRenameBox" />
+                                </FormField>
+                            </div>
                             <!-- <BaseButton  :label="$t(`message.${props.saveLabel}`)" color="info" @click="saveClient"/> -->
                         </div>
                         <div v-show="tab === 1">
-                            
+
                             <div v-for="(field, i) in contacts.contact" :key="i">
                                 <div class="btn-add-remove">
                                     <h2 class="h2-tittle">Contacto. {{ i + 1 }}</h2>
-                                    <button type="button" class="btn-add-referidos" @click="addItem(i)">
-                                                        +
+                                    <button type="button" class="btn-add-referidos" @click="addItem(i)" 
+                                        v-show="(contacts.contact).length === (i + 1)">
+                                        +
                                     </button>
-                                    <button type="button" class="btn-remove-referidos" v-show="i > 0" @click="removeItem(i)">
-                                                        -
+                                    <button type="button" class="btn-remove-referidos" v-show="i > 0"
+                                        @click="removeItem(i)">
+                                        -
                                     </button>
                                 </div>
 
                                 <div class="grid md:grid-cols-3 gap-3">
                                     <FormField :label="$t('message.client.name')">
                                         <FormControl v-model="contacts.contact[i].nombre" :icon="mdiRenameBox" />
-                                    </FormField>                                
+                                    </FormField>
                                     <FormField :label="$t('message.client.lastName')">
                                         <FormControl v-model="contacts.contact[i].apellido" :icon="mdiRenameBox" />
                                     </FormField>
                                     <FormField :label="$t('message.client.jobPosition')">
-                                        <FormControl v-model="contacts.contact[i].cargo" :icon="mdiListStatus" :options="cargosList" />
+                                        <FormControl v-model="contacts.contact[i].cargo" :icon="mdiListStatus"
+                                            :options="cargosList" />
                                     </FormField>
                                     <FormField :label="$t('message.client.officePhone')">
                                         <FormControl v-model="contacts.contact[i].telefonoOfic" :icon="mdiRenameBox" />
@@ -388,7 +403,7 @@ const goTo = () => router.push('/setup/clients')
                                         <FormControl v-model="contacts.contact[i].correo" :icon="mdiRenameBox" />
                                     </FormField>
                                 </div>
-                            
+
                             </div>
                         </div>
                         <div v-show="tab === 2">
@@ -444,11 +459,11 @@ const goTo = () => router.push('/setup/clients')
                 </TabsComponent>
             </div>
         </div>
-        <template #footer>            
+        <template #footer>
             <div style="display: flex; justify-content: space-between;">
                 <BaseButton v-show="tab === 1" :label="$t(`message.${props.saveLabel}`)" type="submit" color="success" />
-                <BaseButton :label="$t('message.return')"  color="info" @click="goTo()"/>
-            </div>  
+                <BaseButton :label="$t('message.return')" color="info" @click="goTo()" />
+            </div>
         </template>
     </CardBox>
 </template>

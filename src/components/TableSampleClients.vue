@@ -101,7 +101,7 @@ const eventDone = (option) => {
 
   <CardBoxModal
     v-model="isModalDangerActive"
-    title="Please confirm"
+    :title="$t('message.pleaseConfirm')"
     button="danger"
     has-cancel
     @confirm="eventDone"

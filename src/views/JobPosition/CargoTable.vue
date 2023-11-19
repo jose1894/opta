@@ -123,7 +123,7 @@ const activateItem = () => {
 
 <CardBoxModal 
     v-model="isModalDangerActive" 
-    title="Please confirm"
+    :title="$t('message.pleaseConfirm')"
      button="danger" 
      @confirm="deleteItem" 
      has-cancel>
@@ -132,7 +132,7 @@ const activateItem = () => {
 
   <CardBoxModal 
     v-model="isModalActive" 
-    title="Please confirm"
+    :title="$t('message.pleaseConfirm')"
     @confirm="activateItem">
     <strong>{{ $t('message.cargo.restore.question') }} <b> {{ dataName() }} </b></strong> ?   
   </CardBoxModal>

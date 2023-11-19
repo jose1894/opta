@@ -52,7 +52,6 @@ const category = ref({
 });
 
 const rules = computed(() => ({
-    codigo: { required, maxLength: maxLength(3) },
     nombre: { required },
 }));
 
@@ -136,9 +135,10 @@ const goTo = () => router.push('/setup/categories')
     <CardBox isForm @submit.prevent="submit">
         <div>
             <div class="container mx-auto">
-                <div class="grid md:grid-cols-3 gap-3">
-                    <FormField :label="$t('message.category.code')" :help="v$?.codigo?.$errors[0]?.$message">
-                        <FormControl v-model="category.codigo" :icon="mdiRenameBox" />
+                <div :class="path !== 'create' ? 'grid md:grid-cols-3 gap-3' : 
+                     'grid md:grid-cols-2 gap-3'">
+                    <FormField :label="$t('message.category.code')" v-show="path !== 'create'">
+                        <FormControl v-model="category.codigo" :icon="mdiRenameBox" readonly="true"/>
                     </FormField>
                     <FormField :label="$t('message.category.name')" :help="v$?.nombre?.$errors[0]?.$message">
                         <FormControl v-model="category.nombre" :icon="mdiRenameBox" />

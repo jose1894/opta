@@ -56,7 +56,6 @@ onMounted(async () => {
 const goTo = () => router.push('/setup/professions')
 
 const rules = computed(() => ({
-            codigo: { required, maxLength: maxLength(3) },
             nombre: { required,  },
             estado: { required },
           }));
@@ -98,9 +97,10 @@ const submit = async () => {
 </script>
 <template>
   <CardBox isForm @submit.prevent="submit">
-    <div class="grid md:grid-cols-3 gap-4">
-      <FormField :label="$t('message.profession.code')" :help="v$?.codigo?.$errors[0]?.$message">
-        <FormControl :name="'codigo'" v-model="profession.codigo" :icon="mdiCodeBraces" />            
+    <div  :class="path !== 'create' ? 'grid md:grid-cols-3 gap-3' : 
+          'grid md:grid-cols-2 gap-3'">
+      <FormField :label="$t('message.profession.code')" v-show="path !== 'create'">
+        <FormControl :name="'codigo'" v-model="profession.codigo" :icon="mdiCodeBraces" readonly="true"/>            
       </FormField>
       <FormField :label="$t('message.profession.name')" :help="v$?.nombre?.$errors[0]?.$message">
         <FormControl v-model="profession.nombre" :icon="mdiRenameBox" />

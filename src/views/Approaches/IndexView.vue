@@ -298,7 +298,7 @@ const btnCerrarModalEnfoque  = () => isModalActive.value = false;
 <template>
     <CardBoxModal 
         v-model="isModalDangerActive" 
-        title="Please confirm" 
+        :title="$t('message.pleaseConfirm')"
         button="danger" 
         @confirm="deleteItem" 
         has-cancel>

@@ -48,7 +48,6 @@ const bussinesUnit = ref({
 });
 
 const rules = computed(() => ({
-    codigo: { required, maxLength: maxLength(3) },
     nombre: { required, },
     siglas: { required },
 }));
@@ -120,9 +119,10 @@ const goTo = () => router.push('/setup/businessUnit')
     <CardBox isForm @submit.prevent="submit">
         <div>
             <div class="container mx-auto">
-                <div class="grid md:grid-cols-4 gap-4">
-                    <FormField :label="$t('message.bussinesUnit.code')" :help="v$?.codigo?.$errors[0]?.$message">
-                        <FormControl :name="'codigo'" v-model="bussinesUnit.codigo" :icon="mdiCodeBraces" />
+                <div :class="path !== 'create' ? 'grid md:grid-cols-2 gap-4' : 
+                     'grid md:grid-cols-3 gap-4'">
+                    <FormField :label="$t('message.bussinesUnit.code')" v-show="path !== 'create'">
+                        <FormControl :name="'codigo'" v-model="bussinesUnit.codigo" :icon="mdiCodeBraces" readonly="true"/>
                     </FormField>
                     <FormField :label="$t('message.bussinesUnit.name')" :help="v$?.nombre?.$errors[0]?.$message">
                         <FormControl v-model="bussinesUnit.nombre" :icon="mdiRenameBox" />

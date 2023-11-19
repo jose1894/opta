@@ -285,7 +285,7 @@ const downloadZipFile = async (project) => {
 </script>
 
 <template>
-  <CardBoxModal v-model="isModalDangerActive" title="Please confirm" button="danger" @confirm="deleteItem" has-cancel>
+  <CardBoxModal v-model="isModalDangerActive" :title="$t('message.pleaseConfirm')" button="danger" @confirm="deleteItem" has-cancel>
     <strong>{{ $t('message.project.deleted.question') }} <b> {{ dataCodigo() }} </b></strong> ?
   </CardBoxModal>
 

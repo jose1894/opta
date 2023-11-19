@@ -57,7 +57,6 @@ const branch = ref({
 });
 
 const rules = computed(() => ({
-    codigo: { required, maxLength: maxLength(3) },
     nombre: { required, },
     siglas: { required },
 }));
@@ -181,8 +180,9 @@ const goTo = () => router.push('/setup/branches')
     <CardBox isForm @submit.prevent="submit">
         <div>
             <div class="container mx-auto">
-                <div class="grid md:grid-cols-3 gap-3">
-                    <FormField :label="$t('message.branch.code')" :help="v$?.codigo?.$errors[0]?.$message">
+                <div :class="path !== 'create' ? 'grid md:grid-cols-3 gap-3' : 
+                        'grid md:grid-cols-2 gap-3'">
+                    <FormField :label="$t('message.branch.code')" v-show="path !== 'create'">
                         <FormControl :name="'codigo'" v-model="branch.codigo" :icon="mdiCodeBraces" />
                     </FormField>
                     <FormField :label="$t('message.branch.name')" :help="v$?.nombre?.$errors[0]?.$message">

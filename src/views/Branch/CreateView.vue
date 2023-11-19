@@ -7,7 +7,7 @@
     import Breadcrumb from '@/components/Breadcrumb.vue';
     const breadcrumbs = ref( [
         { name: 'Inicio', link: '/setup/branches/' },
-        { name: 'Update'},
+        { name: 'Create'},
     ])
 </script>
 <template>

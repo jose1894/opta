@@ -121,7 +121,7 @@ const activateItem = () => {
 
 <CardBoxModal 
     v-model="isModalDangerActive" 
-    title="Please confirm"
+    :title="$t('message.pleaseConfirm')"
      button="danger" 
      @confirm="deleteItem" 
      has-cancel>
@@ -130,7 +130,7 @@ const activateItem = () => {
 
   <CardBoxModal 
     v-model="isModalActive" 
-    title="Please confirm"
+    :title="$t('message.pleaseConfirm')"
     @confirm="activateItem">
     <strong>{{ $t('message.personal.restore.question') }} <b> {{ dataName() }} </b></strong> ?   
   </CardBoxModal>
@@ -141,9 +141,9 @@ const activateItem = () => {
       <tr>
         <th @click="sort('nombres')">{{ $t('message.personal.names') }}</th>
         <th @click="sort('apellidos')">{{ $t('message.personal.surnames') }}</th>
-        <th @click="sort('categoria')">{{ $t('message.personal.category') }}</th>
-        <th @click="sort('unidadNegocio')">{{ $t('message.personal.businessUnit') }}</th>
-        <th @click="sort('sucursal')">{{ $t('message.personal.branch') }}</th>
+        <th @click="sort('categoria.nombre')">{{ $t('message.personal.category') }}</th>
+        <th @click="sort('unidadNegocio.nombre')">{{ $t('message.personal.businessUnit') }}</th>
+        <th @click="sort('sucursal.nombre')">{{ $t('message.personal.branch') }}</th>
         <th @click="sort('estado')">{{ $t('message.personal.status') }}</th>
       </tr>
     </thead>

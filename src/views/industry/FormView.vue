@@ -54,7 +54,6 @@ onMounted(async () => {
 })
 
 const rules = computed(() => ({
-            codigo: { required, maxLength: maxLength(3) },
             nombre: { required,  },
             estado: { required },
           }));
@@ -96,9 +95,10 @@ const goTo = () => router.push('/setup/industries')
 </script>
 <template>
   <CardBox isForm @submit.prevent="submit">
-    <div class="grid md:grid-cols-3 gap-4">
-      <FormField :label="$t('message.industry.code')" :help="v$?.codigo?.$errors[0]?.$message">
-        <FormControl :name="'codigo'" v-model="industryData.codigo" :icon="mdiCodeBraces" />            
+    <div :class="path !== 'create' ? 'grid md:grid-cols-3 gap-3' : 
+          'grid md:grid-cols-2 gap-3'">
+      <FormField :label="$t('message.industry.code')" v-show="path !== 'create'">
+        <FormControl :name="'codigo'" v-model="industryData.codigo" :icon="mdiCodeBraces" readonly="true"/>            
       </FormField>
       <FormField :label="$t('message.industry.name')" :help="v$?.nombre?.$errors[0]?.$message">
         <FormControl v-model="industryData.nombre" :icon="mdiRenameBox" />

@@ -139,9 +139,7 @@ onMounted(async () => {
 
 const _asignarOpcionesAlSelect = (data) => { return { id: data._id, label: data?.nombre || data?.descripcion || data?.nombres } };
 
-const rules = computed(() => ({
-  codigo: { required, maxLength: maxLength(10) }
-}));
+const rules = computed(() => ({}));
 
 const v$ = useValidate(rules, project);
 
@@ -181,9 +179,10 @@ const goTo = () => router.push('/setup/projects')
 </script>
 <template>
   <CardBox isForm @submit.prevent="submit">
-    <div class="grid md:grid-cols-3 gap-4">
-      <FormField :label="$t('message.project.code')" :help="v$?.codigo?.$errors[0]?.$message">
-        <FormControl :name="'codigo'" v-model="project.codigo" :icon="mdiCodeBraces" />
+    <div :class="path !== 'create' ? 'grid md:grid-cols-3 gap-4' : 
+          'grid md:grid-cols-2 gap-4'">
+      <FormField :label="$t('message.project.code')" v-show="path !== 'create'">
+        <FormControl :name="'codigo'" v-model="project.codigo" :icon="mdiCodeBraces" read/>
       </FormField>
       <FormField :label="$t('message.project.date')">
         <FormControl :name="'fecha'" v-model="project.fecha" :icon="mdiCodeBraces" :readonly="isReadonly"/>      
@@ -202,15 +201,17 @@ const goTo = () => router.push('/setup/projects')
       </FormField>
       <FormField :label="$t('message.project.manager')">
         <FormControl v-model="project.gerente" :icon="mdiListStatus" :options="gerenteList" />
-      </FormField>
+      </FormField>        
+    </div>
+    <div class="grid md:grid-cols-2 gap-2">
       <FormField :label="$t('message.project.branch')">
         <FormControl v-model="project.sucursal" :icon="mdiListStatus" :options="sucursalList" />
-      </FormField>      
-    </div>
-    <div class="grid md:grid-cols-3 gap-3">
+      </FormField> 
       <FormField :label="$t('message.project.bussinesUnit')">
         <FormControl v-model="project.unidadNegocio" :icon="mdiListStatus" :options="unidadNegocioList" />
-      </FormField>
+      </FormField>  
+    </div>
+    <div class="grid md:grid-cols-2 gap-3">     
       <FormField :label="$t('message.project.typeOfService')">
         <FormControl v-model="project.tipoServicio" :icon="mdiListStatus" :options="tipoServicioList" />
       </FormField>

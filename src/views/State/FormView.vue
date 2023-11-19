@@ -67,7 +67,6 @@ onMounted(async () => {
 })
 
 const rules = computed(() => ({
-            codigo: { required, maxLength: maxLength(3) },
             nombre: { required,  },
             estado: { required },
           }));

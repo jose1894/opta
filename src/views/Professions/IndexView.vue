@@ -77,7 +77,7 @@ const endPointUseSort = (sort) => {
         :title="$t('message.profession.professions')"
       >
       <BaseButton
-          to="professions/create"
+          to="create"
           :icon="mdiPlus"
           :label="$t('message.add_new')"
           color="success"

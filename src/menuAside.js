@@ -90,7 +90,7 @@ export default [
         to: "/setup/expense",
         icon: mdiHandCoin
       },
-      {
+      /*{
         label: 'User profile',
         icon: mdiAccountCog,
         menu: [
@@ -110,7 +110,7 @@ export default [
             to: "/setup/profiles",
           },
         ]
-      },
+      },*/
       {
         label: "Category",
         to: "/setup/categories",
