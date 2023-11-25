@@ -10,7 +10,8 @@ import { useI18n } from "vue-i18n";
 import {
     mdiCodeBraces,
     mdiRenameBox,
-    mdiListStatus
+    mdiListStatus,
+    mdiContentCopy
 } from "@mdi/js";
 import useValidate from '@vuelidate/core';
 import { useToast } from 'vue-toastification';
@@ -27,12 +28,15 @@ import membersService from '@/services/member.service';
 import TabsComponent from '@/components/TabsComponent.vue';
 import countriesService from '@/services/countries.service';
 import currenciesService from '@/services/currencies.service';
-import VueTailwindDatepicker from 'vue-tailwind-datepicker';
+import membresiaLicenciaService from '@/services/membresiaLicencia.service';
 import { required, maxLength } from '@/utils/i18n-validators';
+import planesService from '@/services/planes.service'
+import FormControlIcon from "@/components/FormControlIcon.vue";
+import moment from 'moment';
 
 const props = defineProps({
     path: '',
-    saveLabel: '',
+    saveLabel: '',    
     state: {}
 })
 
@@ -40,6 +44,7 @@ const { t } = useI18n();
 const toast = useToast();
 const route = useRoute();
 const router = useRouter();
+let pathLicense = ref('create');
 
 const dateValue = ref([])
 let countriesList = ref([]);
@@ -48,6 +53,8 @@ let citiesList = ref([]);
 let cargosList = ref([]);
 let monedasList = ref([]);
 let aliadosList = ref([]);
+let planesList = ref([]);
+let disabledBtnGenerateLicencia = ref(true)
 
 const tab = ref(0)
 const activeTab = (i) => {
@@ -56,7 +63,8 @@ const activeTab = (i) => {
 const listTabs = [
     { title: 'Membresia' },
     { title: 'Contacto' },
-    { title: 'Users' }
+    { title: 'Users' },
+    { title: 'Licences' }
 ]
 
 const selectOptions = [
@@ -79,6 +87,8 @@ const formatter = ref({
     month: 'MMM'
 })
 
+
+
 const userMembresia = ref({
     _id: '',
     firstname: "",
@@ -91,6 +101,16 @@ const userMembresia = ref({
     estadoMembresia: 1,
     google: false,
 });
+
+const membresiaLicensia = ref({
+    _id: '',
+    fechaActual: moment(),
+    fechaFinal: moment(),
+    membresia: "",
+    licencia: "",
+    plan: {},
+})
+
 const member = ref({
     _id: '',
     aliado: aliadosList.value,
@@ -110,6 +130,7 @@ const member = ref({
     telefonoOfic: "",
     telefonoCelu: "",
     correoContact: "",
+    plan: planesList.value,
     /*codigoActivacion: "",
     licencias: "",
     vigencia: new Date(),
@@ -142,16 +163,28 @@ onMounted(async () => {
     const dataAliados = listAliados?.data.aliados;
     aliadosList.value = dataAliados.map((aliado) => ({ id: aliado._id, label: aliado.nombre }));
 
-    let listMonedas = await currenciesService.allCurrencies();
-    const dataMonedas = listMonedas?.data.monedas;
-    monedasList.value = dataMonedas.map((aliado) => ({ id: aliado._id, label: aliado.nombre }));
+    let listPlanes = await planesService.index();
+    const dataPlanes = listPlanes?.planes;
+    planesList.value = dataPlanes.map((plan) => ({ id: plan._id, label: plan.descripcion, dias: plan.dias }));
+    
 
-
-    console.log(dataAliados)
     if (props.path === 'update') {
         const res = await membersService.read(route.params);
         member.value = res.data.miembro
-        const { cargo, aliado, moneda, estado, tipoContacto, creacion } = res.data.miembro
+        const { _id, cargo, aliado, moneda, estado, tipoContacto, creacion } = res.data.miembro
+        const licenciaByMembresia = await membresiaLicenciaService.getLicencia(_id)
+        const dataLicencia = licenciaByMembresia?.licencia || {}
+        if (Object.keys(dataLicencia).length === 0) {
+            member.value.plan = []
+            disabledBtnGenerateLicencia.value = false
+        } else {
+            disabledBtnGenerateLicencia.value = true
+            let dataPlan = _asignarOpcionesAlSelect(dataLicencia?.plan)
+            const dataplan = { ...dataPlan, dias: dataLicencia?.plan.dias }
+            member.value.plan = dataplan
+            membresiaLicensia.value = dataLicencia
+        }
+        membresiaLicensia.value.membresia = _id
         member.value.cargo = { id: cargo._id, label: cargo.nombre }
         member.value.aliado = { id: aliado._id, label: aliado.nombre }
         member.value.pais = _asignarOpcionesAlSelect(res.data?.miembro.pais)
@@ -167,7 +200,7 @@ onMounted(async () => {
     }
 });
 
-const _asignarOpcionesAlSelect = (data) => { return { id: data._id, label: data.nombre } };
+const _asignarOpcionesAlSelect = (data) => { console.log(data); return { id: data._id, label: (data?.nombre || data?.descripcion) } };
 
 const selectedPais = (data, response = {}) => {
     const { id } = data;
@@ -227,15 +260,6 @@ const action = (member) => {
         telefonoOfic,
         telefonoCelu,
         correoContact,
-        /*codigoActivacion,
-        licencias,
-        vigencia,
-        moneda,
-        periodoRevision,
-        creacion,
-        declaracionHoras,
-        modificacionHoras,
-        requiereAprobacion,*/
         estado
     } = member.value;
     console.log(userMembresia.value)
@@ -259,15 +283,6 @@ const action = (member) => {
         telefonoCelu,
         correoContact,
         membresiaUsuario: userMembresia.value,
-        /*codigoActivacion,
-        licencias,
-        vigencia: vigencia.undefined,
-        moneda: moneda.id,
-        periodoRevision: +periodoRevision,
-        creacion: creacion.id,
-        declaracionHoras: +declaracionHoras,
-        modificacionHoras: +modificacionHoras,
-        requiereAprobacion,*/
         estado: estado.id
     }
     console.log(data)
@@ -281,12 +296,14 @@ const successMessage = props.path === 'create' ? t("message.member.created.succe
 const errorMessage = props.path === 'create' ? t("message.member.created.error") : t("message.member.updated.error")
 
 const submit = async () => {
+    disabledBtnGenerateLicencia.value = true
     const result = await v$.value.$validate();
     if (result) {
         action(member)
             .then(() => {
+                if(props.path === 'create') {disabledBtnGenerateLicencia.value = false}
                 toast.success(successMessage);
-                router.push('/setup/memberships');
+                //router.push('/setup/memberships');
             })
             .catch(err => {
                 if (err.response?.data?.msg) {
@@ -307,6 +324,96 @@ const submit = async () => {
     }
 };
 const goTo = () => router.push('/setup/memberships')
+
+const selectedPlan = (plan) => {
+    const { id, dias } = plan;
+    const fechaActual = moment().utc();
+    const fechaFinal = moment().utc().add(dias, 'days');
+    membresiaLicensia.value.fechaActual = fechaActual.format('YYYY-MM-DD')
+    membresiaLicensia.value.fechaFinal = fechaFinal.format('YYYY-MM-DD')
+    membresiaLicensia.value.plan = plan
+}
+
+const btnGenerateLicense = async () => {
+    const dataPlan = membresiaLicensia.value.plan
+    const errorMSM = t("message.member.youmustselectaplan")
+    if (Object.keys(dataPlan).length === 0) {
+        toast.error(`${errorMSM}`)
+    } else {
+        const { _id, fechaActual, fechaFinal, plan, membresia } = membresiaLicensia.value
+        const data = { _id, fechaActual, fechaFinal, plan, membresia }
+        try {
+            let result = null
+            let succesMSM = ''
+            if(pathLicense.value !== 'update' && membresiaLicensia.value.licencia === '') {
+                succesMSM = t("message.member.thelicensewassuccessfullygenerated")
+                result = await membresiaLicenciaService.create(data)
+            } else {
+                succesMSM = t("message.member.updated.successlicense")
+                result = await membresiaLicenciaService.update(data)                
+            }           
+            const { licencia } = result?.data
+            membresiaLicensia.value.licencia = licencia
+            disabledBtnGenerateLicencia.value = true
+            pathLicense.value = 'create'
+            toast.success(succesMSM);
+        } catch (error) {
+            if(pathLicense.value !== 'update') {
+                toast.error('Error al generar la licencia');
+            } else {
+                const errorMSM = t("message.member.updated.errorlicense")
+                toast.error(errorMSM);
+            }
+            pathLicense.value = 'create'            
+        }
+    }
+}
+
+const copyText = () => {
+    console.log('copia')
+    if (disabledBtnGenerateLicencia.value) {
+        const element = document.getElementById('txtLiencia');
+        element.select();
+        element.setSelectionRange(0, 99999);
+        document.execCommand('copy');
+        const msm = t("message.member.successfullycopiedlicense")
+        toast.success(msm);
+    } else {
+        const msm = t("message.member.noactivelicense")
+        toast.error(msm);
+    }
+}
+
+const deleteLicencia = async () => {
+    const { _id } = membresiaLicensia.value
+    if (disabledBtnGenerateLicencia.value) {
+        try {
+            const licenciId = _id
+            const result = await membresiaLicenciaService.delete(licenciId)
+            const msm = t("message.member.deleted.successLicense")
+            toast.success(msm);
+            member.value.plan = []
+            membresiaLicensia.value.id = ''
+            membresiaLicensia.value.fechaActual = moment()
+            membresiaLicensia.value.fechaFinal = moment()
+            membresiaLicensia.value.licencia = ''
+            membresiaLicensia.value.plan = {}
+            disabledBtnGenerateLicencia.value = false
+        } catch (error) {
+            const msm = t("message.member.deleted.errorLicense")
+            toast.error(msm);
+        }
+    } else {
+        const msm = "No hay licencia para eliminar"
+        toast.error(msm);
+    }
+}
+
+const updateLicense = () => {
+    pathLicense.value = 'update'
+    console.log(membresiaLicensia.value)
+    disabledBtnGenerateLicencia.value = false
+}
 </script>
 
 <template>
@@ -316,14 +423,11 @@ const goTo = () => router.push('/setup/memberships')
                 <TabsComponent :tabs="listTabs" @tabClick="activeTab">
                     <div class="p-1 mt-0 bg-white border">
                         <div v-show="tab === 0">
-                            <div :class="path !== 'create' ? 'grid md:grid-cols-3 gap-3' : 
+                            <div :class="path !== 'create' ? 'grid md:grid-cols-3 gap-3' :
                                 'grid md:grid-cols-2 gap-3'">
-                                <FormField :label="$t('message.member.code')"  v-show="path !== 'create'">
-                                    <FormControl 
-                                        :name="'codigo'" 
-                                        v-model="member.codigo" 
-                                        :icon="mdiCodeBraces" 
-                                        readonly="true"/>
+                                <FormField :label="$t('message.member.code')" v-show="path !== 'create'">
+                                    <FormControl :name="'codigo'" v-model="member.codigo" :icon="mdiCodeBraces"
+                                        readonly="true" />
                                 </FormField>
                                 <FormField :label="$t('message.member.ally')">
                                     <FormControl v-model="member.aliado" :icon="mdiListStatus" :options="aliadosList" />
@@ -417,96 +521,40 @@ const goTo = () => router.push('/setup/memberships')
                             </div>
 
                         </div>
-                        <!-- <div v-show="tab === 2">
-                            <h2 class="h2-tittle">Softwere</h2>
-                            <div class="grid md:grid-cols-3 gap-3">
-                                <FormField :label="$t('message.member.activation_code')">
-                                    <FormControl v-model="member.codigoActivacion" :icon="mdiRenameBox" />
-                                </FormField>
-
-                                <FormField :label="$t('message.member.activeLicenses')">
-                                    <FormControl v-model="member.licencias" :icon="mdiRenameBox" />
-                                </FormField>
-
-                                <FormField :label="$t('message.member.validity')">
-                                    <vue-tailwind-datepicker 
-                                        class="h-12 border-gray-700" 
-                                        :formatter="formatter"
-                                        as-single v-model="member.vigencia" />
-                                </FormField> 
+                        <div v-show="tab === 3">
+                            <div style="display: flex; flex-direction: row;">
+                                <div class="grid grid-cols-1 gap-3" style="width: 40%;">
+                                    <FormField :label="$t('message.member.plan')">
+                                        <FormControl v-model="member.plan" :icon="mdiListStatus" :options="planesList"
+                                            @onSelectChange="selectedPlan" :readonly="disabledBtnGenerateLicencia" />
+                                    </FormField>
+                                </div>
+                                <div class="grid grid-cols-1 gap-3" style="padding-left: 20px; position: relative;">
+                                    <FormField label="">
+                                        <BaseButton :label="$t('message.generateLicense')" color="succes"
+                                            :disabled="disabledBtnGenerateLicencia" class="generateLicence"
+                                            @click="btnGenerateLicense()" />
+                                    </FormField>
+                                </div>
                             </div>
-                            <h2 class="h2-tittle">Presupuesto</h2>
-
-                            <div class="grid md:grid-cols-3 gap-3">
-                                <FormField :label="$t('message.member.currency')">
-                                    <FormControl v-model="member.moneda" :icon="mdiListStatus" :options="monedasList" />
+                            <div class="grid gap-1" style="position: relative; padding:  10px 0px 2px;">
+                                <FormField :label="$t('message.member.license')" style="margin-bottom: 0px;">
+                                    <FormControl type="textarea" v-model="membresiaLicensia.licencia" :icon="mdiRenameBox"
+                                        id="txtLiencia" :readonly="true" />
                                 </FormField>
-
-                                <FormField :label="$t('message.member.review_period_the_budget')">
-                                    <FormControl v-model="member.periodoRevision"  :icon="mdiRenameBox"/>
-                                </FormField>
-
-                                <FormField :label="$t('message.member.budget_creation')">
-                                    <FormControl v-model="member.creacion" :icon="mdiListStatus" :options="creationOptions" />
-                                </FormField>
-
-                                <FormField :label="$t('message.member.modification_of_hours')">
-                                    <FormControl v-model="member.modificacionHoras"  :icon="mdiRenameBox"/>
-                                </FormField>
-
-                                <FormField :label="$t('message.member.requires_approval_to_activate_the_project')">
-                                    <FormControl v-model="member.requiereAprobacion"  :icon="mdiRenameBox"/>
-                                </FormField>
-                            </div>                        
-                        </div> -->
+                                <div style="display: flex; flex-direction: row; gap: 10px; padding: 5px 0px 0 10px;">
+                                    <i class="fas fa-copy icon-licencia" @click="copyText()"
+                                        v-tippy="{ content: $t('message.member.copyLicense') }"></i>
+                                    <i v-if="path !== 'create'" class="fa-solid fa-pen-to-square icon-licencia"
+                                        v-tippy="{ content: $t('message.member.modifyLicense') }" 
+                                        @click="updateLicense()"></i>
+                                    <i v-if="path !== 'create'" class="fa-solid fa-trash icon-licencia"
+                                        v-tippy="{ content: $t('message.member.deleteLicense') }"
+                                        @click="deleteLicencia()"></i>
+                                </div>
+                            </div>
+                        </div>
                         <div>
-                            <!-- <div v-for="(field, i) in ally.referidos" :key="i">
-                                                    <div class="btn-add-remove">
-                                                        <h2 class="h2-tittle">Referido nro. {{ i + 1 }}</h2>
-                                                        <button type="button" class="btn-add-referidos" @click="addItem(i)">
-                                                            +
-                                                        </button>
-                                                        <button type="button" class="btn-remove-referidos" v-show="i > 0" @click="remove(i)">
-                                                            -
-                                                        </button>
-                                                    </div>
-
-                                                    <div class="grid md:grid-cols-2 gap-2">
-                                                        <FormField :label="$t('message.ally.codeClient')"
-                                                            :help="v$?.cliente?.$errors[0]?.$message">
-                                                            <FormControl :id="`cliente_${i}`" v-model="ally.referidos[i].cliente"
-                                                                :icon="mdiRenameBox" />
-                                                        </FormField>                                   
-                                                        <FormField :label="$t('message.ally.name')">
-                                                            <FormControl v-model="ally.referidos[i].referido" :icon="mdiRenameBox" />
-                                                        </FormField>
-                                                    </div>
-                                                    <div class="grid md:grid-cols-2 gap-2">
-                                                        <FormField :label="$t('message.ally.date')">
-                                                            <vue-tailwind-datepicker class="h-12 border-gray-700" as-single v-model="ally.referidos[i].fecha" />
-                                                        </FormField>
-                                                        <FormField :label="$t('message.ally.idFiscal')">
-                                                            <FormControl :id="`idFiscalReferido_${i}`"
-                                                                v-model="ally.referidos[i].idFiscalReferido" :icon="mdiRenameBox" />
-                                                        </FormField>
-                                                    </div>
-                                                    <div class="grid md:grid-cols-1 gap-1">
-                                                        <FormField :label="$t('message.ally.address')">
-                                                            <FormControl :id="`direccionReferido_${i}`"
-                                                                v-model="ally.referidos[i].direccionReferido" :icon="mdiRenameBox" />
-                                                        </FormField>
-                                                    </div>
-                                                    <div class="grid md:grid-cols-2 gap-2">
-                                                        <FormField :label="$t('message.ally.contacts')">
-                                                            <FormControl :id="`contactos_${i}`" v-model="ally.referidos[i].contactos"
-                                                                :icon="mdiRenameBox" />
-                                                        </FormField>
-                                                        <FormField :label="$t('message.ally.activeLicenses')">
-                                                            <FormControl :id="`licenciasActivas_${i}`"
-                                                                v-model="ally.referidos[i].licenciasActivas" :icon="mdiRenameBox" />
-                                                        </FormField>
-                                                    </div>
-                                                </div> -->
                         </div>
                     </div>
                 </TabsComponent>
@@ -555,6 +603,18 @@ const goTo = () => router.push('/setup/memberships')
 
 .btn-remove-referidos:hover {
     background: red;
+}
+
+.generateLicence {
+    position: absolute;
+    bottom: 2px;
+    color: white;
+    background: #2563EB;
+}
+
+.icon-licencia {
+    font-size: 18px;
+    color: #b0b0ba;
 }
 </style>
 

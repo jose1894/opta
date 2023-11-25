@@ -22,6 +22,7 @@ const locale = ref('es')
 const search = ref('')
 countriesList.registerLocale(spanish)
 const allCountries = computed(() => countriesList.getNames(locale.value))
+const showList = ref(true)
 
 
 const props = defineProps({
@@ -55,7 +56,9 @@ const action = (state) => {
 
 onMounted(async () => {
   if (props.path === 'update') {
+    console.log(filteredCountries)
     const res = await countriesService.read(route.params);
+    console.log(res)
     state.value = res.data
     state.value.estado = selectOptions.filter(status => status.id === res.data.estado)[0]
   }
@@ -103,15 +106,18 @@ const submit = async () => {
 const goTo = () => router.push('/setup/countries')
 
 const filteredCountries = computed(() => {
-  if (search.value === '') {
+  if (search.value === '' || search.value.length < 3) {
+    if (props.path !== 'update') {
+      state.value.codigo = ''
+      state.value.nombre = ''
+    }    
     return []
   }
-  console.log('listar paisesss')
-  console.log(allCountries)
-
-  return Object.entries(allCountries.value)
+  const paises = Object.entries(allCountries.value)
     .map(([code, name]) => ({ code, name }))
     .filter(country => country.name.toLowerCase().includes(search.value.toLowerCase()))
+  showList.value = true
+  return paises
 })
 
 const searchCountries = () => {
@@ -119,14 +125,41 @@ const searchCountries = () => {
   // Aquí puedes realizar acciones adicionales cuando el usuario realiza una búsqueda
 }
 
+const onItemClick = (item) => {
+  const { code, name } = item
+  state.value.codigo = code
+  state.value.nombre = name
+  showList.value = false
+  console.log(state)
+}
+
 </script>
 <template>
   <CardBox isForm @submit.prevent="submit">
-    <div class="grid md:grid-cols-3 gap-4">
-      <FormField :label="$t('message.country.code')">
-        <FormControl :name="'codigo'" v-model="search" :icon="mdiCodeBraces" @input="searchCountries" />
-        <div v-for="country in filteredCountries" :key="country.code">
-          {{ country.name }}
+    <div :class="path !== 'update' ? 'grid md:grid-cols-3 gap-4' : 
+          'grid md:grid-cols-2 gap-4'">
+      <FormField 
+        :label="$t('message.country.code')" 
+        :class="path !== 'update' ? 'content-country' : ''"
+        v-show="path !== 'update'">
+        <div style="width: 100%;position: relative;"  v-show="path !== 'update'">
+          <FormControl 
+            :name="'codigo'" 
+            v-model="search" 
+            :icon="mdiCodeBraces" 
+            @input="searchCountries" 
+            v-show="path !== 'update'"/>
+            <ul 
+              class="ul-country" 
+              v-if="filteredCountries.length > 0 && showList" 
+                style="position: absolute;">
+                <li class="li-country" 
+                  v-for="option in filteredCountries" 
+                  :key="option.id" 
+                  @click="onItemClick(option)">
+                  {{ option.name }}
+                </li>
+            </ul>
         </div>
       </FormField>
       <FormField :label="$t('message.country.name')" :help="v$?.nombre?.$errors[0]?.$message">
@@ -144,3 +177,24 @@ const searchCountries = () => {
     </template>
   </CardBox>
 </template>
+<style scoped>
+.ul-country {
+  width: 100%;
+  padding: 0;
+  list-style: none;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.li-country {
+  padding: 0.5rem;
+  cursor: pointer;
+}
+
+.content-country {
+  display: flex; 
+  flex-direction: column;
+}
+</style>

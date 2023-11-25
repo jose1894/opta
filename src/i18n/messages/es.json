@@ -17,6 +17,7 @@
     "sign_up_success": "¡Registro exitoso!",
     "sign_in_success": "Ingreso exitoso",
     "return": "Regresar",
+    "generateLicense": "Generar licencia",
     "setup": "Configuración",
     "empty_table": "Tabla vacía",
     "search": "Buscar",
@@ -302,6 +303,15 @@
       }
     },
     "member": {
+      "copyLicense": "Copiar licencia",
+      "modifyLicense": "Modificar licencia",
+      "deleteLicense": "Eliminar licencia",
+      "youmustselectaplan": "Debe seleccionar un plan",
+      "thelicensewassuccessfullygenerated": "La Licencia fue generada con exito",
+      "license": "License",
+      "plan": "Plan",
+      "successfullycopiedlicense": "La licencia fue copiada con exito.",
+      "noactivelicense": "No hay licencia activa.",
       "memberships": "Membresias",
       "membership": "Membresia",
       "ally": "Aliado",
@@ -356,12 +366,17 @@
       },
       "updated": {
         "success": "¡La menbresia fue actualizada exitosamente!",
-        "error": "¡La menbresia no pudo ser actualizada!"
+        "error": "¡La menbresia no pudo ser actualizada!",
+        "successlicense": "¡La licencia fue actualizada exitosamente!",
+        "errorlicense": "¡La licencia no pudo ser actualizada!"
       },
       "deleted": {
         "success": "¡La menbresia fue eliminada exitosamente!",
         "error": "¡La menbresia no pudo ser eliminada!",
-        "question": "Desea eliminar la mmbresia "
+        "question": "Desea eliminar la mmbresia ",
+        "successLicense": "¡La licencia fue eliminada exitosamente!",
+        "errorLicense": "¡La licencia no pudo ser eliminada!"
+
       },
       "restore": {
         "success": "¡La menbresia fue restaurada exitosamente!",

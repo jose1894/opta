@@ -20,8 +20,6 @@ defineProps({
 const { t } = useI18n();
 const toast = useToast()
 const router = useRouter();
-const filtros = {codigo: '', nombre: '', estado: ''}
-const query = ref('')
 
 const mainStore = useMainStore();
 
@@ -114,8 +112,6 @@ const activateItem = () => {
       toast.error(`${t("message.country.restore.error")} ${err?.response?.data.msg}`)
     });
 }
-
-const inputsearch = () => console.log(query.value)
 </script>
 
 <template>
@@ -134,7 +130,6 @@ const inputsearch = () => console.log(query.value)
     @confirm="activateItem">
     <strong>{{ $t('message.country.restore.question') }} <b> {{ dataName() }} </b></strong> ?   
   </CardBoxModal>
-  <input type="text" placeholder="search..." v-model="query" @change="inputsearch()"/>
   <table>
     <thead>
       <tr>

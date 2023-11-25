@@ -23,6 +23,7 @@
     "assignPerson": "Assign Person",
     "print": "Print",
     "return": "Return",
+    "generateLicense": "Generate license",
     "submit": "Submit",
     "dolownd": "Dolownd File",
     "downloadZipFile": "Download zip file",
@@ -369,6 +370,15 @@
     }
   },
   "member": {
+    "modifyLicense": "Modify license",
+    "deleteLicense": "Delete license",
+    "copyLicense": "Copy license",
+    "youmustselectaplan": "You must selec a plan",
+    "thelicensewassuccessfullygenerated": "The license was success fully generated",
+    "license": "licencia",
+    "plan": "Plan",
+    "successfullycopiedlicense": "Success fully copied license.",
+    "noactivelicense": "No active license.",
     "members": "Members",
     "member": "Member",
     "ally": "Ally",
@@ -422,12 +432,16 @@
     "updated": {
       "success": "Member updated successfully!",
       "error": "Member couldn't be updated!",
-      "question": "Do you want to delete member "
+      "question": "Do you want to delete member ",
+      "successlicense": "License updated successfully!",
+      "errorlicense": "License couldn't be updated!"
     },
     "deleted": {
       "success": "Member deleted successfully!",
       "error": "Member couldn't be deleted!",
-      "question": "Do you want to delete member"
+      "question": "Do you want to delete member",
+      "successLicense": "License deleted successfully!",
+      "errorLicense": "License couldn't be deleted!"
     },
     "restore": {
       "success": "Member retored successfully!",
