@@ -351,16 +351,16 @@ const downloadZipFile = async (project) => {
           @checked="checked($event, project)"
         /> -->
         <td :data-label="$t('message.project.code')">
-          {{ project.codigo }}
+          {{ project?.codigo }}
         </td>
         <td :data-label="$t('message.project.client')">
-          {{ project.cliente.nombre }}
+          {{ project.cliente[0]?.nombre }}
         </td>
         <td :data-label="$t('message.project.partner')">
-          {{ project.socio.nombres }}
+          {{ project.socio[0]?.nombres }}
         </td>
         <td :data-label="$t('message.project.status')">
-          {{ $t(`message.project.statuses.${listStatusOption(project.estado)}`) }}
+          {{ $t(`message.project.statuses.${listStatusOption(project?.estado)}`) }}
         </td>
         <td class="before:hidden lg:w-1 whitespace-nowrap">
           <BaseButtons type="justify-start lg:justify-end" no-wrap>

@@ -89,7 +89,7 @@ const activeTabThree = () => {
 <template>
   <LayoutAuthenticated>
     <SectionMain>
-      <SectionTitleLineWithButton
+      <!-- <SectionTitleLineWithButton
         :icon="mdiChartTimelineVariant"
         title="Overview"
         main
@@ -236,7 +236,7 @@ const activeTabThree = () => {
 
       <div>
         <Breadcrumb :items="breadcrumbs" />
-      </div>
+      </div> -->
     </SectionMain>
   </LayoutAuthenticated>
 </template>

@@ -75,6 +75,7 @@ const onSearchData = (queryParams=[]) => {
   ? getCountries(data)
   : getCountriesDelete(data)
 }
+
 const onChangePage = (page) => {
   endPointUse({ page })
 }
@@ -119,9 +120,6 @@ const filterEstado = () => {
   paramEstado.value = id
   onSearchData()
 }
-
-
-
 </script>
 <template>
   <LayoutAuthenticated>
@@ -129,7 +127,8 @@ const filterEstado = () => {
       <SectionTitleLineWithButton :icon="mdiGlobeModel" :title="$t('message.country.countries')">
         <BaseButton :to="{ name: 'CountriesCreate' }" :icon="mdiPlus" :label="$t('message.add_new')" color="success"
           small />
-      </SectionTitleLineWithButton>      
+      </SectionTitleLineWithButton>  
+      <Breadcrumb :items="breadcrumbs" />    
       <div class="grid md:grid-cols-2 gap-4">
         <FormField label="Buscar">
           <InputSearch 
@@ -146,7 +145,7 @@ const filterEstado = () => {
             @onSelectChange="filterEstado"/>
         </FormField>
       </div>
-      <Breadcrumb :items="breadcrumbs" />
+      
       <FormField label="">
         <FormCheckRadioGroup v-model="customElementsForm.switch" name="sample-switch" type="switch"
           :options="{ one: 'Mostrar registros eliminados' }" @change="onChangeSwtch" />

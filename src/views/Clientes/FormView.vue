@@ -28,6 +28,7 @@ import countriesService from '@/services/countries.service';
 import cargosService from '@/services/cargos.service';
 import industriesServices from '@/services/Industries.service';
 import membersServices from '@/services/member.service';
+import contactService from '@/services/contacts.service'
 import { required, maxLength } from '@/utils/i18n-validators';
 
 const props = defineProps({
@@ -68,6 +69,7 @@ const selectOptions = [
 
 const contacts = ref({
     contact: [{
+        _id: "",
         nombre: "",
         apellido: "",
         cargo: cargosList.value,
@@ -75,6 +77,7 @@ const contacts = ref({
         telefonoCelu: "",
         correo: "",
         cliente: "",
+        action: "create",
     }],
 });
 
@@ -125,11 +128,16 @@ onMounted(async () => {
         const res = await clientsService.read(route.params);
         client.value = res.data.cliente
         contacts.value.contact = res.data.contactos
+
         const dataContactoCargo = contacts.value.contact
         dataContactoCargo.map((contacto) => {
             contacto.cargo = _asignarOpcionesAlSelect(contacto.cargo)
             return contacto
         });
+        if (contacts.value.contact.length === 0) {
+            addItem(0)
+            contacts.value.contact[0].cliente = client.value._id
+        }
         client.value.contactos = contacts.value
         const { cargo, estado, industria, companiaListada, companiaRegulada } = res.data.cliente
         client.value.industria = { id: industria._id, label: industria.nombre }
@@ -138,11 +146,14 @@ onMounted(async () => {
         client.value.companiaListada = option.filter(company => company.id === companiaListada)[0]
         client.value.companiaRegulada = option.filter(company => company.id === companiaRegulada)[0]
         selectedPais(client.value.pais, res.data.cliente)
+    } else {
+        contacts.value.contact = []
+        addItem(0)
     }
 });
 
 const _asignarOpcionesAlSelect = (data) => {
-    return { id: data?._id || data?.id, label: data.nombre }
+    return { id: data?._id || data?.id, label: data?.nombre }
 };
 
 const selectedPais = (data, response = {}) => {
@@ -202,21 +213,27 @@ const action = (client) => {
         estado,
         contactos } = client.value;
 
-    const contactData = contactos.contact
+    const contactData = contactos?.contact || []
+
 
     const saveDataContact = contactData.map(({ _id, nombre, apellido, cargo, telefonoOfic, telefonoCelu, correo, cliente }) => {
-        const data = {
-            _id,
-            nombre,
-            apellido,
-            cargo: cargo.id,
-            telefonoOfic,
-            telefonoCelu,
-            correo,
-            cliente
+        let dataContact = {nombre: null}
+        if (nombre !== '' || apellido !== '' || telefonoOfic !== '' || telefonoCelu !== '' || correo !== '') {
+            dataContact = {
+                _id,
+                nombre,
+                apellido,
+                cargo: cargo.id,
+                telefonoOfic,
+                telefonoCelu,
+                correo,
+                cliente
+            }
         }
-        return data
+        return dataContact
     })
+    
+    const filterContact = saveDataContact.filter((item) => item.nombre !== null)
 
     const data = {
         _id,
@@ -234,7 +251,7 @@ const action = (client) => {
         paginaWeb,
         direccion,
         estado: estado.id,
-        contactos: saveDataContact
+        contactos: filterContact
 
     }
     if (props.path === 'create') {
@@ -250,21 +267,32 @@ const saveClient = async () => { }
 
 const addItem = async (i) => {
     contacts.value.contact.push({
+        _id: "",
         nombre: "",
         apellido: "",
         cargo: cargosList.value,
         telefonoOfic: "",
         telefonoCelu: "",
         correo: "",
-        cliente: clientId,
+        cliente: client.value._id !== '' ? client.value._id : '',
+        action: "create/update",
     })
 }
 
 const removeItem = async (i) => {
-    console.log(contacts.value)
     let dataNew = contacts.value.contact
-    dataNew.splice(i, 1);
-    contacts.value.contact = dataNew
+    const dataDelete = contacts.value.contact[i]
+    const contactId = dataDelete._id
+    let result = {}
+    if (contactId !== '') {
+        result = await contactService.delete(contactId)
+    }
+    if (result?.msj === 'Error al eliminar el contacto') {
+        toast.error(`${result?.msj}`)
+    } else {
+        dataNew.splice(i, 1);
+        contacts.value.contact = dataNew
+    }
 }
 
 const submit = async () => {
@@ -341,7 +369,7 @@ const goTo = () => router.push('/setup/clients')
                                 <FormField :label="$t('message.client.state')">
                                     <FormControl v-model="client.state" :icon="mdiListStatus" :options="statesList"
                                         @onSelectChange="selectedCiudad" />
-                                </FormField>                                
+                                </FormField>
                             </div>
                             <div class="grid md:grid-cols-2 gap-2">
                                 <FormField :label="$t('message.client.city')">
@@ -372,7 +400,7 @@ const goTo = () => router.push('/setup/clients')
                             <div v-for="(field, i) in contacts.contact" :key="i">
                                 <div class="btn-add-remove">
                                     <h2 class="h2-tittle">Contacto. {{ i + 1 }}</h2>
-                                    <button type="button" class="btn-add-referidos" @click="addItem(i)" 
+                                    <button type="button" class="btn-add-referidos" @click="addItem(i)"
                                         v-show="(contacts.contact).length === (i + 1)">
                                         +
                                     </button>

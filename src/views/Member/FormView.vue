@@ -173,8 +173,12 @@ onMounted(async () => {
         member.value = res.data.miembro
         const { _id, cargo, aliado, moneda, estado, tipoContacto, creacion } = res.data.miembro
         const licenciaByMembresia = await membresiaLicenciaService.getLicencia(_id)
-        const dataLicencia = licenciaByMembresia?.licencia || {}
+        console.log(licenciaByMembresia)
+        const dataLicencia = licenciaByMembresia.data?.licencia || {}
         if (Object.keys(dataLicencia).length === 0) {
+            if(licenciaByMembresia?.msj) {
+                toast.error(`${licenciaByMembresia?.msj}`)
+            }
             member.value.plan = []
             disabledBtnGenerateLicencia.value = false
         } else {
@@ -352,8 +356,9 @@ const btnGenerateLicense = async () => {
                 succesMSM = t("message.member.updated.successlicense")
                 result = await membresiaLicenciaService.update(data)                
             }           
-            const { licencia } = result?.data
+            const { _id, licencia } = result?.data
             membresiaLicensia.value.licencia = licencia
+            membresiaLicensia.value._id = _id
             disabledBtnGenerateLicencia.value = true
             pathLicense.value = 'create'
             toast.success(succesMSM);

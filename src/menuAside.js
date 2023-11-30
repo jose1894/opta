@@ -116,11 +116,11 @@ export default [
         to: "/setup/categories",
         icon: mdiSeal
       },
-      {
+      /*{
         label: "Rates",
         to: "/setup/rates",
         icon: mdiCash100
-      },
+      },*/
       {
         label: "Language",
         icon: mdiEmoticonTongueOutline,
