@@ -354,10 +354,10 @@ const downloadZipFile = async (project) => {
           {{ project?.codigo }}
         </td>
         <td :data-label="$t('message.project.client')">
-          {{ project.cliente[0]?.nombre }}
+          {{ project.cliente?.nombre }}
         </td>
         <td :data-label="$t('message.project.partner')">
-          {{ project.socio[0]?.nombres }}
+          {{ project.socio?.nombres }}
         </td>
         <td :data-label="$t('message.project.status')">
           {{ $t(`message.project.statuses.${listStatusOption(project?.estado)}`) }}

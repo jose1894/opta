@@ -182,7 +182,7 @@ const goTo = () => router.push('/setup/projects')
     <div :class="path !== 'create' ? 'grid md:grid-cols-3 gap-4' : 
           'grid md:grid-cols-2 gap-4'">
       <FormField :label="$t('message.project.code')" v-show="path !== 'create'">
-        <FormControl :name="'codigo'" v-model="project.codigo" :icon="mdiCodeBraces" read/>
+        <FormControl :name="'codigo'" v-model="project.codigo" :icon="mdiCodeBraces" :readonly="true"/>
       </FormField>
       <FormField :label="$t('message.project.date')">
         <FormControl :name="'fecha'" v-model="project.fecha" :icon="mdiCodeBraces" :readonly="isReadonly"/>      
@@ -195,13 +195,15 @@ const goTo = () => router.push('/setup/projects')
       </FormField>
       <FormField :label="$t('message.project.client')">
         <FormControl v-model="project.cliente" :icon="mdiListStatus" :options="clienteList" />
-      </FormField>
+      </FormField>            
+    </div>
+    <div class="grid md:grid-cols-2 gap-2">
       <FormField :label="$t('message.project.partner')">
         <FormControl v-model="project.socio" :icon="mdiListStatus" :options="socioList" />
       </FormField>
       <FormField :label="$t('message.project.manager')">
         <FormControl v-model="project.gerente" :icon="mdiListStatus" :options="gerenteList" />
-      </FormField>        
+      </FormField> 
     </div>
     <div class="grid md:grid-cols-2 gap-2">
       <FormField :label="$t('message.project.branch')">

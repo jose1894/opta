@@ -160,7 +160,20 @@ onMounted(async () => {
 const _asignarOpcionesAlSelect = (data) => { return { id: data._id, label: data?.nombre || data?.descripcion } };
 const rules = computed(() => ({
             iDFiscal: { required},
+            apellidos: { required },
             nombres: { required,  },
+            telefono: { required },
+            email: { required, },
+            profesion: { required },
+            idiomas: { required },
+            postgrado: { required },
+            unidadNegocio: { required },
+            categoria: { required },
+            sucursal: { required },
+            perfil: { required },
+            usuarioAcceso: { required },
+            claveAcceso: { required },
+            direccion: { required },
             estado: { required },
           }));
 
@@ -207,43 +220,43 @@ const goTo = () => router.push('/setup/personal')
       <FormField :label="$t('message.personal.names')" :help="v$?.nombres?.$errors[0]?.$message">
         <FormControl :name="'nombres'" v-model="persona.nombres" :icon="mdiRenameBox" />            
       </FormField>
-      <FormField :label="$t('message.personal.surnames')">
+      <FormField :label="$t('message.personal.surnames')" :help="v$?.apellidos?.$errors[0]?.$message">
         <FormControl v-model="persona.apellidos" :icon="mdiRenameBox" />
       </FormField>
       <FormField :label="$t('message.personal.idFiscal')" :help="v$?.iDFiscal?.$errors[0]?.$message">
         <FormControl v-model="persona.iDFiscal" :icon="mdiRenameBox" />            
       </FormField>
-      <FormField :label="$t('message.personal.phone')">
+      <FormField :label="$t('message.personal.phone')" :help="v$?.telefono?.$errors[0]?.$message">
         <FormControl v-model="persona.telefono" :icon="mdiRenameBox" />
       </FormField>
-      <FormField :label="$t('message.personal.email')">
+      <FormField :label="$t('message.personal.email')" :help="v$?.email?.$errors[0]?.$message">
         <FormControl v-model="persona.email" :icon="mdiRenameBox" />
       </FormField>
-      <FormField :label="$t('message.personal.profession')">
+      <FormField :label="$t('message.personal.profession')" :help="v$?.profesion?.$errors[0]?.$message">
           <FormControl v-model="persona.profesion" :icon="mdiListStatus" :options="profesionList"/>
       </FormField>
-      <FormField :label="$t('message.personal.languages')">
+      <FormField :label="$t('message.personal.languages')" :help="v$?.idiomas?.$errors[0]?.$message">
           <FormControl v-model="persona.idiomas" :icon="mdiListStatus" :options="idiomasList"/>
       </FormField>
-      <FormField :label="$t('message.personal.postgraduate')">
+      <FormField :label="$t('message.personal.postgraduate')" :help="v$?.postgrado?.$errors[0]?.$message">
         <FormControl v-model="persona.postgrado" :icon="mdiRenameBox" />
       </FormField>
-      <FormField :label="$t('message.personal.businessUnit')">
+      <FormField :label="$t('message.personal.businessUnit')" :help="v$?.unidadNegocio?.$errors[0]?.$message">
           <FormControl v-model="persona.unidadNegocio" :icon="mdiListStatus" :options="unidadNegocioList"/>
       </FormField>
-      <FormField :label="$t('message.personal.category')">
+      <FormField :label="$t('message.personal.category')" :help="v$?.categoria?.$errors[0]?.$message">
           <FormControl v-model="persona.categoria" :icon="mdiListStatus" :options="categoriaList"/>
       </FormField>
-      <FormField :label="$t('message.personal.branch')">
+      <FormField :label="$t('message.personal.branch')" :help="v$?.sucursal?.$errors[0]?.$message">
           <FormControl v-model="persona.sucursal" :icon="mdiListStatus" :options="sucursalList"/>
       </FormField>
-      <FormField :label="$t('message.personal.profile')">
+      <FormField :label="$t('message.personal.profile')" :help="v$?.perfil?.$errors[0]?.$message">
           <FormControl v-model="persona.perfil" :icon="mdiListStatus" :options="perfilList"/>
       </FormField>
-      <FormField :label="$t('message.personal.user')">
+      <FormField :label="$t('message.personal.user')" :help="v$?.usuarioAcceso?.$errors[0]?.$message">
         <FormControl v-model="persona.usuarioAcceso" :icon="mdiRenameBox" />
       </FormField>
-      <FormField :label="$t('message.personal.password')">
+      <FormField :label="$t('message.personal.password')" :help="v$?.claveAcceso?.$errors[0]?.$message">
         <FormControl v-model="persona.claveAcceso" :icon="mdiRenameBox" />
       </FormField>
       <FormField :label="$t('message.personal.status')" :help="v$?.estado?.$errors[0]?.$message">
@@ -256,7 +269,7 @@ const goTo = () => router.push('/setup/personal')
       </FormField>
     </div>
     <div class="grid gap-1">
-      <FormField :label="$t('message.personal.address')">
+      <FormField :label="$t('message.personal.address')" :help="v$?.direccion?.$errors[0]?.$message">
         <FormControl type="textarea" v-model="persona.direccion" :icon="mdiRenameBox" />
       </FormField>
     </div>    

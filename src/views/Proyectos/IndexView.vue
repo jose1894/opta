@@ -36,7 +36,7 @@ const selectOptions = [
   { id: 0, label: t('message.country.statuses.inactive') },
 ];
 
-const filtros = ref({cliente: { nombre: ''}, socio:{ nombres: ''}, filtros: [{'cliente[0].nombre': '', 'socio[0].nombres': '' }] })
+const filtros = ref({filters: ['codigo', 'cliente.nombre', 'socio.nombres'], search: ''})
 
 const paramEstado = ref(-1)
 const valueSelectEstado = ref(selectOptions[0])
@@ -58,7 +58,7 @@ const onChangeSwtch = () => {
 const onSearchData = (queryParams=[]) => {
   let data = {
     page: page.value,
-    q: queryParams
+    q2: queryParams
   }
   if(paramEstado.value !== -1) {
     data = {
@@ -100,8 +100,8 @@ const endPointUseSort = (sort) => {
 const searchFunction = async searchTerm => {
     const searchText = (searchTerm === "") ? "default" : searchTerm;
     let param = []
-    if (searchText !== "default") {
-        filtros.value.cliente.nombre = filtros.value.socio.nombres = filtros.value.filtros['cliente[0].nombre'] = filtros.value.filtros['socio[0].nombres'] =   searchText
+    if (searchText !== "default") {        
+        filtros.value.search = searchText
         let arrayParam = filtros.value
         param = arrayParam
     }
@@ -111,7 +111,12 @@ const searchFunction = async searchTerm => {
 const filterEstado = () => {
   const { id } = valueSelectEstado.value
   paramEstado.value = id
-  onSearchData()
+  let param = []
+  if( filtros.value.search !== '' && filtros.value.search !== 'default' ) {
+    let arrayParam = filtros.value
+    param = arrayParam
+  }
+  onSearchData(param)
 }
 
 </script>

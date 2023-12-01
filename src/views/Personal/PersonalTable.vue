@@ -141,6 +141,7 @@ const activateItem = () => {
       <tr>
         <th @click="sort('nombres')">{{ $t('message.personal.names') }}</th>
         <th @click="sort('apellidos')">{{ $t('message.personal.surnames') }}</th>
+        <th @click="sort('iDFiscal')">{{ $t('message.personal.idFiscal') }}</th>
         <th @click="sort('categoria.nombre')">{{ $t('message.personal.category') }}</th>
         <th @click="sort('unidadNegocio.nombre')">{{ $t('message.personal.businessUnit') }}</th>
         <th @click="sort('sucursal.nombre')">{{ $t('message.personal.branch') }}</th>
@@ -155,6 +156,9 @@ const activateItem = () => {
         </td>
         <td :data-label="$t('message.personal.surnames')">
           {{ persona.apellidos }}
+        </td>
+        <td :data-label="$t('message.personal.idFiscal')">
+          {{ persona.iDFiscal }}
         </td>
         <td :data-label="$t('message.personal.category')">
           {{ persona?.categoria?.nombre }}
