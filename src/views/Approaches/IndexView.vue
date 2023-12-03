@@ -15,7 +15,6 @@ import FormField from '@/components/FormField.vue';
 import FormControl from '@/components/FormControl.vue';
 import BaseButton from '@/components/BaseButton.vue';
 import SectionMain from "@/components/SectionMain.vue";
-import membersServices from '@/services/member.service';
 import enfoquesServices from '@/services/enfoques.service';
 import CardBoxModal from "@/components/CardBoxModal.vue";
 import { mdiCodeBraces, mdiPlus, mdiListStatus } from "@mdi/js";
@@ -64,6 +63,7 @@ const dataInitial = {
     editable: option[0],
     estado: selectOptions[0],
     tipoNodo: 2,
+    collapsed: false
 }
 const enfoque = ref(dataInitial);
 
@@ -76,12 +76,12 @@ const treeData = ref()
 
 const chilItem = (data, enfoques=[]) => {
     const menu1 = data.map((item) => { 
+    item.collapsed = false 
     const child =  enfoques.filter((itemEnfo) => itemEnfo?.areaPadre?._id === item._id)
         if(child.length > 0) {
             item.children = child 
             chilItem(child, enfoques)
         }
-        //data.children = child
         return item
     })
 
@@ -109,12 +109,10 @@ const errorMessage = props.path === 'create' ? t("message.approach.created.error
 const submit = async () => {
     action(enfoque)
         .then(() => {
-            const m = selectedItemEnfoque.value
+            const m = localItemEnfoque()
             enfoqueChildren(m)
-            //getEnfoques()
             setTimeout(() => {
                 isModalActive.value = false
-                enfoque.value = dataInitial
                 toast.success(successMessage);                
             }, 500);           
         })
@@ -174,13 +172,13 @@ const action = async (enfoque) => {
 
 const successMessageSelectNode = t("message.approach.selectedNode")
 const btnAgregarEnfoque = () => {
-    enfoque.value = dataInitial
+    //enfoque.value = dataInitial
     path = "create";
-    isSelectedItemEnfoque.value = false
+    //isSelectedItemEnfoque.value = false
     if (Object.keys(selectedItemEnfoque.value).length === 0) {
-        //toast.error(successMessageSelectNode)
         isSelectedItemEnfoque.value = true
         const dataNew = Object.assign({}, treeData.value[0]);
+        const selectedData = Object.assign({}, dataNew);
         enfoque.value = dataNew
         enfoque.value.areaPadreNombre = dataNew.nombre
         enfoque.value.nombre = "",
@@ -191,10 +189,12 @@ const btnAgregarEnfoque = () => {
         enfoque.value.rcr = option.filter(item => item.id === dataNew.rcr)[0]
         enfoque.value.editable = option.filter(item => item.id === dataNew.editable)[0]
         enfoque.value.tipoNodo = 1
-        selectedItemEnfoque.value = enfoque.value
-    } /*else {
-        isModalActive.value = true
-    }*/
+        enfoque.value.collapsed = false       
+        selectedItemEnfoque.value = selectedData
+        localStorage.setItem('itemEnfoque', JSON.stringify(selectedItemEnfoque.value));
+    } else {
+        addValueEnfoque()
+    }
     isModalActive.value = true
 }
 
@@ -204,7 +204,6 @@ const btnEditarEnfoque = async () => {
     const { visible, estado, rcr, editable, areaPadre, areaPadreNombre, rutaPadre }  = selectedItemEnfoque.value
     console.log(selectedItemEnfoque.value)
     if(areaPadre) {
-        //const res = await enfoquesServices.read(areaPadre);
         enfoque.value.areaPadre = (typeof areaPadre === "object") ? areaPadre._id : areaPadre
         enfoque.value.areaPadreNombre = (typeof areaPadre === "object") ? areaPadre.nombre : areaPadreNombre 
         const APN = (typeof areaPadre === "object") ? areaPadre.ruta : rutaPadre 
@@ -221,24 +220,6 @@ const _isObject=(data) => {
     return (typeof data === "object") ? data.id : data
 };
 
-const _asignarOpcionesAlSelect = (data) => { 
-    return { id: data?._id || data.id, label: data?.nombre || data?.label } 
-};
-
-const selelctedItemTreeView = (m, i) => {
-    asignarNodoPadre(m)
-    if (!i.value) {
-        enfoqueChildren(m)
-    }
-}
-
-
-const addChild = async (i, m) => {
-    if (!i.value) {
-        enfoqueChildren(m)
-    }
-}
-
 const enfoqueChildren = async (m) => {
     if(!isSelectedItemEnfoque.value){
         m.children = []
@@ -252,9 +233,32 @@ const enfoqueChildren = async (m) => {
 
 const asignarNodoPadre = (selectedEnfoque) => {
     selectedItemEnfoque.value = selectedEnfoque
-    enfoque.value.areaPadre = selectedEnfoque._id
-    enfoque.value.areaPadreNombre = selectedEnfoque.nombre
-    enfoque.value.rutaPadre = selectedEnfoque.ruta
+    localStorage.setItem('itemEnfoque', JSON.stringify(selectedItemEnfoque.value));
+    addValueEnfoque()    
+}
+
+const addValueEnfoque = () => {
+    const selectedData = localItemEnfoque();
+    enfoque.value = selectedData
+    enfoque.value.areaPadre = selectedData._id
+    enfoque.value.areaPadreNombre = selectedData.nombre
+    enfoque.value.rutaPadre = selectedData.ruta
+    if(props.path !== 'update') {
+        enfoque.value._id = "",
+        enfoque.value.indice = 0,
+        enfoque.value.nombre = "",     
+        enfoque.value.estado = selectOptions.filter(status => status.id === selectedData.estado)[0]
+        enfoque.value.visible = optionVisible.filter(item => item.id === selectedData.visible)[0]
+        enfoque.value.rcr = option.filter(item => item.id === selectedData.rcr)[0]
+        enfoque.value.editable = option.filter(item => item.id === selectedData.editable)[0]
+        enfoque.value.tipoNodo = selectedData.tipoNodo
+        enfoque.value.collapsed = false         
+    }
+}
+
+const localItemEnfoque = () => {
+    const dataObject = localStorage.getItem('itemEnfoque');
+    return JSON.parse(dataObject);
 }
 
 const handleNodeSelected = (parentId) => {
@@ -270,15 +274,10 @@ const successMessageError = t("message.approach.deleted.success")
 const deleteItem = async () => {
     deleteEnfoqueById()
     .then(async () => {
-        /*const dataT = treeData.value
-        const dataDeleteId = selectedItemEnfoque.value.areaPadre
-        const menu1 = dataT.map((item) => { 
-            console.log(item)
-   
-        })
-        console.log(menu1) */
         getEnfoques() 
         toast.success(successMessageError);
+        selectedItemEnfoque.value = {}
+        localStorage.setItem('itemEnfoque', JSON.stringify(selectedItemEnfoque.value));
     })
     .catch(err => {
       toast.error(`${t("message.approach.deleted.error")} ${err?.response?.data.msg}`)
@@ -319,9 +318,6 @@ const btnCerrarModalEnfoque  = () => isModalActive.value = false;
                 <FormField :label="$t('message.approach.parentArea')">
                     <FormControl :name="'parentArea'" v-model="enfoque.areaPadreNombre" :icon="mdiCodeBraces" :readonly="true"/>
                 </FormField>
-                <!-- <FormField :label="$t('message.approach.route')">
-                    <FormControl :name="'route'" v-model="enfoque.ruta" :icon="mdiCodeBraces" :readonly="true"/>
-                </FormField> -->
                 <FormField :label="$t('message.approach.visible')">
                     <FormControl v-model="enfoque.visible" :icon="mdiListStatus" :options="optionVisible" />
                 </FormField>
@@ -373,35 +369,3 @@ const btnCerrarModalEnfoque  = () => isModalActive.value = false;
         </SectionMain>
     </LayoutAuthenticated>
 </template>
-
-<!-- <template>
-    <LayoutAuthenticated>
-        <SectionTitleLineWithButton
-            :icon="mdiGlobeModel"
-            :title="$t('message.approach.approaches')">
-            <BaseButton
-                to="branches/create"
-                :icon="mdiPlus"
-                :label="$t('message.add_new')"
-                color="success"
-                small
-            />
-        </SectionTitleLineWithButton>
-        <SectionMain>
-            <ul>
-                <TreeItem class="item" :model="treeData"/>
-            </ul>
-        </SectionMain>
-    </LayoutAuthenticated>
-
-</template>
-
-<style>
-    .item {
-        cursor: pointer;
-        line-height: 1.5;
-    }
-    .bold {
-        font-weight: bold;
-    }
-</style> -->

@@ -31,8 +31,10 @@ const toggleCollapse = (nodeId, option) => {
     nod.active = nod._id === nodeId ? 'active' : 'selected'
     return nod
   })
+  console.log(node)
   if (node) {
     node.collapsed = !node.collapsed;
+    node.active = !node.active;
   } 
   emit('nodeSelected', node);
   activeIndex.value = nodeId
@@ -66,10 +68,10 @@ const addIconPlus = (node) => {
           @click="toggleCollapse(node._id, 1)">
           <i v-if="node.children.length" :class="node.collapsed ? 'fa fa-minus' : 'fa fa-plus'"></i>
           <span :class="node.children.length > 0 ? 'ml2' : 'ml1'"> 
-            {{ node.indice }} - {{ node.nombre }} 
+            {{ node.indice }} - {{ node.nombre }}
           </span>          
         </span>
-        <TreeItem :nodes="node.children" v-if="node.children.length > 0 && node.collapsed"
+        <TreeItem :nodes="node.children" v-if="node.children.length > 0 && (node.collapsed || node.active)"
           @nodeSelected="handleNodeSelected"/>
       </li>
     </ul>
@@ -84,7 +86,7 @@ const addIconPlus = (node) => {
             {{ node.indice }} - {{ node.nombre }}
             <i v-if="node.children.length > 0 && addIconPlus(node)" class="fa fa-solid fa-plus plus-icon"  @mouseover="toggleCollapse(node._id, 1)"></i>
           </span>
-          <TreeItem :nodes="node.children" v-if="node.children && node.collapsed" :treeView="false" @itemSelected="onSearchChildren" />
+          <TreeItem :nodes="node.children" v-if="node.children && (node.collapsed || node.active)" :treeView="false" @itemSelected="onSearchChildren" />
         </li>
       </template>
 
