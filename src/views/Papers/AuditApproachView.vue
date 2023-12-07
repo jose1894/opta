@@ -44,6 +44,9 @@ const state = reactive({
 const breadcrumbs = ref([
     { name: 'Inicio', link: '/setup/papers/' }
 ])
+const { codigo } = JSON.parse(localStorage.getItem('selectedProject'))
+
+let data = [{projectId: codigo }]
 
 const activeIndex = ref(0);
 const openSubmenuIndex = ref(-1);
@@ -94,8 +97,6 @@ onMounted(async () => {
     const { _id, codigo, nombre } = route.params
     projectId.value = _id
     projectCode.value = codigo
-
-
     breadcrumbs.value.push({ name: `${codigo} - ${nombre}` })
 
     let listEnfoques = await enfoquesServices.index()
@@ -104,8 +105,8 @@ onMounted(async () => {
     const nodeFirst = enfoques.filter((item) => item.tipoNodo === 0);
     const dataEnfoques = enfoques.filter((item) => item.tipoNodo !== 0);
     const menu11 = chilItem(nodeFirst, dataEnfoques)
-    console.log(menu11[0].children)
     menuData.value = menu11[0].children
+    console.log(menuData.value)
 })
 
 const chilItem = (data, enfoques = []) => {
@@ -138,37 +139,34 @@ const onSortPageRisk = (sortBy, sortDesc) => {
 }
 
 const endPointRiskUse = (pageRisk) => {
+    console.log(pageRisk)
     getRisk(pageRisk)
 }
 
 const endPointRiskUseSort = (sortBy, sortDesc) => {
-    getRisk({ sortBy, sortDesc })
+    getRisk({ sortBy, sortDesc, q: data })
 }
 
 const getRisk = (data) => {
     riesgosServices.index(data).then(response => {
-        console.log(response)
         mainStore.listRisk = response
         pageRisk.value = response.page
         perPageRisk.value = response.perPage
     })
 }
 
-getRisk({pageRisk: pageRisk.value})
+getRisk({pageRisk: pageRisk.value, q: data})
 
-const enviarParametros = (idCuadrante) => {
-    const { cuadrante } = params.value 
-    console.log(idCuadrante)
-    if (idCuadrante === 0) {
-        getRisk({pageRisk:pageRisk.value})
+const enviarParametros = (idCuadrante) => {    
+    if (idCuadrante !== 0) {
+        const data2 = [
+            {cuadrante:idCuadrante}
+        ] 
+        getRisk({pageRisk:pageRisk.value, q: data, q2: data2 })   
     } else {
-        const data = [
-            {
-                cuadrante:idCuadrante
-            }
-        ]
-        getRisk({ pageRisk: pageRisk.value, q: data })
+        getRisk({pageRisk:pageRisk.value, q: data })
     }
+    
 } 
 
 </script>

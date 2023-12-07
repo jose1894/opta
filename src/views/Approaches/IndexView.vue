@@ -62,8 +62,7 @@ const dataInitial = {
     rcr: option[0],
     editable: option[0],
     estado: selectOptions[0],
-    tipoNodo: 2,
-    collapsed: false
+    tipoNodo: 2
 }
 const enfoque = ref(dataInitial);
 
@@ -76,7 +75,6 @@ const treeData = ref()
 
 const chilItem = (data, enfoques=[]) => {
     const menu1 = data.map((item) => { 
-    item.collapsed = false 
     const child =  enfoques.filter((itemEnfo) => itemEnfo?.areaPadre?._id === item._id)
         if(child.length > 0) {
             item.children = child 
@@ -188,8 +186,7 @@ const btnAgregarEnfoque = () => {
         enfoque.value.visible = optionVisible.filter(item => item.id === dataNew.visible)[0]
         enfoque.value.rcr = option.filter(item => item.id === dataNew.rcr)[0]
         enfoque.value.editable = option.filter(item => item.id === dataNew.editable)[0]
-        enfoque.value.tipoNodo = 1
-        enfoque.value.collapsed = false       
+        enfoque.value.tipoNodo = 1     
         selectedItemEnfoque.value = selectedData
         localStorage.setItem('itemEnfoque', JSON.stringify(selectedItemEnfoque.value));
     } else {
@@ -252,7 +249,6 @@ const addValueEnfoque = () => {
         enfoque.value.rcr = option.filter(item => item.id === selectedData.rcr)[0]
         enfoque.value.editable = option.filter(item => item.id === selectedData.editable)[0]
         enfoque.value.tipoNodo = selectedData.tipoNodo
-        enfoque.value.collapsed = false         
     }
 }
 

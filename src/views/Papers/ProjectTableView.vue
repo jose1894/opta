@@ -77,8 +77,8 @@ const formatDate = (dateString, format) => {
 };
 
 const goToAudit = (project) => {
-  const {codigo, sucursal, _id } = project
-  const { nombre  } = sucursal
+  const {codigo, _id, cliente } = project
+  const { nombre  } = cliente
   localStorage.setItem('selectedProject', JSON.stringify(project))
   router.push({name: 'AuditApproach', params: {codigo, nombre, _id}})
 }
