@@ -93,10 +93,14 @@ const pagesList = computed(() => {
   return pagesList;
 });
 
-const emit = defineEmits(['changePage', 'confirm', 'sort'])
+const emit = defineEmits(['changePage', 'confirm', 'sort', 'refresh'])
 
 const changePage = (page) => {
   emit('changePage', page)
+}
+
+const refresh = (page) => {
+  emit('refreshPage', page)
 }
 const btnFormUploadFile = async (approache) => {
   const { ruta, _id } = approache
@@ -127,6 +131,7 @@ const submitUpload = async () => {
     .then(() => {
       isModalUploadActive.value = false
       //enfoque.value = dataInitial
+      refresh(pague.value)
       toast.success(successMessageUpload);
     })
     .catch(err => {
@@ -316,13 +321,14 @@ const tituloProjectClientModal = () => {
           {{ approache.indice }}
         </td>
         <td :data-label="$t('message.audit.description')">
-          {{ approache.nombre }} {{ approache.rcr }}
+          {{ approache.nombre }} 
         </td>
         <td class="before:hidden lg:w-1 whitespace-nowrap">
           <BaseButtons type="justify-start lg:justify-end" no-wrap>
             <BaseButton
               v-if="approache.rcr === 1 && approache.visible !== 1" 
-              color="info" 
+              :class="approache?.countRisk !== 0 ? 'backgroudWithRisk' : ''"
+              color="info"
               :icon="mdiFire"
               :messageTooltip="t('message.addRisk')" 
               small 
@@ -330,6 +336,7 @@ const tituloProjectClientModal = () => {
 
             <BaseButton 
               v-if="approache.visible !== 1"
+              :class="approache?.countUpload !== 0 ? 'backgroundWithFile' : ''"
               color="info" 
               :icon="mdiUpload"
               :messageTooltip="t('message.upload')" 
@@ -363,5 +370,14 @@ const tituloProjectClientModal = () => {
     background: #ddd;
     padding: 8px;
     border-radius: 6px;
+}
+.backgroundWithFile {
+  background: #111827;
+  border: none;
+}
+
+.backgroudWithRisk {
+    background: #ff6e00;
+    border: none;
 }
 </style>

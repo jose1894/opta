@@ -61,6 +61,11 @@ const onChangePage = (page) => {
     endPointUse({ page })
 }
 
+const onRefresh = (page) => {
+    endPointUse({ page })
+}
+
+
 const onSearchChildren = (node) => {
     dataList.value = node
     titleAuditEnfoque.value = node?.ruta
@@ -245,7 +250,7 @@ const enviarParametros = (idCuadrante) => {
                         <div class="header-title">
                             <span class="span-header-title">{{ titleAuditEnfoque }}</span>
                         </div>
-                        <AudiTableView path="create" @changePage="onChangePage" @sort="onSortPage" />
+                        <AudiTableView path="create" @changePage="onChangePage" @sort="onSortPage" @refresh="onRefresh"/>
                     </CardBox>
                     <CardBox v-else>
                         <CardBoxComponentEmpty />
