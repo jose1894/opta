@@ -80,11 +80,11 @@ const addIconPlus = (node) => {
     <ul style="margin-bottom: 10px;">
       <template v-for="node in nodes" :key="node._id">
         <li v-if="node.visible === 1" style="margin-bottom: 10px;">
-          <span :class="activeIndex === node._id ? 'selected' : ''"  @click="onSearchChildren(node)">
-            <i v-if="node.children.length > 0 " class="fa fa-folder folder-treeView"></i>
-            <i v-if="node.children.length === 0 " class="fa-solid fa-folder-minus"></i>
+          <span :class="activeIndex === node._id ? 'icon-hover selected' : 'icon-hover'"  @click="onSearchChildren(node)">
+            <i v-if="node.children.length > 0 " class="icon-hover fa fa-folder folder-treeView"></i>
+            <i v-if="node.children.length === 0 " class="icon-hover fa-solid fa-folder-minus"></i>
             {{ node.indice }} - {{ node.nombre }}
-            <i v-if="node.children.length > 0 && addIconPlus(node)" class="fa fa-solid fa-plus plus-icon"  @mouseover="toggleCollapse(node._id, 1)"></i>
+            <i v-if="node.children.length > 0 && addIconPlus(node)" class="icon-hover fa fa-solid fa-plus plus-icon"  @mouseover="toggleCollapse(node._id, 1)"></i>
           </span>
           <TreeItem :nodes="node.children" v-if="node.children && (node.collapsed)" :treeView="false" @itemSelected="onSearchChildren" />
         </li>
@@ -99,6 +99,10 @@ const addIconPlus = (node) => {
 }
 .dropdown:hover{
     display: block;
+}
+
+.icon-hover:hover{
+  cursor: pointer;
 }
 .pli:hover{
     cursor: pointer;

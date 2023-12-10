@@ -77,7 +77,7 @@ const deleteItem = async (file) => {
   actionDelete()
     .then(() => {
       toast.success(successMessageDelete);
-      emit('changePage', currentPage.value)      
+      emit('changePage', currentPage.value, 'deleteFile')      
     })
     .catch(err => {
       toast.error(`${t("message.file.deleted.erro")} ${err?.response?.data.msg}`)

@@ -20,6 +20,9 @@ import UploadTableView from "./UploadTableView.vue";
 
 
 const { t } = useI18n();
+const overlayModal = ref(false);
+const btnCloseModal = ref(true);
+const actionUploadFile = ref('')
 const pageFiles = ref(1);
 const perPageFiles = ref(10);
 const toast = useToast()
@@ -47,14 +50,15 @@ const perPage = computed(() => mainStore.auditAproaches.perPage);
 
 const currentPage = computed(() => mainStore.auditAproaches.page);
 
-const onChangePage = (pageFiles) => {
-  const dataProject = JSON.parse(localStorage.getItem('selectedProject')) 
-  getFilesProjectApproaches(dataProject._id, enfoqueId.value,{ pageFiles })
+const onChangePage = (pageFiles, action = '') => {
+  actionUploadFile.value = action
+  const dataProject = JSON.parse(localStorage.getItem('selectedProject'))
+  getFilesProjectApproaches(dataProject._id, enfoqueId.value, { pageFiles })
 }
 
 const onSortPage = (sortBy, sortDesc) => {
-  const dataProject = JSON.parse(localStorage.getItem('selectedProject')) 
-  getFilesProjectApproaches(dataProject._id, enfoqueId.value,{ sortBy, sortDesc });
+  const dataProject = JSON.parse(localStorage.getItem('selectedProject'))
+  getFilesProjectApproaches(dataProject._id, enfoqueId.value, { sortBy, sortDesc });
 }
 
 const itemsPaginated = computed(() =>
@@ -93,19 +97,19 @@ const pagesList = computed(() => {
   return pagesList;
 });
 
-const emit = defineEmits(['changePage', 'confirm', 'sort', 'refresh'])
+const emit = defineEmits(['changePage', 'confirm', 'sort', 'refreshList'])
 
 const changePage = (page) => {
   emit('changePage', page)
 }
 
 const refresh = (page) => {
-  emit('refreshPage', page)
+  emit('refreshList', page)
 }
 const btnFormUploadFile = async (approache) => {
   const { ruta, _id } = approache
-  const dataProject = JSON.parse(localStorage.getItem('selectedProject'))  
-  pathFile.value = `${dataProject.codigo}/${ruta}` 
+  const dataProject = JSON.parse(localStorage.getItem('selectedProject'))
+  pathFile.value = `${dataProject.codigo}/${ruta}`
   enfoqueId.value = _id
   getFilesProjectApproaches()
   setTimeout(() => {
@@ -113,16 +117,19 @@ const btnFormUploadFile = async (approache) => {
   }, 10);
 }
 
-const getFilesProjectApproaches = (data) => {
-  const dataProject = JSON.parse(localStorage.getItem('selectedProject'))  
-    uploadService.read(dataProject._id, enfoqueId.value,data).then(response => {
-      console.log(response)
-        mainStore.filesProjectApproaches = response
-        pageFiles.value = response.page
-        perPageFiles.value = response.perPage
-    })
+const getFilesProjectApproaches = (data, action = '') => {
+  const dataProject = JSON.parse(localStorage.getItem('selectedProject'))
+  uploadService.read(dataProject._id, enfoqueId.value, data).then(response => {
+    mainStore.filesProjectApproaches = response
+    pageFiles.value = response.page
+    perPageFiles.value = response.perPage
+    if (actionUploadFile.value === 'deleteFile') {
+      if (response.total === 0) {
+        refresh(pageFiles.value)
+      }
+    }
+  })
 }
-
 
 const successMessageUpload = props.path === 'create' ? t("message.file.created.success") : t("message.file.updated.success")
 const errorMessageUpload = props.path === 'create' ? t("message.file.created.error") : t("message.file.updated.error")
@@ -131,11 +138,10 @@ const submitUpload = async () => {
     .then(() => {
       isModalUploadActive.value = false
       //enfoque.value = dataInitial
-      refresh(pague.value)
+      refresh(pageFiles.value)
       toast.success(successMessageUpload);
     })
     .catch(err => {
-      console.log(err)
       if (err.response?.data?.msg) {
         toast.error(`${t("message.file.created.error")} ${err.response.data.msg}`)
         return
@@ -157,10 +163,10 @@ const actionUpload = async () => {
   const formData = new FormData();
   formData.append('archivo', archivo.value);
   formData.append('ruta', pathFile.value);
-  formData.append('nombre', archivo.value.name);
-  formData.append('type', archivo.value.type);
+  formData.append('nombre', archivo.value?.name);
+  formData.append('type', archivo.value?.type);
   formData.append('proyecto', _id);
-  formData.append('enfoque', enfoqueId.value);  
+  formData.append('enfoque', enfoqueId.value);
   return uploadService.create(formData);
 }
 
@@ -174,7 +180,7 @@ const btnAddRiesgo = (approache) => {
   unidadRiesgo.value.indice = _id
   unidadRiesgo.value.titulo = ''
   unidadRiesgo.value.descripcion = ''
-  
+
   setTimeout(() => {
     isModalActive.value = true
   }, 10);
@@ -185,11 +191,11 @@ const submit = async () => {
   action(unidadRiesgo)
     .then(() => {
       isModalActive.value = false
-      //enfoque.value = dataInitial
+      refresh(pageFiles.value)
       toast.success(successMessage);
+      clearFormRiskUnit()
     })
     .catch(err => {
-      console.log(err)
       if (err.response?.data?.msg) {
         toast.error(`${t("message.risk.created.error")} ${err.response.data.msg}`)
         return
@@ -203,6 +209,14 @@ const submit = async () => {
       }
     })
 
+}
+
+const clearFormRiskUnit = () => {
+  setTimeout(() => {
+    unidadRiesgo.value._id = ''
+    unidadRiesgo.value.descripcion = ''
+    unidadRiesgo.value.indice = ''
+  }, 10)
 }
 
 const action = async (unidadRiesgo) => {
@@ -226,12 +240,12 @@ const action = async (unidadRiesgo) => {
   return riesgosServices.update(data);
 }
 
-const tituloModal = () => { 
+const tituloModal = () => {
   const { _id, codigo } = JSON.parse(localStorage.getItem('selectedProject'))
   return codigo
 }
 
-const tituloProjectClientModal = () => { 
+const tituloProjectClientModal = () => {
   const { cliente } = JSON.parse(localStorage.getItem('selectedProject'))
   return cliente?.nombre
 }
@@ -239,25 +253,24 @@ const tituloProjectClientModal = () => {
 </script>
 
 <template>
-  <CardBoxModal v-model="isModalUploadActive"  :hasDone="hasModalValue">    
+  <CardBoxModal v-model="isModalUploadActive" :hasDone="hasModalValue" :hasClose="btnCloseModal"
+    :overlayClick="overlayModal">
     <CardBox style="padding: 0px;">
-      <div >
-      <h2 style="font-weight: 700;">
-        {{  $t('message.project.project') }}: {{  tituloModal() }}
-      </h2>
-      <h2 class="c-element-h2">
-        {{  $t('message.project.client') }}: {{  tituloProjectClientModal() }}
-      </h2>
-      <h2 class="c-element-h2">
-        {{  $t('message.audit.uploadFile') }}
-      </h2>
-    </div> 
-    <CardBox isForm @submit.prevent="submitUpload" class="bg-gray-200" style="padding: 0px;">
-      <div class="mb-0">
-        <label for="formFile" class="mb-0 inline-block text-neutral-700 dark:text-neutral-200">Default file input
-          example</label>
-        <input
-          class="relative m-0 block w-full min-w-0 flex-auto 
+      <div>
+        <h2 style="font-weight: 700;">
+          {{ $t('message.project.project') }}: {{ tituloModal() }}
+        </h2>
+        <h2 class="c-element-h2">
+          {{ $t('message.project.client') }}: {{ tituloProjectClientModal() }}
+        </h2>
+        <h2 class="c-element-h2">
+          {{ $t('message.audit.uploadFile') }}
+        </h2>
+      </div>
+      <CardBox isForm @submit.prevent="submitUpload" class="bg-gray-200" style="padding: 0px;">
+        <div class="mb-0">
+          <label for="formFile" class="mb-0 inline-block text-neutral-700 dark:text-neutral-200">Subir archivo</label>
+          <input class="relative m-0 block w-full min-w-0 flex-auto 
           rounded border border-solid border-neutral-300 bg-clip-padding 
           px-3 py-[0.32rem] text-base font-normal text-neutral-700 transition 
           duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:overflow-hidden 
@@ -266,33 +279,32 @@ const tituloProjectClientModal = () => {
           file:ease-in-out file:[border-inline-end-width:1px] file:[margin-inline-end:0.75rem] 
           hover:file:bg-neutral-200 focus:border-primary focus:text-neutral-700 focus:shadow-te-primary 
           focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:file:bg-neutral-700 
-          dark:file:text-neutral-100 dark:focus:border-primary"
-          type="file" ref="archivo" @change="handleFileChange"/>
-      </div>
-      
-      <template #footer style="padding: 0px;">
-        <BaseButton :label="$t(`message.submit`)" type="submit" color="success"/>
-      </template>
-    </CardBox>    
+          dark:file:text-neutral-100 dark:focus:border-primary" type="file" ref="archivo" @change="handleFileChange" />
+        </div>
+
+        <template #footer style="padding: 0px;">
+          <BaseButton :label="$t(`message.submit`)" type="submit" color="success" />
+        </template>
+      </CardBox>
     </CardBox>
     <CardBox v-if="mainStore?.filesProjectApproaches?.Uploads?.length" class="mb-6" has-table>
       <UploadTableView @changePage="onChangePage" @sort="onSortPage" />
     </CardBox>
-    
+
   </CardBoxModal>
   <CardBoxModal v-model="isModalActive" :hasDone="hasModalValue">
     <div class="title-modal">
       <h2 style="font-weight: 700;">
-        {{  $t('message.project.project') }}: {{  tituloModal() }}
+        {{ $t('message.project.project') }}: {{ tituloModal() }}
       </h2>
       <h2 class="c-element-h2">
-        {{  $t('message.project.client') }}: {{  tituloProjectClientModal() }}
+        {{ $t('message.project.client') }}: {{ tituloProjectClientModal() }}
       </h2>
       <h2 class="c-element-h2">
-        {{  $t('message.audit.addRisk') }}
+        {{ $t('message.audit.addRisk') }}
       </h2>
-    </div>    
-    <CardBox isForm @submit.prevent="submit">      
+    </div>
+    <CardBox isForm @submit.prevent="submit">
       <div class="grid md:grid-cols-1 gap-2">
         <FormField :label="$t('message.audit.title')">
           <FormControl :name="'indice'" v-model="unidadRiesgo.titulo" :icon="mdiCodeBraces" />
@@ -321,26 +333,16 @@ const tituloProjectClientModal = () => {
           {{ approache.indice }}
         </td>
         <td :data-label="$t('message.audit.description')">
-          {{ approache.nombre }} 
+          {{ approache.nombre }}
         </td>
         <td class="before:hidden lg:w-1 whitespace-nowrap">
           <BaseButtons type="justify-start lg:justify-end" no-wrap>
-            <BaseButton
-              v-if="approache.rcr === 1 && approache.visible !== 1" 
-              :class="approache?.countRisk !== 0 ? 'backgroudWithRisk' : ''"
-              color="info"
-              :icon="mdiFire"
-              :messageTooltip="t('message.addRisk')" 
-              small 
-              @click="btnAddRiesgo(approache)" />
+            <BaseButton v-if="approache.rcr === 1 && approache.visible !== 1"
+              :class="approache?.countRisk !== 0 ? 'backgroudWithRisk' : ''" color="info" :icon="mdiFire"
+              :messageTooltip="t('message.addRisk')" small @click="btnAddRiesgo(approache)" />
 
-            <BaseButton 
-              v-if="approache.visible !== 1"
-              :class="approache?.countUpload !== 0 ? 'backgroundWithFile' : ''"
-              color="info" 
-              :icon="mdiUpload"
-              :messageTooltip="t('message.upload')" 
-              small 
+            <BaseButton v-if="approache.visible !== 1" :class="approache?.countUpload !== 0 ? 'backgroundWithFile' : ''"
+              color="info" :icon="mdiUpload" :messageTooltip="t('message.upload')" small
               @click="btnFormUploadFile(approache)" />
 
             <!-- <BaseButton color="info" :icon="mdiDelete" small /> -->
@@ -361,23 +363,24 @@ const tituloProjectClientModal = () => {
   </div>
 </template>
 <style scoped>
-.c-element-h2{
-    margin-top: 0px!important;
-    font-weight: 700;
+.c-element-h2 {
+  margin-top: 0px !important;
+  font-weight: 700;
 }
 
-.title-modal{
-    background: #ddd;
-    padding: 8px;
-    border-radius: 6px;
+.title-modal {
+  background: #ddd;
+  padding: 8px;
+  border-radius: 6px;
 }
+
 .backgroundWithFile {
   background: #111827;
   border: none;
 }
 
 .backgroudWithRisk {
-    background: #ff6e00;
-    border: none;
+  background: #ff6e00;
+  border: none;
 }
 </style>

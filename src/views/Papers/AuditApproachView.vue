@@ -61,14 +61,16 @@ const onChangePage = (page) => {
     endPointUse({ page })
 }
 
-const onRefresh = (page) => {
-    endPointUse({ page })
+const onRefresh = () => {
+    const node = JSON.parse(localStorage.getItem('selectedNode'))
+    onSearchChildren(node)
 }
 
 
 const onSearchChildren = (node) => {
     dataList.value = node
     titleAuditEnfoque.value = node?.ruta
+    localStorage.setItem('selectedNode', JSON.stringify(node))
     getAproaches(node)
 }
 
@@ -89,7 +91,6 @@ const getAproaches = (data) => {
     const dataParam = { page: page.value }
     const idEnfooque = _id === undefined ? 1 : _id
     enfoquesServices.getChildrenWithPaginate(idEnfooque, dataParam).then(response => {
-
         mainStore.auditAproaches = response
         page.value = response.page
         perPage.value = response.perPage
@@ -111,7 +112,6 @@ onMounted(async () => {
     const dataEnfoques = enfoques.filter((item) => item.tipoNodo !== 0);
     const menu11 = chilItem(nodeFirst, dataEnfoques)
     menuData.value = menu11[0].children
-    console.log(menuData.value)
 })
 
 const chilItem = (data, enfoques = []) => {
@@ -135,7 +135,6 @@ const titleModal = () => {
 }
 
 const onChangePageRisk = (pageRisk) => {
-    console.log(pageRisk)
     endPointRiskUse({pageRisk})
 }
 
@@ -144,7 +143,6 @@ const onSortPageRisk = (sortBy, sortDesc) => {
 }
 
 const endPointRiskUse = (pageRisk) => {
-    console.log(pageRisk)
     getRisk(pageRisk)
 }
 
@@ -250,7 +248,7 @@ const enviarParametros = (idCuadrante) => {
                         <div class="header-title">
                             <span class="span-header-title">{{ titleAuditEnfoque }}</span>
                         </div>
-                        <AudiTableView path="create" @changePage="onChangePage" @sort="onSortPage" @refresh="onRefresh"/>
+                        <AudiTableView path="create" @changePage="onChangePage" @sort="onSortPage" @refreshList="onRefresh"/>
                     </CardBox>
                     <CardBox v-else>
                         <CardBoxComponentEmpty />
