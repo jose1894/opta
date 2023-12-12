@@ -59,9 +59,9 @@ watch(searchTerm, function (newSearchTerm, oldSearchTerm) {
 </script>
 
 <template>
-    <div>
+    <div style="position: relative;">
       <input type="text" v-model="searchTerm" :placeholder="placeholder" style="width: 100%;height: 3rem;">
-      <ul v-if="filteredItems.length > 0 && showList">
+      <ul v-if="filteredItems.length > 0 && showList" style="position: absolute;">
         <li v-for="item in filteredItems" :key="item.id" @click="onItemClick(item)">
             {{ item.nombreCompleto }} {{ item?.apellidos }} 
         </li>

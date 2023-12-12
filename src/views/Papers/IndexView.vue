@@ -31,8 +31,8 @@ const showFormFieldCliente = ref(false);
 const showFormFieldPesona = ref(true);
 const showFormFieldPer = ref(false);
 
-const breadcrumbs = ref( [
-        { name: 'Inicio' },
+const breadcrumbs = ref([
+    { name: 'Inicio' },
 ])
 
 const format = (date) => {
@@ -69,7 +69,7 @@ const getProjects = (data) => {
     })
 }
 
-getProjects({page:page.value })
+getProjects({ page: page.value })
 
 const onChangeSwtch = () => {
     endPointUse(page.value)
@@ -161,7 +161,7 @@ const toggleFormFieldPersona = () => {
 }
 
 const enviarParametros = () => {
-    const { idCliente, fecha, codigo, idPersona } = params.value    
+    const { idCliente, fecha, codigo, idPersona } = params.value
     const date = fecha === null ? '' : moment(fecha).format('YYYY-MM-DD')
     if (idCliente === '' && fecha === null && codigo === '' && idPersona === '') {
         getProjects({ page: page.value })
@@ -181,17 +181,20 @@ const enviarParametros = () => {
 <template>
     <LayoutAuthenticated>
         <SectionMain>
-            <SectionTitleLineWithButton :icon="mdiGlobeModel" :title="$t('message.project.papers')"></SectionTitleLineWithButton>
+            <SectionTitleLineWithButton :icon="mdiGlobeModel" :title="$t('message.project.papers')">
+            </SectionTitleLineWithButton>
             <Breadcrumb :items="breadcrumbs" />
             <CardBox isForm @submit.prevent="submit" style="background: rgb(134 134 145 / 16%);">
                 <div class="grid md:grid-cols-2 gap-4">
-                    <FormField :label="$t('message.project.client')" v-if="showFormField" style="padding-top: 0.5rem;padding-bottom: 0.5rem;">
+                    <FormField :label="$t('message.project.client')" v-if="showFormField"
+                        style="padding-top: 0.5rem;padding-bottom: 0.5rem;">
                         <Autocomplete :placeholder="'Buscar...'" :search-function="searchFunction"
                             :render-function="renderFunction" :debounce-time="500">
                         </Autocomplete>
                     </FormField>
 
-                    <FormField :label="$t('message.project.client')" v-if="showFormFieldCliente" style="padding-top: 0.5rem;padding-bottom: 0.5rem;">
+                    <FormField :label="$t('message.project.client')" v-if="showFormFieldCliente"
+                        style="padding-top: 0.5rem;padding-bottom: 0.5rem;">
                         <FormControl :name="'name'" v-model="params.cliente" :icon="mdiCodeBraces"
                             @click="toggleFormField" />
                     </FormField>
@@ -200,17 +203,20 @@ const enviarParametros = () => {
                         <FormControl :name="'codigo'" v-model="params.codigo" :icon="mdiCodeBraces" />
                     </FormField>
 
-                    <FormField :label="$t('message.project.date')" style="padding-top: 0.5rem;padding-bottom: 0.5rem;height: 3rem;background: rgb(12, 4, 56)(38, 0, 255);" class="border-width: 1px;">
-                        <VueDatePicker v-model="params.fecha" :enable-time-picker="false" :format="format" style="height: 3rem;"/>
+                    <FormField :label="$t('message.project.date')" class="div-datepicker">
+                        <VueDatePicker v-model="params.fecha" :enable-time-picker="false" :format="format"
+                            style="height: 3rem;" />
                     </FormField>
 
-                    <FormField :label="$t('message.project.partner')" v-if="showFormFieldPesona" style="padding-top: 0.5rem;padding-bottom: 0.5rem;">
+                    <FormField :label="$t('message.project.partner')" v-if="showFormFieldPesona"
+                        style="padding-top: 0.5rem;padding-bottom: 0.5rem;">
                         <Autocomplete :placeholder="'Buscar...'" :search-function="searchFunctionPersonal"
                             :render-function="renderFunctionPersonal" :debounce-time="500">
                         </Autocomplete>
                     </FormField>
 
-                    <FormField :label="$t('message.project.partner')" v-if="showFormFieldPer" style="padding-top: 0.5rem;padding-bottom: 0.5rem;">
+                    <FormField :label="$t('message.project.partner')" v-if="showFormFieldPer"
+                        style="padding-top: 0.5rem;padding-bottom: 0.5rem;">
                         <FormControl :name="'name'" v-model="params.persona" :icon="mdiCodeBraces"
                             @click="toggleFormFieldPersona" />
                     </FormField>
@@ -235,7 +241,16 @@ const enviarParametros = () => {
     </LayoutAuthenticated>
 </template>
 <style scoped>
-.dp__pointer {
-    height: 3rem!important;
+
+.div-datepicker {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    height: 3rem;
+    background: rgb(12, 4, 56)(38, 0, 255);
+    border-width: 1px;
+}
+
+.dp__input_wrap input {
+    height: 3rem !important;
 }
 </style>

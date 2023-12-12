@@ -20,6 +20,7 @@ import FileSaver from 'file-saver';
 import VueHtml2pdf from 'vue3-html2pdf';
 import SectionReportPDF from '@/components/SectionReportPDF.vue'
 import PdfRisk from './PdfRisk.vue'
+import moment from 'moment';
 import { jsPDF } from "jspdf";
 
 const { t } = useI18n();
@@ -869,6 +870,10 @@ const generatePdf = (item) => {
         </div>
       `;
     html2Pdf.value.generatePdf(content);
+};
+const formatDate = (dateString, format) => {
+    const date = (dateString) ? moment(dateString).format(format) : ''
+  return date;
 };
 
 const onGenerated = (pdf) => {
@@ -1804,7 +1809,7 @@ const getContent = (item) => {
                     {{ descriptionCuadrante(risk.cuadrante) }}
                 </td>
                 <td :data-label="$t('message.audit.date')">
-                    16-08-2023
+                    {{ formatDate(risk?.fecha, 'DD/MM/YYYY') }}
                 </td>
                 <td class="before:hidden lg:w-1 whitespace-nowrap">
                     <div style="display: flex;">

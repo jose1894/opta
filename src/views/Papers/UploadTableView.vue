@@ -63,7 +63,7 @@ const btnDolownd = async(file) => {
   pdfUrl.value = URL.createObjectURL(blob);
   const link = document.createElement('a');
   link.href = pdfUrl.value;
-  link.download = file.nombreBinario;
+  link.download = file.nombre;
   link.click();
   
 }
