@@ -46,6 +46,7 @@ const pdfOrientation = 'portrait';
 const pdfContentWidth = '800px';
 
 const risksFrom = [
+    { id: 'Seleccione', label: t('message.select') },
     { id: 'Transacciones Recurrentes', label: t('message.risk.recurringTransactions') },
     { id: 'Transacciones no Recurrentes', label: t('message.risk.nonRecurringTransactions') },
     { id: 'Juicios y Estimaciones', label: t('message.risk.judgmentsAndEstimates') },
@@ -53,11 +54,11 @@ const risksFrom = [
 ];
 
 const quadrantOption = [
-    { id: 0, label: t('message.risk.quadrantI') },
-    { id: 1, label: t('message.risk.quadrantII') },
-    { id: 2, label: t('message.risk.quadrantIII') },
-    { id: 3, label: t('message.risk.quadrantIV') },
-    { id: 4, label: t('message.risk.othersRisk') }
+    { id: 1, label: t('message.risk.quadrantI') },
+    { id: 2, label: t('message.risk.quadrantII') },
+    { id: 3, label: t('message.risk.quadrantIII') },
+    { id: 4, label: t('message.risk.quadrantIV') },
+    { id: 0, label: t('message.risk.othersRisk') }
 ];
 
 const riskAreaOption = [
@@ -373,12 +374,15 @@ const openModalForm = (riskData, option) => {
         customChekSTR1Form.checkbox = typeRisk === 'A nivel de estados financieros' ? [typeRisk] : []
         customChekSTR2Form.checkbox = typeRisk !== 'A nivel de estados financieros' ? [typeRisk] : []
     }
+    riskDataSave.value.typeRisk = typeRisk
     riskDataSave.value.riesgoProveniente = risksFrom.filter(riskItem => riskItem.id === riesgoProveniente)[0]
     riskDataSave.value.cuadrante = quadrantOption.filter(item => item.id === cuadrante)[0]
     riskDataSave.value.areaRiesgo = riskAreaOption.filter(item => item.id === areaRiesgo)[0]
     customElementsENForm.radio = expectativasNegocio
+    riskDataSave.value.expectativasNegocio = expectativasNegocio
     customTypeRiskForm.radio = typeRisk
     customElementsForm.switch = procedimientosAdicionales === 'Si' ? [procedimientosAdicionales] : []
+    riskDataSave.value.procedimientosAdicionales = procedimientosAdicionales
     showFormPA.value = procedimientosAdicionales === 'Si' ? true : false
     riskDataSave.value.inherente = generalOptions.filter(item => item.id === inherente)[0]
     riskDataSave.value.control = generalOptions.filter(item => item.id === control)[0]
@@ -387,18 +391,30 @@ const openModalForm = (riskData, option) => {
     riskDataSave.value.procesosInvolucrados = procesosInvolucrados
     riskDataSave.value.fuentesCausantes = fuentesCausantes
     customChekS1Form.checkbox = ase_a1 !== '' ? [ase_a1] : []
+    riskDataSave.value.ase_a1 = ase_a1
     customChekS2Form.checkbox = ase_a2 !== '' ? [ase_a2] : []
+    riskDataSave.value.ase_a2 = ase_a2
     customChekS3Form.checkbox = ase_a3 !== '' ? [ase_a3] : []
+    riskDataSave.value.ase_a3 = ase_a3
     customChekS4Form.checkbox = ase_a4 !== '' ? [ase_a4] : []
+    riskDataSave.value.ase_a4 = ase_a4
     customChekS5Form.checkbox = ase_a5 !== '' ? [ase_a5] : []
+    riskDataSave.value.ase_a5 = ase_a5
     customChekS6Form.checkbox = ase_a6 !== '' ? [ase_a6] : []
+    riskDataSave.value.ase_a6 = ase_a6
 
     customChekSB1Form.checkbox = ase_b1 !== '' ? [ase_b1] : []
+    riskDataSave.value.ase_b1 = ase_b1
     customChekSB2Form.checkbox = ase_b2 !== '' ? [ase_b2] : []
+    riskDataSave.value.ase_b2 = ase_b2
     customChekSB3Form.checkbox = ase_b3 !== '' ? [ase_b3] : []
+    riskDataSave.value.ase_b3 = ase_b3
     customChekSB4Form.checkbox = ase_b4 !== '' ? [ase_b4] : []
+    riskDataSave.value.ase_b4 = ase_b4
     customChekSB5Form.checkbox = ase_b5 !== '' ? [ase_b5] : []
+    riskDataSave.value.ase_b5 = ase_b5
     customChekSB6Form.checkbox = ase_b6 !== '' ? [ase_b6] : []
+    riskDataSave.value.ase_b6 = ase_b6
 
     riskDataSave.value.sel_mon = additionalSelectOptions.filter(item => item.id === sel_mon)[0]
     riskDataSave.value.ref_sel_mon = ref_sel_mon
@@ -434,18 +450,31 @@ const clearFormValue = () => {
     customChekSTR1Form.checkbox = []
     customChekSTR2Form.checkbox = []
     customChekS1Form.checkbox = []
+    riskDataSave.value.ase_a1 = ""
     customChekS2Form.checkbox = []
+    riskDataSave.value.ase_a2 = ""
     customChekS3Form.checkbox = []
+    riskDataSave.value.ase_a3 = ""
     customChekS4Form.checkbox = []
+    riskDataSave.value.ase_a4 = ""
     customChekS5Form.checkbox = []
+    riskDataSave.value.ase_a5 = ""
     customChekS6Form.checkbox = []
+    riskDataSave.value.ase_a6 = ""
 
     customChekSB1Form.checkbox = []
+    riskDataSave.value.ase_b1 = ""
     customChekSB2Form.checkbox = []
+    riskDataSave.value.ase_b2 = ""
     customChekSB3Form.checkbox = []
+    riskDataSave.value.ase_b3 = ""
     customChekSB4Form.checkbox = []
+    riskDataSave.value.ase_b4 = ""
     customChekSB5Form.checkbox = []
+    riskDataSave.value.ase_b5 = ""
     customChekSB6Form.checkbox = []
+    riskDataSave.value.ase_b6 = ""
+    
 
     riskDataSave.value.sel_mon = additionalSelectOptions[0]
     riskDataSave.value.ref_sel_mon = ""

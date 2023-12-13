@@ -135,15 +135,21 @@ const titleModal = () => {
 }
 
 const onChangePageRisk = (pageRisk) => {
-    endPointRiskUse({pageRisk})
+    const dataParam = {
+        q: data,
+        pageRisk
+    }
+    console.log(dataParam)
+    endPointRiskUse(dataParam)
 }
 
 const onSortPageRisk = (sortBy, sortDesc) => {
     endPointRiskUseSort({ sortBy, sortDesc });
 }
 
-const endPointRiskUse = (pageRisk) => {
-    getRisk(pageRisk)
+const endPointRiskUse = (dataParam) => {
+    getRisk(dataParam)
+    
 }
 
 const endPointRiskUseSort = (sortBy, sortDesc) => {
@@ -160,7 +166,7 @@ const getRisk = (data) => {
 
 getRisk({pageRisk: pageRisk.value, q: data})
 
-const enviarParametros = (idCuadrante) => {    
+const enviarParametros = (idCuadrante) => { 
     if (idCuadrante !== 0) {
         const data2 = [
             {cuadrante:idCuadrante}
@@ -171,6 +177,14 @@ const enviarParametros = (idCuadrante) => {
     }
     
 } 
+
+const enviarParametrosEC = (value) => {    
+    const data3 = [
+        {expectativasNegocio:value}
+    ] 
+        getRisk({pageRisk:pageRisk.value, q: data, q3: data3 }) 
+        
+}
 
 </script>
 <template>
@@ -202,7 +216,7 @@ const enviarParametros = (idCuadrante) => {
                     <div class="c-padding-items" @click="enviarParametros(4)">
                         <span>{{ $t('message.audit.quadrantIV') }}</span>
                     </div>
-                    <div class="c-padding-items" @click="enviarParametros(0)">
+                    <div class="c-padding-items" @click="enviarParametrosEC('Expectativas del cliente')">
                         <span>{{ $t('message.audit.customerExpectations') }}</span>
                     </div>
                 </div>

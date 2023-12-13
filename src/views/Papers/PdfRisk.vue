@@ -82,19 +82,19 @@ const optionFalse = ref(false)
                     {{ $t('message.risk.quadrant') }}
                 </div>
                 <div class="c-card-content">
-                    <FormField v-if="risk.cuadrante === 4">
+                    <FormField v-if="risk.cuadrante === 0">
                         {{ $t('message.risk.othersRisk') }}
                     </FormField>
-                    <FormField v-if="risk.cuadrante === 3">
+                    <FormField v-if="risk.cuadrante === 4">
                         {{ $t('message.risk.quadrantIV') }}
                     </FormField>
-                    <FormField v-if="risk.cuadrante === 2">
+                    <FormField v-if="risk.cuadrante === 3">
                         {{ $t('message.risk.quadrantIII') }}
                     </FormField>
-                    <FormField v-if="risk.cuadrante === 1">
+                    <FormField v-if="risk.cuadrante === 2">
                         {{ $t('message.risk.quadrantII') }}
                     </FormField>
-                    <FormField v-if="risk.cuadrante === 0">
+                    <FormField v-if="risk.cuadrante === 1">
                         {{ $t('message.risk.quadrantI') }}
                     </FormField>
                 </div>
