@@ -1,5 +1,5 @@
 <script setup>
-import { defineProps, reactive, ref } from 'vue';
+import { defineProps, watch, ref, computed } from 'vue';
 import { useI18n } from "vue-i18n";
 import FormField from '@/components/FormField.vue';
 import FormControl from '@/components/FormControl.vue';
@@ -12,6 +12,27 @@ const props = defineProps({
 })
 const optionTrue = ref(true)
 const optionFalse = ref(false)
+const modelValueProp = computed(() => props.risk);
+
+watch(modelValueProp, (value) => {});
+
+const addFoarmatNumber = ( value, rowIndex, cellIndex ) => {
+    const n = cellIndex === 0 ? value : formattedNumber(value)
+    return n !== '' ? n : value
+}
+
+const formattedNumber = (number, decimalPlaces = 2, thousandsSeparator = '.') => {
+  const value = Number(number)
+  if (isNaN(value)) {
+    return ''
+  }
+  return value.toLocaleString(undefined, {
+    minimumFractionDigits: decimalPlaces,
+    maximumFractionDigits: decimalPlaces,
+    useGrouping: true,
+    grouping: thousandsSeparator
+  })
+}
 
 </script>
 <template>
@@ -514,28 +535,52 @@ const optionFalse = ref(false)
                         <tr class="trHeader">
                             <th></th>
                             <th></th>
-                            <th colspan="2" class="trHeader2">{{ $t('message.risk.balance') }}</th>
+                            <th colspan="2" class="trHeader2">
+                                <h3 style="font-weight: bold;">
+                                    {{ $t('message.risk.balance') }}
+                                </h3>
+                            </th>
                             <th colspan="2"></th>
                         </tr>
                         <tr style="background: #2563eb;color: white;">
-                            <th class="c-center">{{ $t('message.risk.ref') }}</th>
-                            <th class="c-center">{{ $t('message.risk.accountName') }}</th>
-                            <th class="c-center">{{ $t('message.risk.preliminary') }}</th>
-                            <th class="c-center">{{ $t('message.risk.final') }}</th>
-                            <th class="c-center">{{ $t('message.risk.affectedClaims') }}</th>
+                            <th class="c-center">
+                                <h3 style="font-weight: bold;">
+                                    {{ $t('message.risk.ref') }}
+                                </h3>                                
+                            </th>
+                            <th class="c-center">
+                                <h3 style="font-weight: bold;">
+                                    {{ $t('message.risk.accountName') }}
+                                </h3>                                 
+                            </th>
+                            <th class="c-center">
+                                <h3 style="font-weight: bold;">
+                                    {{ $t('message.risk.preliminary') }}
+                                </h3>
+                            </th>
+                            <th class="c-center">
+                                <h3 style="font-weight: bold;">
+                                    {{ $t('message.risk.final') }}
+                                </h3>
+                            </th>
+                            <th class="c-center">
+                                <h3 style="font-weight: bold;">
+                                    {{ $t('message.risk.affectedClaims') }}
+                                </h3>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="(row, rowIndex) in risk?.ctaFA?.rows" :key="rowIndex">
                             <td v-for="(cell, cellIndex) in row" :key="cellIndex">
-                                {{  risk.ctaFA?.rows[rowIndex][cellIndex] }}
+                                {{  addFoarmatNumber(risk.ctaFA?.rows[rowIndex][cellIndex], rowIndex, cellIndex) }}
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
 
-            <div class="grid lg:grid-cols-1 gap-1 card-header c-center" style="margin-bottom: 1.5rem;">
+            <div class="grid lg:grid-cols-1 gap-1 card-header c-center">
                 <h3 style="font-weight: bold;">
                     {{ $t('message.risk.evaluationOfControls') }}
                 </h3>                
@@ -546,12 +591,12 @@ const optionFalse = ref(false)
                     <tr>
                         <th></th>
                         <th>
-                            <h3 style="margin-top: 10px;font-weight: bold;">
+                            <h3 style="font-weight: bold;">
                                 {{ $t('message.risk.effectiveDesign') }}
                             </h3>
                         </th>
                         <th>
-                            <h3 style="margin-top: 10px;font-weight: bold;">
+                            <h3 style="font-weight: bold;">
                                 {{ $t('message.risk.effectiveOperability') }} 
                             </h3>                             
                         </th>
@@ -866,7 +911,7 @@ const optionFalse = ref(false)
                 </div>
             </div>
 
-            <div class="grid lg:grid-cols-1 gap-2">
+            <div class="grid lg:grid-cols-1 gap-2" style="margin-bottom: 0.3rem;">
                 <h3 style="font-weight: bold;">
                     {{ $t('message.risk.outcomeOfTheAuditProceduresApplied') }}
                 </h3>
@@ -1071,5 +1116,9 @@ h3 {
     flex-direction: row; 
     width: 100%; 
     gap:5px
+}
+
+td {
+  font-size: small; /* tamaño pequeño */
 }
 </style>

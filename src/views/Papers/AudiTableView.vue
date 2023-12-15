@@ -2,7 +2,7 @@
 import { computed, ref, reactive, defineEmits, defineProps } from "vue";
 import { useRouter } from "vue-router";
 import { useMainStore } from "@/stores/main";
-import { mdiDelete, mdiUpload, mdiFire } from "@mdi/js";
+import { mdiDelete, mdiUpload, mdiContentSaveCheck, mdiFire, mdiCheckDecagram } from "@mdi/js";
 import { useI18n } from "vue-i18n";
 import { useToast } from 'vue-toastification';
 import BaseLevel from "@/components/BaseLevel.vue";
@@ -337,12 +337,31 @@ const tituloProjectClientModal = () => {
         </td>
         <td class="before:hidden lg:w-1 whitespace-nowrap">
           <BaseButtons type="justify-start lg:justify-end" no-wrap>
-            <BaseButton v-if="approache.rcr === 1 && approache.visible !== 1"
-              :class="approache?.countRisk !== 0 ? 'backgroudWithRisk' : ''" color="info" :icon="mdiFire"
+
+            <BaseButton 
+              v-if="approache?.countRisk !== 0 && approache.rcr === 1 && approache.visible !== 1"
+              class="backgroudWithRiskUpload" 
+              color="info" 
+              :icon="mdiCheckDecagram"
+              :messageTooltip="t('message.itHasRisk')"/>            
+
+            <BaseButton 
+              v-if="approache.rcr === 1 && approache.visible !== 1"
+              color="info" 
+              :icon="mdiFire"
               :messageTooltip="t('message.addRisk')" small @click="btnAddRiesgo(approache)" />
 
-            <BaseButton v-if="approache.visible !== 1" :class="approache?.countUpload !== 0 ? 'backgroundWithFile' : ''"
-              color="info" :icon="mdiUpload" :messageTooltip="t('message.upload')" small
+            <BaseButton 
+              v-if="approache?.countUpload !== 0 && approache.visible !== 1"
+              class="backgroudWithRiskUpload" 
+              color="info" 
+              :icon="mdiContentSaveCheck"
+              :messageTooltip="t('message.ownsFiles')"/> 
+
+            <BaseButton v-if="approache.visible !== 1"
+              color="info" 
+              :icon="mdiUpload" 
+              :messageTooltip="t('message.upload')" small
               @click="btnFormUploadFile(approache)" />
 
             <!-- <BaseButton color="info" :icon="mdiDelete" small /> -->
@@ -373,14 +392,9 @@ const tituloProjectClientModal = () => {
   padding: 8px;
   border-radius: 6px;
 }
-
-.backgroundWithFile {
-  background: #111827;
-  border: none;
-}
-
-.backgroudWithRisk {
-  background: #ff6e00;
+.backgroudWithRiskUpload {
+  background: #ddd;
+  color: rgb(12 109 12);
   border: none;
 }
 </style>

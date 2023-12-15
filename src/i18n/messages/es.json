@@ -30,6 +30,8 @@
     "dolownd": "Descargar Archivo",
     "downloadZipFile": "Descargar archivo zip",
     "upload": "Subir Archivo",
+    "itHasRisk": "Posee Riesgo",
+    "ownsFiles": "Posee Archivos",
     "addRisk": "Agregar Riesgo",
     "print": "Imprimir",
     "restore": "Restaurar",

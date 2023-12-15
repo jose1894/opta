@@ -30,6 +30,8 @@
     "downloadZipFile": "Download zip file",
     "upload": "Upload File",
     "addRisk": "Add Risk",
+    "itHasRisk": "It has Risk",
+    "ownsFiles": "owns Files",
     "reset": "Reset",
     "redirect": "Redirect",
     "Add new": "Add new",
