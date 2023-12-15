@@ -425,7 +425,7 @@ const formattedNumber = (number, decimalPlaces = 2, thousandsSeparator = '.') =>
 
                 <FormField label="">
                     <FormCheckRadioGroup 
-                        v-if="risk.ase_a5 === 'VI. Presentación (PR)'" 
+                        v-if="risk.ase_a6 === 'VI. Presentación (PR)'" 
                         v-model="optionTrue"
                         name="sample-checkbox"
                         :options="{ 'VI. Presentación (PR)': $t('message.risk.viPresentation(PR)') }"/>
