@@ -888,7 +888,7 @@ const optionFalse = ref(false)
                     <thead>
                         <tr>
                             <th>{{ $t('message.risk.ref') }}</th>
-                            <th>{{ $t('message.risk.description') }}</th>
+                            <th>{{ $t('message.risk.descriptionOfAuditTests') }}</th>
                         </tr>
                     </thead>
                     <tbody>
