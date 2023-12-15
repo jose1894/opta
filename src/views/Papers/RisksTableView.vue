@@ -41,9 +41,10 @@ const inputsel_esp = ref(true)
 const inputsel_esp2 = ref(true)
 const html2Pdf = ref(null);
 const onlyReadonly = ref(true);
-const pdfFormat = 'a4';
-const pdfOrientation = 'portrait';
+const pdfFormat = ref('a4');
+const pdfOrientation = ref('portrait');
 const pdfContentWidth = '800px';
+
 
 const risksFrom = [
     { id: 'Seleccione', label: t('message.select') },
@@ -64,7 +65,7 @@ const quadrantOption = [
 const riskAreaOption = [
     { id: 0, label: t('message.risk.critical') },
     { id: 1, label: t('message.risk.strategic') },
-    { id: 3, label: t('message.risk.support') }
+    { id: 2, label: t('message.risk.support') }
 ];
 
 const radioOptions = [
@@ -250,6 +251,8 @@ const dataInitial = {
     ref_sel_esp2: "",
     sel2_ini: additionalSelect2Options[0],
     ref_sel2_ini: "",
+    sel2_ini2: additionalSelect2Options[0],
+    ref_sel2_ini2: "",
     refDes: refDesTableData,
     padc_enf: "",
     padc_res: "",
@@ -342,7 +345,7 @@ const openModalForm = (riskData, option) => {
         fuentesCausantes, ctaFA, ase_a1, ase_a2, ase_a3, ase_a4,
         ase_a5, ase_a6, ase_b1, ase_b2, ase_b3, ase_b4, ase_b5, ase_b6, sel_mon,ref_sel_mon,
         sel_mon2, ref_sel_mon2, sel_gen, ref_sel_gen, sel_gen2, ref_sel_gen2, sel_esp, ref_sel_esp, 
-        sel_esp2, ref_sel_esp2, sel2_ini, ref_sel2_ini, reasons_NT_cont, refDes, padc_enf, padc_res, pfo_mpro, rda_resi,
+        sel_esp2, ref_sel_esp2, sel2_ini, ref_sel2_ini, sel2_ini2, ref_sel2_ini2, reasons_NT_cont, refDes, padc_enf, padc_res, pfo_mpro, rda_resi,
         conclusion } = riskData
 
     riskDataSave.value.ref = `${indice.indice} - ${indice.nombre}`
@@ -430,6 +433,8 @@ const openModalForm = (riskData, option) => {
     riskDataSave.value.ref_sel_esp2 = ref_sel_esp2
     riskDataSave.value.sel2_ini = additionalSelect2Options.filter(item => item.id === sel2_ini)[0]
     riskDataSave.value.ref_sel2_ini = ref_sel2_ini
+    riskDataSave.value.sel2_ini2 = additionalSelect2Options.filter(item => item.id === sel2_ini2)[0]
+    riskDataSave.value.ref_sel2_ini2 = ref_sel2_ini2
     riskDataSave.value.reasons_NT_cont = reasons_NT_cont
 
     riskDataSave.value.padc_enf = padc_enf,
@@ -490,6 +495,8 @@ const clearFormValue = () => {
     riskDataSave.value.ref_sel_esp2 = ""
     riskDataSave.value.sel2_ini = additionalSelect2Options[0]
     riskDataSave.value.ref_sel2_ini = ""
+    riskDataSave.value.sel2_ini2 = additionalSelect2Options[0]
+    riskDataSave.value.ref_sel2_ini2 = ""
     riskDataSave.value.reasons_NT_cont = ""
 
     riskDataSave.value.padc_enf = ""
@@ -578,6 +585,8 @@ const action = async (riskDatae) => {
         ref_sel_esp2,
         sel2_ini,
         ref_sel2_ini,
+        sel2_ini2,
+        ref_sel2_ini2,
         reasons_NT_cont,
         refDes,
         padc_enf,
@@ -643,6 +652,8 @@ const action = async (riskDatae) => {
         ref_sel_esp2,
         sel2_ini: sel2_ini.id,
         ref_sel2_ini,
+        sel2_ini2: sel2_ini2.id,
+        ref_sel2_ini2,
         reasons_NT_cont,
         refDes,
         padc_enf,
@@ -1651,6 +1662,38 @@ const getContent = (item) => {
                                             </div>
                                         </div>
                                     </td>
+                                    <td>
+                                        <div class="c-card">
+                                            <div class="c-card-header-ref">
+                                                <div class="div-ref">
+                                                    {{ $t('message.risk.informationIntegrity') }}
+                                                </div>
+                                                <div class="div-ref">
+                                                    {{ $t('message.risk.ref') }}
+                                                </div>                                                
+                                            </div> 
+
+                                            <div class="c-card-content c-card-content-ref">
+                                                <div style="width: 50%;">
+                                                    <FormField>
+                                                        <FormControl 
+                                                            v-model="riskDataSave.sel2_ini2" 
+                                                            :icon="mdiListStatus"
+                                                            :readonly="onlyReadonly"
+                                                            :options="additionalSelect2Options" />
+                                                    </FormField>                                                
+                                                </div>                                                
+                                                <div style="width: 50%;">
+                                                    <FormField>
+                                                        <FormControl 
+                                                            v-model="riskDataSave.ref_sel2_ini2" 
+                                                            :icon="mdiRenameBox"
+                                                            :readonly="onlyReadonly"/>
+                                                    </FormField>                                                
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -1842,8 +1885,11 @@ const getContent = (item) => {
                 </td>
                 <td class="before:hidden lg:w-1 whitespace-nowrap">
                     <div style="display: flex;">
-                        <SectionReportPDF style="margin-right: 10px;" :pdf-format="pdfFormat"
-                            :pdf-orientation="pdfOrientation" :pdf-content-width="pdfContentWidth"
+                        <SectionReportPDF 
+                            style="margin-right: 10px;" 
+                            :pdf-format="pdfFormat"
+                            :pdf-orientation="pdfOrientation" 
+                            :pdf-content-width="pdfContentWidth"
                             :content="getContent(risk)">
                             <template v-slot:pdf-content>
                                 <PdfRisk :risk="risk"/>

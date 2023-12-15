@@ -16,25 +16,40 @@ const optionFalse = ref(false)
 </script>
 <template>
     <div style="margin: 20px">
-        <h1 class="c-center" style="margin-top: 10px;">
+        <h1 class="c-center" style="margin-top: 10px; font-weight: 700;">
             {{ $t('message.audit.riskControlRegistration') }}
         </h1>
 
-        <FormField :label="$t('message.risk.ref')">
-           {{ risk.indice.indice }} - {{ risk.indice.nombre }} {{ risk.expectativasNegocio }}
-        </FormField>
+        <h3 style="margin-top: 10px;font-weight: bold;">
+            {{ $t('message.risk.ref') }}
+        </h3>
+        <div class="div-p">
+            <p class="texto-p"> 
+                {{ risk.indice.indice }} - {{ risk.indice.nombre }}
+            </p>
+        </div>
 
-        <FormField :label="$t('message.risk.title')">
-            <FormControl :name="'titulo'" v-model="risk.titulo"/>
-        </FormField>
+        <h3 style="margin-top: 10px;font-weight: bold;">
+            {{ $t('message.risk.title') }}
+        </h3>
+        <div class="div-p">
+            <p class="texto-p"> 
+                {{ risk.titulo }}
+            </p>
+        </div>
+        
+        <h3 style="margin-top: 10px;font-weight: bold;">
+            {{ $t('message.risk.description') }}
+        </h3>
+        <div class="div-p">
+            <p class="texto-p"> 
+                {{ risk.descripcion }} 
+            </p>
+        </div>
 
-        <FormField :label="$t('message.risk.description')" style="margin-bottom: 0.5rem;">
-            <FormControl type="textarea" v-model="risk.descripcion"/>
-        </FormField>
-
-        <h1 style="margin-bottom: 0.5rem; font-weight: 700;">
+        <h3 style="margin-top: 10px; margin-bottom: 15px; font-weight: bold;">
             {{ $t('message.risk.typeOfRisk') }}
-        </h1>
+        </h3>
 
         <div class="grid md:grid-cols-2 gap-2">
             <FormField label="">
@@ -67,205 +82,258 @@ const optionFalse = ref(false)
         <div class="grid lg:grid-cols-3 gap-3" style="margin-bottom: 0.5rem;">
             <div class="c-card">
                 <div class="c-card-header">
-                    {{ $t('message.risk.riskFrom') }}
+                    <h3 style="margin-top: 10px;font-weight: bold;">
+                        {{ $t('message.risk.riskFrom') }}
+                    </h3>                    
                 </div>
 
                 <div class="c-card-content">
-                    <FormField>
-                        <FormControl v-model="risk.riesgoProveniente"/>
-                    </FormField>
+                    <div class="div-p c-center border-p">
+                        <p class="texto-p">
+                            {{ risk.riesgoProveniente }}
+                        </p>
+                    </div>
                 </div>                
             </div>
 
             <div class="c-card">
                 <div class="c-card-header">
-                    {{ $t('message.risk.quadrant') }}
+                    <h3 style="margin-top: 10px;font-weight: bold;">
+                        {{ $t('message.risk.quadrant') }}
+                    </h3>
                 </div>
                 <div class="c-card-content">
-                    <FormField v-if="risk.cuadrante === 0">
-                        {{ $t('message.risk.othersRisk') }}
-                    </FormField>
-                    <FormField v-if="risk.cuadrante === 4">
-                        {{ $t('message.risk.quadrantIV') }}
-                    </FormField>
-                    <FormField v-if="risk.cuadrante === 3">
-                        {{ $t('message.risk.quadrantIII') }}
-                    </FormField>
-                    <FormField v-if="risk.cuadrante === 2">
-                        {{ $t('message.risk.quadrantII') }}
-                    </FormField>
-                    <FormField v-if="risk.cuadrante === 1">
-                        {{ $t('message.risk.quadrantI') }}
-                    </FormField>
+                    <div class="div-p c-center border-p">
+                        <p class="texto-p" v-if="risk.cuadrante === 0">
+                            {{ $t('message.risk.othersRisk') }}
+                        </p>
+                        <p class="texto-p" v-if="risk.cuadrante === 4">
+                            {{ $t('message.risk.quadrantIV') }}
+                        </p>
+                        <p class="texto-p" v-if="risk.cuadrante === 3">
+                            {{ $t('message.risk.quadrantIII') }}
+                        </p>
+                        <p class="texto-p" v-if="risk.cuadrante === 2">
+                            {{ $t('message.risk.quadrantII') }}
+                        </p>
+                        <p class="texto-p" v-if="risk.cuadrante === 1">
+                            {{ $t('message.risk.quadrantI') }}
+                        </p>
+                    </div>
                 </div>
             </div>
 
             <div class="c-card">
                 <div class="c-card-header">
-                    {{ $t('message.risk.affectedProcess') }}
+                    <h3 style="margin-top: 10px;font-weight: bold;">
+                        {{ $t('message.risk.affectedProcess') }}
+                    </h3>                    
                 </div>
                 <div class="c-card-content">
-                    <FormField v-if="risk.areaRiesgo === 3">
-                        {{ $t('message.risk.support') }}
-                    </FormField>
-                    <FormField v-if="risk.areaRiesgo === 2">
-                        {{ $t('message.risk.strategic') }}
-                    </FormField>
-                    <FormField v-if="risk.areaRiesgo === 1">
-                        {{ $t('message.risk.critical') }}
-                    </FormField>
+                    <div class="div-p c-center border-p">
+                        <p class="texto-p" v-if="risk.areaRiesgo === 2">
+                            {{ $t('message.risk.support') }}
+                        </p>
+                        <p class="texto-p" v-if="risk.areaRiesgo === 1">
+                            {{ $t('message.risk.strategic') }}
+                        </p>
+                        <p class="texto-p" v-if="risk.areaRiesgo === 0">
+                            {{ $t('message.risk.critical') }}
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="grid lg:grid-cols-1 card-header" style="margin-bottom: 0.5rem;">
-            <h1 style="margin-bottom: 0.5rem; font-weight: 700;" class="card-header-h1">
+        <div class="grid lg:grid-cols-1 card-header c-center">
+            <h3 style="font-weight: bold;">
                 {{ $t('message.risk.natureOfTheRisk') }}
-            </h1>
+            </h3>
         </div>
 
         <div class="grid lg:grid-cols-1 gap-1">
-            <h1 style="font-weight: 700;">Riesgo de error en los estados financieros</h1>
+            <h3 style="font-weight: bold;">
+                Riesgo de error en los estados financieros
+            </h3>
             <div class="grid md:grid-cols-2 gap-2">
-                <FormField label="">
-                    <FormCheckRadioGroup 
+                <div style="position: relative;">                    
+                    <input 
                         v-if="risk.expectativasNegocio === 'Intencional (Fraude)'" 
+                        type="radio" 
+                        value="true" 
                         v-model="optionTrue" 
-                        name="sample-radio" 
-                        type="radio"
-                        :options="{ 'Intencional (Fraude)': t('message.risk.intentional') }" />
-                    <FormCheckRadioGroup 
-                        v-else
-                        v-model="optionFalse" 
-                        name="sample-radio" 
-                        type="radio"
-                        :options="{ 'Intencional (Fraude)': t('message.risk.intentional') }" />                
-                </FormField>
-
-                <FormField label="">
-                    <FormCheckRadioGroup 
-                        v-if="risk.expectativasNegocio === 'No Intencionales'" 
-                        v-model="optionTrue" 
-                        name="sample-radio" 
-                        type="radio"
-                        :options="{ 'No Intencionales': t('message.risk.unintentional') }" />
-                    <FormCheckRadioGroup 
-                        v-else
-                        v-model="optionFalse" 
-                        name="sample-radio" 
-                        type="radio"
-                        :options="{ 'No Intencionales': t('message.risk.unintentional') }" />                
-                </FormField>
-
-                <FormField label="">
-                    <FormCheckRadioGroup 
-                        v-if="risk.expectativasNegocio === 'Viabilidad del negocio'" 
-                        v-model="optionTrue" 
-                        name="sample-radio" 
-                        type="radio"
-                        :options="{ 'Viabilidad del negocio': t('message.risk.businessViability') }" />
-                    <FormCheckRadioGroup 
-                        v-else
-                        v-model="optionFalse" 
-                        name="sample-radio" 
-                        type="radio"
-                        :options="{ 'Viabilidad del negocio': t('message.risk.businessViability') }" />                
-                </FormField>
-
-                <FormField label="">
-                    <FormCheckRadioGroup 
-                        v-if="risk.expectativasNegocio === 'Viabilidad del negocio'" 
-                        v-model="optionTrue"  
-                        name="sample-radio" 
-                        type="radio"
-                        :options="{ 'Expectativas del cliente': t('message.risk.customerExpectations') }" />
-                    <FormCheckRadioGroup 
+                        style="background: #4CAF50;">
+                    <input 
                         v-else 
-                        v-model="optionFalse"  
-                        name="sample-radio" 
-                        type="radio"
-                        :options="{ 'Expectativas del cliente': t('message.risk.customerExpectations') }" />                                  
-                </FormField>                
+                        type="radio" 
+                        v-model="optionFalse">
+                    <span class="div-span"> 
+                        {{ t('message.risk.intentional') }} 
+                    </span>  
+                </div>                
+
+                <div style="position: relative;">                    
+                    <input 
+                        v-if="risk.expectativasNegocio === 'No Intencionales'" 
+                        type="radio" 
+                        value="true" 
+                        v-model="optionTrue" 
+                        style="background: #4CAF50;">
+                    <input 
+                        v-else 
+                        type="radio" 
+                        v-model="optionFalse">
+                    <span class="div-span"> 
+                        {{ t('message.risk.unintentional') }} 
+                    </span>  
+                </div>
+
+                <div style="position: relative;">                    
+                    <input 
+                        v-if="risk.expectativasNegocio === 'Viabilidad del negocio'" 
+                        type="radio" 
+                        value="true" 
+                        v-model="optionTrue" 
+                        style="background: #4CAF50;">
+                    <input 
+                        v-else 
+                        type="radio" 
+                        v-model="optionFalse">
+                    <span class="div-span"> 
+                        {{ t('message.risk.businessViability') }} 
+                    </span>  
+                </div>
+
+                <div style="position: relative;">                    
+                    <input 
+                        v-if="risk.expectativasNegocio === 'Expectativas del cliente'" 
+                        type="radio" 
+                        value="true" 
+                        v-model="optionTrue" 
+                        style="background: #4CAF50;">
+                    <input 
+                        v-else 
+                        type="radio" 
+                        v-model="optionFalse">
+                    <span class="div-span"> 
+                        {{ t('message.risk.customerExpectations') }} 
+                    </span>  
+                </div>                             
             </div>
         </div>
-        <div class="grid lg:grid-cols-1 gap-1" style="margin-bottom: 0.5rem;">
-            <h1 style="font-weight: 700;">
+        <div class="grid lg:grid-cols-1 gap-1" style="margin-bottom: 0.5rem; display: flex; ">
+            <h3 style="font-weight: bold;">
                 {{ $t('message.risk.additionalProcedures') }}
-            </h1>
-            <div class="grid md:grid-cols-2" style="padding: 2px;">
-                <FormField label="">
+            </h3>
+            <div class="div-p">
+                <p class="texto-p"> 
                     {{ risk.procedimientosAdicionales }}
-                </FormField>
+                </p>
             </div>
         </div>
 
         <div v-show=" risk.procedimientosAdicionales === 'Si'">
-            <div class="grid lg:grid-cols-1 card-header" style="margin-bottom: 0.5rem;">
-                <h1 style="margin-bottom: 0.5rem; font-weight: 700;" class="card-header-h1">
+            <div class="grid lg:grid-cols-1 card-header c-center" style="margin-bottom:15px">
+                <h3 style="font-weight: bold;">
                     {{ $t('message.risk.risksAssessment') }}
-                </h1>
+                </h3>
             </div>
             <div class="grid lg:grid-cols-3 gap-3 mb-4">
                 <div class="c-card">
                     <div class="c-card-header">
-                        {{ $t('message.risk.inherent') }}
+                        <h3 style="margin-top: 10px;font-weight: bold;">
+                            {{ $t('message.risk.affectedProcess') }}
+                        </h3> 
                     </div>
                     <div class="c-card-content">
-                        <FormField>
-                            <FormControl v-model="risk.inherente"/>
-                        </FormField>
+                        <div class="div-p c-center border-p">
+                            <p class="texto-p">
+                                 {{ risk.inherente }}
+                            </p>
+                        </div>
                     </div>
                 </div>
 
                 <div class="c-card">
                     <div class="c-card-header">
-                        {{ $t('message.risk.control') }}
+                        <h3 style="margin-top: 10px;font-weight: bold;">
+                            {{ $t('message.risk.control') }}
+                        </h3>                         
                     </div>
                     <div class="c-card-content">
-                        <FormField>
-                            <FormControl v-model="risk.control"/>
-                        </FormField>
+                        <div class="div-p c-center border-p">
+                            <p class="texto-p">
+                                 {{ risk.control }}
+                            </p>
+                        </div>
                     </div>
                 </div>
 
                 <div class="c-card">
                     <div class="c-card-header">
-                        {{ $t('message.risk.detection') }}
+                        <h3 style="margin-top: 10px;font-weight: bold;">
+                            {{ $t('message.risk.detection') }}
+                        </h3> 
                     </div>
                     <div class="c-card-content">
-                        <FormField>
-                            <FormControl v-model="risk.analitico"/>
-                        </FormField>
+                        <div class="div-p c-center border-p">
+                            <p class="texto-p">
+                                 {{ risk.analitico }}
+                            </p>
+                        </div>
                     </div>
                 </div>            
             </div>
 
             <div class="grid lg:grid-cols-1 gap-1 mb-8" style="margin-bottom: 0.5rem;">
-                <FormField :label="$t('message.risk.riskFactor')">
-                    <FormControl :name="'titulo'" v-model="risk.factorRiesgo"/>
-                </FormField>
+
+                <h3 style="font-weight: bold;">
+                    {{ $t('message.risk.riskFactor') }}
+                </h3>
+                <div class="div-p">
+                    <p class="texto-p">
+                        {{ risk.factorRiesgo }}
+                    </p>
+                </div>
+
             </div>
 
-            <div class="grid lg:grid-cols-2 gap-2" style="margin-bottom: 0.5rem;">
-                <FormField :label="$t('message.risk.processesWhereRiskIsInvolved')">
-                    <FormControl type="textarea" v-model="risk.procesosInvolucrados"/>
-                </FormField>
+            <div class="grid grid-cols-1 gap-2" style="margin-bottom: 0.5rem;">
 
-                <FormField :label="$t('message.risk.causativeSourceOfRisk')">
-                    <FormControl type="textarea" v-model="risk.fuentesCausantes"/>
-                </FormField>
+                <h3 style="font-weight: bold;">
+                    {{ $t('message.risk.processesWhereRiskIsInvolved') }}
+                </h3>
+                <div class="div-p">
+                    <p class="texto-p">
+                        {{ risk.procesosInvolucrados }}
+                    </p>
+                </div>
+
             </div>
 
-            <div class="grid lg:grid-cols-1 gap-1 card-header" style="margin-bottom: 0.5rem;">
-                <h1 style="margin-bottom: 0.5rem; font-weight: 700;" class="card-header-h1">
+            <div class="grid grid-cols-1 gap-2" style="margin-bottom: 0.5rem;">
+
+                <h3 style="font-weight: bold;">
+                    {{ $t('message.risk.causativeSourceOfRisk') }}
+                </h3>
+                <div class="div-p">
+                    <p class="texto-p">
+                        {{ risk.fuentesCausantes }}
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="grid lg:grid-cols-1 gap-1 card-header c-center" style="margin-bottom: 0.5rem;">
+                <h3 style="font-weight: bold;">
                     {{ $t('message.risk.associatedAssertions') }}
-                </h1>
+                </h3>                
             </div>
 
             <div class="grid lg:grid-cols-1 gap-1">
-                <h1 style="margin-bottom: 0.5rem; font-weight: 700;">
+                <h3 style="font-weight: bold; margin-bottom: 12px;">
                     {{ $t('message.risk.assertionsAboutTransactionClassesAndEvents') }}
-                </h1>
+                </h3>
             </div>
 
             <div class="grid md:grid-cols-3 gap-3">
@@ -349,9 +417,9 @@ const optionFalse = ref(false)
             </div>
 
             <div class="grid lg:grid-cols-1 gap-1">
-                <h1 style="margin-bottom: 0.5rem; font-weight: 700;">
+                <h3 style="font-weight: bold; margin-bottom: 12px;">
                     {{ $t('message.risk.statementsOnBalancingItems') }}
-                </h1>
+                </h3>
             </div>
             
             <div class="grid md:grid-cols-2 gap-2">
@@ -434,10 +502,10 @@ const optionFalse = ref(false)
                 </FormField>
             </div>
 
-            <div class="grid lg:grid-cols-1 gap-1 card-header" style="margin-bottom: 0.5rem;">
-                <h1 style="margin-bottom: 0.5rem; font-weight: 700;" class="card-header-h1">
+            <div class="grid lg:grid-cols-1 gap-1 card-header c-center" style="margin-bottom: 0.5rem;">
+                <h3 style="font-weight: bold;">
                     {{ $t('message.risk.accountOfAffectedFinancialStatementsAndStatements') }}
-                </h1>
+                </h3>
             </div>
 
             <div class="grid lg:grid-cols-1 gap-1">
@@ -467,18 +535,26 @@ const optionFalse = ref(false)
                 </table>
             </div>
 
-            <div class="grid lg:grid-cols-1 gap-1 card-header" style="margin-bottom: 1.5rem;">
-                <h1 style="margin-bottom: 1.5rem; font-weight: 700;" class="card-header-h1">
+            <div class="grid lg:grid-cols-1 gap-1 card-header c-center" style="margin-bottom: 1.5rem;">
+                <h3 style="font-weight: bold;">
                     {{ $t('message.risk.evaluationOfControls') }}
-                </h1>
+                </h3>                
             </div>
 
             <table>
                 <thead>
                     <tr>
                         <th></th>
-                        <th>{{ $t('message.risk.effectiveDesign') }} </th>
-                        <th>{{ $t('message.risk.effectiveOperability') }} </th>
+                        <th>
+                            <h3 style="margin-top: 10px;font-weight: bold;">
+                                {{ $t('message.risk.effectiveDesign') }}
+                            </h3>
+                        </th>
+                        <th>
+                            <h3 style="margin-top: 10px;font-weight: bold;">
+                                {{ $t('message.risk.effectiveOperability') }} 
+                            </h3>                             
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -488,27 +564,65 @@ const optionFalse = ref(false)
                         </td>
                         <td>
                             <div class="c-card">
-                                <div class="c-card-header">
-                                    {{ $t('message.risk.monitoring') }}
+                                <div class="c-card-header-ref">
+                                    <div class="div-ref">
+                                        <h3 style="margin-top: 10px;font-weight: bold;">
+                                            {{ $t('message.risk.monitoring') }}
+                                        </h3> 
+                                    </div>
+                                    <div class="div-ref">
+                                        <h3 style="margin-top: 10px;font-weight: bold;">
+                                            {{ $t('message.risk.ref') }}
+                                        </h3>
+                                    </div>                                                
                                 </div>
-                                <div class="c-card-content">
-                                    <FormField>
-                                        <FormControl v-model="risk.sel_mon"/>
-                                    </FormField>
+                                <div class="c-card-content-ref">
+                                    <div class="div-p border-p" style="width: 100%; display: flex;">
+                                        <div style="width: 50%;" class="c-center">
+                                            <p class="texto-p"> 
+                                                {{ risk.sel_mon }}
+                                            </p>                                        
+                                        </div>
+
+                                        <div style="width: 50%;" class="c-center">
+                                            <p class="texto-p">
+                                                {{ risk.ref_sel_mon }}
+                                            </p>                                        
+                                        </div>                                        
+                                    </div>
                                 </div>
-                            </div>
+                            </div> 
                         </td>
                         <td>
                             <div class="c-card">
-                                <div class="c-card-header">
-                                    {{ $t('message.risk.monitoring') }}
+                                <div class="c-card-header-ref">
+                                    <div class="div-ref">
+                                        <h3 style="margin-top: 10px;font-weight: bold;">
+                                            {{ $t('message.risk.monitoring') }}
+                                        </h3>                                        
+                                    </div>
+                                    <div class="div-ref">
+                                        <h3 style="margin-top: 10px;font-weight: bold;">
+                                            {{ $t('message.risk.ref') }}
+                                        </h3>                                        
+                                    </div>                                                
                                 </div>
-                                <div class="c-card-content">
-                                    <FormField>
-                                        <FormControl v-model="risk.sel_mon2"/>
-                                    </FormField>
+                                <div class="c-card-content-ref">
+                                    <div class="div-p border-p" style="width: 100%; display: flex;">
+                                        <div style="width: 50%;" class="c-center">
+                                            <p class="texto-p"> 
+                                                {{ risk.sel_mon2 }}
+                                            </p>                                        
+                                        </div>
+
+                                        <div style="width: 50%;" class="c-center">
+                                            <p class="texto-p">
+                                                {{ risk.ref_sel_mon2 }}
+                                            </p>                                        
+                                        </div>                                        
+                                    </div>
                                 </div>
-                            </div>
+                            </div>                            
                         </td>
                     </tr>
 
@@ -518,25 +632,63 @@ const optionFalse = ref(false)
                         </td>
                         <td>
                             <div class="c-card">
-                                <div class="c-card-header">
-                                    {{ $t('message.risk.general') }}
+                                <div class="c-card-header-ref">
+                                    <div class="div-ref">
+                                        <h3 style="margin-top: 10px;font-weight: bold;">
+                                            {{ $t('message.risk.general') }}
+                                        </h3>
+                                    </div>
+                                    <div class="div-ref">
+                                        <h3 style="margin-top: 10px;font-weight: bold;">
+                                            {{ $t('message.risk.ref') }}
+                                        </h3>
+                                    </div>                                                
                                 </div>
-                                <div class="c-card-content">
-                                    <FormField>
-                                        <FormControl v-model="risk.sel_gen"/>
-                                    </FormField>
+                                <div class="c-card-content-ref">
+                                    <div class="div-p border-p" style="width: 100%; display: flex;">
+                                        <div style="width: 50%;" class="c-center">
+                                            <p class="texto-p"> 
+                                                {{ risk.sel_gen }}
+                                            </p>                                        
+                                        </div>
+
+                                        <div style="width: 50%;" class="c-center">
+                                            <p class="texto-p">
+                                                {{ risk.ref_sel_gen }}
+                                            </p>                                        
+                                        </div>                                        
+                                    </div>
                                 </div>
                             </div>
                         </td>
                         <td>
                             <div class="c-card">
-                                <div class="c-card-header">
-                                    {{ $t('message.risk.general') }}
+                                <div class="c-card-header-ref">
+                                    <div class="div-ref">
+                                         <h3 style="margin-top: 10px;font-weight: bold;">
+                                            {{ $t('message.risk.general') }}
+                                        </h3>                                        
+                                    </div>
+                                    <div class="div-ref">
+                                         <h3 style="margin-top: 10px;font-weight: bold;">
+                                            {{ $t('message.risk.ref') }}
+                                        </h3>                                        
+                                    </div>                                                
                                 </div>
-                                <div class="c-card-content">
-                                    <FormField>
-                                        <FormControl v-model="risk.sel_gen2"/>
-                                    </FormField>
+                                <div class="c-card-content-ref">
+                                    <div class="div-p border-p" style="width: 100%; display: flex;">
+                                        <div style="width: 50%;" class="c-center">
+                                            <p class="texto-p"> 
+                                                {{ risk.sel_gen2 }}
+                                            </p>                                        
+                                        </div>
+
+                                        <div style="width: 50%;" class="c-center">
+                                            <p class="texto-p">
+                                                {{ risk.ref_sel_gen2 }}
+                                            </p>                                        
+                                        </div>                                        
+                                    </div>
                                 </div>
                             </div>
                         </td>
@@ -548,25 +700,63 @@ const optionFalse = ref(false)
                         </td>
                         <td>
                             <div class="c-card">
-                                <div class="c-card-header">
-                                    {{ $t('message.risk.specific') }}
+                                <div class="c-card-header-ref">
+                                    <div class="div-ref">
+                                        <h3 style="margin-top: 10px;font-weight: bold;">
+                                            {{ $t('message.risk.specific') }}
+                                        </h3>
+                                    </div>
+                                    <div class="div-ref">
+                                        <h3 style="margin-top: 10px;font-weight: bold;">
+                                            {{ $t('message.risk.ref') }}
+                                        </h3>
+                                    </div>                                                
                                 </div>
-                                <div class="c-card-content">
-                                    <FormField>
-                                        <FormControl v-model="risk.sel_esp"/>
-                                    </FormField>
+                                <div class="c-card-content-ref">
+                                    <div class="div-p border-p" style="width: 100%; display: flex;">
+                                        <div style="width: 50%;" class="c-center">
+                                            <p class="texto-p"> 
+                                                {{ risk.sel_esp }}
+                                            </p>                                        
+                                        </div>
+
+                                        <div style="width: 50%;" class="c-center">
+                                            <p class="texto-p">
+                                                {{ risk.ref_sel_esp }}
+                                            </p>                                        
+                                        </div>                                        
+                                    </div>
                                 </div>
                             </div>
                         </td>
                         <td>
                             <div class="c-card">
-                                <div class="c-card-header">
-                                    {{ $t('message.risk.specific') }}
+                                <div class="c-card-header-ref">
+                                    <div class="div-ref">
+                                        <h3 style="margin-top: 10px;font-weight: bold;">
+                                            {{ $t('message.risk.specific') }}
+                                        </h3>                                        
+                                    </div>
+                                    <div class="div-ref">
+                                        <h3 style="margin-top: 10px;font-weight: bold;">
+                                            {{ $t('message.risk.ref') }}
+                                        </h3>                                        
+                                    </div>                                                
                                 </div>
-                                <div class="c-card-content">
-                                    <FormField>
-                                        <FormControl v-model="risk.sel_esp2"/>
-                                    </FormField>
+                                <div class="c-card-content-ref">
+                                    <div class="div-p border-p" style="width: 100%; display: flex;">
+                                        <div style="width: 50%;" class="c-center">
+                                            <p class="texto-p"> 
+                                                {{ risk.sel_esp2 }}
+                                            </p>                                        
+                                        </div>
+
+                                        <div style="width: 50%;" class="c-center">
+                                            <p class="texto-p">
+                                                {{ risk.ref_sel_esp2 }}
+                                            </p>                                        
+                                        </div>                                        
+                                    </div>
                                 </div>
                             </div>
                         </td>
@@ -578,13 +768,63 @@ const optionFalse = ref(false)
                         </td>
                         <td>
                             <div class="c-card">
-                                <div class="c-card-header">
-                                    {{ $t('message.risk.informationIntegrity') }}
+                                <div class="c-card-header-ref">
+                                    <div class="div-ref">
+                                        <h3 style="margin-top: 10px;font-weight: bold;">
+                                            {{ $t('message.risk.informationIntegrity') }}
+                                        </h3>
+                                    </div>
+                                    <div class="div-ref">
+                                        <h3 style="margin-top: 10px;font-weight: bold;">
+                                            {{ $t('message.risk.ref') }}
+                                        </h3> 
+                                    </div>                                                
                                 </div>
-                                <div class="c-card-content">
-                                    <FormField>
-                                        <FormControl v-model="risk.sel2_ini"/>
-                                    </FormField>
+                                <div class="c-card-content-ref">
+                                    <div class="div-p border-p" style="width: 100%; display: flex;">
+                                        <div style="width: 50%;" class="c-center">
+                                            <p class="texto-p"> 
+                                                {{ risk.sel2_ini }}
+                                            </p>                                        
+                                        </div>
+
+                                        <div style="width: 50%;" class="c-center">
+                                            <p class="texto-p">
+                                                {{ risk.ref_sel2_ini }}
+                                            </p>                                        
+                                        </div>                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="c-card">
+                                <div class="c-card-header-ref">
+                                    <div class="div-ref">
+                                        <h3 style="margin-top: 10px;font-weight: bold;">
+                                            {{ $t('message.risk.informationIntegrity') }}
+                                        </h3>                                        
+                                    </div>
+                                    <div class="div-ref">
+                                        <h3 style="margin-top: 10px;font-weight: bold;">
+                                            {{ $t('message.risk.ref') }}
+                                        </h3>                                        
+                                    </div>                                                
+                                </div>
+                                <div class="c-card-content-ref">
+                                    <div class="div-p border-p" style="width: 100%; display: flex;">
+                                        <div style="width: 50%;" class="c-center">
+                                            <p class="texto-p"> 
+                                                {{ risk.sel2_ini2 }} 
+                                            </p>                                        
+                                        </div>
+
+                                        <div style="width: 50%;" class="c-center">
+                                            <p class="texto-p">
+                                                {{ risk.ref_sel2_ini2 }}
+                                            </p>                                        
+                                        </div>                                        
+                                    </div>
                                 </div>
                             </div>
                         </td>
@@ -592,31 +832,55 @@ const optionFalse = ref(false)
                 </tbody>
             </table>
 
-            <div class="grid lg:grid-cols-1 gap-1 card-header" style="margin-bottom: 0.5rem;">
-                <h1 style="margin-bottom: 0.5rem; font-weight: 700;" class="card-header-h1">
+            <div class="grid lg:grid-cols-1 gap-1 card-header c-center" style="margin-bottom: 0.5rem;">
+                <h3 style="font-weight: bold;">
+                    {{ $t('message.risk.reasonsForNotTestingControls') }}
+                </h3> 
+                <div class="div-p">
+                    <p class="texto-p">
+                        {{ risk.reasons_NT_cont }}
+                    </p>
+                </div>
+            </div>
+
+            <div class="grid lg:grid-cols-1 gap-1 card-header c-center" style="margin-bottom: 0.5rem;">
+                <h3 style="font-weight: bold;">
                     {{ $t('message.risk.riskReductionApproach') }}
-                </h1>
+                </h3> 
             </div>
 
-            <div class="grid lg:grid-cols-1 gap-1">
-                <h1 style="margin-bottom: 1.5rem; font-weight: 700;">
+            <div class="grid lg:grid-cols-1 gap-1 c-center">
+                <h3 style="font-weight: bold;">
                     {{ $t('message.risk.detect/CorrectExistingErrors') }}
-                </h1>
+                </h3>
             </div>
 
-            <div class="grid lg:grid-cols-2 gap-2">
-                <FormField :label="$t('message.risk.approach')">
-                    <FormControl type="textarea" v-model="risk.padc_enf"/>
-                </FormField>
-                <FormField :label="$t('message.risk.outcomeOfTheAuditProceduresApplied')">
-                    <FormControl type="textarea" v-model="risk.padc_res"/>
-                </FormField>
+            <div class="grid lg:grid-cols-1 gap-2">
+                <h3 style="font-weight: bold;">
+                    {{ $t('message.risk.approach') }}
+                </h3>
+                <div class="div-p">
+                    <p class="texto-p">
+                        {{ risk.padc_enf }}
+                    </p>
+                </div>
             </div>
 
-            <div class="grid lg:grid-cols-1 gap-1 card-header" style="margin-bottom: 0.5rem;">
-                <h1 style="margin-bottom: 0.5rem; font-weight: 700;" class="card-header-h1">
+            <div class="grid lg:grid-cols-1 gap-2">
+                <h3 style="font-weight: bold;">
+                    {{ $t('message.risk.outcomeOfTheAuditProceduresApplied') }}
+                </h3>
+                <div class="div-p">
+                    <p class="texto-p">
+                        {{ risk.padc_res }}
+                    </p>
+                </div>
+            </div>
+
+            <div class="grid lg:grid-cols-1 gap-1 card-header c-center" style="margin-bottom: 0.5rem;">
+                <h3 style="font-weight: bold;">
                     {{ $t('message.risk.reference(s)ToWorkingPapers') }}
-                </h1>
+                </h3>
             </div>
 
             <div class="grid lg:grid-cols-1 gap-1 mb-4">
@@ -637,40 +901,49 @@ const optionFalse = ref(false)
                 </table>
             </div>
 
-            <div class="grid lg:grid-cols-1 gap-1 card-header" style="margin-bottom: 0.5rem;">
-                <h1 style="margin-bottom: 1.5rem; font-weight: 700;" class="card-header-h1">
+            <div class="grid lg:grid-cols-1 gap-1 card-header c-center" style="margin-bottom: 0.1rem;">
+                <h3 style="font-weight: bold;">
                     {{ $t('message.risk.preventionOfFutureOccurrence:') }}
-                </h1>
+                </h3>
             </div>
 
-            <div class="grid lg:grid-cols-1 gap-1">
-                <FormField :label="$t('message.risk.recommendationForProcessImprovementprocess')">
-                    <FormControl type="textarea" v-model="risk.pfo_mpro"/>
-                </FormField>
+            <div class="grid lg:grid-cols-1 gap-1" style="margin-bottom: 15px;">
+                <h3 style="margin-top: 10px;font-weight: bold;">
+                    {{ $t('message.risk.recommendationForProcessImprovementprocess') }}
+                </h3>
+                <div class="div-p">
+                    <p class="texto-p">
+                        {{ risk.pfo_mpro }}
+                    </p>
+                </div>
             </div>
 
-            <div class="grid lg:grid-cols-1 gap-1 card-header" style="margin-bottom: 0.5rem;">
-                <h1 style="margin-bottom: 0.5rem; font-weight: 700;" class="card-header-h1">
+            <div class="grid lg:grid-cols-1 gap-1 card-header c-center" style="margin-bottom: 0.1rem;">
+                <h3 style="font-weight: bold;">
                     {{ $t('message.risk.residualAuditRisk') }}
-                </h1>
+                </h3>
             </div>
 
-            <div class="grid lg:grid-cols-1 gap-1">
-                <FormField label="">
-                    <FormControl type="textarea" v-model="risk.rda_resi" :icon="mdiRenameBox" />
-                </FormField>
+            <div class="grid lg:grid-cols-1 gap-1" style="margin-bottom: 15px;">
+                <div class="div-p">
+                    <p class="texto-p">
+                        {{ risk.rda_resi }}
+                    </p>
+                </div>
             </div>
 
-            <div class="grid lg:grid-cols-1 gap-1 card-header" style="margin-bottom: 0.5rem;">
-                <h1 style="margin-bottom: 0.5rem; font-weight: 700;" class="card-header-h1">
+            <div class="grid lg:grid-cols-1 gap-1 card-header c-center" style="margin-bottom: 0.1rem;">
+                <h3 style="font-weight: bold;">
                     {{ $t('message.risk.effectOnTheAuditOpinion') }}
-                </h1>
+                </h3>
             </div>
 
             <div class="grid lg:grid-cols-1 gap-1">
-                <FormField label="">
-                    <FormControl type="textarea" v-model="risk.conclusion" :icon="mdiRenameBox" />
-                </FormField>
+                <div class="div-p">
+                    <p class="texto-p">
+                        {{ risk.conclusion }}
+                    </p>
+                </div>
             </div>
         </div>
     </div>
@@ -690,12 +963,11 @@ const optionFalse = ref(false)
     color: white;
     font-weight: 700;
     border-radius: 10px 10px 0px 0px;
+    padding-bottom: 12px;
 }
 
 .c-card-content {
-    padding: 10px;
-    border-color: #80808054;
-    border-width: 1px;
+    border: none;
 }
 
 .title-modal {
@@ -710,12 +982,13 @@ const optionFalse = ref(false)
     place-content: center;
     color: white;
     padding-left: 10px;
-    height: 38px;
+    height: 28px;
+    padding-bottom: 10px;
 }
 
 .card-header-h1 {
-    margin-bottom: 0.5rem;
-    font-weight: 700;
+    /*margin-bottom: 0.5rem;
+    font-weight: 700;*/
     height: 100%;
     display: grid;
     place-content: center;
@@ -741,6 +1014,62 @@ const optionFalse = ref(false)
 
 .c-center {
     text-align: center;
+}   
+.div-p {
+    height: auto; 
+    padding: 0px;
+} 
+
+.texto-p {
+    height: auto; 
+    padding: 2px; 
+    word-wrap: break-word;
 }
 
+h3 {
+    font-size: 12px;
+}
+
+.border-p {
+    border-color: #1a181854; 
+    border-width: 1px;
+    padding-bottom: 15px;
+}
+
+.radio-button:checked {
+  background-color: #4CAF50;
+}
+
+.div-span {
+    padding-left: 10px; 
+    margin-top: -7px; 
+    position: absolute;
+}
+
+.c-card-header-ref {
+    width: 100%; 
+    padding: 0 15px;
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    height: 35px;
+    background: #2563eb;
+    color: white;
+    font-weight: 700;
+    border-radius: 10px 10px 0px 0px;
+    padding-bottom: 15px;
+}
+
+.div-ref {
+    display: grid; 
+    place-content: center; 
+    width: 50%;
+}
+
+.c-card-content-ref {
+    display: flex; 
+    flex-direction: row; 
+    width: 100%; 
+    gap:5px
+}
 </style>
