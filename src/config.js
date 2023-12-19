@@ -9,7 +9,7 @@ export const urlBack = {
       apiUrl: 'http://localhost:8000/',
     },
     production: {
-      apiUrl: 'https://opta-1ff1931ce193.herokuapp.com/',
+      apiUrl: 'https://optadev.technidevve.com/',
     },
   };
   
